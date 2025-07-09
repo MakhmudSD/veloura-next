@@ -38,7 +38,7 @@ const Faq = () => {
 
 	/** APOLLO REQUESTS **/
 	/** LIFECYCLES **/
-	
+
 	/** HANDLERS **/
 	const changeCategoryHandler = (category: string) => {
 		setCategory(category);
@@ -49,386 +49,368 @@ const Faq = () => {
 	};
 
 	const data: any = {
-		property: [
+		product: [
 			{
-				id: '00f5a45ed8897f8090116a01',
-				subject: 'Are the properties displayed on the site reliable?',
-				content: 'of course we only have verified properties',
+				id: 'veloura-001',
+				subject: 'Are the products on Veloura authentic?',
+				content: 'Absolutely! All our jewelry pieces are crafted from genuine, verified materials.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a22',
-				subject: 'What types of properties do you offer?',
-				content: 'We offer single-family homes, condos, townhouses, apartments, and penthouses',
+				id: 'veloura-002',
+				subject: 'What types of jewelry do you offer?',
+				content: 'We offer rings, necklaces, bracelets, earrings, and custom pieces for special occasions.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a21',
-				subject: 'How can I search for properties on your website?',
-				content: 'Simply use our search bar to enter location, price range, bedrooms/bathrooms, and property type.',
+				id: 'veloura-003',
+				subject: 'How can I search for products on Veloura?',
+				content: 'Use our search bar or filters to browse by type, material, gemstone, or price range.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a23',
-				subject: 'Do you provide assistance for first-time homebuyers?',
-				content: 'Yes, we guide you through the process and help find suitable financing.',
+				id: 'veloura-004',
+				subject: 'Do you provide styling advice?',
+				content: 'Yes! Our team can help you choose pieces that match your style and occasion.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a24',
-				subject: 'What should I consider when buying a property?',
-				content: 'Location, condition, size, amenities, and future development plans.',
+				id: 'veloura-005',
+				subject: 'What should I consider when buying jewelry?',
+				content: 'Consider metal type, gemstone quality, occasion, sizing, and your budget.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a25',
-				subject: 'How long does the home-buying process typically take?',
-				content: 'Usually 3 to 6 days, depending on various factors.',
+				id: 'veloura-006',
+				subject: 'How long does it take to receive my order?',
+				content: 'Standard delivery is 3–6 business days; custom pieces may take longer.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a29',
-				subject: 'What happens if I encounter issues with the property after purchase?',
-				content: 'We offer post-purchase support to address any concerns promptly.',
+				id: 'veloura-007',
+				subject: 'What happens if my jewelry arrives damaged?',
+				content: 'Contact us immediately — we offer free returns and repairs for any defects.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a28',
-				subject: 'Do you offer properties in specific neighborhoods?',
-				content: 'Yes, we have listings in various neighborhoods based on your preferences.',
+				id: 'veloura-008',
+				subject: 'Do you offer limited edition or custom jewelry?',
+				content: 'Yes! We have exclusive collections and accept custom design requests.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a27',
-				subject: 'Can I sell my property through your website?',
-				content: 'Absolutely, we provide services for selling properties as well.',
+				id: 'veloura-009',
+				subject: 'Can I sell my own jewelry through Veloura?',
+				content: 'Currently, we don’t accept external sellers — all pieces are curated in-house.',
 			},
 			{
-				id: '00f5a45ed8897f8090116b99',
-				subject: 'What if I need help understanding legal aspects of property purchase?',
-				content: 'Our team can provide basic guidance and recommend legal professionals if needed.',
+				id: 'veloura-010',
+				subject: 'Can you help me care for my jewelry?',
+				content: 'Yes! We provide care guides and offer free polishing for selected items.',
 			},
 		],
 		payment: [
 			{
-				id: '00f5a45ed8897f8090116a02',
-				subject: 'How can I make the payment?',
-				content: 'you make the payment through an agent!',
+				id: 'veloura-011',
+				subject: 'How can I pay for my order?',
+				content: 'We accept major credit cards, PayPal, and secure online payments.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a91',
-				subject: 'Are there any additional fees for using your services?',
-				content: 'No, our services are free for buyers. Sellers pay a commission upon successful sale.',
+				id: 'veloura-012',
+				subject: 'Are there any extra fees?',
+				content: 'No hidden fees — you only pay for your order plus shipping (if applicable).',
 			},
 			{
-				id: '00f5a45ed8897f8090116a92',
-				subject: 'Is there an option for installment payments?',
-				content: 'Yes, we offer installment payment plans for certain properties. Please inquire for more details.',
+				id: 'veloura-013',
+				subject: 'Do you offer installment plans?',
+				content: 'Yes! We partner with trusted services for split payments on eligible orders.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a93',
-				subject: 'Is my payment information secure on your website?',
-				content:
-					'Yes, we use industry-standard encryption technology to ensure the security of your payment information.',
+				id: 'veloura-014',
+				subject: 'Is my payment information secure?',
+				content: 'Absolutely — we use industry-standard SSL encryption to protect your data.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a94',
-				subject: 'Can I make payments online through your website?',
-				content: "Yes, you can securely make payments online through our website's payment portal.",
+				id: 'veloura-015',
+				subject: 'Can I pay online?',
+				content: 'Yes! All purchases can be completed securely through our website.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a95',
-				subject: "What happens if there's an issue with my payment?",
-				content: 'If you encounter any issues with your payment, please contact our support team for assistance.',
+				id: 'veloura-016',
+				subject: 'What if there’s an issue with my payment?',
+				content: 'Contact our support team for quick help with any payment problems.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a96',
-				subject: 'Do you offer refunds for payments made?',
-				content:
-					'Refund policies vary depending on the circumstances. Please refer to our refund policy or contact us for more information.',
+				id: 'veloura-017',
+				subject: 'Do you offer refunds?',
+				content: 'Yes — refer to our return policy for refund eligibility and details.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a97',
-				subject: 'Are there any discounts or incentives for early payments?',
-				content:
-					'We occasionally offer discounts or incentives for early payments. Check our promotions or contact us for current offers.',
+				id: 'veloura-018',
+				subject: 'Do you have early payment discounts?',
+				content: 'Occasionally! Subscribe to our newsletter for special offers and promotions.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a99',
-				subject: 'How long does it take for payments to be processed?',
-				content:
-					'Payment processing times vary depending on the payment method used. Typically, credit/debit card payments are processed instantly',
+				id: 'veloura-019',
+				subject: 'How long does payment processing take?',
+				content: 'Payments process instantly; refunds typically take 3–5 business days.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a98',
-				subject: 'Are there penalties for late payments?',
-				content:
-					'Late payment penalties may apply depending on the terms of your agreement. Please refer to your contract or contact us for details.',
+				id: 'veloura-020',
+				subject: 'Are there late payment penalties?',
+				content: 'No — but payment is required to process your order.',
 			},
 		],
 		buyers: [
 			{
-				id: '00f5a45ed8897f8090116a03',
-				subject: 'What should buyers pay attention to?',
-				content: 'Buyers should check and decide whether the property they want to buy or rent is actually suitable!',
+				id: 'veloura-021',
+				subject: 'What should buyers check before purchasing?',
+				content: 'Confirm your ring size, preferred metal, and read our care guide.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a85',
-				subject: 'How can I determine if a property is within my budget?',
-				content:
-					'Calculate your budget by considering your income, down payment, and potential mortgage payments. Our agents can assist you within your budget.',
+				id: 'veloura-022',
+				subject: 'How can I budget for a jewelry purchase?',
+				content: 'Set a budget and browse collections that match — our filters help!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a84',
-				subject: 'What documents do I need to provide when purchasing a property?',
-				content:
-					"You'll typically need identification, proof of income, bank statements, and any necessary loan documentation. Our team will guide you through.",
+				id: 'veloura-023',
+				subject: 'What documents do I need?',
+				content: 'None — just your payment method and shipping information.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a83',
-				subject: 'What factors should I consider when choosing a neighborhood?',
-				content:
-					'Consider factors such as location, safety, schools, amenities, transportation, and future development plans.',
+				id: 'veloura-024',
+				subject: 'How do I choose the right piece?',
+				content: 'Consider style, occasion, recipient, and materials — we’re here to help!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a82',
-				subject: 'Can I negotiate the price of a property?',
-				content:
-					'Yes, you can negotiate the price of a property. Our agents will assist you in making competitive offers and negotiating terms with the seller.',
+				id: 'veloura-025',
+				subject: 'Can I negotiate prices?',
+				content: 'Our prices are fixed, but we do offer seasonal discounts and promotions.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a81',
-				subject: 'What are some red flags to watch out for when viewing properties?',
-				content:
-					'Watch out for signs of structural damage, water damage, mold, outdated systems, and undesirable neighborhood conditions.',
+				id: 'veloura-026',
+				subject: 'Any red flags when shopping for jewelry online?',
+				content: 'Shop only with trusted retailers. Veloura guarantees authenticity.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a80',
-				subject: 'Do you provide assistance with property inspections?',
-				content:
-					'Yes, we can recommend reputable inspectors and accompany you during property inspections to identify any potential issues.',
+				id: 'veloura-027',
+				subject: 'Do you offer inspection or certification?',
+				content: 'Yes! Each piece comes with an authenticity certificate where applicable.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a79',
-				subject: 'How long does it typically take to find the right property?',
-				content:
-					'The timeframe varies depending on your preferences and market conditions. Our agents will work diligently to find the right property as quickly as possible.',
+				id: 'veloura-028',
+				subject: 'How long does it take to find the perfect piece?',
+				content: 'It depends — our team is always ready to help you choose quickly.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a78',
-				subject: 'What are the advantages of using a real estate agent when buying a property?',
-				content:
-					'Real estate agents provide expertise, negotiation skills, and guidance throughout the buying process, ultimately saving you time and hassle.',
+				id: 'veloura-029',
+				subject: 'Why buy from Veloura instead of elsewhere?',
+				content: 'Premium quality, verified materials, exclusive designs, and trusted service.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a77',
-				subject: 'What happens if I change my mind about a property after making an offer?',
-				content:
-					'Depending on the terms of the offer and the stage of the transaction, you may have options to withdraw your offer.',
+				id: 'veloura-030',
+				subject: 'What if I change my mind after ordering?',
+				content: 'Check our cancellation and return policy — we try to be flexible!',
 			},
 		],
-
-		agents: [
+		designers: [
 			{
-				id: '00f5a45ed8897f8090116a04',
-				subject: 'What do I need to do if I want to become an agent?',
-				content:
-					'If you really decide to become an agent, you should read our terms and conditions and contact the admin!',
+				id: 'veloura-031',
+				subject: 'How can I collaborate as a designer?',
+				content: 'Submit your portfolio — we love partnering with independent designers!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a62',
-				subject: 'What qualifications do I need to become a real estate agent?',
-				content: 'Complete pre-licensing course, pass licensing exam, meet state requirements.',
+				id: 'veloura-032',
+				subject: 'What skills do I need?',
+				content: 'Strong jewelry design, craftsmanship, and a passion for quality.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a63',
-				subject: 'How do I find clients as a new real estate agent?',
-				content: 'Build network, use online/offline marketing, join reputable brokerage.',
+				id: 'veloura-033',
+				subject: 'How do I find clients as a designer?',
+				content: 'Veloura handles marketing — you focus on your designs.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a64',
-				subject: 'What are some effective marketing strategies for selling properties?',
-				content: 'Use social media, online platforms, networking events, and direct mail.',
+				id: 'veloura-034',
+				subject: 'What are effective marketing strategies?',
+				content: 'Leverage our branding, social media, and influencer partnerships.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a65',
-				subject: 'How do I handle negotiations with buyers and sellers?',
-				content: 'Develop strong negotiation skills, understand market trends, represent client interests.',
+				id: 'veloura-035',
+				subject: 'How do I handle client feedback?',
+				content: 'We help you gather feedback to improve and grow.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a66',
-				subject: 'What should I do to stay updated with market trends and changes?',
-				content: 'Attend industry events, follow real estate news, participate in training.',
+				id: 'veloura-036',
+				subject: 'How do I stay updated on jewelry trends?',
+				content: 'We share trend reports and inspiration with our design partners.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a67',
-				subject: 'How do I handle difficult clients or situations?',
-				content:
-					'Approach with professionalism, empathy, and patience. Listen actively, address issues collaboratively.',
+				id: 'veloura-037',
+				subject: 'How do I deal with difficult clients?',
+				content: 'We mediate customer service so you can focus on your craft.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a68',
-				subject: 'What tools and technologies should I utilize as a real estate agent?',
-				content: 'Use CRM software, virtual tours, digital marketing tools, and mobile apps.',
+				id: 'veloura-038',
+				subject: 'What tools should I use?',
+				content: 'Use CAD software, 3D modeling, and our quality assurance standards.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a69',
-				subject: 'How do I ensure compliance with real estate laws and regulations?',
-				content: 'Stay updated with laws, attend education courses, consult legal professionals.',
+				id: 'veloura-039',
+				subject: 'How do I ensure compliance with jewelry standards?',
+				content: 'We provide clear quality and sourcing guidelines.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a70',
-				subject: 'What strategies can I use to grow my real estate business?',
-				content: 'Build relationships, provide exceptional service, seek referrals, and continuously improve skills.',
+				id: 'veloura-040',
+				subject: 'How can I grow my jewelry business with Veloura?',
+				content: 'Focus on unique designs — we handle production, marketing, and sales.',
 			},
 		],
 		membership: [
 			{
-				id: '00f5a45ed8897f8090116a05',
-				subject: 'Do you have a membership service on your site?',
-				content: 'membership service is not available on our site yet!',
+				id: 'veloura-041',
+				subject: 'Do you have a membership program?',
+				content: 'Not yet — but stay tuned for a future loyalty program!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a60',
-				subject: 'What are the benefits of becoming a member on your website?',
-				content: 'We currently do not offer membership benefits, but stay tuned for updates on any future offerings.',
+				id: 'veloura-042',
+				subject: 'What benefits will members get?',
+				content: 'Early access to new collections, exclusive discounts, and special gifts.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a59',
-				subject: 'Is there a fee associated with becoming a member?',
-				content: 'As membership services are not available, there are no associated fees at this time.',
+				id: 'veloura-043',
+				subject: 'Is there a fee for membership?',
+				content: 'Our loyalty program will be free for our valued customers.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a58',
-				subject: 'Will membership provide access to exclusive content or features?',
-				content: "We don't currently have membership-exclusive content or features.",
+				id: 'veloura-044',
+				subject: 'Will members get exclusive content?',
+				content: 'Yes! Limited edition pieces and insider news.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a57',
-				subject: 'How can I sign up for a membership on your site?',
-				content: 'As of now, we do not have a sign-up process for memberships.',
+				id: 'veloura-045',
+				subject: 'How do I sign up?',
+				content: 'We’ll announce it on our website and newsletter when ready.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a56',
-				subject: 'Do members receive discounts on property listings or services?',
-				content: 'Membership discounts are not part of our current offerings.',
+				id: 'veloura-046',
+				subject: 'Do members get discounts?',
+				content: 'Yes — loyalty discounts are part of our future plans.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a55',
-				subject: 'Are there plans to introduce a membership program in the future?',
-				content:
-					"While we can't confirm any plans at this time, we're always exploring ways to enhance our services for users.",
+				id: 'veloura-047',
+				subject: 'Will there be a premium option?',
+				content: 'We may introduce premium perks in the future.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a54',
-				subject: 'What kind of content or benefits can members expect if a membership program is introduced?',
-				content: "We're evaluating potential benefits and features, but specifics are not available yet.",
+				id: 'veloura-048',
+				subject: 'What can members expect?',
+				content: 'Priority support, custom design opportunities, and more.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a33',
-				subject: 'Do you offer a premium membership option on your platform?',
-				content: 'Currently, we do not provide a premium membership option.',
+				id: 'veloura-049',
+				subject: 'Do you offer a referral program?',
+				content: 'We’re exploring it — join our newsletter for updates!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a32',
-				subject: 'Will membership grant access to exclusive deals or discounts?',
-				content: 'Membership perks, including deals or discounts, are not available at this time.',
+				id: 'veloura-050',
+				subject: 'Are there exclusive deals?',
+				content: 'Members will receive special offers not available to the public.',
 			},
 		],
 		community: [
 			{
-				id: '00f5a45ed8897f8090116a06',
-				subject: 'What should I do if there is abusive or criminal behavior in the community section?',
-				content: 'If you encounter this situation, please report it immediately or contact the admin!',
+				id: 'veloura-051',
+				subject: 'What if I see inappropriate behavior in reviews?',
+				content: 'Report it — we maintain a respectful community.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a44',
-				subject: 'How can I participate in the community section of your website?',
-				content: 'Create an account and engage in discussions.',
+				id: 'veloura-052',
+				subject: 'How can I participate in the Veloura community?',
+				content: 'Share reviews, tag us on social, or join our newsletter.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a45',
-				subject: 'Are there guidelines for posting?',
-				content: 'Yes, follow our community guidelines.',
+				id: 'veloura-053',
+				subject: 'Are there posting guidelines?',
+				content: 'Yes — keep it respectful and on-topic.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a46',
-				subject: 'What should I do if I encounter spam or irrelevant posts?',
-				content: 'Report them to the admin.',
+				id: 'veloura-054',
+				subject: 'What if I see spam?',
+				content: 'Report it to our support team.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a47',
-				subject: 'Can I connect with other members outside of the community section?',
-				content: 'Currently, no.',
+				id: 'veloura-055',
+				subject: 'Can I connect with other buyers?',
+				content: 'Join our social media pages for inspiration and connection.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a48',
-				subject: 'Can I share personal experiences or recommendations?',
-				content: 'Yes, if relevant you can share personal experiences and recommendations.',
+				id: 'veloura-056',
+				subject: 'Can I share my jewelry stories?',
+				content: 'Yes! We love seeing how you style our pieces.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a49',
-				subject: 'How can I ensure privacy?',
-				content: 'Avoid sharing sensitive information.',
+				id: 'veloura-057',
+				subject: 'How can I protect my privacy?',
+				content: 'Don’t share sensitive info — read our privacy policy.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a50',
-				subject: 'How can I contribute positively?',
-				content: 'Respect others and engage constructively.',
+				id: 'veloura-058',
+				subject: 'How do I contribute positively?',
+				content: 'Be kind, share tips, and inspire others.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a51',
-				subject: 'What if I notice misinformation?',
-				content: 'Provide correct information or report to the admin.',
+				id: 'veloura-059',
+				subject: 'What if I see misinformation?',
+				content: 'Let us know so we can correct it.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a52',
+				id: 'veloura-060',
 				subject: 'Are there moderators?',
-				content: 'Yes, we have moderators.',
+				content: 'Yes — our team monitors all community content.',
 			},
 		],
 		other: [
 			{
-				id: '00f5a45ed8897f8090116a40',
-				subject: 'Who should I contact if I want to buy your site?',
-				content: 'We have no plans to sell the site at this time!',
+				id: 'veloura-061',
+				subject: 'Who do I contact for partnership inquiries?',
+				content: 'Reach out via our contact page for collaboration opportunities.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a39',
-				subject: 'Can I advertise my services on your website?',
-				content: 'We currently do not offer advertising opportunities on our site.',
+				id: 'veloura-062',
+				subject: 'Can I advertise my services?',
+				content: 'We don’t offer ads — but partnerships are welcome!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a38',
-				subject: 'Are there sponsorship opportunities available on your platform?',
-				content: 'At this time, we do not have sponsorship opportunities.',
+				id: 'veloura-063',
+				subject: 'Are sponsorships available?',
+				content: 'We consider sponsorships with aligned brands — contact us!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a36',
-				subject: 'Can I contribute guest posts or articles to your website?',
-				content: "We're not accepting guest posts or articles at the moment.",
+				id: 'veloura-064',
+				subject: 'Can I submit a guest post?',
+				content: 'At this time, we don’t accept guest posts.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a35',
-				subject: 'Is there a referral program for recommending your website to others?',
-				content: "We don't have a referral program in place currently.",
+				id: 'veloura-065',
+				subject: 'Do you have a referral program?',
+				content: 'Not yet — but stay tuned for updates!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a34',
-				subject: 'Do you offer affiliate partnerships for promoting your services?',
-				content: 'Affiliate partnerships are not available at this time.',
+				id: 'veloura-066',
+				subject: 'Do you offer affiliate partnerships?',
+				content: 'We’re exploring this — reach out if you’re interested.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a33',
-				subject: 'Can I purchase merchandise related to your website?',
-				content: "We don't have merchandise available for purchase.",
+				id: 'veloura-067',
+				subject: 'Can I purchase Veloura merchandise?',
+				content: 'We don’t offer branded merchandise at this time.',
 			},
 			{
-				id: '00f5a45ed8897f8090116a32',
-				subject: 'Are there any job openings or opportunities to work with your team?',
-				content: 'Currently, we do not have any job openings or opportunities available.',
+				id: 'veloura-068',
+				subject: 'Are there job opportunities?',
+				content: 'Currently, we don’t have open positions — but check back!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a31',
-				subject: 'Do you host events or webinars related to real estate?',
-				content: "We're not hosting events or webinars at this time.",
+				id: 'veloura-069',
+				subject: 'Do you host events or pop-ups?',
+				content: 'Not at the moment, but stay tuned for future updates!',
 			},
 			{
-				id: '00f5a45ed8897f8090116a30',
-				subject: 'Can I request custom features or functionalities for your website?',
-				content: "We're not accepting requests for custom features or functionalities.",
+				id: 'veloura-070',
+				subject: 'Can I request custom features on the website?',
+				content: 'We welcome feedback — send us your suggestions!',
 			},
 		],
 	};
@@ -440,12 +422,12 @@ const Faq = () => {
 			<Stack className={'faq-content'}>
 				<Box className={'categories'} component={'div'}>
 					<div
-						className={category === 'property' ? 'active' : ''}
+						className={category === 'product' ? 'active' : ''}
 						onClick={() => {
-							changeCategoryHandler('property');
+							changeCategoryHandler('product');
 						}}
 					>
-						Property
+						Product
 					</div>
 					<div
 						className={category === 'payment' ? 'active' : ''}
@@ -464,12 +446,12 @@ const Faq = () => {
 						Foy Buyers
 					</div>
 					<div
-						className={category === 'agents' ? 'active' : ''}
+						className={category === 'stores' ? 'active' : ''}
 						onClick={() => {
-							changeCategoryHandler('agents');
+							changeCategoryHandler('stores');
 						}}
 					>
-						For Agents
+						For Stores
 					</div>
 					<div
 						className={category === 'membership' ? 'active' : ''}

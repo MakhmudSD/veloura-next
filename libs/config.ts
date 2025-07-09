@@ -1,17 +1,23 @@
 export const REACT_APP_API_URL = `${process.env.REACT_APP_API_URL}`;
 
-export const availableOptions = ['propertyBarter', 'propertyRent'];
+export const availableProductOptions = ['productExchangeable', 'productRentalAvailable'];
 
 const thisYear = new Date().getFullYear();
 
-export const propertyYears: any = [];
+export const productYears: number[] = [];
 
-for (let i = 1970; i <= thisYear; i++) {
-	propertyYears.push(String(i));
+for (let i = 2020; i <= thisYear; i++) {
+	productYears.push(i);
 }
 
-export const propertySquare = [0, 25, 50, 75, 100, 125, 150, 200, 300, 500];
+export const productPrice: number[] = [];
 
+const maxPrice = 2000000; // max price you want
+const step = 50000; // step amount, you can adjust
+
+for (let price = 0; price <= maxPrice; price += step) {
+  productPrice.push(price);
+}
 export const Messages = {
 	error1: 'Something went wrong!',
 	error2: 'Please login first!',
@@ -20,4 +26,4 @@ export const Messages = {
 	error5: 'Only images with jpeg, jpg, png format allowed!',
 };
 
-const topPropertyRank = 50;
+const topProductRank = 50;

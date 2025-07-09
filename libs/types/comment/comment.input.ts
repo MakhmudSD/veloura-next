@@ -5,6 +5,7 @@ export interface CommentInput {
 	commentGroup: CommentGroup;
 	commentContent: string;
 	commentRefId: string;
+	parentId: string;
 	memberId?: string;
 }
 

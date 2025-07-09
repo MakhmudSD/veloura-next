@@ -10,29 +10,31 @@ interface EventData {
 }
 const eventsData: EventData[] = [
 	{
-		eventTitle: 'Paradise City Theme Park',
-		city: 'Incheon',
-		description:
-			'Experience magic and wonder in Incheon with a visit to the night-themed indoor theme park Wonderbox at Paradise City!',
-		imageSrc: '/img/events/INCHEON.webp',
-	},
-	{
-		eventTitle: 'Taebaeksan Snow Festival',
+		eventTitle: 'Veloura Private Collection Launch',
 		city: 'Seoul',
-		description: 'If you have the opportunity to travel to South Korea, do not miss the Taebaeksan Snow Festival!',
+		description:
+			'Join us for an exclusive preview of our new Private Collection — timeless designs crafted with exquisite gemstones. Be the first to experience it!',
 		imageSrc: '/img/events/SEOUL.webp',
 	},
 	{
-		eventTitle: 'Suseong Lake Event',
+		eventTitle: 'Incheon Bespoke Jewelry Workshop',
+		city: 'Incheon',
+		description:
+			'Discover the art of custom jewelry making at our Bespoke Workshop. Create your own piece under the guidance of Veloura designers.',
+		imageSrc: '/img/events/INCHEON.webp',
+	},
+	{
+		eventTitle: 'Daegu Styling & Care Session',
 		city: 'Daegu',
-		description: 'The Suseong Lake Festival is a culture and arts festival held alongside Suseongmot Lake!',
+		description:
+			'Learn how to style and care for your jewelry at our special event in Daegu. Complimentary cleaning service for Veloura pieces.',
 		imageSrc: '/img/events/DAEGU.webp',
 	},
 	{
-		eventTitle: 'Sand Festival',
+		eventTitle: 'Busan Summer Pop-Up Boutique',
 		city: 'Busan',
 		description:
-			'Haeundae Sand Festival, the nation’s largest eco-friendly exhibition on sand, is held at Haeundae Beach!',
+			'Visit our pop-up boutique at Haeundae Beach. Discover limited-edition summer jewelry inspired by coastal elegance.',
 		imageSrc: '/img/events/BUSAN.webp',
 	},
 ];

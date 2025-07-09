@@ -4,4 +4,6 @@ export interface CommentUpdate {
 	_id: string;
 	commentStatus?: CommentStatus;
 	commentContent?: string;
+	parentId?: string;
+	memberId?: string;
 }
