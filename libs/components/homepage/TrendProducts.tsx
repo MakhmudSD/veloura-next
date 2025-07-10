@@ -5,81 +5,82 @@ import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
-import { Property } from '../../types/product/product';
-import { PropertiesInquiry } from '../../types/product/product.input';
-import TrendPropertyCard from './TrendPropertyCard';
+import { Product } from '../../types/product/product';
+import { ProductsInquiry } from '../../types/product/product.input';
+import TrendPropertyCard from './TrendProductCard';
 import { useMutation, useQuery } from '@apollo/client';
-import { GET_PROPERTIES } from '../../../apollo/user/query';
-import { LIKE_TARGET_PROPERTY } from '../../../apollo/user/mutation';
+import { GET_PRODUCTS } from '../../../apollo/user/query';
+import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
+import TrendProductCard from './TrendProductCard';
 
-interface TrendPropertiesProps {
-	initialInput: PropertiesInquiry;
+interface TrendProductsProps {
+	initialInput: ProductsInquiry;
 }
 
-const TrendProperties = (props: TrendPropertiesProps) => {
+const TrendProducts = (props: TrendProductsProps) => {
 	const { initialInput } = props;
 	const device = useDeviceDetect();
-	const [trendProperties, setTrendProperties] = useState<Property[]>([]);
+	const [trendProducts, setTrendProducts] = useState<Product[]>([]);
 
 	/** APOLLO REQUESTS **/
-	const [likeTargetProperty] = useMutation(LIKE_TARGET_PROPERTY)
-	const { 
-		loading: getPropertiesLoading,
-		data: getPropertiesData,
-		error: getPropertiesError,
-		refetch: getPropertiesRefetch
-	  } = useQuery(GET_PROPERTIES, {
-		fetchPolicy: "cache-and-network",
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
 		variables: { input: initialInput },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data) => {
-		  setTrendProperties(data?.getProperties?.list);
+			setTrendProducts(data?.getProducts?.list);
 		},
-	  });
-	  
+	});
+
 	/** HANDLERS **/
 
-	const likePropertyHandler = async (user: T, id: string) => {
+	const likeProductHandler = async (user: T, id: string) => {
 		try {
-			if(!id) return
-			if(!user._id) throw new Error(Message.SOMETHING_WENT_WRONG)
-			await likeTargetProperty({variables: {input: id}}) // server update
-		
-			await getPropertiesRefetch({ input: initialInput}) // frontend update
-			await sweetTopSmallSuccessAlert("success", 800)
-		} catch(err: any) {
-			console.log("ERROR on likePropertyHandler", err.message)
-			sweetMixinErrorAlert(err.message).then()
+			if (!id) return;
+			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
+			await likeTargetProduct({ variables: { input: id } }); // server update
+
+			await getProductsRefetch({ input: initialInput }); // frontend update
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('ERROR on likePropertyHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
 		}
-	}
+	};
 
 	if (device === 'mobile') {
 		return (
-			<Stack className={'trend-properties'}>
+			<Stack className={'trend-products'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<span>Trend Properties</span>
+						<span>Trend Products</span>
 					</Stack>
 					<Stack className={'card-box'}>
-						{trendProperties.length === 0 ? (
+						{trendProducts.length === 0 ? (
 							<Box component={'div'} className={'empty-list'}>
 								Trends Empty
 							</Box>
 						) : (
 							<Swiper
-								className={'trend-property-swiper'}
+								className={'trend-product-swiper'}
 								slidesPerView={'auto'}
 								centeredSlides={true}
 								spaceBetween={15}
 								modules={[Autoplay]}
 							>
-								{trendProperties.map((property: Property) => {
+								{trendProducts.map((product: Product) => {
 									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} likePropertyHanlder={likePropertyHandler}/>
+										<SwiperSlide key={product._id} className={'trend-product-slide'}>
+											<TrendProductCard product={product} likeProductHandler={likeProductHandler} />
 										</SwiperSlide>
 									);
 								})}
@@ -91,11 +92,11 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 		);
 	} else {
 		return (
-			<Stack className={'trend-properties'}>
+			<Stack className={'trend-products'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
 						<Box component={'div'} className={'left'}>
-							<span>Trend Properties</span>
+							<span>Trend Products</span>
 							<p>Trend is based on likes</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
@@ -107,13 +108,13 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 						</Box>
 					</Stack>
 					<Stack className={'card-box'}>
-						{trendProperties.length === 0 ? (
+						{trendProducts.length === 0 ? (
 							<Box component={'div'} className={'empty-list'}>
 								Trends Empty
 							</Box>
 						) : (
 							<Swiper
-								className={'trend-property-swiper'}
+								className={'trend-product-swiper'}
 								slidesPerView={'auto'}
 								spaceBetween={15}
 								modules={[Autoplay, Navigation, Pagination]}
@@ -125,10 +126,10 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 									el: '.swiper-trend-pagination',
 								}}
 							>
-								{trendProperties.map((property: Property) => {
+								{trendProducts.map((product: Product) => {
 									return (
-										<SwiperSlide key={property._id} className={'trend-property-slide'}>
-											<TrendPropertyCard property={property} likePropertyHanlder={likePropertyHandler} />
+										<SwiperSlide key={product._id} className={'trend-product-slide'}>
+											<TrendProductCard product={product} likeProductHandler={likeProductHandler} />
 										</SwiperSlide>
 									);
 								})}
@@ -141,7 +142,7 @@ const TrendProperties = (props: TrendPropertiesProps) => {
 	}
 };
 
-TrendProperties.defaultProps = {
+TrendProducts.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 8,
@@ -151,4 +152,4 @@ TrendProperties.defaultProps = {
 	},
 };
 
-export default TrendProperties;
+export default TrendProducts;
