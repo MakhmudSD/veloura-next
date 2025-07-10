@@ -31,8 +31,8 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
-						<meta name={'title'} content={`Nestar`} />
+						<title>Veloura</title>
+						<meta name={'title'} content={`Veloura`} />
 					</Head>
 					<Stack id="mobile-wrap">
 						<Stack id={'top'}>
@@ -53,7 +53,7 @@ const withLayoutMain = (Component: any) => {
 			return (
 				<>
 					<Head>
-						<title>Nestar</title>
+						<title>Veloura</title>
 						<meta name={'title'} content={`Nestar`} />
 					</Head>
 					<Stack id="pc-wrap">
@@ -61,11 +61,18 @@ const withLayoutMain = (Component: any) => {
 							<Top />
 						</Stack>
 
-						<Stack className={'header-main'}>
-							<FiberContainer />
-							<Stack className={'container'}>
-								<HeaderFilter />
-							</Stack>
+						<Stack className="header-main">
+							<div className="video-wrapper">
+								<video autoPlay muted loop playsInline>
+									<source src="/video/VELOURA-JEWELRY.mp4" type="video/mp4" />
+								</video>
+							</div>
+
+							<div className="overlay-content">
+								<Stack className="container">
+									<HeaderFilter />
+								</Stack>
+							</div>
 						</Stack>
 
 						<Stack id={'main'}>

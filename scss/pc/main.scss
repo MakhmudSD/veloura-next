@@ -174,9 +174,32 @@ body::-webkit-scrollbar {
 	.header-main {
 		position: relative;
 		width: 100%;
-		height: 860px;
-		background-image: url('/img/banner/header1.svg');
-		background-size: cover;
+		height: 860px; // Or 100vh if you want it full screen
+		overflow: hidden;
+	  
+		.video-wrapper {
+		  position: absolute; // Make it fill the whole .header-main
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  z-index: 0;
+		}
+	  
+		.video-wrapper video {
+		  width: 100%;
+		  height: 100%;
+		  object-fit: cover;
+		}
+	  
+		.overlay-content {
+		  position: relative;
+		  z-index: 1; // Must be above the video
+		  width: 100%;
+		  height: 100%;
+		  display: flex;
+		  flex-direction: column;
+		}
 		.container {
 			position: relative;
 			margin-top: 20px;
@@ -184,7 +207,7 @@ body::-webkit-scrollbar {
 			align-items: center;
 			.search-box {
 				position: relative;
-				margin-top: 56px;
+				margin-top: 156px;
 				padding: 16px 29px;
 				width: 1094px;
 				height: 96px;
@@ -196,6 +219,7 @@ body::-webkit-scrollbar {
 				.select-box {
 					width: 712px;
 					display: flex;
+					gap: 20px;
 					flex-direction: row;
 					justify-content: space-between;
 					.box {
@@ -318,9 +342,9 @@ body::-webkit-scrollbar {
 						}
 					}
 				}
-				.filter-type {
+				.filter-category {
 					position: absolute;
-					padding: 50px;
+					padding: 40px 60px; // same as location
 					width: 1094px;
 					min-height: 120px;
 					height: auto;
@@ -328,46 +352,52 @@ body::-webkit-scrollbar {
 					right: 0px;
 					display: flex;
 					flex-direction: row;
-					justify-content: space-between;
+					flex-wrap: wrap; // <-- ADD THIS
+					gap: 40px;       // <-- ADD THIS
 					visibility: hidden;
 					border-radius: 12px;
 					background: #fff;
 					box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 					box-sizing: border-box;
 					z-index: 1;
+				
 					&.on {
 						visibility: visible;
 						transition: 0.2s ease-out;
 						background: #fffdfd;
 					}
+				
 					div {
-						position: relative;
-						width: 272px;
-						height: 168px;
-						border-radius: 15px;
-						cursor: pointer;
-						background-size: cover;
+						width: 295px;
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+						img {
+							width: 122px;
+							height: 85px;
+							border-radius: 15px;
+							cursor: pointer;
+						}
 						span {
-							position: absolute;
-							top: 13px;
-							right: 12px;
-							padding: 1px 5px 5px 5px;
-							border-radius: 2px 2px 0px 0px;
+							margin-left: 22px;
+							color: #181a20;
 							font-family: $font;
 							font-size: 20px;
 							font-style: normal;
-							font-weight: 700;
+							font-weight: 400;
 							line-height: 26px;
-							background: linear-gradient(180deg, #fff 0%, rgba(255, 255, 255, 0) 100%);
-							// -webkit-background-clip: text;
-							// -webkit-text-fill-color: transparent;
+							cursor: pointer;
 							text-transform: capitalize;
+						}
+						label {
+							line-height: 13px;
 						}
 					}
 				}
-				.filter-rooms {
+				
+				.filter-material {
 					position: absolute;
-					padding: 10px 92px;
+					padding: 40px 60px; // same as location
 					width: 1094px;
 					min-height: 120px;
 					height: auto;
@@ -375,38 +405,49 @@ body::-webkit-scrollbar {
 					right: 0px;
 					display: flex;
 					flex-direction: row;
-					justify-content: space-between;
-					align-items: center;
+					flex-wrap: wrap; // <-- ADD THIS
+					gap: 40px;       // <-- ADD THIS
 					visibility: hidden;
 					border-radius: 12px;
 					background: #fff;
 					box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 					box-sizing: border-box;
 					z-index: 1;
+				
 					&.on {
 						visibility: visible;
 						transition: 0.2s ease-out;
 						background: #fffdfd;
 					}
-					span {
+				
+					div {
+						width: 295px;
 						display: flex;
+						flex-direction: row;
 						align-items: center;
-						padding: 10px 30px;
-						border: 1px solid #fffdfd;
-						color: #181a20;
-						font-family: $font;
-						font-size: 20px;
-						font-style: normal;
-						font-weight: 400;
-						line-height: 26px;
-						cursor: pointer;
-						&:hover {
-							border-radius: 5px;
-							border: 1px solid #b9b9b9;
-							box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+						img {
+							width: 122px;
+							height: 85px;
+							border-radius: 15px;
+							cursor: pointer;
+						}
+						span {
+							margin-left: 22px;
+							color: #181a20;
+							font-family: $font;
+							font-size: 20px;
+							font-style: normal;
+							font-weight: 400;
+							line-height: 26px;
+							cursor: pointer;
+							text-transform: capitalize;
+						}
+						label {
+							line-height: 13px;
 						}
 					}
 				}
+				
 			}
 		}
 	}
@@ -919,8 +960,8 @@ body::-webkit-scrollbar {
 						align-items: center;
 					}
 					div.room {
-						width: 46px;
-						height: 46px;
+						width: 58px;
+						height: 58px;
 						display: flex;
 						align-items: center;
 						justify-content: center;

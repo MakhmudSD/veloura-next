@@ -235,80 +235,97 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
 	if (device === 'mobile') {
 		return <div>HEADER FILTER MOBILE</div>;
-	} else {
+	  } else {
 		return (
-			<>
-				{/* MAIN DESKTOP FILTER BAR */}
-				<Stack className={'search-box'}>
-					<Stack className={'select-box'}>
-						<Box component={'div'} className={`box ${openLocation ? 'on' : ''}`} onClick={locationStateChangeHandler}>
-							<span>{searchFilter?.search?.locationList ? searchFilter?.search?.locationList[0] : t('Location')}</span>
-							<ExpandMoreIcon />
-						</Box>
+		  <>
+			{/* MAIN DESKTOP FILTER BAR */}
+			<Stack className={'search-box'}>
+  <Stack className={'select-box'}>
+    {/* LOCATION SELECT BOX */}
+    <Box
+      component={'div'}
+      className={`box ${openLocation ? 'on' : ''}`}
+      onClick={locationStateChangeHandler}
+    >
+      <span>{searchFilter?.search?.locationList?.[0] || t('Location')}</span>
+      <ExpandMoreIcon />
+    </Box>
 
-						<Box className={`box ${openCategory ? 'on' : ''}`} onClick={categoryStateChangeHandler}>
-							<span>
-								{searchFilter?.search?.categoryList ? searchFilter?.search?.categoryList[0] : t('Product Category')}
-							</span>
-							<ExpandMoreIcon />
-						</Box>
+    {/* CATEGORY SELECT BOX */}
+    <Box
+      className={`box ${openCategory ? 'on' : ''}`}
+      onClick={categoryStateChangeHandler}
+    >
+      <span>{searchFilter?.search?.categoryList?.[0] || t('Product Category')}</span>
+      <ExpandMoreIcon />
+    </Box>
 
-						<Box className={`box ${openMaterial ? 'on' : ''}`} onClick={materialStateChangeHandler}>
-							<span>
-								{searchFilter?.search?.materialList
-									? `${searchFilter?.search?.materialList[0]} material`
-									: t('Material')}
-							</span>
-							<ExpandMoreIcon />
-						</Box>
-					</Stack>
+    {/* MATERIAL SELECT BOX */}
+    <Box
+      className={`box ${openMaterial ? 'on' : ''}`}
+      onClick={materialStateChangeHandler}
+    >
+      <span>{searchFilter?.search?.materialList?.[0] || t('Material')}</span>
+      <ExpandMoreIcon />
+    </Box>
+  </Stack>
 
-					<Stack className={'search-box-other'}>
-						<Box className={'advanced-filter'} onClick={() => advancedFilterHandler(true)}>
-							<img src="/img/icons/tune.svg" alt="" />
-							<span>{t('Advanced')}</span>
-						</Box>
-						<Box className={'search-btn'} onClick={pushSearchHandler}>
-							<img src="/img/icons/search_white.svg" alt="" />
-						</Box>
-					</Stack>
+  <Stack className={'search-box-other'}>
+    <Box className={'advanced-filter'} onClick={() => advancedFilterHandler(true)}>
+      <img src="/img/icons/tune.svg" alt="" />
+      <span>{t('Advanced')}</span>
+    </Box>
+    <Box className={'search-btn'} onClick={pushSearchHandler}>
+      <img src="/img/icons/search_white.svg" alt="" />
+    </Box>
+  </Stack>
 
-					{/* LOCATION MENU */}
-					<div className={`filter-location ${openLocation ? 'on' : ''}`} ref={locationRef}>
-						{productLocation.map((location) => (
-							<div onClick={() => productLocationSelectHandler(location)} key={location}>
-								<img src={`img/banner/cities/${location}.webp`} alt="" />
-								<span>{location}</span>
-							</div>
-						))}
-					</div>
+  {/* LOCATION MENU */}
+  <div
+    className={`filter-location ${openLocation ? 'on' : ''}`}
+    ref={locationRef}
+  >
+    {productLocation.map((location) => (
+      <div onClick={() => productLocationSelectHandler(location)} key={location}>
+        <img src={`/img/banner/cities/${location}.webp`} alt={location} />
+        <span>{location}</span>
+      </div>
+    ))}
+  </div>
 
-					{/* CATEGORY MENU */}
-					<div className={`filter-category ${openCategory ? 'on' : ''}`} ref={categoryRef}>
-						{productCategory.map((category) => (
-							<div
-								style={{ backgroundImage: `url(/img/banner/types/${category.toLowerCase()}.webp)` }}
-								onClick={() => productCategorySelectHandler(category)}
-								key={category}
-							>
-								<span>{category}</span>
-							</div>
-						))}
-					</div>
+  {/* CATEGORY MENU — NOW SAME STRUCTURE */}
+  <div
+    className={`filter-category ${openCategory ? 'on' : ''}`}
+    ref={categoryRef}
+  >
+    {productCategory.map((category) => (
+      <div
+        key={category}
+        onClick={() => productCategorySelectHandler(category)}
+      >
+        <img src={`/img/banner/types/${category.toLowerCase()}.webp`} alt={category} />
+        <span>{category}</span>
+      </div>
+    ))}
+  </div>
 
-					{/* MATERIAL MENU */}
-					<div className={`filter-material ${openMaterial ? 'on' : ''}`} ref={materialRef}>
-						{['GOLD', 'SILVER', 'PLATINUM', 'DIAMOND'].map((material) => (
-							<span
-								key={material}
-								onClick={() => productMaterialSelectHandler(material)}
-								className={searchFilter?.search?.materialList?.includes(material as ProductMaterial) ? 'active' : ''}
-							>
-								{material}
-							</span>
-						))}
-					</div>
-				</Stack>
+  {/* MATERIAL MENU — SAME STRUCTURE */}
+  <div
+    className={`filter-material ${openMaterial ? 'on' : ''}`}
+    ref={materialRef}
+  >
+    {['GOLD', 'SILVER', 'PLATINUM', 'DIAMOND'].map((material) => (
+      <div
+        key={material}
+        onClick={() => productMaterialSelectHandler(material)}
+      >
+        <img src={`/img/banner/materials/${material.toLowerCase()}.webp`} alt={material} />
+        <span>{material}</span>
+      </div>
+    ))}
+  </div>
+</Stack>
+
 
 				{/* ADVANCED FILTER MODAL */}
 				<Modal
