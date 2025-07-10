@@ -3,7 +3,7 @@ import { Stack, Typography, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { product } from '../../types/product/product';
+import { Product } from '../../types/product/product';
 import Link from 'next/link';
 import { formatterStr } from '../../utils';
 import { REACT_APP_API_URL } from '../../config';
@@ -12,14 +12,14 @@ import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
-interface productCardType {
-	product: product;
+interface ProductCardType {
+	product: Product;
 	likeproductHandler?: any;
 	myFavorites?: boolean;
 	recentlyVisited?: boolean;
 }
 
-const productCard = (props: productCardType) => {
+const ProductCard = (props: ProductCardType) => {
 	const { product, likeproductHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
@@ -28,7 +28,7 @@ const productCard = (props: productCardType) => {
 		: '/img/banner/header1.svg';
 
 	if (device === 'mobile') {
-		return <div>product CARD</div>;
+		return <div>Product CARD</div>;
 	} else {
 		return (
 			<Stack className="card-config">
@@ -71,13 +71,13 @@ const productCard = (props: productCardType) => {
 					</Stack>
 					<Stack className="options">
 						<Stack className="option">
-							<img src="/img/icons/bed.svg" alt="" /> <Typography>{product.productBeds} bed</Typography>
+							<img src="/img/icons/bed.svg" alt="" /> <Typography>{product.productGender} gender</Typography>
 						</Stack>
 						<Stack className="option">
-							<img src="/img/icons/room.svg" alt="" /> <Typography>{product.productRooms} room</Typography>
+							<img src="/img/icons/room.svg" alt="" /> <Typography>{product.productMaterial} Material</Typography>
 						</Stack>
 						<Stack className="option">
-							<img src="/img/icons/expand.svg" alt="" /> <Typography>{product.productSquare} m2</Typography>
+							<img src="/img/icons/expand.svg" alt="" /> <Typography>{product.productSize} Size</Typography>
 						</Stack>
 					</Stack>
 					<Stack className="divider"></Stack>
@@ -121,4 +121,4 @@ const productCard = (props: productCardType) => {
 	}
 };
 
-export default productCard;
+export default ProductCard;

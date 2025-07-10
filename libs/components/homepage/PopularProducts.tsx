@@ -5,14 +5,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
-import PopularproductCard from './PopularproductCard';
 import { Product } from '../../types/product/product';
 import Link from 'next/link';
 import { ProductsInquiry } from '../../types/product/product.input';
-import { GET_PROPERTIES } from '../../../apollo/user/query';
+import { GET_PRODUCTS } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { T } from '../../types/common';
-import PopularProductCard from './PopularproductCard';
+import PopularProductCard from './PopularProductCard';
 
 interface PopularProductsProps {
 	initialInput: ProductsInquiry;
@@ -25,19 +24,19 @@ const PopularProducts = (props: PopularProductsProps) => {
 
 	/** APOLLO REQUESTS **/
 
-	// const {
-	// 	loading: getProductsLoading,
-	// 	data: getProductsData,
-	// 	error: getProductsError,
-	// 	refetch: getProductsRefetch,
-	// } = useQuery(GET_PRODUCTS, {
-	// 	fetchPolicy: 'cache-and-network',
-	// 	variables: { input: initialInput },
-	// 	notifyOnNetworkStatusChange: true,
-	// 	onCompleted: (data: T) => {
-	// 		setPopularProducts(data?.getProducts?.list);
-	// 	},
-	// });
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setPopularProducts(data?.getProducts?.list);
+		},
+	});
 	/** HANDLERS **/
 
 	if (device === 'mobile') {

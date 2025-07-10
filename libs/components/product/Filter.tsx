@@ -13,11 +13,11 @@ import {
 	IconButton,
 } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { productLocation, productType } from '../../enums/product.enum';
-import { PropertiesInquiry } from '../../types/product/product.input';
+import { ProductCategory, ProductGender, ProductLocation, ProductMaterial } from '../../enums/product.enum';
+import { ProductsInquiry } from '../../types/product/product.input';
 import { useRouter } from 'next/router';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { productSquare } from '../../config';
+import { productSize } from '../../config';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 const MenuProps = {
@@ -29,17 +29,17 @@ const MenuProps = {
 };
 
 interface FilterType {
-	searchFilter: PropertiesInquiry;
+	searchFilter: ProductsInquiry;
 	setSearchFilter: any;
-	initialInput: PropertiesInquiry;
+	initialInput: ProductsInquiry;
 }
 
 const Filter = (props: FilterType) => {
 	const { searchFilter, setSearchFilter, initialInput } = props;
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const [productLocation, setproductLocation] = useState<productLocation[]>(Object.values(productLocation));
-	const [productType, setproductType] = useState<productType[]>(Object.values(productType));
+	const [locations, setLocations] = useState<ProductLocation[]>(Object.values(ProductLocation));
+	const [categories, setCategories] = useState<ProductCategory[]>(Object.values(ProductCategory));
 	const [searchText, setSearchText] = useState<string>('');
 	const [showMore, setShowMore] = useState<boolean>(false);
 
@@ -58,13 +58,13 @@ const Filter = (props: FilterType) => {
 			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
 		}
 
-		if (searchFilter?.search?.typeList?.length == 0) {
-			delete searchFilter.search.typeList;
+		if (searchFilter?.search?.categoryList?.length == 0) {
+			delete searchFilter.search.categoryList;
 			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
 		}
 
-		if (searchFilter?.search?.roomsList?.length == 0) {
-			delete searchFilter.search.roomsList;
+		if (searchFilter?.search?.materialList?.length == 0) {
+			delete searchFilter.search.materialList;
 			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
 		}
 
@@ -73,8 +73,8 @@ const Filter = (props: FilterType) => {
 			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
 		}
 
-		if (searchFilter?.search?.bedsList?.length == 0) {
-			delete searchFilter.search.bedsList;
+		if (searchFilter?.search?.genderList?.length == 0) {
+			delete searchFilter.search.genderList;
 			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
 		}
 
@@ -119,7 +119,7 @@ const Filter = (props: FilterType) => {
 					);
 				}
 
-				if (searchFilter?.search?.typeList?.length == 0) {
+				if (searchFilter?.search?.categoryList?.length == 0) {
 					alert('error');
 				}
 
@@ -131,7 +131,7 @@ const Filter = (props: FilterType) => {
 		[searchFilter],
 	);
 
-	const productTypeSelectHandler = useCallback(
+	const productCategorySelectHandler = useCallback(
 		async (e: any) => {
 			try {
 				const isChecked = e.target.checked;
@@ -140,104 +140,80 @@ const Filter = (props: FilterType) => {
 					await router.push(
 						`/product?input=${JSON.stringify({
 							...searchFilter,
-							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.typeList || []), value] },
+							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.categoryList || []), value] },
 						})}`,
 						`/product?input=${JSON.stringify({
 							...searchFilter,
-							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.typeList || []), value] },
+							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.categoryList || []), value] },
 						})}`,
 						{ scroll: false },
 					);
-				} else if (searchFilter?.search?.typeList?.includes(value)) {
+				} else if (searchFilter?.search?.categoryList?.includes(value)) {
 					await router.push(
 						`/product?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								typeList: searchFilter?.search?.typeList?.filter((item: string) => item !== value),
+								typeList: searchFilter?.search?.categoryList?.filter((item: string) => item !== value),
 							},
 						})}`,
 						`/product?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								typeList: searchFilter?.search?.typeList?.filter((item: string) => item !== value),
+								typeList: searchFilter?.search?.categoryList?.filter((item: string) => item !== value),
 							},
 						})}`,
 						{ scroll: false },
 					);
 				}
 
-				if (searchFilter?.search?.typeList?.length == 0) {
+				if (searchFilter?.search?.categoryList?.length == 0) {
 					alert('error');
 				}
 
-				console.log('productTypeSelectHandler:', e.target.value);
+				console.log('productCategorySelectHandler:', e.target.value);
 			} catch (err: any) {
-				console.log('ERROR, productTypeSelectHandler:', err);
+				console.log('ERROR, productCategorySelectHandler:', err);
 			}
 		},
 		[searchFilter],
 	);
 
-	const productRoomSelectHandler = useCallback(
-		async (number: Number) => {
+	const productMaterialSelectHandler = useCallback(
+		(selectedMaterial?: ProductMaterial) => {
 			try {
-				if (number != 0) {
-					if (searchFilter?.search?.roomsList?.includes(number)) {
-						await router.push(
-							`/product?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									roomsList: searchFilter?.search?.roomsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							`/product?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									roomsList: searchFilter?.search?.roomsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							{ scroll: false },
-						);
-					} else {
-						await router.push(
-							`/product?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, roomsList: [...(searchFilter?.search?.roomsList || []), number] },
-							})}`,
-							`/product?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, roomsList: [...(searchFilter?.search?.roomsList || []), number] },
-							})}`,
-							{ scroll: false },
-						);
-					}
+				const currentList: ProductMaterial[] = searchFilter?.search?.materialList || [];
+
+				let newMaterialList: ProductMaterial[] = [];
+
+				if (!selectedMaterial) {
+					// Clear all if "Any" clicked
+					newMaterialList = [];
 				} else {
-					delete searchFilter?.search.roomsList;
-					setSearchFilter({ ...searchFilter });
-					await router.push(
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						{ scroll: false },
-					);
+					if (currentList.includes(selectedMaterial)) {
+						// Remove if already selected
+						newMaterialList = currentList.filter((item) => item !== selectedMaterial);
+					} else {
+						// Add it
+						newMaterialList = [...currentList, selectedMaterial];
+					}
 				}
 
-				console.log('productRoomSelectHandler:', number);
-			} catch (err: any) {
-				console.log('ERROR, productRoomSelectHandler:', err);
+				const newFilter = {
+					...searchFilter,
+					search: {
+						...searchFilter.search,
+						// Only add if non-empty, else delete key
+						...(newMaterialList.length > 0 ? { materialList: newMaterialList } : {}),
+					},
+				};
+
+				setSearchFilter(newFilter);
+
+				console.log('productMaterialSelectHandler:', newMaterialList);
+			} catch (err) {
+				console.error('ERROR in productMaterialSelectHandler:', err);
 			}
 		},
 		[searchFilter],
@@ -288,110 +264,47 @@ const Filter = (props: FilterType) => {
 		[searchFilter],
 	);
 
-	const productBedSelectHandler = useCallback(
-		async (number: Number) => {
-			try {
-				if (number != 0) {
-					if (searchFilter?.search?.bedsList?.includes(number)) {
-						await router.push(
-							`/product?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									bedsList: searchFilter?.search?.bedsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							`/product?input=${JSON.stringify({
-								...searchFilter,
-								search: {
-									...searchFilter.search,
-									bedsList: searchFilter?.search?.bedsList?.filter((item: Number) => item !== number),
-								},
-							})}`,
-							{ scroll: false },
-						);
-					} else {
-						await router.push(
-							`/product?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, bedsList: [...(searchFilter?.search?.bedsList || []), number] },
-							})}`,
-							`/product?input=${JSON.stringify({
-								...searchFilter,
-								search: { ...searchFilter.search, bedsList: [...(searchFilter?.search?.bedsList || []), number] },
-							})}`,
-							{ scroll: false },
-						);
-					}
-				} else {
-					delete searchFilter?.search.bedsList;
-					setSearchFilter({ ...searchFilter });
-					await router.push(
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-							},
-						})}`,
-						{ scroll: false },
-					);
-				}
+	const productGenderSelectHandler = useCallback(
+		(selectedGender?: ProductGender) => {
+			const currentList: ProductGender[] = searchFilter?.search?.genderList || [];
 
-				console.log('productBedSelectHandler:', number);
-			} catch (err: any) {
-				console.log('ERROR, productBedSelectHandler:', err);
+			let newGenderList: ProductGender[] = [];
+
+			if (!selectedGender) {
+				// Clear
+				newGenderList = [];
+			} else {
+				if (currentList.includes(selectedGender)) {
+					newGenderList = currentList.filter((g) => g !== selectedGender);
+				} else {
+					newGenderList = [...currentList, selectedGender];
+				}
 			}
+
+			const newFilter = {
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+					...(newGenderList.length > 0 ? { genderList: newGenderList } : {}),
+				},
+			};
+
+			setSearchFilter(newFilter);
+			console.log('productGenderSelectHandler:', newGenderList);
 		},
 		[searchFilter],
 	);
 
-	const productSquareHandler = useCallback(
-		async (e: any, type: string) => {
-			const value = e.target.value;
-
-			if (type == 'start') {
-				await router.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, start: value },
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, start: value },
-						},
-					})}`,
-					{ scroll: false },
-				);
-			} else {
-				await router.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, end: value },
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							squaresRange: { ...searchFilter.search.squaresRange, end: value },
-						},
-					})}`,
-					{ scroll: false },
-				);
-			}
+	const productSizeHandler = useCallback(
+		(value: number) => {
+			const newFilter = {
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+					selectedSize: value || undefined,
+				},
+			};
+			setSearchFilter(newFilter);
 		},
 		[searchFilter],
 	);
@@ -453,12 +366,12 @@ const Filter = (props: FilterType) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>PROPERTIES FILTER</div>;
+		return <div>PRODUCTS FILTER</div>;
 	} else {
 		return (
 			<Stack className={'filter-main'}>
 				<Stack className={'find-your-home'} mb={'40px'}>
-					<Typography className={'title-main'}>Find Your Home</Typography>
+					<Typography className={'title-main'}>Find Your Jewelry</Typography>
 					<Stack className={'input-box'}>
 						<OutlinedInput
 							value={searchText}
@@ -510,7 +423,7 @@ const Filter = (props: FilterType) => {
 							}
 						}}
 					>
-						{productLocation.map((location: string) => {
+						{locations.map((location: string) => {
 							return (
 								<Stack className={'input-box'} key={location}>
 									<Checkbox
@@ -519,7 +432,7 @@ const Filter = (props: FilterType) => {
 										color="default"
 										size="small"
 										value={location}
-										checked={(searchFilter?.search?.locationList || []).includes(location as productLocation)}
+										checked={(searchFilter?.search?.locationList || []).includes(location as ProductLocation)}
 										onChange={productLocationSelectHandler}
 									/>
 									<label htmlFor={location} style={{ cursor: 'pointer' }}>
@@ -531,151 +444,149 @@ const Filter = (props: FilterType) => {
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>product Type</Typography>
-					{productType.map((type: string) => (
-						<Stack className={'input-box'} key={type}>
+					<Typography className={'title'}>Product Category</Typography>
+					{categories.map((category: string) => (
+						<Stack className={'input-box'} key={category}>
 							<Checkbox
-								id={type}
+								id={category}
 								className="product-checkbox"
 								color="default"
 								size="small"
-								value={type}
-								onChange={productTypeSelectHandler}
-								checked={(searchFilter?.search?.typeList || []).includes(type as productType)}
+								value={category}
+								onChange={productCategorySelectHandler}
+								checked={(searchFilter?.search?.categoryList || []).includes(category as ProductCategory)}
 							/>
 							<label style={{ cursor: 'pointer' }}>
-								<Typography className="product_type">{type}</Typography>
+								<Typography className="product_category">{category}</Typography>
 							</label>
 						</Stack>
 					))}
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Rooms</Typography>
+					<Typography className={'title'}>Jewelry</Typography>
 					<Stack className="button-group">
 						<Button
 							sx={{
 								borderRadius: '12px 0 0 12px',
-								border: !searchFilter?.search?.roomsList ? '2px solid #181A20' : '1px solid #b9b9b9',
+								border:
+									!searchFilter?.search?.materialList || searchFilter.search.materialList.length === 0
+										? '2px solid #181A20'
+										: '1px solid #b9b9b9',
 							}}
-							onClick={() => productRoomSelectHandler(0)}
+							onClick={() => productMaterialSelectHandler(undefined)} // Clear filter
 						>
 							Any
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(1) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(1) ? undefined : 'none',
+								border: searchFilter?.search?.materialList?.includes(ProductMaterial.GOLD)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
+								borderLeft: searchFilter?.search?.materialList?.includes(ProductMaterial.GOLD) ? undefined : 'none',
 							}}
-							onClick={() => productRoomSelectHandler(1)}
+							onClick={() => productMaterialSelectHandler(ProductMaterial.GOLD)}
 						>
-							1
+							Gold
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(2) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(2) ? undefined : 'none',
+								border: searchFilter?.search?.materialList?.includes(ProductMaterial.DIAMOND)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
+								borderLeft: searchFilter?.search?.materialList?.includes(ProductMaterial.DIAMOND) ? undefined : 'none',
 							}}
-							onClick={() => productRoomSelectHandler(2)}
+							onClick={() => productMaterialSelectHandler(ProductMaterial.DIAMOND)}
 						>
-							2
+							Diamond
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(3) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(3) ? undefined : 'none',
+								border: searchFilter?.search?.materialList?.includes(ProductMaterial.SILVER)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
+								borderLeft: searchFilter?.search?.materialList?.includes(ProductMaterial.SILVER) ? undefined : 'none',
 							}}
-							onClick={() => productRoomSelectHandler(3)}
+							onClick={() => productMaterialSelectHandler(ProductMaterial.SILVER)}
 						>
-							3
+							Silver
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: 0,
-								border: searchFilter?.search?.roomsList?.includes(4) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.roomsList?.includes(4) ? undefined : 'none',
-								borderRight: searchFilter?.search?.roomsList?.includes(4) ? undefined : 'none',
+								border: searchFilter?.search?.materialList?.includes(ProductMaterial.PLATINUM)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
+								borderLeft: searchFilter?.search?.materialList?.includes(ProductMaterial.PLATINUM) ? undefined : 'none',
 							}}
-							onClick={() => productRoomSelectHandler(4)}
+							onClick={() => productMaterialSelectHandler(ProductMaterial.PLATINUM)}
 						>
-							4
+							Platinum
 						</Button>
+
 						<Button
 							sx={{
 								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.roomsList?.includes(5) ? '2px solid #181A20' : '1px solid #b9b9b9',
+								border: searchFilter?.search?.materialList?.includes(ProductMaterial.GEMSTONE)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
 							}}
-							onClick={() => productRoomSelectHandler(5)}
+							onClick={() => productMaterialSelectHandler(ProductMaterial.GEMSTONE)}
 						>
-							5+
+							Gemstone
 						</Button>
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Bedrooms</Typography>
-					<Stack className="button-group">
-						<Button
-							sx={{
-								borderRadius: '12px 0 0 12px',
-								border: !searchFilter?.search?.bedsList ? '2px solid #181A20' : '1px solid #b9b9b9',
-							}}
-							onClick={() => productBedSelectHandler(0)}
-						>
-							Any
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(1) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(1) ? undefined : 'none',
-							}}
-							onClick={() => productBedSelectHandler(1)}
-						>
-							1
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(2) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(2) ? undefined : 'none',
-							}}
-							onClick={() => productBedSelectHandler(2)}
-						>
-							2
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(3) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(3) ? undefined : 'none',
-							}}
-							onClick={() => productBedSelectHandler(3)}
-						>
-							3
-						</Button>
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.bedsList?.includes(4) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(4) ? undefined : 'none',
-								// borderRight: false ? undefined : 'none',
-							}}
-							onClick={() => productBedSelectHandler(4)}
-						>
-							4
-						</Button>
-						<Button
-							sx={{
-								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.bedsList?.includes(5) ? '2px solid #181A20' : '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.bedsList?.includes(5) ? undefined : 'none',
-							}}
-							onClick={() => productBedSelectHandler(5)}
-						>
-							5+
-						</Button>
+					<Typography className={'title'}>Gender</Typography>
+					<Stack className={'find-your-home'} mb={'30px'}>
+						<Typography className={'title'}>Gender</Typography>
+						<Stack className="button-group">
+							<Button
+								sx={{
+									borderRadius: '12px 0 0 12px',
+									border:
+										!searchFilter?.search?.genderList || searchFilter.search.genderList.length === 0
+											? '2px solid #181A20'
+											: '1px solid #b9b9b9',
+								}}
+								onClick={() => productGenderSelectHandler(undefined)}
+							>
+								Any
+							</Button>
+
+							<Button
+								sx={{
+									borderRadius: 0,
+									border: searchFilter?.search?.genderList?.includes(ProductGender.MEN)
+										? '2px solid #181A20'
+										: '1px solid #b9b9b9',
+									...(searchFilter?.search?.genderList?.includes(ProductGender.MEN) ? {} : { borderLeft: 'none' }),
+								}}
+								onClick={() => productGenderSelectHandler(ProductGender.MEN)}
+							>
+								Men
+							</Button>
+
+							<Button
+								sx={{
+									borderRadius: '0 12px 12px 0',
+									border: searchFilter?.search?.genderList?.includes(ProductGender.WOMEN)
+										? '2px solid #181A20'
+										: '1px solid #b9b9b9',
+									...(searchFilter?.search?.genderList?.includes(ProductGender.WOMEN) ? {} : { borderLeft: 'none' }),
+								}}
+								onClick={() => productGenderSelectHandler(ProductGender.WOMEN)}
+							>
+								Women
+							</Button>
+						</Stack>
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
@@ -710,53 +621,27 @@ const Filter = (props: FilterType) => {
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Square meter</Typography>
-					<Stack className="square-year-input">
-						<FormControl>
-							<InputLabel id="demo-simple-select-label">Min</InputLabel>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-								value={searchFilter?.search?.squaresRange?.start ?? 0}
-								label="Min"
-								onChange={(e: any) => productSquareHandler(e, 'start')}
-								MenuProps={MenuProps}
-							>
-								{productSquare.map((square: number) => (
-									<MenuItem
-										value={square}
-										disabled={(searchFilter?.search?.squaresRange?.end || 0) < square}
-										key={square}
-									>
-										{square}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-						<div className="central-divider"></div>
-						<FormControl>
-							<InputLabel id="demo-simple-select-label">Max</InputLabel>
-							<Select
-								labelId="demo-simple-select-label"
-								id="demo-simple-select"
-								value={searchFilter?.search?.squaresRange?.end ?? 500}
-								label="Max"
-								onChange={(e: any) => productSquareHandler(e, 'end')}
-								MenuProps={MenuProps}
-							>
-								{productSquare.map((square: number) => (
-									<MenuItem
-										value={square}
-										disabled={(searchFilter?.search?.squaresRange?.start || 0) > square}
-										key={square}
-									>
-										{square}
-									</MenuItem>
-								))}
-							</Select>
-						</FormControl>
-					</Stack>
+					<Typography className={'title'}>Product Size</Typography>
+					<FormControl fullWidth>
+						<InputLabel id="product-size-label">Size</InputLabel>
+						<Select
+							labelId="product-size-label"
+							id="product-size-select"
+							value={searchFilter?.search?.sizeList ?? ''}
+							label="Size"
+							onChange={(e) => productSizeHandler(Number(e.target.value))}
+							MenuProps={MenuProps}
+							
+						>
+							{productSize.map((size) => (
+								<MenuItem key={size} value={size}>
+									{size}
+								</MenuItem>
+							))}
+						</Select>
+					</FormControl>
 				</Stack>
+
 				<Stack className={'find-your-home'}>
 					<Typography className={'title'}>Price Range</Typography>
 					<Stack className="square-year-input">
@@ -770,6 +655,7 @@ const Filter = (props: FilterType) => {
 									productPriceHandler(e.target.value, 'start');
 								}
 							}}
+							
 						/>
 						<div className="central-divider"></div>
 						<input

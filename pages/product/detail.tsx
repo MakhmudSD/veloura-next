@@ -6,14 +6,13 @@ import { NextPage } from 'next';
 import Review from '../../libs/components/product/Review';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay, Navigation, Pagination } from 'swiper';
-import productBigCard from '../../libs/components/common/productBigCard';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { product } from '../../libs/types/product/product';
+import { Product } from '../../libs/types/product/product';
 import moment from 'moment';
 import { formatterStr } from '../../libs/utils';
 import { REACT_APP_API_URL } from '../../libs/config';
@@ -27,6 +26,7 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import ProductBigCard from '../../libs/components/common/ProductBigCard';
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -36,19 +36,19 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
-const productDetail: NextPage = ({ initialComment, ...props }: any) => {
+const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
 	const [productId, setproductId] = useState<string | null>(null);
-	const [product, setproduct] = useState<product | null>(null);
+	const [product, setproduct] = useState<Product | null>(null);
 	const [slideImage, setSlideImage] = useState<string>('');
-	const [destinationproduct, setDestinationproduct] = useState<product[]>([]);
+	const [destinationproduct, setDestinationproduct] = useState<Product[]>([]);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
 	const [productComments, setproductComments] = useState<Comment[]>([]);
 	const [commentTotal, setCommentTotal] = useState<number>(0);
 	const [insertCommentData, setInsertCommentData] = useState<CommentInput>({
-		commentGroup: CommentGroup.product,
+		commentGroup: CommentGroup.PRODUCT,
 		commentContent: '',
 		commentRefId: '',
 	});
@@ -85,7 +85,7 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 	};
 
 	if (device === 'mobile') {
-		return <div>product DETAIL PAGE</div>;
+		return <div>PRODUCT DETAIL PAGE</div>;
 	} else {
 		return (
 			<div id={'product-detail-page'}>
@@ -143,13 +143,14 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 									</Stack>
 									<Stack className={'bottom-box'}>
 										<Stack className="option">
-											<img src="/img/icons/bed.svg" alt="" /> <Typography>{product?.productBeds} bed</Typography>
+											<img src="/img/icons/bed.svg" alt="" /> <Typography>{product?.productGender} gender</Typography>
 										</Stack>
 										<Stack className="option">
-											<img src="/img/icons/room.svg" alt="" /> <Typography>{product?.productRooms} room</Typography>
+											<img src="/img/icons/room.svg" alt="" />{' '}
+											<Typography>{product?.productMaterial} material</Typography>
 										</Stack>
 										<Stack className="option">
-											<img src="/img/icons/expand.svg" alt="" /> <Typography>{product?.productSquare} m2</Typography>
+											<img src="/img/icons/expand.svg" alt="" /> <Typography>{product?.productSize} size</Typography>
 										</Stack>
 									</Stack>
 								</Stack>
@@ -207,8 +208,8 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 											</svg>
 										</Stack>
 										<Stack className={'option-includes'}>
-											<Typography className={'title'}>Bedroom</Typography>
-											<Typography className={'option-data'}>{product?.productBeds}</Typography>
+											<Typography className={'title'}>Gender</Typography>
+											<Typography className={'option-data'}>{product?.productGender}</Typography>
 										</Stack>
 									</Stack>
 									<Stack className={'option'}>
@@ -216,8 +217,8 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 											<img src={'/img/icons/room.svg'} />
 										</Stack>
 										<Stack className={'option-includes'}>
-											<Typography className={'title'}>Room</Typography>
-											<Typography className={'option-data'}>{product?.productRooms}</Typography>
+											<Typography className={'title'}>Material</Typography>
+											<Typography className={'option-data'}>{product?.productMaterial}</Typography>
 										</Stack>
 									</Stack>
 									<Stack className={'option'}>
@@ -263,7 +264,7 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 										</Stack>
 										<Stack className={'option-includes'}>
 											<Typography className={'title'}>Size</Typography>
-											<Typography className={'option-data'}>{product?.productSquare} m2</Typography>
+											<Typography className={'option-data'}>{product?.productSize} Size</Typography>
 										</Stack>
 									</Stack>
 									<Stack className={'option'}>
@@ -277,8 +278,8 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 											</svg>
 										</Stack>
 										<Stack className={'option-includes'}>
-											<Typography className={'title'}>product Type</Typography>
-											<Typography className={'option-data'}>{product?.productType}</Typography>
+											<Typography className={'title'}>Product Category</Typography>
+											<Typography className={'option-data'}>{product?.productCategory}</Typography>
 										</Stack>
 									</Stack>
 								</Stack>
@@ -297,15 +298,15 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 												</Box>
 												<Box component={'div'} className={'info'}>
 													<Typography className={'title'}>product Size</Typography>
-													<Typography className={'data'}>{product?.productSquare} m2</Typography>
+													<Typography className={'data'}>{product?.productSize} size</Typography>
 												</Box>
 												<Box component={'div'} className={'info'}>
-													<Typography className={'title'}>Rooms</Typography>
-													<Typography className={'data'}>{product?.productRooms}</Typography>
+													<Typography className={'title'}>Material</Typography>
+													<Typography className={'data'}>{product?.productMaterial}</Typography>
 												</Box>
 												<Box component={'div'} className={'info'}>
-													<Typography className={'title'}>Bedrooms</Typography>
-													<Typography className={'data'}>{product?.productBeds}</Typography>
+													<Typography className={'title'}>Gender</Typography>
+													<Typography className={'data'}>{product?.productGender}</Typography>
 												</Box>
 											</Stack>
 											<Stack className={'right'}>
@@ -314,11 +315,11 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 													<Typography className={'data'}>{moment(product?.createdAt).format('YYYY')}</Typography>
 												</Box>
 												<Box component={'div'} className={'info'}>
-													<Typography className={'title'}>product Type</Typography>
-													<Typography className={'data'}>{product?.productType}</Typography>
+													<Typography className={'title'}>Product Category</Typography>
+													<Typography className={'data'}>{product?.productCategory}</Typography>
 												</Box>
 												<Box component={'div'} className={'info'}>
-													<Typography className={'title'}>product Options</Typography>
+													<Typography className={'title'}>Product Options</Typography>
 													<Typography className={'data'}>
 														For {product?.productBarter && 'Barter'} {product?.productRent && 'Rent'}
 													</Typography>
@@ -488,7 +489,7 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 							</Stack>
 						</Stack>
 						{destinationproduct.length !== 0 && (
-							<Stack className={'similar-properties-config'}>
+							<Stack className={'similar-products-config'}>
 								<Stack className={'title-pagination-box'}>
 									<Stack className={'title-box'}>
 										<Typography className={'main-title'}>Destination product</Typography>
@@ -514,10 +515,10 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 											el: '.swiper-similar-pagination',
 										}}
 									>
-										{destinationproduct.map((product: product) => {
+										{destinationproduct.map((product: Product) => {
 											return (
 												<SwiperSlide className={'similar-homes-slide'} key={product.productTitle}>
-													<productBigCard product={product} key={product?._id} />
+													<ProductBigCard product={product} key={product?._id} />
 												</SwiperSlide>
 											);
 										})}
@@ -532,7 +533,7 @@ const productDetail: NextPage = ({ initialComment, ...props }: any) => {
 	}
 };
 
-productDetail.defaultProps = {
+ProductDetail.defaultProps = {
 	initialComment: {
 		page: 1,
 		limit: 5,
@@ -544,4 +545,4 @@ productDetail.defaultProps = {
 	},
 };
 
-export default withLayoutFull(productDetail);
+export default withLayoutFull(ProductDetail);

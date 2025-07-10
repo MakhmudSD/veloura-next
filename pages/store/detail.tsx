@@ -2,17 +2,17 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import productBigCard from '../../libs/components/common/productBigCard';
+import ProductBigCard from '../../libs/components/common/ProductBigCard';
 import ReviewCard from '../../libs/components/agent/ReviewCard';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { product } from '../../libs/types/product/product';
+import { Product } from '../../libs/types/product/product';
 import { Member } from '../../libs/types/member/member';
 import { sweetErrorHandling } from '../../libs/sweetAlert';
 import { userVar } from '../../apollo/store';
-import { PropertiesInquiry } from '../../libs/types/product/product.input';
+import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
 import { Comment } from '../../libs/types/comment/comment';
 import { CommentGroup } from '../../libs/enums/comment.enum';
@@ -25,17 +25,17 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
-const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) => {
+const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
 	const [mbId, setMbId] = useState<string | null>(null);
-	const [agent, setAgent] = useState<Member | null>(null);
-	const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(initialInput);
-	const [agentProperties, setAgentProperties] = useState<product[]>([]);
-	const [productTotal, setproductTotal] = useState<number>(0);
+	const [store, setStore] = useState<Member | null>(null);
+	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(initialInput);
+	const [storeProducts, setStoreProducts] = useState<Product[]>([]);
+	const [productTotal, setProductTotal] = useState<number>(0);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
-	const [agentComments, setAgentComments] = useState<Comment[]>([]);
+	const [storeComments, setStoreComments] = useState<Comment[]>([]);
 	const [commentTotal, setCommentTotal] = useState<number>(0);
 	const [insertCommentData, setInsertCommentData] = useState<CommentInput>({
 		commentGroup: CommentGroup.MEMBER,
@@ -46,7 +46,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	/** APOLLO REQUESTS **/
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (router.query.agentId) setMbId(router.query.agentId as string);
+		if (router.query.storeId) setMbId(router.query.storeId as string);
 	}, [router]);
 
 	useEffect(() => {}, [searchFilter]);
@@ -80,30 +80,30 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	};
 
 	if (device === 'mobile') {
-		return <div>AGENT DETAIL PAGE MOBILE</div>;
+		return <div>STORE DETAIL PAGE MOBILE</div>;
 	} else {
 		return (
-			<Stack className={'agent-detail-page'}>
+			<Stack className={'store-detail-page'}>
 				<Stack className={'container'}>
-					<Stack className={'agent-info'}>
+					<Stack className={'store-info'}>
 						<img
-							src={agent?.memberImage ? `${REACT_APP_API_URL}/${agent?.memberImage}` : '/img/profile/defaultUser.svg'}
+							src={store?.memberImage ? `${REACT_APP_API_URL}/${store?.memberImage}` : '/img/profile/defaultUser.svg'}
 							alt=""
 						/>
-						<Box component={'div'} className={'info'} onClick={() => redirectToMemberPageHandler(agent?._id as string)}>
-							<strong>{agent?.memberFullName ?? agent?.memberNick}</strong>
+						<Box component={'div'} className={'info'} onClick={() => redirectToMemberPageHandler(store?._id as string)}>
+							<strong>{store?.memberFullName ?? store?.memberNick}</strong>
 							<div>
 								<img src="/img/icons/call.svg" alt="" />
-								<span>{agent?.memberPhone}</span>
+								<span>{store?.memberPhone}</span>
 							</div>
 						</Box>
 					</Stack>
-					<Stack className={'agent-home-list'}>
+					<Stack className={'store-home-list'}>
 						<Stack className={'card-wrap'}>
-							{agentProperties.map((product: product) => {
+							{storeProducts.map((product: Product) => {
 								return (
 									<div className={'wrap-main'} key={product?._id}>
-										<productBigCard product={product} key={product?._id} />
+										<ProductBigCard product={product} key={product?._id} />
 									</div>
 								);
 							})}
@@ -121,13 +121,13 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 										/>
 									</Stack>
 									<span>
-										Total {productTotal} propert{productTotal > 1 ? 'ies' : 'y'} available
+										Total {productTotal} product{productTotal > 1 ? 's' : ''} available
 									</span>
 								</>
 							) : (
 								<div className={'no-data'}>
 									<img src="/img/icons/icoAlert.svg" alt="" />
-									<p>No properties found!</p>
+									<p>No products found!</p>
 								</div>
 							)}
 						</Stack>
@@ -145,7 +145,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 										{commentTotal} review{commentTotal > 1 ? 's' : ''}
 									</span>
 								</Box>
-								{agentComments?.map((comment: Comment) => {
+								{storeComments?.map((comment: Comment) => {
 									return <ReviewCard comment={comment} key={comment?._id} />;
 								})}
 								<Box component={'div'} className={'pagination-box'}>
@@ -199,7 +199,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	}
 };
 
-AgentDetail.defaultProps = {
+StoreDetail.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 9,
@@ -218,4 +218,4 @@ AgentDetail.defaultProps = {
 	},
 };
 
-export default withLayoutBasic(AgentDetail);
+export default withLayoutBasic(StoreDetail);

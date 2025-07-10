@@ -59,7 +59,7 @@ const About: NextPage = () => {
 							</Box>
 							<Box component={'div'}>
 								<strong>12K</strong>
-								<p>product Ready</p>
+								<p>Product Ready</p>
 							</Box>
 							<Box component={'div'}>
 								<strong>20M</strong>
@@ -68,9 +68,9 @@ const About: NextPage = () => {
 						</Stack>
 					</Stack>
 				</Stack>
-				<Stack className={'agents'}>
+				<Stack className={'stores'}>
 					<Stack className={'container'}>
-						<span className={'title'}>Our Exclusive Agetns</span>
+						<span className={'title'}>Our Exclusive Stores</span>
 						<p className={'desc'}>Aliquam lacinia diam quis lacus euismod</p>
 						<Stack className={'wrap'}>
 							{/*{[1, 2, 3, 4, 5].map(() => {*/}
@@ -88,7 +88,7 @@ const About: NextPage = () => {
 								<img src="/img/icons/security.svg" alt="" />
 							</div>
 							<div className={'text-box'}>
-								<span>product Management</span>
+								<span>Product Management</span>
 								<p>Nullam sollicitudin blandit eros eu pretium. Nullam maximus ultricies auctor.</p>
 							</div>
 						</Stack>
@@ -97,7 +97,7 @@ const About: NextPage = () => {
 								<img src="/img/icons/keywording.svg" alt="" />
 							</div>
 							<div className={'text_-box'}>
-								<span>product Management</span>
+								<span>Product Management</span>
 								<p>Nullam sollicitudin blandit eros eu pretium. Nullam maximus ultricies auctor.</p>
 							</div>
 						</Stack>
@@ -106,7 +106,7 @@ const About: NextPage = () => {
 								<img src="/img/icons/investment.svg" alt="" />
 							</div>
 							<div className={'text-box'}>
-								<span>product Management</span>
+								<span>Product Management</span>
 								<p>Nullam sollicitudin blandit eros eu pretium. Nullam maximus ultricies auctor.</p>
 							</div>
 						</Stack>

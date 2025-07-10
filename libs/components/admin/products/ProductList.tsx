@@ -14,17 +14,17 @@ import {
 } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import { Stack } from '@mui/material';
-import { product } from '../../../types/product/product';
+import { Product } from '../../../types/product/product';
 import { REACT_APP_API_URL } from '../../../config';
 import DeleteIcon from '@mui/icons-material/Delete';
 import Typography from '@mui/material/Typography';
-import { productStatus } from '../../../enums/product.enum';
+import { ProductStatus } from '../../../enums/product.enum';
 
 interface Data {
 	id: string;
 	title: string;
 	price: string;
-	agent: string;
+	store: string;
 	location: string;
 	type: string;
 	status: string;
@@ -59,10 +59,10 @@ const headCells: readonly HeadCell[] = [
 		label: 'PRICE',
 	},
 	{
-		id: 'agent',
+		id: 'store',
 		numeric: false,
 		disablePadding: false,
-		label: 'AGENT',
+		label: 'Store',
 	},
 	{
 		id: 'location',
@@ -113,8 +113,8 @@ function EnhancedTableHead(props: EnhancedTableProps) {
 	);
 }
 
-interface productPanelListType {
-	properties: product[];
+interface ProductPanelListType {
+	products: Product[];
 	anchorEl: any;
 	menuIconClickHandler: any;
 	menuIconCloseHandler: any;
@@ -122,15 +122,9 @@ interface productPanelListType {
 	removeproductHandler: any;
 }
 
-export const productPanelList = (props: productPanelListType) => {
-	const {
-		properties,
-		anchorEl,
-		menuIconClickHandler,
-		menuIconCloseHandler,
-		updateproductHandler,
-		removeproductHandler,
-	} = props;
+export const ProductPanelList = (props: ProductPanelListType) => {
+	const { products, anchorEl, menuIconClickHandler, menuIconCloseHandler, updateproductHandler, removeproductHandler } =
+		props;
 
 	return (
 		<Stack>
@@ -139,7 +133,7 @@ export const productPanelList = (props: productPanelListType) => {
 					{/*@ts-ignore*/}
 					<EnhancedTableHead />
 					<TableBody>
-						{properties.length === 0 && (
+						{products.length === 0 && (
 							<TableRow>
 								<TableCell align="center" colSpan={8}>
 									<span className={'no-data'}>data not found!</span>
@@ -147,8 +141,8 @@ export const productPanelList = (props: productPanelListType) => {
 							</TableRow>
 						)}
 
-						{properties.length !== 0 &&
-							properties.map((product: product, index: number) => {
+						{products.length !== 0 &&
+							products.map((product: Product, index: number) => {
 								const productImage = `${REACT_APP_API_URL}/${product?.productImages[0]}`;
 
 								return (
@@ -169,9 +163,9 @@ export const productPanelList = (props: productPanelListType) => {
 										<TableCell align="center">{product.productPrice}</TableCell>
 										<TableCell align="center">{product.memberData?.memberNick}</TableCell>
 										<TableCell align="center">{product.productLocation}</TableCell>
-										<TableCell align="center">{product.productType}</TableCell>
+										<TableCell align="center">{product.productCategory}</TableCell>
 										<TableCell align="center">
-											{product.productStatus === productStatus.DELETE && (
+											{product.productStatus === ProductStatus.DELETE && (
 												<Button
 													variant="outlined"
 													sx={{ p: '3px', border: 'none', ':hover': { border: '1px solid #000000' } }}
@@ -181,11 +175,11 @@ export const productPanelList = (props: productPanelListType) => {
 												</Button>
 											)}
 
-											{product.productStatus === productStatus.SOLD && (
+											{product.productStatus === ProductStatus.SOLD && (
 												<Button className={'badge warning'}>{product.productStatus}</Button>
 											)}
 
-											{product.productStatus === productStatus.ACTIVE && (
+											{product.productStatus === ProductStatus.AVAILABLE && (
 												<>
 													<Button onClick={(e: any) => menuIconClickHandler(e, index)} className={'badge success'}>
 														{product.productStatus}
@@ -202,7 +196,7 @@ export const productPanelList = (props: productPanelListType) => {
 														TransitionComponent={Fade}
 														sx={{ p: 1 }}
 													>
-														{Object.values(productStatus)
+														{Object.values(ProductStatus)
 															.filter((ele) => ele !== product.productStatus)
 															.map((status: string) => (
 																<MenuItem

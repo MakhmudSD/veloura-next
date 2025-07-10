@@ -145,12 +145,12 @@ const Join: NextPage = () => {
 													control={
 														<Checkbox
 															size="small"
-															name={'AGENT'}
+															name={'STORE'}
 															onChange={checkUserTypeHandler}
-															checked={input?.type == 'AGENT'}
+															checked={input?.type == 'STORE'}
 														/>
 													}
-													label="Agent"
+													label="Store"
 												/>
 											</FormGroup>
 										</div>

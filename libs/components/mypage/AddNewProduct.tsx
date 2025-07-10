@@ -11,7 +11,7 @@ import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 
-const AddProduct = ({ initialValues, ...props }: any) => {
+const AddNewProduct = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const inputRef = useRef<any>(null);
@@ -466,7 +466,7 @@ const AddProduct = ({ initialValues, ...props }: any) => {
 	}
 };
 
-AddProduct.defaultProps = {
+AddNewProduct.defaultProps = {
 	initialValues: {
 		productTitle: '',
 		productPrice: 0,
@@ -483,4 +483,4 @@ AddProduct.defaultProps = {
 	},
 };
 
-export default AddProduct;
+export default AddNewProduct;
