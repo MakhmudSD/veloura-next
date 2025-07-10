@@ -7,7 +7,7 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import MyProperties from '../../libs/components/mypage/MyProperties';
 import MyFavorites from '../../libs/components/mypage/MyFavorites';
 import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
-import AddProperty from '../../libs/components/mypage/AddNewProperty';
+import Addproduct from '../../libs/components/mypage/AddNewproduct';
 import MyProfile from '../../libs/components/mypage/MyProfile';
 import MyArticles from '../../libs/components/mypage/MyArticles';
 import { useReactiveVar } from '@apollo/client';
@@ -75,7 +75,7 @@ const MyPage: NextPage = () => {
 							</Stack>
 							<Stack className="main-config" mb={'76px'}>
 								<Stack className={'list-config'}>
-									{category === 'addProperty' && <AddProperty />}
+									{category === 'addproduct' && <Addproduct />}
 									{category === 'myProperties' && <MyProperties />}
 									{category === 'myFavorites' && <MyFavorites />}
 									{category === 'recentlyVisited' && <RecentlyVisited />}

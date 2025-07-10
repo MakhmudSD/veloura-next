@@ -443,9 +443,9 @@
     "@babel/helper-create-class-features-plugin" "^7.18.6"
     "@babel/helper-plugin-utils" "^7.18.6"
 
-"@babel/plugin-proposal-private-property-in-object@7.21.0-placeholder-for-preset-env.2":
+"@babel/plugin-proposal-private-product-in-object@7.21.0-placeholder-for-preset-env.2":
   version "7.21.0-placeholder-for-preset-env.2"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-private-property-in-object/-/plugin-proposal-private-property-in-object-7.21.0-placeholder-for-preset-env.2.tgz#7844f9289546efa9febac2de4cfe358a050bd703"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-proposal-private-product-in-object/-/plugin-proposal-private-product-in-object-7.21.0-placeholder-for-preset-env.2.tgz#7844f9289546efa9febac2de4cfe358a050bd703"
   integrity sha512-SOSkfJDddaM7mak6cPEpswyTRnuRltl429hMraQEglW+OkovnCzsiszTmsrlY//qLFjCpQDFRvjdm2wA5pPm9w==
 
 "@babel/plugin-syntax-async-generators@^7.8.4":
@@ -581,9 +581,9 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.8.0"
 
-"@babel/plugin-syntax-private-property-in-object@^7.14.5":
+"@babel/plugin-syntax-private-product-in-object@^7.14.5":
   version "7.14.5"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-private-property-in-object/-/plugin-syntax-private-property-in-object-7.14.5.tgz#0dc6671ec0ea22b6e94a1114f857970cd39de1ad"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-syntax-private-product-in-object/-/plugin-syntax-private-product-in-object-7.14.5.tgz#0dc6671ec0ea22b6e94a1114f857970cd39de1ad"
   integrity sha512-0wVnp9dxJ72ZUJDV27ZfbSj6iHLoytYZmh3rFcxNnvsJF3ktkzLDZPy/mA17HGsaQT3/DQsWYX1f1QGWkCoVUg==
   dependencies:
     "@babel/helper-plugin-utils" "^7.14.5"
@@ -907,19 +907,19 @@
     "@babel/helper-create-class-features-plugin" "^7.22.5"
     "@babel/helper-plugin-utils" "^7.22.5"
 
-"@babel/plugin-transform-private-property-in-object@^7.22.11":
+"@babel/plugin-transform-private-product-in-object@^7.22.11":
   version "7.22.11"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-private-property-in-object/-/plugin-transform-private-property-in-object-7.22.11.tgz#ad45c4fc440e9cb84c718ed0906d96cf40f9a4e1"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-private-product-in-object/-/plugin-transform-private-product-in-object-7.22.11.tgz#ad45c4fc440e9cb84c718ed0906d96cf40f9a4e1"
   integrity sha512-sSCbqZDBKHetvjSwpyWzhuHkmW5RummxJBVbYLkGkaiTOWGxml7SXt0iWa03bzxFIx7wOj3g/ILRd0RcJKBeSQ==
   dependencies:
     "@babel/helper-annotate-as-pure" "^7.22.5"
     "@babel/helper-create-class-features-plugin" "^7.22.11"
     "@babel/helper-plugin-utils" "^7.22.5"
-    "@babel/plugin-syntax-private-property-in-object" "^7.14.5"
+    "@babel/plugin-syntax-private-product-in-object" "^7.14.5"
 
-"@babel/plugin-transform-property-literals@^7.22.5":
+"@babel/plugin-transform-product-literals@^7.22.5":
   version "7.22.5"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-property-literals/-/plugin-transform-property-literals-7.22.5.tgz#b5ddabd73a4f7f26cd0e20f5db48290b88732766"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-product-literals/-/plugin-transform-product-literals-7.22.5.tgz#b5ddabd73a4f7f26cd0e20f5db48290b88732766"
   integrity sha512-TiOArgddK3mK/x1Qwf5hay2pxI6wCZnvQqrFSqbtg1GLl2JcNMitVH/YnqjP+M31pLUeTfzY1HAXFDnUBV30rQ==
   dependencies:
     "@babel/helper-plugin-utils" "^7.22.5"
@@ -1044,9 +1044,9 @@
   dependencies:
     "@babel/helper-plugin-utils" "^7.22.5"
 
-"@babel/plugin-transform-unicode-property-regex@^7.22.5":
+"@babel/plugin-transform-unicode-product-regex@^7.22.5":
   version "7.22.5"
-  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-unicode-property-regex/-/plugin-transform-unicode-property-regex-7.22.5.tgz#098898f74d5c1e86660dc112057b2d11227f1c81"
+  resolved "https://registry.yarnpkg.com/@babel/plugin-transform-unicode-product-regex/-/plugin-transform-unicode-product-regex-7.22.5.tgz#098898f74d5c1e86660dc112057b2d11227f1c81"
   integrity sha512-HCCIb+CbJIAE6sXn5CjFQXMwkCClcOfPCzTlilJ8cUatfzwHlWQkbtV0zD338u9dZskwvuOYTuuaMaA8J5EI5A==
   dependencies:
     "@babel/helper-create-regexp-features-plugin" "^7.22.5"
@@ -1079,7 +1079,7 @@
     "@babel/helper-validator-option" "^7.22.15"
     "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression" "^7.22.15"
     "@babel/plugin-bugfix-v8-spread-parameters-in-optional-chaining" "^7.22.15"
-    "@babel/plugin-proposal-private-property-in-object" "7.21.0-placeholder-for-preset-env.2"
+    "@babel/plugin-proposal-private-product-in-object" "7.21.0-placeholder-for-preset-env.2"
     "@babel/plugin-syntax-async-generators" "^7.8.4"
     "@babel/plugin-syntax-class-properties" "^7.12.13"
     "@babel/plugin-syntax-class-static-block" "^7.14.5"
@@ -1095,7 +1095,7 @@
     "@babel/plugin-syntax-object-rest-spread" "^7.8.3"
     "@babel/plugin-syntax-optional-catch-binding" "^7.8.3"
     "@babel/plugin-syntax-optional-chaining" "^7.8.3"
-    "@babel/plugin-syntax-private-property-in-object" "^7.14.5"
+    "@babel/plugin-syntax-private-product-in-object" "^7.14.5"
     "@babel/plugin-syntax-top-level-await" "^7.14.5"
     "@babel/plugin-syntax-unicode-sets-regex" "^7.18.6"
     "@babel/plugin-transform-arrow-functions" "^7.22.5"
@@ -1133,8 +1133,8 @@
     "@babel/plugin-transform-optional-chaining" "^7.23.0"
     "@babel/plugin-transform-parameters" "^7.22.15"
     "@babel/plugin-transform-private-methods" "^7.22.5"
-    "@babel/plugin-transform-private-property-in-object" "^7.22.11"
-    "@babel/plugin-transform-property-literals" "^7.22.5"
+    "@babel/plugin-transform-private-product-in-object" "^7.22.11"
+    "@babel/plugin-transform-product-literals" "^7.22.5"
     "@babel/plugin-transform-regenerator" "^7.22.10"
     "@babel/plugin-transform-reserved-words" "^7.22.5"
     "@babel/plugin-transform-shorthand-properties" "^7.22.5"
@@ -1143,7 +1143,7 @@
     "@babel/plugin-transform-template-literals" "^7.22.5"
     "@babel/plugin-transform-typeof-symbol" "^7.22.5"
     "@babel/plugin-transform-unicode-escapes" "^7.22.10"
-    "@babel/plugin-transform-unicode-property-regex" "^7.22.5"
+    "@babel/plugin-transform-unicode-product-regex" "^7.22.5"
     "@babel/plugin-transform-unicode-regex" "^7.22.5"
     "@babel/plugin-transform-unicode-sets-regex" "^7.22.5"
     "@babel/preset-modules" "0.1.6-no-external-plugins"
@@ -4006,7 +4006,7 @@ base@^0.11.1:
     cache-base "^1.0.1"
     class-utils "^0.3.5"
     component-emitter "^1.2.1"
-    define-property "^1.0.0"
+    define-product "^1.0.0"
     isobject "^3.0.1"
     mixin-deep "^1.2.0"
     pascalcase "^0.1.1"
@@ -4636,7 +4636,7 @@ class-utils@^0.3.5:
   integrity sha512-qOhPa/Fj7s6TY8H8esGu5QNpMMQxz79h+urzrNYN6mn+9BnxlDGf5QZ+XeCDsxSjPqsSR56XOZOJmpeurnLMeg==
   dependencies:
     arr-union "^3.1.0"
-    define-property "^0.2.5"
+    define-product "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
@@ -5649,50 +5649,50 @@ default-gateway@^4.2.0:
     execa "^1.0.0"
     ip-regex "^2.1.0"
 
-define-data-property@^1.0.1:
+define-data-product@^1.0.1:
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/define-data-property/-/define-data-property-1.1.0.tgz#0db13540704e1d8d479a0656cf781267531b9451"
+  resolved "https://registry.yarnpkg.com/define-data-product/-/define-data-product-1.1.0.tgz#0db13540704e1d8d479a0656cf781267531b9451"
   integrity sha512-UzGwzcjyv3OtAvolTj1GoyNYzfFR+iqbGjcnBEENZVCpM4/Ng1yhGNvS3lR/xDS74Tb2wGG9WzNSNIOS9UVb2g==
   dependencies:
     get-intrinsic "^1.2.1"
     gopd "^1.0.1"
-    has-property-descriptors "^1.0.0"
+    has-product-descriptors "^1.0.0"
 
-define-data-property@^1.1.1:
+define-data-product@^1.1.1:
   version "1.1.1"
-  resolved "https://registry.yarnpkg.com/define-data-property/-/define-data-property-1.1.1.tgz#c35f7cd0ab09883480d12ac5cb213715587800b3"
+  resolved "https://registry.yarnpkg.com/define-data-product/-/define-data-product-1.1.1.tgz#c35f7cd0ab09883480d12ac5cb213715587800b3"
   integrity sha512-E7uGkTzkk1d0ByLeSc6ZsFS79Axg+m1P/VsgYsxHgiuc3tFSj+MjMIwe90FC4lOAZzNBdY7kkO2P2wKdsQ1vgQ==
   dependencies:
     get-intrinsic "^1.2.1"
     gopd "^1.0.1"
-    has-property-descriptors "^1.0.0"
+    has-product-descriptors "^1.0.0"
 
 define-properties@^1.1.2, define-properties@^1.1.3, define-properties@^1.1.4, define-properties@^1.2.0, define-properties@^1.2.1:
   version "1.2.1"
   resolved "https://registry.yarnpkg.com/define-properties/-/define-properties-1.2.1.tgz#10781cc616eb951a80a034bafcaa7377f6af2b6c"
   integrity sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==
   dependencies:
-    define-data-property "^1.0.1"
-    has-property-descriptors "^1.0.0"
+    define-data-product "^1.0.1"
+    has-product-descriptors "^1.0.0"
     object-keys "^1.1.1"
 
-define-property@^0.2.5:
+define-product@^0.2.5:
   version "0.2.5"
-  resolved "https://registry.yarnpkg.com/define-property/-/define-property-0.2.5.tgz#c35b1ef918ec3c990f9a5bc57be04aacec5c8116"
+  resolved "https://registry.yarnpkg.com/define-product/-/define-product-0.2.5.tgz#c35b1ef918ec3c990f9a5bc57be04aacec5c8116"
   integrity sha512-Rr7ADjQZenceVOAKop6ALkkRAmH1A4Gx9hV/7ZujPUN2rkATqFO0JZLZInbAjpZYoJ1gUx8MRMQVkYemcbMSTA==
   dependencies:
     is-descriptor "^0.1.0"
 
-define-property@^1.0.0:
+define-product@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/define-property/-/define-property-1.0.0.tgz#769ebaaf3f4a63aad3af9e8d304c9bbe79bfb0e6"
+  resolved "https://registry.yarnpkg.com/define-product/-/define-product-1.0.0.tgz#769ebaaf3f4a63aad3af9e8d304c9bbe79bfb0e6"
   integrity sha512-cZTYKFWspt9jZsMscWo8sc/5lbPC9Q0N5nBLgb+Yd915iL3udB1uFgS3B8YCx66UVHq018DAVFoee7x+gxggeA==
   dependencies:
     is-descriptor "^1.0.0"
 
-define-property@^2.0.2:
+define-product@^2.0.2:
   version "2.0.2"
-  resolved "https://registry.yarnpkg.com/define-property/-/define-property-2.0.2.tgz#d459689e8d654ba77e02a817f8710d702cb16e9d"
+  resolved "https://registry.yarnpkg.com/define-product/-/define-product-2.0.2.tgz#d459689e8d654ba77e02a817f8710d702cb16e9d"
   integrity sha512-jwK2UV4cnPpbcG7+VRARKTZPUWowwXA8bzH5NP6ud0oeAxyYPuGZUAC7hMugpCdz4BeSZl2Dl9k66CHJ/46ZYQ==
   dependencies:
     is-descriptor "^1.0.2"
@@ -6169,7 +6169,7 @@ es-abstract@^1.17.2:
     get-symbol-description "^1.0.0"
     globalthis "^1.0.3"
     gopd "^1.0.1"
-    has-property-descriptors "^1.0.0"
+    has-product-descriptors "^1.0.0"
     has-proto "^1.0.1"
     has-symbols "^1.0.3"
     hasown "^2.0.0"
@@ -6215,7 +6215,7 @@ es-abstract@^1.22.1:
     globalthis "^1.0.3"
     gopd "^1.0.1"
     has "^1.0.3"
-    has-property-descriptors "^1.0.0"
+    has-product-descriptors "^1.0.0"
     has-proto "^1.0.1"
     has-symbols "^1.0.3"
     internal-slot "^1.0.5"
@@ -6261,7 +6261,7 @@ es-iterator-helpers@^1.0.12, es-iterator-helpers@^1.0.15:
     function-bind "^1.1.1"
     get-intrinsic "^1.2.1"
     globalthis "^1.0.3"
-    has-property-descriptors "^1.0.0"
+    has-product-descriptors "^1.0.0"
     has-proto "^1.0.1"
     has-symbols "^1.0.3"
     internal-slot "^1.0.5"
@@ -6863,7 +6863,7 @@ expand-brackets@^2.1.4:
   integrity sha512-w/ozOKR9Obk3qoWeY/WDi6MFta9AoMR+zud60mdnbniMcBxRuFJyDt2LdX/14A1UABeqk+Uk+LDfUpvoGKppZA==
   dependencies:
     debug "^2.3.3"
-    define-property "^0.2.5"
+    define-product "^0.2.5"
     extend-shallow "^2.0.1"
     posix-character-classes "^0.1.0"
     regex-not "^1.0.0"
@@ -6961,7 +6961,7 @@ extglob@^2.0.4:
   integrity sha512-Nmb6QXkELsuBr24CJSkilo6UHHgbekK5UiZgfE6UHD3Eb27YC6oD+bhcT+tJ6cl8dmsgdQxnWlcry8ksBIBLpw==
   dependencies:
     array-unique "^0.3.2"
-    define-property "^1.0.0"
+    define-product "^1.0.0"
     expand-brackets "^2.1.4"
     extend-shallow "^2.0.1"
     fragment-cache "^0.2.1"
@@ -7416,9 +7416,9 @@ get-intrinsic@^1.2.2:
     has-symbols "^1.0.3"
     hasown "^2.0.0"
 
-get-own-enumerable-property-symbols@^3.0.0:
+get-own-enumerable-product-symbols@^3.0.0:
   version "3.0.2"
-  resolved "https://registry.yarnpkg.com/get-own-enumerable-property-symbols/-/get-own-enumerable-property-symbols-3.0.2.tgz#b5fde77f22cbe35f390b4e089922c50bce6ef664"
+  resolved "https://registry.yarnpkg.com/get-own-enumerable-product-symbols/-/get-own-enumerable-product-symbols-3.0.2.tgz#b5fde77f22cbe35f390b4e089922c50bce6ef664"
   integrity sha512-I0UBV/XOz1XkIJHEUDMZAbzCThU/H8DxmSfmdGcKPnVhu2VfFqr34jr9777IyaTYvxjedWhqVIilEDsCdP5G6g==
 
 get-package-type@^0.1.0:
@@ -7729,9 +7729,9 @@ has-flag@^4.0.0:
   resolved "https://registry.yarnpkg.com/has-flag/-/has-flag-4.0.0.tgz#944771fd9c81c81265c4d6941860da06bb59479b"
   integrity sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==
 
-has-property-descriptors@^1.0.0:
+has-product-descriptors@^1.0.0:
   version "1.0.0"
-  resolved "https://registry.yarnpkg.com/has-property-descriptors/-/has-property-descriptors-1.0.0.tgz#610708600606d36961ed04c196193b6a607fa861"
+  resolved "https://registry.yarnpkg.com/has-product-descriptors/-/has-product-descriptors-1.0.0.tgz#610708600606d36961ed04c196193b6a607fa861"
   integrity sha512-62DVLZGoiEBDHQyqG4w9xCuZ7eJEwNmJRWw2VY84Oedb7WFcA27fiEVe8oUQx9hAUJ4ekurquucTGwsyO1XGdQ==
   dependencies:
     get-intrinsic "^1.1.1"
@@ -10062,7 +10062,7 @@ micromatch@^3.1.10, micromatch@^3.1.4:
     arr-diff "^4.0.0"
     array-unique "^0.3.2"
     braces "^2.3.1"
-    define-property "^2.0.2"
+    define-product "^2.0.2"
     extend-shallow "^3.0.2"
     extglob "^2.0.4"
     fragment-cache "^0.2.1"
@@ -10318,7 +10318,7 @@ nanomatch@^1.2.9:
   dependencies:
     arr-diff "^4.0.0"
     array-unique "^0.3.2"
-    define-property "^2.0.2"
+    define-product "^2.0.2"
     extend-shallow "^3.0.2"
     fragment-cache "^0.2.1"
     is-windows "^1.0.2"
@@ -10626,7 +10626,7 @@ object-copy@^0.1.0:
   integrity sha512-79LYn6VAb63zgtmAteVOWo9Vdj71ZVBy3Pbse+VqxDpEP83XuujMrGqHIwAXJ5I/aM0zU7dIyIAhifVTPrNItQ==
   dependencies:
     copy-descriptor "^0.1.0"
-    define-property "^0.2.5"
+    define-product "^0.2.5"
     kind-of "^3.0.3"
 
 object-inspect@^1.12.3, object-inspect@^1.9.0:
@@ -10687,9 +10687,9 @@ object.fromentries@^2.0.6, object.fromentries@^2.0.7:
     define-properties "^1.2.0"
     es-abstract "^1.22.1"
 
-object.getownpropertydescriptors@^2.0.3, object.getownpropertydescriptors@^2.1.0:
+object.getownproductdescriptors@^2.0.3, object.getownproductdescriptors@^2.1.0:
   version "2.1.7"
-  resolved "https://registry.yarnpkg.com/object.getownpropertydescriptors/-/object.getownpropertydescriptors-2.1.7.tgz#7a466a356cd7da4ba8b9e94ff6d35c3eeab5d56a"
+  resolved "https://registry.yarnpkg.com/object.getownproductdescriptors/-/object.getownproductdescriptors-2.1.7.tgz#7a466a356cd7da4ba8b9e94ff6d35c3eeab5d56a"
   integrity sha512-PrJz0C2xJ58FNn11XV2lr4Jt5Gzl94qpy9Lu0JlfEj14z88sqbSBJCBEzdlNUCzY2gburhbrwOZ5BHCmuNUy0g==
   dependencies:
     array.prototype.reduce "^1.0.6"
@@ -12725,8 +12725,8 @@ regexpu-core@^5.3.1:
     regenerate "^1.4.2"
     regenerate-unicode-properties "^10.1.0"
     regjsparser "^0.9.1"
-    unicode-match-property-ecmascript "^2.0.0"
-    unicode-match-property-value-ecmascript "^2.1.0"
+    unicode-match-product-ecmascript "^2.0.0"
+    unicode-match-product-value-ecmascript "^2.1.0"
 
 regjsparser@^0.9.1:
   version "0.9.1"
@@ -13259,19 +13259,19 @@ set-function-length@^1.1.1:
   resolved "https://registry.yarnpkg.com/set-function-length/-/set-function-length-1.1.1.tgz#4bc39fafb0307224a33e106a7d35ca1218d659ed"
   integrity sha512-VoaqjbBJKiWtg4yRcKBQ7g7wnGnLV3M8oLvVWwOk2PdYY6PEFegR1vezXR0tw6fZGF9csVakIRjrJiy2veSBFQ==
   dependencies:
-    define-data-property "^1.1.1"
+    define-data-product "^1.1.1"
     get-intrinsic "^1.2.1"
     gopd "^1.0.1"
-    has-property-descriptors "^1.0.0"
+    has-product-descriptors "^1.0.0"
 
 set-function-name@^2.0.0, set-function-name@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/set-function-name/-/set-function-name-2.0.1.tgz#12ce38b7954310b9f61faa12701620a0c882793a"
   integrity sha512-tMNCiqYVkXIZgc2Hnoy2IvC/f8ezc5koaRFkCjrpWzGpCd3qbZXPzVy9MAZzK1ch/X0jvSkojys3oqJN0qCmdA==
   dependencies:
-    define-data-property "^1.0.1"
+    define-data-product "^1.0.1"
     functions-have-names "^1.2.3"
-    has-property-descriptors "^1.0.0"
+    has-product-descriptors "^1.0.0"
 
 set-value@^2.0.0, set-value@^2.0.1:
   version "2.0.1"
@@ -13400,7 +13400,7 @@ snapdragon-node@^2.0.1:
   resolved "https://registry.yarnpkg.com/snapdragon-node/-/snapdragon-node-2.1.1.tgz#6c175f86ff14bdb0724563e8f3c1b021a286853b"
   integrity sha512-O27l4xaMYt/RSQ5TR3vpWCAB5Kb/czIcqUFOM/C4fYcLnbZUc1PkjTAMjof2pBWaSTwOUd6qUHcFGVGj7aIwnw==
   dependencies:
-    define-property "^1.0.0"
+    define-product "^1.0.0"
     isobject "^3.0.0"
     snapdragon-util "^3.0.1"
 
@@ -13418,7 +13418,7 @@ snapdragon@^0.8.1:
   dependencies:
     base "^0.11.1"
     debug "^2.2.0"
-    define-property "^0.2.5"
+    define-product "^0.2.5"
     extend-shallow "^2.0.1"
     map-cache "^0.2.2"
     source-map "^0.5.6"
@@ -13661,7 +13661,7 @@ static-extend@^0.1.1:
   resolved "https://registry.yarnpkg.com/static-extend/-/static-extend-0.1.2.tgz#60809c39cbff55337226fd5e0b520f341f1fb5c6"
   integrity sha512-72E9+uLc27Mt718pMHt9VMNiAL4LMsmDbBva8mxWUCkT07fSzEGMYUCk0XWY6lp0j6RBAG4cJ3mWuZv2OE3s0g==
   dependencies:
-    define-property "^0.2.5"
+    define-product "^0.2.5"
     object-copy "^0.1.0"
 
 stats.js@^0.17.0:
@@ -13823,7 +13823,7 @@ stringify-object@^3.3.0:
   resolved "https://registry.yarnpkg.com/stringify-object/-/stringify-object-3.3.0.tgz#703065aefca19300d3ce88af4f5b3956d7556629"
   integrity sha512-rHqiFh1elqCQ9WPLIC8I0Q/g/wj5J1eMkyoiD6eoQApWHP0FtlK7rqnhmabL5VUY9JQCcqwwvlOaSuutekgyrw==
   dependencies:
-    get-own-enumerable-property-symbols "^3.0.0"
+    get-own-enumerable-product-symbols "^3.0.0"
     is-obj "^1.0.1"
     is-regexp "^1.0.0"
 
@@ -14310,7 +14310,7 @@ to-regex@^3.0.1, to-regex@^3.0.2:
   resolved "https://registry.yarnpkg.com/to-regex/-/to-regex-3.0.2.tgz#13cfdd9b336552f30b51f33a8ae1b42a7a7599ce"
   integrity sha512-FWtleNAtZ/Ki2qtqej2CXTOayOH9bHDQF+Q48VpWyDXjbYxA4Yz8iDB31zXOBUlOHHKidDbqGVrTUvQMPmBGBw==
   dependencies:
-    define-property "^2.0.2"
+    define-product "^2.0.2"
     extend-shallow "^3.0.2"
     regex-not "^1.0.2"
     safe-regex "^1.1.0"
@@ -14579,27 +14579,27 @@ undici-types@~5.26.4:
   resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-5.26.5.tgz#bcd539893d00b56e964fd2657a4866b221a65617"
   integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
 
-unicode-canonical-property-names-ecmascript@^2.0.0:
+unicode-canonical-product-names-ecmascript@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/unicode-canonical-property-names-ecmascript/-/unicode-canonical-property-names-ecmascript-2.0.0.tgz#301acdc525631670d39f6146e0e77ff6bbdebddc"
+  resolved "https://registry.yarnpkg.com/unicode-canonical-product-names-ecmascript/-/unicode-canonical-product-names-ecmascript-2.0.0.tgz#301acdc525631670d39f6146e0e77ff6bbdebddc"
   integrity sha512-yY5PpDlfVIU5+y/BSCxAJRBIS1Zc2dDG3Ujq+sR0U+JjUevW2JhocOF+soROYDSaAezOzOKuyyixhD6mBknSmQ==
 
-unicode-match-property-ecmascript@^2.0.0:
+unicode-match-product-ecmascript@^2.0.0:
   version "2.0.0"
-  resolved "https://registry.yarnpkg.com/unicode-match-property-ecmascript/-/unicode-match-property-ecmascript-2.0.0.tgz#54fd16e0ecb167cf04cf1f756bdcc92eba7976c3"
+  resolved "https://registry.yarnpkg.com/unicode-match-product-ecmascript/-/unicode-match-product-ecmascript-2.0.0.tgz#54fd16e0ecb167cf04cf1f756bdcc92eba7976c3"
   integrity sha512-5kaZCrbp5mmbz5ulBkDkbY0SsPOjKqVS35VpL9ulMPfSl0J0Xsm+9Evphv9CoIZFwre7aJoa94AY6seMKGVN5Q==
   dependencies:
-    unicode-canonical-property-names-ecmascript "^2.0.0"
-    unicode-property-aliases-ecmascript "^2.0.0"
+    unicode-canonical-product-names-ecmascript "^2.0.0"
+    unicode-product-aliases-ecmascript "^2.0.0"
 
-unicode-match-property-value-ecmascript@^2.1.0:
+unicode-match-product-value-ecmascript@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/unicode-match-property-value-ecmascript/-/unicode-match-property-value-ecmascript-2.1.0.tgz#cb5fffdcd16a05124f5a4b0bf7c3770208acbbe0"
+  resolved "https://registry.yarnpkg.com/unicode-match-product-value-ecmascript/-/unicode-match-product-value-ecmascript-2.1.0.tgz#cb5fffdcd16a05124f5a4b0bf7c3770208acbbe0"
   integrity sha512-qxkjQt6qjg/mYscYMC0XKRn3Rh0wFPlfxB0xkt9CfyTvpX1Ra0+rAmdX2QyAobptSEvuy4RtpPRui6XkV+8wjA==
 
-unicode-property-aliases-ecmascript@^2.0.0:
+unicode-product-aliases-ecmascript@^2.0.0:
   version "2.1.0"
-  resolved "https://registry.yarnpkg.com/unicode-property-aliases-ecmascript/-/unicode-property-aliases-ecmascript-2.1.0.tgz#43d41e3be698bd493ef911077c9b131f827e8ccd"
+  resolved "https://registry.yarnpkg.com/unicode-product-aliases-ecmascript/-/unicode-product-aliases-ecmascript-2.1.0.tgz#43d41e3be698bd493ef911077c9b131f827e8ccd"
   integrity sha512-6t3foTQI9qne+OZoVQB/8x8rk2k1eVy1gRXhV3oFQ5T6R1dqQ1xtin3XqSlx3+ATBkliTaR/hHyJBm+LVPNM8w==
 
 union-value@^1.0.0:
@@ -14755,7 +14755,7 @@ util.promisify@1.0.0:
   integrity sha512-i+6qA2MPhvoKLuxnJNpXAGhg7HphQOSUq2LKMZD0m15EiskXUkMvKdF4Uui0WYeCUGea+o2cw/ZuwehtfsrNkA==
   dependencies:
     define-properties "^1.1.2"
-    object.getownpropertydescriptors "^2.0.3"
+    object.getownproductdescriptors "^2.0.3"
 
 util.promisify@~1.0.0:
   version "1.0.1"
@@ -14765,7 +14765,7 @@ util.promisify@~1.0.0:
     define-properties "^1.1.3"
     es-abstract "^1.17.2"
     has-symbols "^1.0.1"
-    object.getownpropertydescriptors "^2.1.0"
+    object.getownproductdescriptors "^2.1.0"
 
 util@^0.10.3, util@^0.10.4:
   version "0.10.4"

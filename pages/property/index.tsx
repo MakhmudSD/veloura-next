@@ -1,13 +1,13 @@
 import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import { Box, Button, Menu, MenuItem, Pagination, Stack, Typography } from '@mui/material';
-import PropertyCard from '../../libs/components/property/PropertyCard';
+import productCard from '../../libs/components/product/productCard';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import Filter from '../../libs/components/property/Filter';
+import Filter from '../../libs/components/product/Filter';
 import { useRouter } from 'next/router';
 import { PropertiesInquiry } from '../../libs/types/product/product.input';
-import { Property } from '../../libs/types/product/product';
+import { product } from '../../libs/types/product/product';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { Direction } from '../../libs/enums/common.enum';
@@ -18,13 +18,13 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
-const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
+const productList: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(
 		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
 	);
-	const [properties, setProperties] = useState<Property[]>([]);
+	const [properties, setProperties] = useState<product[]>([]);
 	const [total, setTotal] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -49,8 +49,8 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
 		searchFilter.page = value;
 		await router.push(
-			`/property?input=${JSON.stringify(searchFilter)}`,
-			`/property?input=${JSON.stringify(searchFilter)}`,
+			`/product?input=${JSON.stringify(searchFilter)}`,
+			`/product?input=${JSON.stringify(searchFilter)}`,
 			{
 				scroll: false,
 			},
@@ -75,11 +75,11 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 				setFilterSortName('New');
 				break;
 			case 'lowest':
-				setSearchFilter({ ...searchFilter, sort: 'propertyPrice', direction: Direction.ASC });
+				setSearchFilter({ ...searchFilter, sort: 'productPrice', direction: Direction.ASC });
 				setFilterSortName('Lowest Price');
 				break;
 			case 'highest':
-				setSearchFilter({ ...searchFilter, sort: 'propertyPrice', direction: Direction.DESC });
+				setSearchFilter({ ...searchFilter, sort: 'productPrice', direction: Direction.DESC });
 				setFilterSortName('Highest Price');
 		}
 		setSortingOpen(false);
@@ -90,7 +90,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 		return <h1>PROPERTIES MOBILE</h1>;
 	} else {
 		return (
-			<div id="property-list-page" style={{ position: 'relative' }}>
+			<div id="product-list-page" style={{ position: 'relative' }}>
 				<div className="container">
 					<Box component={'div'} className={'right'}>
 						<span>Sort by</span>
@@ -126,7 +126,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 							</Menu>
 						</div>
 					</Box>
-					<Stack className={'property-page'}>
+					<Stack className={'product-page'}>
 						<Stack className={'filter-config'}>
 							{/* @ts-ignore */}
 							<Filter searchFilter={searchFilter} setSearchFilter={setSearchFilter} initialInput={initialInput} />
@@ -139,8 +139,8 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 										<p>No Properties found!</p>
 									</div>
 								) : (
-									properties.map((property: Property) => {
-										return <PropertyCard property={property} key={property?._id} />;
+									properties.map((product: product) => {
+										return <productCard product={product} key={product?._id} />;
 									})
 								)}
 							</Stack>
@@ -173,7 +173,7 @@ const PropertyList: NextPage = ({ initialInput, ...props }: any) => {
 	}
 };
 
-PropertyList.defaultProps = {
+productList.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 9,
@@ -192,4 +192,4 @@ PropertyList.defaultProps = {
 	},
 };
 
-export default withLayoutBasic(PropertyList);
+export default withLayoutBasic(productList);

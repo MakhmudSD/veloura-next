@@ -2,46 +2,49 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { PropertyLocation, PropertyType } from '../../enums/product.enum';
-import { REACT_APP_API_URL, propertySquare } from '../../config';
-import { PropertyInput } from '../../types/product/product.input';
+import { ProductCategory, ProductGender, ProductLocation, ProductMaterial } from '../../enums/product.enum';
+import { productSize, REACT_APP_API_URL } from '../../config';
+import { ProductInput } from '../../types/product/product.input';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
 import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 
-const AddProperty = ({ initialValues, ...props }: any) => {
+const AddProduct = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const inputRef = useRef<any>(null);
-	const [insertPropertyData, setInsertPropertyData] = useState<PropertyInput>(initialValues);
-	const [propertyType, setPropertyType] = useState<PropertyType[]>(Object.values(PropertyType));
-	const [propertyLocation, setPropertyLocation] = useState<PropertyLocation[]>(Object.values(PropertyLocation));
+	const [insertProductData, setInsertProductData] = useState<ProductInput>(initialValues);
+	const [productCategory, setProductCategory] = useState<ProductCategory[]>(Object.values(ProductCategory));
+	const [productLocation, setProductLocation] = useState<ProductLocation[]>(Object.values(ProductLocation));
 	const token = getJwtToken();
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
-	let getPropertyData: any, getPropertyLoading: any;
+	let getProductData: any, getProductLoading: any;
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		setInsertPropertyData({
-			...insertPropertyData,
-			propertyTitle: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyTitle : '',
-			propertyPrice: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyPrice : 0,
-			propertyType: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyType : '',
-			propertyLocation: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyLocation : '',
-			propertyAddress: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyAddress : '',
-			propertyBarter: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBarter : false,
-			propertyRent: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRent : false,
-			propertyRooms: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyRooms : 0,
-			propertyBeds: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyBeds : 0,
-			propertySquare: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertySquare : 0,
-			propertyDesc: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyDesc : '',
-			propertyImages: getPropertyData?.getProperty ? getPropertyData?.getProperty?.propertyImages : [],
+		setInsertProductData({
+			...insertProductData,
+			productTitle: getProductData?.getproduct ? getProductData?.getproduct?.productTitle : '',
+			productPrice: getProductData?.getproduct ? getProductData?.getproduct?.productPrice : 0,
+			productCategory: getProductData?.getproduct ? getProductData?.getproduct?.productCategory : '',
+			productLocation: getProductData?.getproduct ? getProductData?.getproduct?.productLocation : '',
+			productOrigin: getProductData?.getproduct ? getProductData?.getproduct?.productOrigin : '',
+			productAddress: getProductData?.getproduct ? getProductData?.getproduct?.productAddress : '',
+			productBarter: getProductData?.getproduct ? getProductData?.getproduct?.productBarter : false,
+			productRent: getProductData?.getproduct ? getProductData?.getproduct?.productRent : false,
+			productMaterial: getProductData?.getproduct ? getProductData?.getproduct?.productMaterial : '',
+			productGender: getProductData?.getproduct ? getProductData?.getproduct?.productGender : '',
+			productColor: getProductData?.getproduct ? getProductData?.getproduct?.productColor : '',
+			productSize: getProductData?.getproduct ? getProductData?.getproduct?.productSize : 0,
+			productStock: getProductData?.getproduct ? getProductData?.getproduct?.productStock : 0,
+			productDesc: getProductData?.getproduct ? getProductData?.getproduct?.productDesc : '',
+			productImages: getProductData?.getproduct ? getProductData?.getproduct?.productImages : [],
 		});
-	}, [getPropertyLoading, getPropertyData]);
+	}, [getProductLoading, getProductData]);
 
 	/** HANDLERS **/
 	async function uploadImages() {
@@ -60,7 +63,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 				  }`,
 					variables: {
 						files: [null, null, null, null, null],
-						target: 'property',
+						target: 'product',
 					},
 				}),
 			);
@@ -89,7 +92,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 			const responseImages = response.data.data.imagesUploader;
 
 			console.log('+responseImages: ', responseImages);
-			setInsertPropertyData({ ...insertPropertyData, propertyImages: responseImages });
+			setInsertProductData({ ...insertProductData, productImages: responseImages });
 		} catch (err: any) {
 			console.log('err: ', err.message);
 			await sweetMixinErrorAlert(err.message);
@@ -98,40 +101,41 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
 	const doDisabledCheck = () => {
 		if (
-			insertPropertyData.propertyTitle === '' ||
-			insertPropertyData.propertyPrice === 0 || // @ts-ignore
-			insertPropertyData.propertyType === '' || // @ts-ignore
-			insertPropertyData.propertyLocation === '' || // @ts-ignore
-			insertPropertyData.propertyAddress === '' || // @ts-ignore
-			insertPropertyData.propertyBarter === '' || // @ts-ignore
-			insertPropertyData.propertyRent === '' ||
-			insertPropertyData.propertyRooms === 0 ||
-			insertPropertyData.propertyBeds === 0 ||
-			insertPropertyData.propertySquare === 0 ||
-			insertPropertyData.propertyDesc === '' ||
-			insertPropertyData.propertyImages.length === 0
+			insertProductData.productTitle.trim() === '' ||
+			insertProductData.productPrice === 0 || // @ts-ignore
+			insertProductData.productCategory === '' || // @ts-ignore
+			insertProductData.productLocation === '' || // @ts-ignore
+			insertProductData.productAddress.trim() === '' || // @ts-ignore
+			insertProductData.productBarter === null ||
+			insertProductData.productBarter === undefined || // @ts-ignore
+			insertProductData.productRent === '' || // @ts-ignore
+			insertProductData.productMaterial === '' || // @ts-ignore
+			insertProductData.productDesc === '' ||
+			insertProductData.productSize === 0 ||
+			insertProductData.productDesc === '' ||
+			insertProductData.productImages.length === 0
 		) {
 			return true;
 		}
 	};
 
-	const insertPropertyHandler = useCallback(async () => {}, [insertPropertyData]);
+	const insertProductHandler = useCallback(async () => {}, [insertProductData]);
 
-	const updatePropertyHandler = useCallback(async () => {}, [insertPropertyData]);
+	const updateproductHandler = useCallback(async () => {}, [insertProductData]);
 
-	if (user?.memberType !== 'AGENT') {
+	if (user?.memberType !== 'STORE') {
 		router.back();
 	}
 
-	console.log('+insertPropertyData', insertPropertyData);
+	console.log('+insertproductData', insertProductData);
 
 	if (device === 'mobile') {
-		return <div>ADD NEW PROPERTY MOBILE PAGE</div>;
+		return <div>ADD NEW product MOBILE PAGE</div>;
 	} else {
 		return (
-			<div id="add-property-page">
+			<div id="add-product-page">
 				<Stack className="main-title-box">
-					<Typography className="main-title">Add New Property</Typography>
+					<Typography className="main-title">Add New product</Typography>
 					<Typography className="sub-title">We are glad to see you again!</Typography>
 				</Stack>
 
@@ -144,9 +148,9 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									type="text"
 									className="description-input"
 									placeholder={'Title'}
-									value={insertPropertyData.propertyTitle}
+									value={insertProductData.productTitle}
 									onChange={({ target: { value } }) =>
-										setInsertPropertyData({ ...insertPropertyData, propertyTitle: value })
+										setInsertProductData({ ...insertProductData, productTitle: value })
 									}
 								/>
 							</Stack>
@@ -158,9 +162,9 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 										type="text"
 										className="description-input"
 										placeholder={'Price'}
-										value={insertPropertyData.propertyPrice}
+										value={insertProductData.productPrice}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyPrice: parseInt(value) })
+											setInsertProductData({ ...insertProductData, productPrice: parseInt(value) || 0 })
 										}
 									/>
 								</Stack>
@@ -168,18 +172,18 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<Typography className="title">Select Type</Typography>
 									<select
 										className={'select-description'}
-										defaultValue={insertPropertyData.propertyType || 'select'}
-										value={insertPropertyData.propertyType || 'select'}
+										defaultValue={insertProductData.productCategory || 'select'}
+										value={insertProductData.productCategory || 'select'}
 										onChange={({ target: { value } }) =>
 											// @ts-ignore
-											setInsertPropertyData({ ...insertPropertyData, propertyType: value })
+											setInsertproductData({ ...insertProductData, productCategory: value })
 										}
 									>
 										<>
 											<option selected={true} disabled={true} value={'select'}>
 												Select
 											</option>
-											{propertyType.map((type: any) => (
+											{productCategory.map((type: any) => (
 												<option value={`${type}`} key={type}>
 													{type}
 												</option>
@@ -196,18 +200,18 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<Typography className="title">Select Location</Typography>
 									<select
 										className={'select-description'}
-										defaultValue={insertPropertyData.propertyLocation || 'select'}
-										value={insertPropertyData.propertyLocation || 'select'}
+										defaultValue={insertProductData.productLocation || 'select'}
+										value={insertProductData.productLocation || 'select'}
 										onChange={({ target: { value } }) =>
 											// @ts-ignore
-											setInsertPropertyData({ ...insertPropertyData, propertyLocation: value })
+											setInsertproductData({ ...insertProductData, productLocation: value })
 										}
 									>
 										<>
 											<option selected={true} disabled={true} value={'select'}>
 												Select
 											</option>
-											{propertyLocation.map((location: any) => (
+											{productLocation.map((location: any) => (
 												<option value={`${location}`} key={location}>
 													{location}
 												</option>
@@ -223,9 +227,9 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 										type="text"
 										className="description-input"
 										placeholder={'Address'}
-										value={insertPropertyData.propertyAddress}
+										value={insertProductData.productAddress}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyAddress: value })
+											setInsertProductData({ ...insertProductData, productAddress: value })
 										}
 									/>
 								</Stack>
@@ -236,10 +240,10 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<Typography className="title">Barter</Typography>
 									<select
 										className={'select-description'}
-										value={insertPropertyData.propertyBarter ? 'yes' : 'no'}
-										defaultValue={insertPropertyData.propertyBarter ? 'yes' : 'no'}
+										value={insertProductData.productBarter ? 'yes' : 'no'}
+										defaultValue={insertProductData.productBarter ? 'yes' : 'no'}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyBarter: value === 'yes' })
+											setInsertProductData({ ...insertProductData, productBarter: value === 'yes' })
 										}
 									>
 										<option disabled={true} selected={true}>
@@ -255,10 +259,10 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 									<Typography className="title">Rent</Typography>
 									<select
 										className={'select-description'}
-										value={insertPropertyData.propertyRent ? 'yes' : 'no'}
-										defaultValue={insertPropertyData.propertyRent ? 'yes' : 'no'}
+										value={insertProductData.productRent ? 'yes' : 'no'}
+										defaultValue={insertProductData.productRent ? 'yes' : 'no'}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyRent: value === 'yes' })
+											setInsertProductData({ ...insertProductData, productRent: value === 'yes' })
 										}
 									>
 										<option disabled={true} selected={true}>
@@ -274,85 +278,87 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 
 							<Stack className="config-row">
 								<Stack className="price-year-after-price">
-									<Typography className="title">Rooms</Typography>
+									<Typography className="title">Material</Typography>
 									<select
 										className={'select-description'}
-										value={insertPropertyData.propertyRooms || 'select'}
-										defaultValue={insertPropertyData.propertyRooms || 'select'}
+										value={insertProductData.productMaterial || 'select'}
+										defaultValue={insertProductData.productMaterial || 'select'}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyRooms: parseInt(value) })
+											setInsertProductData({ ...insertProductData, productMaterial: value as ProductMaterial })
 										}
 									>
 										<option disabled={true} selected={true} value={'select'}>
 											Select
 										</option>
-										{[1, 2, 3, 4, 5].map((room: number) => (
-											<option value={`${room}`}>{room}</option>
+										{['GOLD', 'SILVER', 'DIAMOND', 'PLATINIUM'].map((material: string) => (
+											<option value={`${material}`}>{material}</option>
 										))}
 									</select>
 									<div className={'divider'}></div>
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
-									<Typography className="title">Bed</Typography>
+									<Typography className="title">Gender</Typography>
 									<select
 										className={'select-description'}
-										value={insertPropertyData.propertyBeds || 'select'}
-										defaultValue={insertPropertyData.propertyBeds || 'select'}
+										value={insertProductData.productGender || 'select'}
+										defaultValue={insertProductData.productGender || 'select'}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertyBeds: parseInt(value) })
+											setInsertProductData({ ...insertProductData, productGender: value as ProductGender })
 										}
 									>
 										<option disabled={true} selected={true} value={'select'}>
 											Select
 										</option>
-										{[1, 2, 3, 4, 5].map((bed: number) => (
-											<option value={`${bed}`}>{bed}</option>
+										{Object.values(ProductGender).map((gender: string) => (
+											<option value={`${gender}`}>{gender}</option>
 										))}
 									</select>
 									<div className={'divider'}></div>
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
-									<Typography className="title">Square</Typography>
+									<Typography className="title">Size</Typography>
 									<select
-										className={'select-description'}
-										value={insertPropertyData.propertySquare || 'select'}
-										defaultValue={insertPropertyData.propertySquare || 'select'}
+										className="select-description"
+										value={insertProductData.productSize || 'select'}
 										onChange={({ target: { value } }) =>
-											setInsertPropertyData({ ...insertPropertyData, propertySquare: parseInt(value) })
+											setInsertProductData({ ...insertProductData, productSize: parseInt(value) || 0 })
 										}
 									>
-										<option disabled={true} selected={true} value={'select'}>
+										<option disabled value="select">
 											Select
 										</option>
-										{propertySquare.map((square: number) => {
-											if (square !== 0) {
-												return <option value={`${square}`}>{square}</option>;
-											}
-										})}
+										{productSize.map(
+											(size) =>
+												size !== 0 && (
+													<option key={size} value={size}>
+														{size}
+													</option>
+												),
+										)}
 									</select>
 									<div className={'divider'}></div>
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 							</Stack>
 
-							<Typography className="property-title">Property Description</Typography>
+							<Typography className="product-title">product Description</Typography>
 							<Stack className="config-column">
 								<Typography className="title">Description</Typography>
 								<textarea
 									name=""
 									id=""
 									className="description-text"
-									value={insertPropertyData.propertyDesc}
+									value={insertProductData.productDesc}
 									onChange={({ target: { value } }) =>
-										setInsertPropertyData({ ...insertPropertyData, propertyDesc: value })
+										setInsertProductData({ ...insertProductData, productDesc: value })
 									}
 								></textarea>
 							</Stack>
 						</Stack>
 
-						<Typography className="upload-title">Upload photos of your property</Typography>
+						<Typography className="upload-title">Upload photos of your product</Typography>
 						<Stack className="images-box">
 							<Stack className="upload-box">
 								<svg xmlns="http://www.w3.org/2000/svg" width="121" height="120" viewBox="0 0 121 120" fill="none">
@@ -431,7 +437,7 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 								</Button>
 							</Stack>
 							<Stack className="gallery-box">
-								{insertPropertyData?.propertyImages.map((image: string) => {
+								{insertProductData?.productImages.map((image: string) => {
 									const imagePath: string = `${REACT_APP_API_URL}/${image}`;
 									return (
 										<Stack className="image-box">
@@ -443,12 +449,12 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 						</Stack>
 
 						<Stack className="buttons-row">
-							{router.query.propertyId ? (
-								<Button className="next-button" disabled={doDisabledCheck()} onClick={updatePropertyHandler}>
+							{router.query.productId ? (
+								<Button className="next-button" disabled={doDisabledCheck()} onClick={updateproductHandler}>
 									<Typography className="next-button-text">Save</Typography>
 								</Button>
 							) : (
-								<Button className="next-button" disabled={doDisabledCheck()} onClick={insertPropertyHandler}>
+								<Button className="next-button" disabled={doDisabledCheck()} onClick={insertProductHandler}>
 									<Typography className="next-button-text">Save</Typography>
 								</Button>
 							)}
@@ -460,21 +466,21 @@ const AddProperty = ({ initialValues, ...props }: any) => {
 	}
 };
 
-AddProperty.defaultProps = {
+AddProduct.defaultProps = {
 	initialValues: {
-		propertyTitle: '',
-		propertyPrice: 0,
-		propertyType: '',
-		propertyLocation: '',
-		propertyAddress: '',
-		propertyBarter: false,
-		propertyRent: false,
-		propertyRooms: 0,
-		propertyBeds: 0,
-		propertySquare: 0,
-		propertyDesc: '',
-		propertyImages: [],
+		productTitle: '',
+		productPrice: 0,
+		productType: '',
+		productLocation: '',
+		productAddress: '',
+		productBarter: false,
+		productRent: false,
+		productMaterial: '',
+		productGender: '',
+		productSize: 0,
+		productDesc: '',
+		productImages: [],
 	},
 };
 
-export default AddProperty;
+export default AddProduct;

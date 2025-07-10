@@ -5,14 +5,14 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
-import PopularPropertyCard from './PopularPropertyCard';
+import PopularproductCard from './PopularproductCard';
 import { Product } from '../../types/product/product';
 import Link from 'next/link';
 import { ProductsInquiry } from '../../types/product/product.input';
 import { GET_PROPERTIES } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
 import { T } from '../../types/common';
-import PopularProductCard from './PopularPropertyCard';
+import PopularProductCard from './PopularproductCard';
 
 interface PopularProductsProps {
 	initialInput: ProductsInquiry;

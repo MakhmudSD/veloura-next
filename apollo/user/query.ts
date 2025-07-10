@@ -83,7 +83,7 @@ export const GET_MEMBER = gql(`
 `);
 
 /**************************
- *        PROPERTY        *
+ *        product        *
  *************************/
 
 export const GET_PRODUCT = gql`

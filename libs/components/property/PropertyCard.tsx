@@ -3,7 +3,7 @@ import { Stack, Typography, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Property } from '../../types/product/product';
+import { product } from '../../types/product/product';
 import Link from 'next/link';
 import { formatterStr } from '../../utils';
 import { REACT_APP_API_URL } from '../../config';
@@ -12,43 +12,43 @@ import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
-interface PropertyCardType {
-	property: Property;
-	likePropertyHandler?: any;
+interface productCardType {
+	product: product;
+	likeproductHandler?: any;
 	myFavorites?: boolean;
 	recentlyVisited?: boolean;
 }
 
-const PropertyCard = (props: PropertyCardType) => {
-	const { property, likePropertyHandler, myFavorites, recentlyVisited } = props;
+const productCard = (props: productCardType) => {
+	const { product, likeproductHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
-	const imagePath: string = property?.propertyImages[0]
-		? `${REACT_APP_API_URL}/${property?.propertyImages[0]}`
+	const imagePath: string = product?.productImages[0]
+		? `${REACT_APP_API_URL}/${product?.productImages[0]}`
 		: '/img/banner/header1.svg';
 
 	if (device === 'mobile') {
-		return <div>PROPERTY CARD</div>;
+		return <div>product CARD</div>;
 	} else {
 		return (
 			<Stack className="card-config">
 				<Stack className="top">
 					<Link
 						href={{
-							pathname: '/property/detail',
-							query: { id: property?._id },
+							pathname: '/product/detail',
+							query: { id: product?._id },
 						}}
 					>
 						<img src={imagePath} alt="" />
 					</Link>
-					{property && property?.propertyRank > 0 && (
+					{product && product?.productRank > 0 && (
 						<Box component={'div'} className={'top-badge'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<Typography>TOP</Typography>
 						</Box>
 					)}
 					<Box component={'div'} className={'price-box'}>
-						<Typography>${formatterStr(property?.propertyPrice)}</Typography>
+						<Typography>${formatterStr(product?.productPrice)}</Typography>
 					</Box>
 				</Stack>
 				<Stack className="bottom">
@@ -56,28 +56,28 @@ const PropertyCard = (props: PropertyCardType) => {
 						<Stack className="name">
 							<Link
 								href={{
-									pathname: '/property/detail',
-									query: { id: property?._id },
+									pathname: '/product/detail',
+									query: { id: product?._id },
 								}}
 							>
-								<Typography>{property.propertyTitle}</Typography>
+								<Typography>{product.productTitle}</Typography>
 							</Link>
 						</Stack>
 						<Stack className="address">
 							<Typography>
-								{property.propertyAddress}, {property.propertyLocation}
+								{product.productAddress}, {product.productLocation}
 							</Typography>
 						</Stack>
 					</Stack>
 					<Stack className="options">
 						<Stack className="option">
-							<img src="/img/icons/bed.svg" alt="" /> <Typography>{property.propertyBeds} bed</Typography>
+							<img src="/img/icons/bed.svg" alt="" /> <Typography>{product.productBeds} bed</Typography>
 						</Stack>
 						<Stack className="option">
-							<img src="/img/icons/room.svg" alt="" /> <Typography>{property.propertyRooms} room</Typography>
+							<img src="/img/icons/room.svg" alt="" /> <Typography>{product.productRooms} room</Typography>
 						</Stack>
 						<Stack className="option">
-							<img src="/img/icons/expand.svg" alt="" /> <Typography>{property.propertySquare} m2</Typography>
+							<img src="/img/icons/expand.svg" alt="" /> <Typography>{product.productSquare} m2</Typography>
 						</Stack>
 					</Stack>
 					<Stack className="divider"></Stack>
@@ -85,13 +85,13 @@ const PropertyCard = (props: PropertyCardType) => {
 						<Stack className="type">
 							<Typography
 								sx={{ fontWeight: 500, fontSize: '13px' }}
-								className={property.propertyRent ? '' : 'disabled-type'}
+								className={product.productRent ? '' : 'disabled-type'}
 							>
 								Rent
 							</Typography>
 							<Typography
 								sx={{ fontWeight: 500, fontSize: '13px' }}
-								className={property.propertyBarter ? '' : 'disabled-type'}
+								className={product.productBarter ? '' : 'disabled-type'}
 							>
 								Barter
 							</Typography>
@@ -101,17 +101,17 @@ const PropertyCard = (props: PropertyCardType) => {
 								<IconButton color={'default'}>
 									<RemoveRedEyeIcon />
 								</IconButton>
-								<Typography className="view-cnt">{property?.propertyViews}</Typography>
-								<IconButton color={'default'} onClick={() => likePropertyHandler(user, property?._id)}>
+								<Typography className="view-cnt">{product?.productViews}</Typography>
+								<IconButton color={'default'} onClick={() => likeproductHandler(user, product?._id)}>
 									{myFavorites ? (
 										<FavoriteIcon color="primary" />
-									) : property?.meLiked && property?.meLiked[0]?.myFavorite ? (
+									) : product?.meLiked && product?.meLiked[0]?.myFavorite ? (
 										<FavoriteIcon color="primary" />
 									) : (
 										<FavoriteBorderIcon />
 									)}
 								</IconButton>
-								<Typography className="view-cnt">{property?.propertyLikes}</Typography>
+								<Typography className="view-cnt">{product?.productLikes}</Typography>
 							</Stack>
 						)}
 					</Stack>
@@ -121,4 +121,4 @@ const PropertyCard = (props: PropertyCardType) => {
 	}
 };
 
-export default PropertyCard;
+export default productCard;

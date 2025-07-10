@@ -11,6 +11,7 @@ export interface ProductInput {
 	productCategory: ProductCategory;
 	productLocation: ProductLocation;
 	productOrigin: string;
+	productAddress: string;
 	productColor: string;
 	productMaterial: ProductMaterial;
 	productGender: ProductGender;

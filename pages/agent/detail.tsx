@@ -2,13 +2,13 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import PropertyBigCard from '../../libs/components/common/PropertyBigCard';
+import productBigCard from '../../libs/components/common/productBigCard';
 import ReviewCard from '../../libs/components/agent/ReviewCard';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
-import { Property } from '../../libs/types/product/product';
+import { product } from '../../libs/types/product/product';
 import { Member } from '../../libs/types/member/member';
 import { sweetErrorHandling } from '../../libs/sweetAlert';
 import { userVar } from '../../apollo/store';
@@ -32,8 +32,8 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	const [mbId, setMbId] = useState<string | null>(null);
 	const [agent, setAgent] = useState<Member | null>(null);
 	const [searchFilter, setSearchFilter] = useState<PropertiesInquiry>(initialInput);
-	const [agentProperties, setAgentProperties] = useState<Property[]>([]);
-	const [propertyTotal, setPropertyTotal] = useState<number>(0);
+	const [agentProperties, setAgentProperties] = useState<product[]>([]);
+	const [productTotal, setproductTotal] = useState<number>(0);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
 	const [agentComments, setAgentComments] = useState<Comment[]>([]);
 	const [commentTotal, setCommentTotal] = useState<number>(0);
@@ -62,7 +62,7 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 		}
 	};
 
-	const propertyPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
+	const productPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
 		searchFilter.page = value;
 		setSearchFilter({ ...searchFilter });
 	};
@@ -100,28 +100,28 @@ const AgentDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 					</Stack>
 					<Stack className={'agent-home-list'}>
 						<Stack className={'card-wrap'}>
-							{agentProperties.map((property: Property) => {
+							{agentProperties.map((product: product) => {
 								return (
-									<div className={'wrap-main'} key={property?._id}>
-										<PropertyBigCard property={property} key={property?._id} />
+									<div className={'wrap-main'} key={product?._id}>
+										<productBigCard product={product} key={product?._id} />
 									</div>
 								);
 							})}
 						</Stack>
 						<Stack className={'pagination'}>
-							{propertyTotal ? (
+							{productTotal ? (
 								<>
 									<Stack className="pagination-box">
 										<Pagination
 											page={searchFilter.page}
-											count={Math.ceil(propertyTotal / searchFilter.limit) || 1}
-											onChange={propertyPaginationChangeHandler}
+											count={Math.ceil(productTotal / searchFilter.limit) || 1}
+											onChange={productPaginationChangeHandler}
 											shape="circular"
 											color="primary"
 										/>
 									</Stack>
 									<span>
-										Total {propertyTotal} propert{propertyTotal > 1 ? 'ies' : 'y'} available
+										Total {productTotal} propert{productTotal > 1 ? 'ies' : 'y'} available
 									</span>
 								</>
 							) : (

@@ -33,7 +33,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
 const Faq = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
-	const [category, setCategory] = useState<string>('property');
+	const [category, setCategory] = useState<string>('product');
 	const [expanded, setExpanded] = useState<string | false>('panel1');
 
 	/** APOLLO REQUESTS **/

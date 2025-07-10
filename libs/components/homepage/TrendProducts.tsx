@@ -7,7 +7,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import { Product } from '../../types/product/product';
 import { ProductsInquiry } from '../../types/product/product.input';
-import TrendPropertyCard from './TrendProductCard';
+import TrendproductCard from './TrendProductCard';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_PRODUCTS } from '../../../apollo/user/query';
 import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
@@ -52,7 +52,7 @@ const TrendProducts = (props: TrendProductsProps) => {
 			await getProductsRefetch({ input: initialInput }); // frontend update
 			await sweetTopSmallSuccessAlert('success', 800);
 		} catch (err: any) {
-			console.log('ERROR on likePropertyHandler', err.message);
+			console.log('ERROR on likeproductHandler', err.message);
 			sweetMixinErrorAlert(err.message).then();
 		}
 	};
@@ -146,7 +146,7 @@ TrendProducts.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 8,
-		sort: 'propertyLikes',
+		sort: 'productLikes',
 		direction: 'DESC',
 		search: {},
 	},

@@ -8,20 +8,20 @@ import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { TabContext } from '@mui/lab';
 import TablePagination from '@mui/material/TablePagination';
-import { PropertyPanelList } from '../../../libs/components/admin/properties/PropertyList';
+import { productPanelList } from '../../../libs/components/admin/properties/productList';
 import { AllPropertiesInquiry } from '../../../libs/types/product/product.input';
-import { Property } from '../../../libs/types/product/product';
-import { PropertyLocation, PropertyStatus } from '../../../libs/enums/product.enum';
+import { product } from '../../../libs/types/product/product';
+import { productLocation, productStatus } from '../../../libs/enums/product.enum';
 import { sweetConfirmAlert, sweetErrorHandling } from '../../../libs/sweetAlert';
-import { PropertyUpdate } from '../../../libs/types/product/product.update';
+import { productUpdate } from '../../../libs/types/product/product.update';
 
 const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [anchorEl, setAnchorEl] = useState<[] | HTMLElement[]>([]);
 	const [propertiesInquiry, setPropertiesInquiry] = useState<AllPropertiesInquiry>(initialInquiry);
-	const [properties, setProperties] = useState<Property[]>([]);
+	const [properties, setProperties] = useState<product[]>([]);
 	const [propertiesTotal, setPropertiesTotal] = useState<number>(0);
 	const [value, setValue] = useState(
-		propertiesInquiry?.search?.propertyStatus ? propertiesInquiry?.search?.propertyStatus : 'ALL',
+		propertiesInquiry?.search?.productStatus ? propertiesInquiry?.search?.productStatus : 'ALL',
 	);
 	const [searchType, setSearchType] = useState('ALL');
 
@@ -59,22 +59,22 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 
 		switch (newValue) {
 			case 'ACTIVE':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.ACTIVE } });
+				setPropertiesInquiry({ ...propertiesInquiry, search: { productStatus: productStatus.ACTIVE } });
 				break;
 			case 'SOLD':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.SOLD } });
+				setPropertiesInquiry({ ...propertiesInquiry, search: { productStatus: productStatus.SOLD } });
 				break;
 			case 'DELETE':
-				setPropertiesInquiry({ ...propertiesInquiry, search: { propertyStatus: PropertyStatus.DELETE } });
+				setPropertiesInquiry({ ...propertiesInquiry, search: { productStatus: productStatus.DELETE } });
 				break;
 			default:
-				delete propertiesInquiry?.search?.propertyStatus;
+				delete propertiesInquiry?.search?.productStatus;
 				setPropertiesInquiry({ ...propertiesInquiry });
 				break;
 		}
 	};
 
-	const removePropertyHandler = async (id: string) => {
+	const removeproductHandler = async (id: string) => {
 		try {
 			if (await sweetConfirmAlert('Are you sure to remove?')) {
 			}
@@ -95,11 +95,11 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 					sort: 'createdAt',
 					search: {
 						...propertiesInquiry.search,
-						propertyLocationList: [newValue as PropertyLocation],
+						productLocationList: [newValue as productLocation],
 					},
 				});
 			} else {
-				delete propertiesInquiry?.search?.propertyLocationList;
+				delete propertiesInquiry?.search?.productLocationList;
 				setPropertiesInquiry({ ...propertiesInquiry });
 			}
 		} catch (err: any) {
@@ -107,7 +107,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 		}
 	};
 
-	const updatePropertyHandler = async (updateData: PropertyUpdate) => {
+	const updateproductHandler = async (updateData: productUpdate) => {
 		try {
 			console.log('+updateData: ', updateData);
 			menuIconCloseHandler();
@@ -120,7 +120,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 	return (
 		<Box component={'div'} className={'content'}>
 			<Typography variant={'h2'} className={'tit'} sx={{ mb: '24px' }}>
-				Property List
+				product List
 			</Typography>
 			<Box component={'div'} className={'table-wrap'}>
 				<Box component={'div'} sx={{ width: '100%', typography: 'body1' }}>
@@ -162,7 +162,7 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 									<MenuItem value={'ALL'} onClick={() => searchTypeHandler('ALL')}>
 										ALL
 									</MenuItem>
-									{Object.values(PropertyLocation).map((location: string) => (
+									{Object.values(productLocation).map((location: string) => (
 										<MenuItem value={location} onClick={() => searchTypeHandler(location)} key={location}>
 											{location}
 										</MenuItem>
@@ -171,13 +171,13 @@ const AdminProperties: NextPage = ({ initialInquiry, ...props }: any) => {
 							</Stack>
 							<Divider />
 						</Box>
-						<PropertyPanelList
+						<productPanelList
 							properties={properties}
 							anchorEl={anchorEl}
 							menuIconClickHandler={menuIconClickHandler}
 							menuIconCloseHandler={menuIconCloseHandler}
-							updatePropertyHandler={updatePropertyHandler}
-							removePropertyHandler={removePropertyHandler}
+							updateproductHandler={updateproductHandler}
+							removeproductHandler={removeproductHandler}
 						/>
 
 						<TablePagination
