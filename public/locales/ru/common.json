@@ -1,7 +1,7 @@
 {
 	"Home": "Главная",
-	"Properties": "Имущество",
-	"Agents": "Агенты",
+	"Products": "Имущество",
+	"Stores": "Агенты",
 	"Community": "Сообщество",
 	"My Page": "Моя страница",
 	"CS": "Обслуживание",
@@ -14,7 +14,7 @@
 	"product Search": "поиск Имущество",
 	"We are glad to see you again!": "Мы рады видеть вас снова!",
 	"Home / For Rent": "Дом / В аренду",
-	"Agent Page": "Страница агента",
+	"Store Page": "Страница агента",
 	"my page": "моя страница",
 	"Community Detail": "Детали сообщества",
 	"Login/Signup": "Логин/регистрация",

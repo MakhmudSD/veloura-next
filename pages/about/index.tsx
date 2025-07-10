@@ -74,7 +74,7 @@ const About: NextPage = () => {
 						<p className={'desc'}>Aliquam lacinia diam quis lacus euismod</p>
 						<Stack className={'wrap'}>
 							{/*{[1, 2, 3, 4, 5].map(() => {*/}
-							{/*	return <AgentCard />;*/}
+							{/*	return <StoreCard />;*/}
 							{/*})}*/}
 						</Stack>
 					</Stack>
@@ -132,7 +132,7 @@ const About: NextPage = () => {
 					<Stack className={'container'}>
 						<Box component={'div'} className={'left'}>
 							<strong>Need help? Talk to our expert.</strong>
-							<p>Talk to our experts or Browse through more properties.</p>
+							<p>Talk to our experts or Browse through more products.</p>
 						</Box>
 						<Box component={'div'} className={'right'}>
 							<div className={'white'}>

@@ -5,7 +5,7 @@ import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import { Stack, Box, Button, Pagination } from '@mui/material';
 import { Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import AgentCard from '../../libs/components/common/StoreCard';
+import StoreCard from '../../libs/components/common/StoreCard';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Member } from '../../libs/types/member/member';
@@ -38,7 +38,7 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 			const input_obj = JSON.parse(router?.query?.input as string);
 			setSearchFilter(input_obj);
 		} else
-			router.replace(`/agent?input=${JSON.stringify(searchFilter)}`, `/agent?input=${JSON.stringify(searchFilter)}`);
+			router.replace(`/store?input=${JSON.stringify(searchFilter)}`, `/store?input=${JSON.stringify(searchFilter)}`);
 
 		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
 	}, [router]);
@@ -139,7 +139,7 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 							</div>
 						) : (
 							stores.map((store: Member) => {
-								return <AgentCard store={store} key={store._id} />;
+								return <StoreCard store={store} key={store._id} />;
 							})
 						)}
 					</Stack>
@@ -160,7 +160,7 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 
 						{stores.length !== 0 && (
 							<span>
-								Total {total} agent{total > 1 ? 's' : ''} available
+								Total {total} store{total > 1 ? 's' : ''} available
 							</span>
 						)}
 					</Stack>

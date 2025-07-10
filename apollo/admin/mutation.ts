@@ -17,7 +17,7 @@ export const UPDATE_MEMBER_BY_ADMIN = gql`
 			memberImage
 			memberAddress
 			memberDesc
-			memberProperties
+			memberProducts
 			memberRank
 			memberArticles
 			memberPoints
@@ -37,9 +37,9 @@ export const UPDATE_MEMBER_BY_ADMIN = gql`
  *        product        *
  *************************/
 
-export const UPDATE_product_BY_ADMIN = gql`
-	mutation UpdateproductByAdmin($input: productUpdate!) {
-		updateproductByAdmin(input: $input) {
+export const UPDATE_PRODUCT_BY_ADMIN = gql`
+	mutation UpdateProductByAdmin($input: productUpdate!) {
+		updateProductByAdmin(input: $input) {
 			_id
 			productType
 			productStatus
@@ -66,9 +66,9 @@ export const UPDATE_product_BY_ADMIN = gql`
 	}
 `;
 
-export const REMOVE_product_BY_ADMIN = gql`
-	mutation RemoveproductByAdmin($input: String!) {
-		removeproductByAdmin(productId: $input) {
+export const REMOVE_PRODUCT_BY_ADMIN = gql`
+	mutation RemoveProductByAdmin($input: String!) {
+		removeProductByAdmin(productId: $input) {
 			_id
 			productType
 			productStatus

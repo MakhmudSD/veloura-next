@@ -43,7 +43,7 @@ const StoreCard = (props: StoreCardProps) => {
 							backgroundRepeat: 'no-repeat',
 						}}
 					>
-						<div>{store?.memberProperties} products</div>
+						<div>{store?.memberProducts} products</div>
 					</Box>
 				</Link>
 

@@ -5,7 +5,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
-import TopAgentCard from './TopStoreCard';
+import TopStoreCard from './TopStoreCard';
 import { Member } from '../../types/member/member';
 import { StoresInquiry } from '../../types/member/member.input';
 import { GET_STORES } from '../../../apollo/user/query';
@@ -61,7 +61,7 @@ const TopStores = (props: TopStoresProps) => {
 							{topStores.map((store: Member) => {
 								return (
 									<SwiperSlide className={'top-stores-slide'} key={store?._id}>
-										<TopAgentCard store={store} key={store?.memberNick} />
+										<TopStoreCard store={store} key={store?.memberNick} />
 									</SwiperSlide>
 								);
 							})}
@@ -103,8 +103,8 @@ const TopStores = (props: TopStoresProps) => {
 							>
 								{topStores.map((store: Member) => {
 									return (
-										<SwiperSlide className={'top-agents-slide'} key={store?._id}>
-											<TopAgentCard store={store} key={store?.memberNick} />
+										<SwiperSlide className={'top-stores-slide'} key={store?._id}>
+											<TopStoreCard store={store} key={store?.memberNick} />
 										</SwiperSlide>
 									);
 								})}

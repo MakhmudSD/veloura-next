@@ -114,7 +114,7 @@
 				}
 			}
 		}
-		.trend-properties {
+		.trend-products {
 			padding: 108px 0px 76px;
 			width: 100%;
 			height: 697px;
@@ -278,7 +278,7 @@
 				}
 			}
 		}
-		.popular-properties {
+		.popular-products {
 			padding: 132px 0px 94px;
 			width: 100%;
 			height: 816px;
@@ -487,7 +487,7 @@
 			transform: perspective(0px);
 			box-shadow: -3px 0px 20px 14px #34343480;
 		}
-		.top-properties {
+		.top-products {
 			padding: 108px 0px 76px;
 			width: 100%;
 			height: 697px;
@@ -644,7 +644,7 @@
 				}
 			}
 		}
-		.top-agents {
+		.top-stores {
 			position: relative;
 			padding: 153px 0px 135px;
 			width: 100%;
@@ -677,7 +677,7 @@
 							width: 14px;
 							height: 14px;
 						}
-						&.swiper-agents-next {
+						&.swiper-stores-next {
 							transform: rotate(180deg);
 						}
 					}
@@ -686,18 +686,18 @@
 						height: 280px;
 						display: flex;
 						flex-direction: row;
-						.top-agents-swiper {
+						.top-stores-swiper {
 							width: 99.7%;
 							height: 280px;
 							display: flex;
 							flex-direction: row;
-							.top-agents-slide {
+							.top-stores-slide {
 								width: auto;
 								height: auto;
 								display: flex;
 							}
 						}
-						.top-agent-card {
+						.top-stores-card {
 							width: 205px;
 							height: 280px;
 							display: flex;

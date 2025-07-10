@@ -4,7 +4,7 @@ import { NextPage } from 'next';
 import { Stack } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import MyProperties from '../../libs/components/mypage/MyProperties';
+import MyProducts from '../../libs/components/mypage/MyProducts';
 import MyFavorites from '../../libs/components/mypage/MyFavorites';
 import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
 import MyProfile from '../../libs/components/mypage/MyProfile';
@@ -18,7 +18,6 @@ import { sweetErrorHandling } from '../../libs/sweetAlert';
 import MemberFollowings from '../../libs/components/member/MemberFollowings';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AddNewProduct from '../../libs/components/mypage/AddNewProduct';
-import MyProducts from '../../libs/components/member/MemberProducts';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {

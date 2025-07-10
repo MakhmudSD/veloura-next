@@ -1,7 +1,7 @@
 {
   "Home": "Home",
-  "Properties": "Properties",
-  "Agents": "Agents",
+  "Products": "Products",
+  "Stores": "Stores",
   "Community": "Community",
   "My Page": "My Page",
   "CS": "CS",
@@ -14,7 +14,7 @@
   "product Search": "product Search",
   "We are glad to see you again!": "We are glad to see you again!",
   "Home / For Rent": "Home / For Rent",
-  "Agent Page": "Agent Page",
+  "Store Page": "Stroe Page",
   "my page": "my page",
   "Community Detail": "Community Detail",
   "Login/Signup": "Login/Signup",

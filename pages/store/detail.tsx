@@ -3,7 +3,7 @@ import { NextPage } from 'next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import ProductBigCard from '../../libs/components/common/ProductBigCard';
-import ReviewCard from '../../libs/components/agent/ReviewCard';
+import ReviewCard from '../../libs/components/store/ReviewCard';
 import { Box, Button, Pagination, Stack, Typography } from '@mui/material';
 import StarIcon from '@mui/icons-material/Star';
 import { useReactiveVar } from '@apollo/client';
