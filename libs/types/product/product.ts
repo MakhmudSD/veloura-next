@@ -37,7 +37,7 @@ export interface Product {
 	productLikes: number;
 	productImages: string[];
 	productDesc?: string;
-	productIsLimitedEdition?: boolean;
+	productWeightUnit?: boolean;
 	productBarter?: boolean;
 	productRent?: boolean;
 	memberId: string;

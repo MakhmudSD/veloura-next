@@ -5,7 +5,7 @@ import { gql } from '@apollo/client';
  *************************/
 
 export const GET_STORES = gql`
-	query GetStores($input: StoresInquiry!) {
+	query GetStores($input: StoreInquiry!) {
 		getStores(input: $input) {
 			list {
 				_id
@@ -91,6 +91,7 @@ export const GET_PRODUCT = gql`
 		getProduct(productId: $input) {
 			_id
 			productCategory
+			productBrand
 			productLocation
 			productStatus
 			productMaterial
@@ -104,7 +105,7 @@ export const GET_PRODUCT = gql`
 			productComments
 			productRank
 			productDesc
-			productIsLimitedEdition
+			productWeightUnit
 			productBarter
 			productRent
 			productImages
@@ -155,6 +156,7 @@ export const GET_PRODUCTS = gql`
 			list {
 				_id
 				productCategory
+				productBrand
 				productLocation
 				productStatus
 				productMaterial
@@ -168,7 +170,7 @@ export const GET_PRODUCTS = gql`
 				productComments
 				productRank
 				productDesc
-				productIsLimitedEdition
+				productWeightUnit
 				productBarter
 				productRent
 				productImages
@@ -224,6 +226,7 @@ export const GET_STORE_PRODUCTS = gql`
 			list {
 				_id
 				productCategory
+				productBrand
 				productLocation
 				productStatus
 				productMaterial
@@ -237,7 +240,7 @@ export const GET_STORE_PRODUCTS = gql`
 				productComments
 				productRank
 				productDesc
-				productIsLimitedEdition
+				productWeightUnit
 				productBarter
 				productRent
 				productImages
@@ -260,6 +263,7 @@ export const GET_FAVORITES = gql`
 			list {
 				_id
 				productCategory
+				productBrand
 				productLocation
 				productStatus
 				productMaterial
@@ -273,7 +277,7 @@ export const GET_FAVORITES = gql`
 				productComments
 				productRank
 				productDesc
-				productIsLimitedEdition
+				productWeightUnit
 				productBarter
 				productRent
 				productImages
@@ -324,6 +328,7 @@ export const GET_VISITED = gql`
 			list {
 				_id
 				productCategory
+				productBrand
 				productLocation
 				productStatus
 				productMaterial
@@ -337,7 +342,7 @@ export const GET_VISITED = gql`
 				productComments
 				productRank
 				productDesc
-				productIsLimitedEdition
+				productWeightUnit
 				productBarter
 				productRent
 				productImages
