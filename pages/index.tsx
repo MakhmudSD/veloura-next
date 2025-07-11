@@ -5,7 +5,7 @@ import CommunityBoards from '../libs/components/homepage/CommunityBoards';
 import PopularProducts from '../libs/components/homepage/PopularProducts';
 import TopStores from '../libs/components/homepage/TopStores';
 import Events from '../libs/components/homepage/Events';
-import TrendProducts from '../libs/components/homepage/TrendProducts';
+import BrandsSection from '../libs/components/homepage/BrandSection';
 import { Stack } from '@mui/material';
 import Advertisement from '../libs/components/homepage/Advertisement';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
@@ -23,7 +23,7 @@ const Home: NextPage = () => {
 	if (device === 'mobile') {
 		return (
 			<Stack className={'home-page'}>
-				<TrendProducts />
+				<BrandsSection />
 				<PopularProducts />
 				<Advertisement />
 				<TopProducts />
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
 	} else {
 		return (
 			<Stack className={'home-page'}>
-				<TrendProducts />
+				<BrandsSection />
 				<PopularProducts />
 				<Advertisement />
 				<TopProducts />
