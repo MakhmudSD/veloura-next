@@ -71,12 +71,15 @@ const TrendProductCard = ({ product, likeProductHandler }: TrendProductCardProps
         <Box className="meta-right">
           <Box className="meta-item">
             <i className="icon price-icon"></i>
-            <Typography className="price">${product.productPrice}</Typography>
+            <Typography className="price">{product.productPrice} KRW</Typography>
           </Box>
         </Box>
       </Box>
-  
-      <Typography className="desc">{product.productDesc ?? 'No description'}</Typography>
+        
+        <Box className="desc-bottom">
+        <i className="icon desc-icon"></i>
+        <Typography className="desc">{product.productDesc ?? 'No description'}</Typography>
+        </Box>
     </Box>
   </Stack>
   
