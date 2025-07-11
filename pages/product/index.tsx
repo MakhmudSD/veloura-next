@@ -9,11 +9,13 @@ import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { Product } from '../../libs/types/product/product';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import { Direction } from '../../libs/enums/common.enum';
+import { Direction, Message } from '../../libs/enums/common.enum';
 import ProductCard from '../../libs/components/product/ProductCard';
 import { T } from '../../libs/types/common';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { GET_PRODUCTS } from '../../apollo/user/query';
+import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -35,7 +37,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [filterSortName, setFilterSortName] = useState('New');
 
 	/** APOLLO REQUESTS **/
-
+		const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT)
 		const {
 			loading: getProductsLoading,
 			data: getProductsData,
@@ -64,6 +66,20 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	useEffect(() => {}, [searchFilter]);
 
 	/** HANDLERS **/
+
+	const likeProductHandler = async (user: T, id: string) => {
+			try {
+				if (!id) return;
+				if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
+				await likeTargetProduct({ variables: { input: id } }); // server update
+	
+				await getProductsRefetch({ input: initialInput }); // frontend update
+				await sweetTopSmallSuccessAlert('success', 800);
+			} catch (err: any) {
+				console.log('ERROR on likeProductHandler', err.message);
+				sweetMixinErrorAlert(err.message).then();
+			}
+		};
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
 		searchFilter.page = value;
 		await router.push(
@@ -158,7 +174,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 									</div>
 								) : (
 									products.map((product: Product) => {
-										return <ProductCard product={product} key={product?._id} />;
+										return <ProductCard product={product} likeproductHandler={likeProductHandler} key={product?._id} />;
 									})
 								)}
 							</Stack>
