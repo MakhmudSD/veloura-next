@@ -41,7 +41,7 @@ interface PISearch {
 	sizeList?: number[];
 	options?: string[];
 	pricesRange?: PricesRange;
-	datesRange?: DatesRange;
+	dateRange?: DateRange;
 	text?: string;
 }
 
@@ -83,7 +83,7 @@ interface PricesRange {
 	end: number;
 }
 
-interface DatesRange {
+interface DateRange {
 	start: Date | number;
 	end: Date | number;
 }

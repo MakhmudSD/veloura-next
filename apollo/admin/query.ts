@@ -47,15 +47,15 @@ export const GET_ALL_PRODUCTS_BY_ADMIN = gql`
 		getAllProductsByAdmin(input: $input) {
 			list {
 				_id
-				productType
+				productCategory
 				productStatus
 				productLocation
 				productAddress
 				productTitle
 				productPrice
-				productSquare
-				productBeds
-				productRooms
+				productSize
+				productMaterial
+				productGender
 				productViews
 				productLikes
 				productImages

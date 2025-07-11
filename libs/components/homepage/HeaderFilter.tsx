@@ -195,7 +195,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 			...searchFilter,
 			search: {
 				...searchFilter.search,
-				datesRange: { start: value, end: yearCheck.end },
+				dateRange: { start: value, end: yearCheck.end },
 			},
 		});
 	};
@@ -207,7 +207,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 			...searchFilter,
 			search: {
 				...searchFilter.search,
-				datesRange: { start: yearCheck.start, end: value },
+				dateRange: { start: yearCheck.start, end: value },
 			},
 		});
 	};
@@ -235,97 +235,71 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
 	if (device === 'mobile') {
 		return <div>HEADER FILTER MOBILE</div>;
-	  } else {
+	} else {
 		return (
-		  <>
-			{/* MAIN DESKTOP FILTER BAR */}
-			<Stack className={'search-box'}>
-  <Stack className={'select-box'}>
-    {/* LOCATION SELECT BOX */}
-    <Box
-      component={'div'}
-      className={`box ${openLocation ? 'on' : ''}`}
-      onClick={locationStateChangeHandler}
-    >
-      <span>{searchFilter?.search?.locationList?.[0] || t('Location')}</span>
-      <ExpandMoreIcon />
-    </Box>
+			<>
+				{/* MAIN DESKTOP FILTER BAR */}
+				<Stack className={'search-box'}>
+					<Stack className={'select-box'}>
+						{/* LOCATION SELECT BOX */}
+						<Box component={'div'} className={`box ${openLocation ? 'on' : ''}`} onClick={locationStateChangeHandler}>
+							<span>{searchFilter?.search?.locationList?.[0] || t('Location')}</span>
+							<ExpandMoreIcon />
+						</Box>
 
-    {/* CATEGORY SELECT BOX */}
-    <Box
-      className={`box ${openCategory ? 'on' : ''}`}
-      onClick={categoryStateChangeHandler}
-    >
-      <span>{searchFilter?.search?.categoryList?.[0] || t('Product Category')}</span>
-      <ExpandMoreIcon />
-    </Box>
+						{/* CATEGORY SELECT BOX */}
+						<Box className={`box ${openCategory ? 'on' : ''}`} onClick={categoryStateChangeHandler}>
+							<span>{searchFilter?.search?.categoryList?.[0] || t('Product Category')}</span>
+							<ExpandMoreIcon />
+						</Box>
 
-    {/* MATERIAL SELECT BOX */}
-    <Box
-      className={`box ${openMaterial ? 'on' : ''}`}
-      onClick={materialStateChangeHandler}
-    >
-      <span>{searchFilter?.search?.materialList?.[0] || t('Material')}</span>
-      <ExpandMoreIcon />
-    </Box>
-  </Stack>
+						{/* MATERIAL SELECT BOX */}
+						<Box className={`box ${openMaterial ? 'on' : ''}`} onClick={materialStateChangeHandler}>
+							<span>{searchFilter?.search?.materialList?.[0] || t('Material')}</span>
+							<ExpandMoreIcon />
+						</Box>
+					</Stack>
 
-  <Stack className={'search-box-other'}>
-    <Box className={'advanced-filter'} onClick={() => advancedFilterHandler(true)}>
-      <img src="/img/icons/tune.svg" alt="" />
-      <span>{t('Advanced')}</span>
-    </Box>
-    <Box className={'search-btn'} onClick={pushSearchHandler}>
-      <img src="/img/icons/search_white.svg" alt="" />
-    </Box>
-  </Stack>
+					<Stack className={'search-box-other'}>
+						<Box className={'advanced-filter'} onClick={() => advancedFilterHandler(true)}>
+							<img src="/img/icons/tune.svg" alt="" />
+							<span>{t('Advanced')}</span>
+						</Box>
+						<Box className={'search-btn'} onClick={pushSearchHandler}>
+							<img src="/img/icons/search_white.svg" alt="" />
+						</Box>
+					</Stack>
 
-  {/* LOCATION MENU */}
-  <div
-    className={`filter-location ${openLocation ? 'on' : ''}`}
-    ref={locationRef}
-  >
-    {productLocation.map((location) => (
-      <div onClick={() => productLocationSelectHandler(location)} key={location}>
-        <img src={`/img/banner/cities/${location}.webp`} alt={location} />
-        <span>{location}</span>
-      </div>
-    ))}
-  </div>
+					{/* LOCATION MENU */}
+					<div className={`filter-location ${openLocation ? 'on' : ''}`} ref={locationRef}>
+						{productLocation.map((location) => (
+							<div onClick={() => productLocationSelectHandler(location)} key={location}>
+								<img src={`/img/banner/cities/${location}.webp`} alt={location} />
+								<span>{location}</span>
+							</div>
+						))}
+					</div>
 
-  {/* CATEGORY MENU — NOW SAME STRUCTURE */}
-  <div
-    className={`filter-category ${openCategory ? 'on' : ''}`}
-    ref={categoryRef}
-  >
-    {productCategory.map((category) => (
-      <div
-        key={category}
-        onClick={() => productCategorySelectHandler(category)}
-      >
-        <img src={`/img/banner/types/${category.toLowerCase()}.webp`} alt={category} />
-        <span>{category}</span>
-      </div>
-    ))}
-  </div>
+					{/* CATEGORY MENU — NOW SAME STRUCTURE */}
+					<div className={`filter-category ${openCategory ? 'on' : ''}`} ref={categoryRef}>
+						{productCategory.map((category) => (
+							<div key={category} onClick={() => productCategorySelectHandler(category)}>
+								<img src={`/img/banner/types/${category.toLowerCase()}.webp`} alt={category} />
+								<span>{category}</span>
+							</div>
+						))}
+					</div>
 
-  {/* MATERIAL MENU — SAME STRUCTURE */}
-  <div
-    className={`filter-material ${openMaterial ? 'on' : ''}`}
-    ref={materialRef}
-  >
-    {['GOLD', 'SILVER', 'PLATINUM', 'DIAMOND'].map((material) => (
-      <div
-        key={material}
-        onClick={() => productMaterialSelectHandler(material)}
-      >
-        <img src={`/img/banner/materials/${material.toLowerCase()}.webp`} alt={material} />
-        <span>{material}</span>
-      </div>
-    ))}
-  </div>
-</Stack>
-
+					{/* MATERIAL MENU — SAME STRUCTURE */}
+					<div className={`filter-material ${openMaterial ? 'on' : ''}`} ref={materialRef}>
+						{['GOLD', 'SILVER', 'PLATINUM', 'DIAMOND'].map((material) => (
+							<div key={material} onClick={() => productMaterialSelectHandler(material)}>
+								<img src={`/img/banner/materials/${material.toLowerCase()}.webp`} alt={material} />
+								<span>{material}</span>
+							</div>
+						))}
+					</div>
+				</Stack>
 
 				{/* ADVANCED FILTER MODAL */}
 				<Modal
@@ -522,11 +496,10 @@ HeaderFilter.defaultProps = {
 				start: 0,
 				end: 2000000,
 			},
-			datesRange: {
+			dateRange: {
 				start: 2020,
 				end: new Date().getFullYear(),
 			},
-			// Leave other optional filters empty:
 			locationList: [],
 			categoryList: [],
 			materialList: [],

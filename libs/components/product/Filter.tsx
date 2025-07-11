@@ -45,37 +45,80 @@ const Filter = (props: FilterType) => {
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		const queryParams = JSON.stringify({
-			...searchFilter,
-			search: {
-				...searchFilter.search,
-			},
-		});
-
 		if (searchFilter?.search?.locationList?.length == 0) {
 			delete searchFilter.search.locationList;
 			setShowMore(false);
-			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
+			router.push(`/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, `/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, { scroll: false }).then();
 		}
 
 		if (searchFilter?.search?.categoryList?.length == 0) {
 			delete searchFilter.search.categoryList;
-			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
+			router.push(`/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, `/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, { scroll: false }).then();
 		}
 
 		if (searchFilter?.search?.materialList?.length == 0) {
 			delete searchFilter.search.materialList;
-			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
+			router.push(`/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, `/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, { scroll: false }).then();
 		}
 
 		if (searchFilter?.search?.options?.length == 0) {
 			delete searchFilter.search.options;
-			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
+			router.push(`/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, `/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, { scroll: false }).then();
 		}
 
 		if (searchFilter?.search?.genderList?.length == 0) {
 			delete searchFilter.search.genderList;
-			router.push(`/product?input=${queryParams}`, `/product?input=${queryParams}`, { scroll: false }).then();
+			router.push(`/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, `/product?input=${JSON.stringify({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+				},
+			})}`, { scroll: false }).then();
 		}
 
 		if (searchFilter?.search?.locationList) setShowMore(true);
@@ -140,11 +183,11 @@ const Filter = (props: FilterType) => {
 					await router.push(
 						`/product?input=${JSON.stringify({
 							...searchFilter,
-							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.categoryList || []), value] },
+							search: { ...searchFilter.search, categoryList: [...(searchFilter?.search?.categoryList || []), value] },
 						})}`,
 						`/product?input=${JSON.stringify({
 							...searchFilter,
-							search: { ...searchFilter.search, typeList: [...(searchFilter?.search?.categoryList || []), value] },
+							search: { ...searchFilter.search, categoryList: [...(searchFilter?.search?.categoryList || []), value] },
 						})}`,
 						{ scroll: false },
 					);
@@ -154,14 +197,14 @@ const Filter = (props: FilterType) => {
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								typeList: searchFilter?.search?.categoryList?.filter((item: string) => item !== value),
+								categoryList: searchFilter?.search?.categoryList?.filter((item: string) => item !== value),
 							},
 						})}`,
 						`/product?input=${JSON.stringify({
 							...searchFilter,
 							search: {
 								...searchFilter.search,
-								typeList: searchFilter?.search?.categoryList?.filter((item: string) => item !== value),
+								categoryList: searchFilter?.search?.categoryList?.filter((item: string) => item !== value),
 							},
 						})}`,
 						{ scroll: false },
@@ -301,7 +344,7 @@ const Filter = (props: FilterType) => {
 				...searchFilter,
 				search: {
 					...searchFilter.search,
-					selectedSize: value || undefined,
+					sizeList: value || undefined,
 				},
 			};
 			setSearchFilter(newFilter);

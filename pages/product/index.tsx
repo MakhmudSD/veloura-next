@@ -11,6 +11,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import { Direction } from '../../libs/enums/common.enum';
 import ProductCard from '../../libs/components/product/ProductCard';
+import { T } from '../../libs/types/common';
+import { useQuery } from '@apollo/client';
+import { GET_PRODUCTS } from '../../apollo/user/query';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -32,6 +35,21 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [filterSortName, setFilterSortName] = useState('New');
 
 	/** APOLLO REQUESTS **/
+
+		const {
+			loading: getProductsLoading,
+			data: getProductsData,
+			error: getProductsError,
+			refetch: getProductsRefetch,
+		} = useQuery(GET_PRODUCTS, {
+			fetchPolicy: 'network-only',
+			variables: { input: searchFilter },
+			notifyOnNetworkStatusChange: true,
+			onCompleted: (data: T) => {
+				setProducts(data?.getProducts?.list);
+				setTotal(data?.getProducts?.metaCounter[0]?.total)
+			},
+		});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -180,10 +198,10 @@ ProductList.defaultProps = {
 		sort: 'createdAt',
 		direction: 'DESC',
 		search: {
-			squaresRange: {
-				start: 0,
-				end: 500,
-			},
+			dateRange: {
+				start: '2020-01-01',
+				end: '2025-12-31',
+			  },
 			pricesRange: {
 				start: 0,
 				end: 2000000,
