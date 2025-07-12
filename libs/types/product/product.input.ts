@@ -38,7 +38,7 @@ interface PISearch {
 	materialList?: ProductMaterial[];
 	genderList?: ProductGender[];
 	colorList?: string[];              // ✅ Optional, if you use it
-	sizeList?: number[];
+	weightList?: number[];
 	options?: string[];
 	pricesRange?: PricesRange;
 	dateRange?: DateRange;

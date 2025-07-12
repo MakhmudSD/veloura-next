@@ -166,7 +166,7 @@ const Top = () => {
 					<Stack className={'container'}>
 						<Box component={'div'} className={'logo-box'}>
 							<Link href={'/'}>
-								<img src="/img/logo/logoWhite.svg" alt="" />
+								<img src="/img/logo/white_on_trans.png" alt="Veloura-logo" />
 							</Link>
 						</Box>
 						<Box component={'div'} className={'router-box'}>
@@ -276,6 +276,16 @@ const Top = () => {
 											alt={'russiaFlag'}
 										/>
 										{t('Russian')}
+									</MenuItem>
+									<MenuItem disableRipple onClick={langChoice} id="">
+										<img
+											className="img-flag"
+											src={'/img/flag/uzb-flag.png'}
+											onClick={langChoice}
+											id="uz"
+											alt={'uzbekFlag'}
+										/>
+										{t('Uzbek')}
 									</MenuItem>
 								</StyledMenu>
 							</div>

@@ -4,7 +4,6 @@ import Head from 'next/head';
 import Top from '../Top';
 import Footer from '../Footer';
 import { Stack } from '@mui/material';
-import FiberContainer from '../common/FiberContainer';
 import HeaderFilter from '../homepage/HeaderFilter';
 import { userVar } from '../../../apollo/store';
 import { useReactiveVar } from '@apollo/client';
@@ -25,25 +24,24 @@ const withLayoutMain = (Component: any) => {
 			if (jwt) updateUserInfo(jwt);
 		}, []);
 
-		/** HANDLERS **/
-
-		if (device == 'mobile') {
+		/** RENDER **/
+		if (device === 'mobile') {
 			return (
 				<>
 					<Head>
 						<title>Veloura</title>
-						<meta name={'title'} content={`Veloura`} />
+						<meta name="title" content="Veloura" />
 					</Head>
 					<Stack id="mobile-wrap">
-						<Stack id={'top'}>
+						<Stack id="top">
 							<Top />
 						</Stack>
 
-						<Stack id={'main'}>
+						<Stack id="main">
 							<Component {...props} />
 						</Stack>
 
-						<Stack id={'footer'}>
+						<Stack id="footer">
 							<Footer />
 						</Stack>
 					</Stack>
@@ -54,18 +52,16 @@ const withLayoutMain = (Component: any) => {
 				<>
 					<Head>
 						<title>Veloura</title>
-						<meta name={'title'} content={`Nestar`} />
+						<meta name="title" content="Veloura" />
 					</Head>
 					<Stack id="pc-wrap">
-						<Stack id={'top'}>
+						<Stack id="top">
 							<Top />
 						</Stack>
 
 						<Stack className="header-main">
 							<div className="video-wrapper">
-								<video autoPlay muted loop playsInline>
-									<source src="/video/VELOURA-JEWELRY.mp4" type="video/mp4" />
-								</video>
+								<img src="/img/banner/main-banner3.png" alt="Main Banner" className="hero-image" />
 							</div>
 
 							<div className="overlay-content">
@@ -75,13 +71,13 @@ const withLayoutMain = (Component: any) => {
 							</div>
 						</Stack>
 
-						<Stack id={'main'}>
+						<Stack id="main">
 							<Component {...props} />
 						</Stack>
 
 						{user?._id && <Chat />}
 
-						<Stack id={'footer'}>
+						<Stack id="footer">
 							<Footer />
 						</Stack>
 					</Stack>

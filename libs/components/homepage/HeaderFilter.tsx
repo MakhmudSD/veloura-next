@@ -60,6 +60,9 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 	const [productLocation] = useState<ProductLocation[]>(Object.values(ProductLocation));
 	const [productCategory] = useState<ProductCategory[]>(Object.values(ProductCategory));
 
+	const [searchActive, setSearchActive] = React.useState(false);
+	const [searchText, setSearchText] = React.useState('');
+
 	/** LIFECYCLES **/
 	useEffect(() => {
 		const clickHandler = (event: MouseEvent) => {
@@ -258,16 +261,38 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 							<span>{searchFilter?.search?.materialList?.[0] || t('Material')}</span>
 							<ExpandMoreIcon />
 						</Box>
-					</Stack>
 
-					<Stack className={'search-box-other'}>
 						<Box className={'advanced-filter'} onClick={() => advancedFilterHandler(true)}>
-							<img src="/img/icons/tune.svg" alt="" />
+							<img src="/img/icons/tune.svg" alt="Settings Icon" />
 							<span>{t('Advanced')}</span>
 						</Box>
-						<Box className={'search-btn'} onClick={pushSearchHandler}>
-							<img src="/img/icons/search_white.svg" alt="" />
-						</Box>
+
+						{searchActive ? (
+							<Box className="search-input-wrapper">
+								<input
+									type="text"
+									value={searchText}
+									placeholder={t('Type to search...')}
+									onChange={(e) => setSearchText(e.target.value)}
+									onBlur={() => setSearchActive(false)}
+									autoFocus
+								/>
+								<Box
+									className="search-text"
+									onClick={() => {
+										/* trigger search action here with searchText */
+									}}
+								>
+									<img src="/img/icons/search.svg" alt="Search Icon" />
+									<span>{t('Search')}</span>
+								</Box>
+							</Box>
+						) : (
+							<Box className={'search-text'} onClick={() => setSearchActive(true)}>
+								<img src="/img/icons/search.svg" alt="Search Icon" />
+								<span>{t('Search')}</span>
+							</Box>
+						)}
 					</Stack>
 
 					{/* LOCATION MENU */}
@@ -280,7 +305,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 						))}
 					</div>
 
-					{/* CATEGORY MENU — NOW SAME STRUCTURE */}
+					{/* CATEGORY MENU */}
 					<div className={`filter-category ${openCategory ? 'on' : ''}`} ref={categoryRef}>
 						{productCategory.map((category) => (
 							<div key={category} onClick={() => productCategorySelectHandler(category)}>
@@ -290,7 +315,7 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 						))}
 					</div>
 
-					{/* MATERIAL MENU — SAME STRUCTURE */}
+					{/* MATERIAL MENU */}
 					<div className={`filter-material ${openMaterial ? 'on' : ''}`} ref={materialRef}>
 						{['GOLD', 'SILVER', 'PLATINUM', 'DIAMOND'].map((material) => (
 							<div key={material} onClick={() => productMaterialSelectHandler(material)}>

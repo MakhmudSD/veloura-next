@@ -17,7 +17,7 @@ import { ProductCategory, ProductGender, ProductLocation, ProductMaterial } from
 import { ProductsInquiry } from '../../types/product/product.input';
 import { useRouter } from 'next/router';
 import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { productSize } from '../../config';
+import { productWeight } from '../../config';
 import RefreshIcon from '@mui/icons-material/Refresh';
 
 const MenuProps = {
@@ -48,77 +48,107 @@ const Filter = (props: FilterType) => {
 		if (searchFilter?.search?.locationList?.length == 0) {
 			delete searchFilter.search.locationList;
 			setShowMore(false);
-			router.push(`/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, `/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, { scroll: false }).then();
+			router
+				.push(
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					{ scroll: false },
+				)
+				.then();
 		}
 
 		if (searchFilter?.search?.categoryList?.length == 0) {
 			delete searchFilter.search.categoryList;
-			router.push(`/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, `/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, { scroll: false }).then();
+			router
+				.push(
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					{ scroll: false },
+				)
+				.then();
 		}
 
 		if (searchFilter?.search?.materialList?.length == 0) {
 			delete searchFilter.search.materialList;
-			router.push(`/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, `/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, { scroll: false }).then();
+			router
+				.push(
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					{ scroll: false },
+				)
+				.then();
 		}
 
 		if (searchFilter?.search?.options?.length == 0) {
 			delete searchFilter.search.options;
-			router.push(`/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, `/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, { scroll: false }).then();
+			router
+				.push(
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					{ scroll: false },
+				)
+				.then();
 		}
 
 		if (searchFilter?.search?.genderList?.length == 0) {
 			delete searchFilter.search.genderList;
-			router.push(`/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, `/product?input=${JSON.stringify({
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-				},
-			})}`, { scroll: false }).then();
+			router
+				.push(
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					`/product?input=${JSON.stringify({
+						...searchFilter,
+						search: {
+							...searchFilter.search,
+						},
+					})}`,
+					{ scroll: false },
+				)
+				.then();
 		}
 
 		if (searchFilter?.search?.locationList) setShowMore(true);
@@ -225,126 +255,109 @@ const Filter = (props: FilterType) => {
 
 	const productMaterialSelectHandler = useCallback(
 		(selectedMaterial?: ProductMaterial) => {
-			try {
-				const currentList: ProductMaterial[] = searchFilter?.search?.materialList || [];
-
-				let newMaterialList: ProductMaterial[] = [];
-
-				if (!selectedMaterial) {
-					// Clear all if "Any" clicked
-					newMaterialList = [];
-				} else {
-					if (currentList.includes(selectedMaterial)) {
-						// Remove if already selected
-						newMaterialList = currentList.filter((item) => item !== selectedMaterial);
-					} else {
-						// Add it
-						newMaterialList = [...currentList, selectedMaterial];
-					}
-				}
-
-				const newFilter = {
-					...searchFilter,
-					search: {
-						...searchFilter.search,
-						// Only add if non-empty, else delete key
-						...(newMaterialList.length > 0 ? { materialList: newMaterialList } : {}),
-					},
-				};
-
-				setSearchFilter(newFilter);
-
-				console.log('productMaterialSelectHandler:', newMaterialList);
-			} catch (err) {
-				console.error('ERROR in productMaterialSelectHandler:', err);
-			}
-		},
-		[searchFilter],
-	);
-
-	const productOptionSelectHandler = useCallback(
-		async (e: any) => {
-			try {
-				const isChecked = e.target.checked;
-				const value = e.target.value;
-				if (isChecked) {
-					await router.push(
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
-						})}`,
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, options: [...(searchFilter?.search?.options || []), value] },
-						})}`,
-						{ scroll: false },
-					);
-				} else if (searchFilter?.search?.options?.includes(value)) {
-					await router.push(
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								options: searchFilter?.search?.options?.filter((item: string) => item !== value),
-							},
-						})}`,
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								options: searchFilter?.search?.options?.filter((item: string) => item !== value),
-							},
-						})}`,
-						{ scroll: false },
-					);
-				}
-
-				console.log('productOptionSelectHandler:', e.target.value);
-			} catch (err: any) {
-				console.log('ERROR, productOptionSelectHandler:', err);
-			}
-		},
-		[searchFilter],
-	);
-
-	const productGenderSelectHandler = useCallback(
-		(selectedGender?: ProductGender) => {
-			const currentList: ProductGender[] = searchFilter?.search?.genderList || [];
-
-			let newGenderList: ProductGender[] = [];
-
-			if (!selectedGender) {
-				// Clear
-				newGenderList = [];
+		  const currentList: ProductMaterial[] = searchFilter?.search?.materialList || [];
+	  
+		  let newMaterialList: ProductMaterial[] = [];
+	  
+		  if (!selectedMaterial) {
+			// Clear all if "Any" clicked
+			newMaterialList = [];
+		  } else {
+			if (currentList.includes(selectedMaterial)) {
+			  // Remove it
+			  newMaterialList = currentList.filter((item) => item !== selectedMaterial);
 			} else {
-				if (currentList.includes(selectedGender)) {
-					newGenderList = currentList.filter((g) => g !== selectedGender);
-				} else {
-					newGenderList = [...currentList, selectedGender];
-				}
+			  // Add it
+			  newMaterialList = [...currentList, selectedMaterial];
 			}
+		  }
+	  
+		  const newFilter = {
+			...searchFilter,
+			search: {
+			  ...searchFilter.search,
+			  materialList: newMaterialList, // ✅ Always defined
+			},
+		  };
+	  
+		  setSearchFilter(newFilter);
+		},
+		[searchFilter],
+	  );
+	  
+	  const productGenderSelectHandler = useCallback(
+		(selectedGender?: ProductGender) => {
+		  const currentList: ProductGender[] = searchFilter?.search?.genderList || [];
+	  
+		  let newGenderList: ProductGender[] = [];
+	  
+		  if (!selectedGender) {
+			newGenderList = [];
+		  } else {
+			if (currentList.includes(selectedGender)) {
+			  newGenderList = currentList.filter((g) => g !== selectedGender);
+			} else {
+			  newGenderList = [...currentList, selectedGender];
+			}
+		  }
+	  
+		  const newFilter = {
+			...searchFilter,
+			search: {
+			  ...searchFilter.search,
+			  genderList: newGenderList, // ✅ Always defined
+			},
+		  };
+	  
+		  setSearchFilter(newFilter);
+		},
+		[searchFilter],
+	  );
+	  
 
+	  const productOptionSelectHandler = useCallback(
+		async (e: any) => {
+			const isChecked = e.target.checked;
+			const value = e.target.value;
+	
+			let newOptions = searchFilter?.search?.options || [];
+	
+			if (isChecked) {
+				newOptions = [...newOptions, value];
+			} else {
+				newOptions = newOptions.filter((item: string) => item !== value);
+			}
+	
+			const cleanedOptions = newOptions.length > 0 ? newOptions : undefined;
+	
 			const newFilter = {
 				...searchFilter,
 				search: {
 					...searchFilter.search,
-					...(newGenderList.length > 0 ? { genderList: newGenderList } : {}),
+					options: cleanedOptions,
 				},
 			};
-
+	
 			setSearchFilter(newFilter);
-			console.log('productGenderSelectHandler:', newGenderList);
+	
+			await router.push(
+				`/product?input=${JSON.stringify(newFilter)}`,
+				`/product?input=${JSON.stringify(newFilter)}`,
+				{ scroll: false },
+			);
 		},
 		[searchFilter],
 	);
+	
+	
 
-	const productSizeHandler = useCallback(
+	const productWeightHandler = useCallback(
 		(value: number) => {
 			const newFilter = {
 				...searchFilter,
 				search: {
 					...searchFilter.search,
-					sizeList: value || undefined,
+					weightList: value || undefined,
 				},
 			};
 			setSearchFilter(newFilter);
@@ -398,6 +411,8 @@ const Filter = (props: FilterType) => {
 	const refreshHandler = async () => {
 		try {
 			setSearchText('');
+			setShowMore(false);
+			setSearchFilter(initialInput);
 			await router.push(
 				`/product?input=${JSON.stringify(initialInput)}`,
 				`/product?input=${JSON.stringify(initialInput)}`,
@@ -588,50 +603,48 @@ const Filter = (props: FilterType) => {
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
 					<Typography className={'title'}>Gender</Typography>
-					<Stack className={'find-your-home'} mb={'30px'}>
-						<Typography className={'title'}>Gender</Typography>
-						<Stack className="button-group">
-							<Button
-								sx={{
-									borderRadius: '12px 0 0 12px',
-									border:
-										!searchFilter?.search?.genderList || searchFilter.search.genderList.length === 0
-											? '2px solid #181A20'
-											: '1px solid #b9b9b9',
-								}}
-								onClick={() => productGenderSelectHandler(undefined)}
-							>
-								Any
-							</Button>
-
-							<Button
-								sx={{
-									borderRadius: 0,
-									border: searchFilter?.search?.genderList?.includes(ProductGender.MEN)
+					<Stack className="button-group">
+						<Button
+							sx={{
+								borderRadius: '12px 0 0 12px',
+								border:
+									!searchFilter?.search?.genderList || searchFilter.search.genderList.length === 0
 										? '2px solid #181A20'
 										: '1px solid #b9b9b9',
-									...(searchFilter?.search?.genderList?.includes(ProductGender.MEN) ? {} : { borderLeft: 'none' }),
-								}}
-								onClick={() => productGenderSelectHandler(ProductGender.MEN)}
-							>
-								Men
-							</Button>
+							}}
+							onClick={() => productGenderSelectHandler(undefined)}
+						>
+							Any
+						</Button>
 
-							<Button
-								sx={{
-									borderRadius: '0 12px 12px 0',
-									border: searchFilter?.search?.genderList?.includes(ProductGender.WOMEN)
-										? '2px solid #181A20'
-										: '1px solid #b9b9b9',
-									...(searchFilter?.search?.genderList?.includes(ProductGender.WOMEN) ? {} : { borderLeft: 'none' }),
-								}}
-								onClick={() => productGenderSelectHandler(ProductGender.WOMEN)}
-							>
-								Women
-							</Button>
-						</Stack>
+						<Button
+							sx={{
+								borderRadius: 0,
+								border: searchFilter?.search?.genderList?.includes(ProductGender.MEN)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
+								...(searchFilter?.search?.genderList?.includes(ProductGender.MEN) ? {} : { borderLeft: 'none' }),
+							}}
+							onClick={() => productGenderSelectHandler(ProductGender.MEN)}
+						>
+							Men
+						</Button>
+
+						<Button
+							sx={{
+								borderRadius: '0 12px 12px 0',
+								border: searchFilter?.search?.genderList?.includes(ProductGender.WOMEN)
+									? '2px solid #181A20'
+									: '1px solid #b9b9b9',
+								...(searchFilter?.search?.genderList?.includes(ProductGender.WOMEN) ? {} : { borderLeft: 'none' }),
+							}}
+							onClick={() => productGenderSelectHandler(ProductGender.WOMEN)}
+						>
+							Women
+						</Button>
 					</Stack>
 				</Stack>
+
 				<Stack className={'find-your-home'} mb={'30px'}>
 					<Typography className={'title'}>Options</Typography>
 					<Stack className={'input-box'}>
@@ -664,21 +677,20 @@ const Filter = (props: FilterType) => {
 					</Stack>
 				</Stack>
 				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Product Size</Typography>
+					<Typography className={'title'}>Jewelry Weight in gramm</Typography>
 					<FormControl fullWidth>
-						<InputLabel id="product-size-label">Size</InputLabel>
+						<InputLabel id="product-weight-label">Weight</InputLabel>
 						<Select
-							labelId="product-size-label"
-							id="product-size-select"
-							value={searchFilter?.search?.sizeList ?? ''}
-							label="Size"
-							onChange={(e) => productSizeHandler(Number(e.target.value))}
+							labelId="product-weight-label"
+							id="product-weight-select"
+							value={searchFilter?.search?.weightList ?? ''}
+							label="Weight"
+							onChange={(e) => productWeightHandler(Number(e.target.value))}
 							MenuProps={MenuProps}
-							
 						>
-							{productSize.map((size) => (
-								<MenuItem key={size} value={size}>
-									{size}
+							{productWeight.map((weight) => (
+								<MenuItem key={weight} value={weight}>
+									{weight}
 								</MenuItem>
 							))}
 						</Select>
@@ -698,7 +710,6 @@ const Filter = (props: FilterType) => {
 									productPriceHandler(e.target.value, 'start');
 								}
 							}}
-							
 						/>
 						<div className="central-divider"></div>
 						<input
