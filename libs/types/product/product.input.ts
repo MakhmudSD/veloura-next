@@ -42,6 +42,7 @@ interface PISearch {
 	options?: string[];
 	pricesRange?: PricesRange;
 	dateRange?: DateRange;
+	brand?: string[],
 	text?: string;
 }
 
