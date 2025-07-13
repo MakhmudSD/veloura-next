@@ -3,7 +3,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
 import Top from '../Top';
 import Footer from '../Footer';
-import { Stack } from '@mui/material';
+import { Stack, Typography } from '@mui/material';
 import HeaderFilter from '../homepage/HeaderFilter';
 import { userVar } from '../../../apollo/store';
 import { useReactiveVar } from '@apollo/client';
@@ -63,11 +63,16 @@ const withLayoutMain = (Component: any) => {
 							<div className="video-wrapper">
 								<img src="/img/banner/main-banner3.png" alt="Main Banner" className="hero-image" />
 							</div>
-
 							<div className="overlay-content">
 								<Stack className="container">
 									<HeaderFilter />
 								</Stack>
+							</div>
+							<div className="intro-text">
+								<Typography variant="h2">Discover Timeless Jewelry</Typography>
+								<Typography variant="body1">
+									Explore our unique collection and find your next statement piece.
+								</Typography>
 							</div>
 						</Stack>
 
