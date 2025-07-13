@@ -111,12 +111,12 @@ export const light = {
 		MuiButton: {
 			styleOverrides: {
 				root: {
-					color: '#212121',
+					color: '#21211',
 					minWidth: 'auto',
 					lineHeight: '1.2',
 					boxShadow: 'none',
 					ButtonText: {
-						color: '#212121',
+						color: '#black',
 					},
 				},
 			},

@@ -16,7 +16,7 @@ export const productWeight = [
   ];
 export const productPrice: number[] = [];
 
-const maxPrice = 2000000; // max price you want
+const maxPrice = 20000000; // max price you want
 const step = 50000; // step amount, you can adjust
 
 for (let price = 0; price <= maxPrice; price += step) {
