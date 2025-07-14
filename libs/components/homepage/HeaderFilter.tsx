@@ -73,10 +73,10 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 
 	/** HANDLERS **/
 	const advancedFilterHandler = (status: boolean) => {
-		setOpenAdvancedFilter(status);
 		setOpenLocation(false);
 		setOpenMaterial(false);
 		setOpenCategory(false);
+		setOpenAdvancedFilter(status);
 	};
 
 	const locationStateChangeHandler = () => {
@@ -104,28 +104,52 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 	};
 
 	const productLocationSelectHandler = useCallback(async (value: any) => {
-		setSearchFilter((prev) => ({
-			...prev,
-			search: { ...prev.search, locationList: [value] },
-		}));
-		locationStateChangeHandler();
-	}, []);
+		try {
+			setSearchFilter({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+					locationList: [value],
+				},
+			});
+			categoryStateChangeHandler();
+		} catch (err: any) {
+			console.log('ERROR, productLocationSelectHandler:', err);
+		}
+	}, [searchFilter]);
 
 	const productCategorySelectHandler = useCallback(async (value: any) => {
-		setSearchFilter((prev) => ({
-			...prev,
-			search: { ...prev.search, categoryList: [value] },
-		}));
-		categoryStateChangeHandler();
-	}, []);
+		try {
+			setSearchFilter({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+					categoryList: [value],
+				},
+			});
+			materialStateChangeHandler();
+		} catch (err: any) {
+			console.log('ERROR, productCategorySelectHandler:', err);
+		}
+	},
+	[searchFilter],
+)
 
 	const productMaterialSelectHandler = useCallback(async (value: any) => {
-		setSearchFilter((prev) => ({
-			...prev,
-			search: { ...prev.search, materialList: [value] },
-		}));
-		disableAllStateHandler();
-	}, []);
+		try {
+			setSearchFilter({
+				...searchFilter,
+				search: {
+					...searchFilter.search,
+					materialList: [value],
+				},
+			});
+			disableAllStateHandler();
+		} catch (err: any) {
+			console.log('ERROR, productMaterialSelectHandler:', err);
+		}
+	},
+	[searchFilter],)
 
 	const productGenderSelectHandler = useCallback(
 		async (gender: ProductGender | null) => {
@@ -219,19 +243,35 @@ const HeaderFilter = (props: HeaderFilterProps) => {
 	};
 	const pushSearchHandler = async () => {
 		try {
-			const copy = { ...searchFilter };
-
-			if (copy?.search?.locationList?.length === 0) delete copy.search.locationList;
-			if (copy?.search?.categoryList?.length === 0) delete copy.search.categoryList;
-			if (copy?.search?.materialList?.length === 0) delete copy.search.materialList;
-			if (copy?.search?.options?.length === 0) delete copy.search.options;
-			if (copy?.search?.genderList?.length === 0) delete copy.search.genderList;
-
-			await router.push(`/product?input=${JSON.stringify(copy)}`);
+		  const newSearchFilter = { ...searchFilter };
+	  
+		  // Remove empty arrays in search
+		  if (newSearchFilter?.search?.locationList?.length === 0) {
+			delete newSearchFilter.search.locationList;
+		  }
+		  if (newSearchFilter?.search?.categoryList?.length === 0) {
+			delete newSearchFilter.search.categoryList;
+		  }
+		  if (newSearchFilter?.search?.materialList?.length === 0) {
+			delete newSearchFilter.search.materialList;
+		  }
+		  if (newSearchFilter?.search?.options?.length === 0) {
+			delete newSearchFilter.search.options;
+		  }
+		  if (newSearchFilter?.search?.genderList?.length === 0) {
+			delete newSearchFilter.search.genderList;
+		  }
+	  
+		  await router.push(
+			`/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
+			`/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`
+		  );
 		} catch (err: any) {
-			console.error('ERROR, pushSearchHandler:', err);
+		  console.error('ERROR, pushSearchHandler:', err);
 		}
-	};
+	  };
+	  
+	  
 
 	if (device === 'mobile') {
 		return <div>HEADER FILTER MOBILE</div>;
@@ -644,12 +684,6 @@ HeaderFilter.defaultProps = {
 				start: 2020,
 				end: new Date().getFullYear(),
 			},
-			locationList: [],
-			categoryList: [],
-			materialList: [],
-			genderList: [],
-			options: [],
-			text: '',
 		},
 	},
 };

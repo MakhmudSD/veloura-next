@@ -5,6 +5,10 @@ export const availableProductOptions = ['productExchangeable', 'productRentalAva
 const thisYear = new Date().getFullYear();
 
 export const productYears: number[] = [];
+export const toDateRangeISOString = (startYear: number, endYear: number) => ({
+	start: new Date(startYear, 0, 1).toISOString(),              // Jan 1, startYear 00:00:00
+	end: new Date(endYear, 11, 31, 23, 59, 59, 999).toISOString(), // Dec 31, endYear 23:59:59.999
+  });
 
 for (let i = 2020; i <= thisYear; i++) {
 	productYears.push(i);
