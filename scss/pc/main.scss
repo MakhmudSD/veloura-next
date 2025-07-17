@@ -52,89 +52,58 @@ body::-webkit-scrollbar {
 			width: 100%;
 		  
 			.navbar-main {
-				position: fixed;
-				top: 0;
+			  position: fixed;
+			  top: 0;
+			  width: 100%;
+			  z-index: 1000;
+			  transition: background-color 0.3s ease;
+		  
+			  &.transparent {
+				background-color: transparent;
+			  }
+		  
+			  .container {
+				display: flex;
+				flex-direction: column;
 				width: 100%;
-				z-index: 1000;
-				transition: background-color 0.3s ease;
-			
-				&.transparent {
-				  background-color: transparent;
-				}
-			
-				.container {
+		  
+				.top-navbar {
 				  display: flex;
-				  flex-direction: column;
-				  width: 100%;
-			
-				  .top-navbar {
-					display: flex;
-					justify-content: space-between;
-					align-items: center;
-					background-color: #262626;
-					padding: 12px 24px;
-				  
-					.top-left {
-						overflow: hidden;
-						width: 100%;
-						position: relative;
-					  
-						.marquee {
-						  display: inline-flex;
-						  white-space: nowrap;
-						  animation: scroll-left 30s linear infinite;
-					  
-						  span {
-							color: #f6f5f0;
-							font-family: "Playfair Display", serif;
-							font-size: 16px;
-							font-weight: 500;
-							margin-right: 64px;
-						  }
-						}
-					  
-						// Duplicate the marquee content inside it to fake infinite loop
-						.marquee::after {
-						  content: attr(data-text);
-						  display: inline-block;
-						  margin-left: 64px;
-						}
-					  }
-					  
-					  @keyframes scroll-left {
-						0% {
-						  transform: translateX(0%);
-						}
-						100% {
-						  transform: translateX(-50%);
-						}
-					  }
-					  
-				  
-					.top-right {
-					  display: flex;
-					  align-items: center;
-					  gap: 24px;
-				  
+				  justify-content: space-between;
+				  align-items: center;
+				  background-color: #262626;
+				  padding: 12px 24px;
+				  overflow: hidden; // Ensures marquee stays within bounds
+		  
+				  .top-left {
+					width: 100%;
+					position: relative; // For marquee positioning
+		  
+					.marquee {
+					  display: inline-flex;
+					  white-space: nowrap;
+					  animation: scroll-left 60s linear infinite; // Slower pace: 60s
+		  
 					  span {
 						color: #f6f5f0;
 						font-family: "Playfair Display", serif;
-						font-size: 14px;
+						font-size: 16px;
 						font-weight: 500;
-						white-space: nowrap;
-					  }
-					}
-				  
-					@keyframes slide {
-					  0% {
-						transform: translateX(100%);
-					  }
-					  100% {
-						transform: translateX(-100%);
+						margin-right: 64px;
 					  }
 					}
 				  }
-				  
+				}
+		  
+				@keyframes scroll-left {
+				  0% {
+					transform: translateX(0%);
+				  }
+				  100% {
+					transform: translateX(-50%); // Scroll 50% of content to achieve full loop when duplicated
+				  }
+				}
+		  
 				// Bottom section: navigation links, logo, and user info
 				.bottom-navbar {
 				  display: flex;
@@ -143,29 +112,174 @@ body::-webkit-scrollbar {
 				  background-color: #f5ede6;
 				  padding: 24px 48px;
 				  height: 100px;
+				  width: 100%; // Ensure it takes full width
 		  
 				  .bottom-left {
 					display: flex;
 					align-items: center;
 					gap: 32px;
-					width: 50%; // Ensure both sections have the same size
+					flex: 1; // Allows it to take available space
+				  }
+		  
+				  .bottom-center {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					width: 220px; // Fixed width for logo to center it
+		  
+					.logo-box {
+					  img {
+						width: 100%; // Make image fill its container
+						height: auto;
+						font-family: "Playfair Display", serif; // Luxurious font style
+						font-weight: bold;
+						font-style: italic;
+						text-align: center;
+						color: #4b3d39;
+						transition: transform 0.3s ease, box-shadow 0.3s ease;
+		  
+						&:hover {
+						  transform: scale(1.1); // Slightly larger on hover
+						  box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); // Glowing effect
+						}
+					  }
+					}
 				  }
 		  
 				  .bottom-right {
 					display: flex;
 					align-items: center;
 					gap: 24px;
-					justify-content: flex-end; // Move to the right side of the page
-					width: 50%; // Ensure consistent size
-		  
+					justify-content: flex-end; // Align to the right side of the page
+					width: 50%; // Ensure consistent size for right section
+				  
 					.user-box {
 					  display: flex;
 					  align-items: center;
 					  gap: 24px;
+				  
+					  .login-user {
+						position: relative; // Ensure logout box is positioned correctly
+						cursor: pointer;
+				  
+						img {
+							width: 28px;
+							height: 30px;
+						  border-radius: 50%;
+						  object-fit: cover;
+						  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+						}
+				  
+						.logout-box {
+						  position: absolute;
+						  top: 50px; // Adjust position below the avatar
+						  left: 50%;
+						  transform: translateX(-50%);
+						  padding: 12px 24px;
+						  background-color: #f5ede6;
+						  border: 1px solid #d4af37;
+						  border-radius: 8px;
+						  font-family: "Inter", sans-serif;
+						  font-size: 14px;
+						  font-weight: 500;
+						  color: #4b3d39;
+						  cursor: pointer;
+						  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+						  transition: opacity 0.3s ease, background-color 0.3s ease;
+						  opacity: 0; // Initially hidden
+				  
+						  &:hover {
+							background-color: #d4af37;
+							color: #fff;
+						  }
+						}
+				  
+						&:hover .logout-box {
+						  opacity: 1; // Make logout box visible on hover
+						}
+					  }
+				  
+					  .lan-box {
+						display: flex;
+						align-items: center;
+						gap: 12px;
+				  
+						.notification-icon {
+						  width: 40px; // Match size with user logo
+						  height: 40px;
+						  color: #4b3d39;
+						  font-size: 24px;
+						  cursor: pointer;
+						  border-radius: 50%; // Ensure consistent circular shape
+						  display: flex;
+						  justify-content: center;
+						  align-items: center;
+						  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+						  transition: transform 0.3s ease;
+				  
+						  &:hover {
+							transform: scale(1.2);
+						  }
+						}
+				  
+						.btn-lang {
+						  padding: 6px;
+						  min-width: unset;
+						  text-transform: none;
+						  display: flex;
+						  align-items: center;
+						  gap: 8px;
+						  cursor: pointer;
+						  .flag img {
+							width: 32px; // Ensure consistent size for flags
+							height: 28px;
+							border-radius: 2px;
+							box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+							.img-flag {
+								width: 24px;
+								height: 17px;
+								border-radius: 2px;
+								margin-right: 8px;
+							}
+							
+						  }
+				  
+						  &:hover {
+							color: #d4af37;
+						  }
+						}
+					  }
+					}
+				  
+					.join-box {
+					  display: flex;
+					  align-items: center;
+					  gap: 12px;
+					  font-family: "Inter", sans-serif;
+					  font-size: 16px;
+					  color: #4b3d39;
+					  cursor: pointer;
+				  
+					  &:hover {
+						color: #a67c52;
+					  }
+					}
+				  }
+				  .user-box {
+					display: flex; // Ensure this is a flex container
+					align-items: center; // Vertically center items
+					gap: 24px;
+		  
+					// New wrapper for hover intent
+					.user-avatar-wrapper {
+					  position: relative; // Crucial for positioning logout-box
+					  cursor: pointer;
+					  display: flex; // To contain img and allow spacing below if needed
+					  align-items: center;
+					  height: 40px; // Match user image height for hover area
 		  
 					  .login-user {
-						cursor: pointer;
-		  
+						// This now only styles the image itself
 						img {
 						  width: 40px;
 						  height: 40px;
@@ -175,82 +289,83 @@ body::-webkit-scrollbar {
 						}
 					  }
 		  
-					  .join-box {
+					  .logout-box {
+						position: absolute;
+						top: 50px; // Adjust position below the avatar
+						left: 50%; // Center horizontally relative to parent
+						transform: translateX(-50%) translateY(10px); // Start slightly lower, move up on hover
+						padding: 10px 20px; // Slightly reduced padding for compactness
+						background-color: #f5ede6;
+						border: 1px solid #d4af37;
+						border-radius: 8px;
+						font-family: "Inter", sans-serif;
+						font-size: 14px;
+						font-weight: 500;
+						color: #4b3d39;
+						white-space: nowrap; // Prevent text wrap
+						cursor: pointer;
+						box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+						transition:
+						  background-color 0.3s ease,
+						  opacity 0.3s ease,
+						  transform 0.3s ease;
+						opacity: 0; // Initially hidden
+						pointer-events: none; // Crucial: Prevents clicks when hidden
+						z-index: 1001; // Ensure it's above other elements if needed
+					  }
+		  
+					  &:hover .logout-box {
+						opacity: 1; // Make logout box visible on hover
+						pointer-events: auto; // Crucial: Enables clicks when visible
+						transform: translateX(-50%) translateY(0); // Move to final position
+					  }
+					}
+		  
+					.lan-box {
+					  display: flex;
+					  align-items: center; // Vertically center items within lan-box
+					  gap: 8px; // Adjusted gap for compactness
+		  
+					  .notification-icon {
+						color: #4b3d39;
+						font-size: 24px; // Adjusted size
+						cursor: pointer;
+						transition: transform 0.3s ease;
+						padding: 8px; // Added padding for clickable area and visual balance
+						border-radius: 50%; // Make it round if desired
+						&:hover {
+						  background-color: rgba(0, 0, 0, 0.05); // Subtle hover effect
+						  transform: scale(1.1); // Slightly larger on hover
+						}
+					  }
+		  
+					  .btn-lang {
+						padding: 6px 8px; // Adjusted padding for compactness
+						min-width: unset;
+						text-transform: none;
 						display: flex;
 						align-items: center;
-						gap: 12px;
-						font-family: "Inter", sans-serif;
-						font-size: 16px;
-						color: #4b3d39;
+						gap: 6px; // Reduced gap between flag and text
 						cursor: pointer;
+						border-radius: 4px; // Slightly rounded corners
+						transition: background-color 0.3s ease;
+		  
+						.flag img {
+						  width: 18px; // Even smaller flag for compactness
+						  height: 14px; // Maintain aspect ratio
+						  border-radius: 1px;
+						  box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+						}
 		  
 						&:hover {
-						  color: #a67c52;
-						}
-					  }
-		  
-					  .lan-box {
-						display: flex;
-						align-items: center;
-						gap: 12px;
-		  
-						.notification-icon {
-						  color: #4b3d39;
-						  font-size: 24px;
-						  cursor: pointer;
-						  transition: transform 0.3s ease;
-		  
-						  &:hover {
-							transform: scale(1.2);
-						  }
-						}
-		  
-						.btn-lang {
-						  padding: 6px;
-						  min-width: unset;
-						  text-transform: none;
-						  display: flex;
-						  align-items: center;
-						  gap: 8px;
-						  cursor: pointer;
-		  
-						  .flag img {
-							width: 24px;
-							height: auto;
-							border-radius: 2px;
-							box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
-						  }
-		  
-						  &:hover {
-							color: #d4af37;
-						  }
+						  background-color: rgba(0, 0, 0, 0.05); // Subtle hover effect
+						  color: #d4af37;
 						}
 					  }
 					}
 				  }
 		  
-				  .logo-box {
-					display: flex;
-					justify-content: center;
-					align-items: center;
-		  
-					img {
-					  width: 220px; // Bigger logo size
-					  height: auto;
-					  font-family: "Playfair Display", serif; // Luxurious font style
-					  font-weight: bold;
-					  font-style: italic;
-					  text-align: center;
-					  color: #4b3d39;
-					  transition: transform 0.3s ease, box-shadow 0.3s ease;
-		  
-					  &:hover {
-						transform: scale(1.2); // Slightly larger on hover
-						box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); // Glowing effect
-					  }
-					}
-				  }
-		  
+				
 				  .nav-item {
 					position: relative;
 					display: flex;
@@ -284,16 +399,16 @@ body::-webkit-scrollbar {
 				  }
 				}
 			  }
-			}
 		  
-			@keyframes fadeIn {
-			  from {
-				opacity: 0;
-				transform: scale(0.8);
-			  }
-			  to {
-				opacity: 1;
-				transform: scale(1);
+			  @keyframes fadeIn {
+				from {
+				  opacity: 0;
+				  transform: scale(0.8);
+				}
+				to {
+				  opacity: 1;
+				  transform: scale(1);
+				}
 			  }
 			}
 		  }
