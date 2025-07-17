@@ -49,213 +49,254 @@ body::-webkit-scrollbar {
 #pc-wrap {
 	#top {
 		.navbar {
+			width: 100%;
+		  
 			.navbar-main {
 				position: fixed;
-				padding: 55px 0px;
+				top: 0;
 				width: 100%;
-				height: 87px;
-				display: flex;
-				flex-direction: row;
-				box-sizing: border-box;
-				z-index: 99;
-				align-items: center;
-				border-top: 1px solid rgba(255, 255, 255, 0.07);
-				background-color: #181a20;
-				box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-
+				z-index: 1000;
+				transition: background-color 0.3s ease;
+			
 				&.transparent {
-					background-color: #181a209e;
+				  background-color: transparent;
 				}
-
+			
 				.container {
+				  display: flex;
+				  flex-direction: column;
+				  width: 100%;
+			
+				  .top-navbar {
 					display: flex;
-					flex-direction: row;
-					align-items: center;
 					justify-content: space-between;
-
-					.logo-box {
-						img {
-							width: 180px;
-							cursor: pointer;
-							user-select: none;
-							transition: transform 0.3s ease;
-
-							&:hover {
-								transform: scale(1.05);
-							}
-						}
-					}
-
-					.router-box {
+					align-items: center;
+					background-color: #262626;
+					padding: 12px 24px;
+				  
+					.top-left {
+						overflow: hidden;
+						width: 100%;
 						position: relative;
-						width: 617px;
-						display: flex;
-						flex-direction: row;
-						justify-content: space-between;
-
-						div {
-							position: relative;
-							color: #eeeeeeed;
-							font-family: 'Playfair Display', serif;
-							font-size: 22px; // bigger font
-							font-weight: 700;
-							line-height: normal;
-							cursor: pointer;
-							transition: color 0.3s ease, border-bottom 0.3s ease;
-
-							&:hover {
-								color: #d4af37;
-								border-bottom: 3px solid #d4af37;
-							}
-
-							.community_menu {
-								position: absolute;
-								left: -177%;
-								top: 30px;
-								width: 434px;
-								height: 33px;
-								background: white;
-								transition: all ease 2s;
-
-								&:before {
-									content: '';
-									display: block;
-									position: absolute;
-									top: 0;
-									right: 50%;
-									width: 10px;
-									height: 10px;
-									background: white;
-									transform: translateY(-50%) rotate(45deg);
-									z-index: 0;
-								}
-							}
+					  
+						.marquee {
+						  display: inline-flex;
+						  white-space: nowrap;
+						  animation: scroll-left 30s linear infinite;
+					  
+						  span {
+							color: #f6f5f0;
+							font-family: "Playfair Display", serif;
+							font-size: 16px;
+							font-weight: 500;
+							margin-right: 64px;
+						  }
 						}
-					}
-
-					.user-box {
-						width: 320px; // widened to allow more spacing
-						display: flex;
-						flex-direction: row;
-						justify-content: flex-end;
-						align-items: center;
-						gap: 32px; // bigger gap for equal spacing
+					  
+						// Duplicate the marquee content inside it to fake infinite loop
+						.marquee::after {
+						  content: attr(data-text);
+						  display: inline-block;
+						  margin-left: 64px;
+						}
+					  }
+					  
+					  @keyframes scroll-left {
+						0% {
+						  transform: translateX(0%);
+						}
+						100% {
+						  transform: translateX(-50%);
+						}
+					  }
+					  
+				  
+					.top-right {
+					  display: flex;
+					  align-items: center;
+					  gap: 24px;
+				  
+					  span {
+						color: #f6f5f0;
+						font-family: "Playfair Display", serif;
+						font-size: 14px;
+						font-weight: 500;
 						white-space: nowrap;
-
-						.join-box {
-							width: 184px;
-							height: 47px;
-							display: flex;
-							align-items: center;
-							justify-content: center;
-							border-radius: 60px;
-							border: 1px solid #ffffff;
-							cursor: pointer;
-							transition: background-color 0.3s ease, border-color 0.3s ease;
-
-							&:hover {
-								background-color: rgba(212, 175, 55, 0.15);
-								border-color: #d4af37;
-							}
-
-							svg {
-								color: #ffffff;
-								margin-right: 10px;
-								transition: color 0.3s ease;
-							}
-
-							span {
-								font-family: 'Playfair Display', serif;
-								font-size: 18px; // bigger font size
-								font-weight: 700;
-								color: #ffffff;
-								user-select: none;
-							}
-						}
-
-						.login-user {
-							width: 52px; // bigger avatar
-							height: 52px;
-							border-radius: 50%;
-							overflow: hidden;
-							cursor: pointer;
-							box-shadow: 0 0 8px rgba(212, 175, 55, 0.8);
-
-							img {
-								width: 100%;
-								height: 100%;
-								object-fit: cover;
-								border-radius: 50%;
-								filter: drop-shadow(0 0 1px rgba(0, 0, 0, 0.3));
-								transition: transform 0.3s ease;
-							}
-
-							&:hover img {
-								transform: scale(1.1);
-							}
-						}
-
-						.lan-box {
-							margin-right: 18px;
-							display: flex;
-							align-items: center;
-							gap: 30px; // space between notification and lang button
-
-							.notification-icon {
-								color: #d4af37;
-								cursor: pointer;
-								font-size: 40px; // bigger notification icon
-								transition: transform 0.3s ease;
-								user-select: none;
-
-								&:hover {
-									transform: scale(1.2);
-								}
-							}
-
-							.btn-lang {
-								border-radius: 4px;
-								padding: 8px 14px; // slightly bigger padding
-								background-color: transparent;
-								border: 1px solid #ccc;
-								color: #616161;
-								font-weight: 600;
-								font-size: 20px; // bigger font for lang text
-								font-weight: bold;
-								display: flex;
-								align-items: center;
-								cursor: pointer;
-								user-select: none;
-								transition: border-color 0.3s ease, color 0.3s ease, background-color 0.3s ease;
-
-								&:hover {
-									border-color: #d4af37;
-									color: #d4af37;
-									background-color: rgba(212, 175, 55, 0.1);
-								}
-
-								.flag img {
-									width: 28px; // bigger flag icons
-									height: 20px;
-									border-radius: 2px;
-									user-select: none;
-								}
-							}
-
-							.img-flag {
-								width: 28px;
-								height: 20px;
-								border-radius: 2px;
-								margin-right: 8px;
-								user-select: none;
-							}
-						}
+					  }
 					}
+				  
+					@keyframes slide {
+					  0% {
+						transform: translateX(100%);
+					  }
+					  100% {
+						transform: translateX(-100%);
+					  }
+					}
+				  }
+				  
+				// Bottom section: navigation links, logo, and user info
+				.bottom-navbar {
+				  display: flex;
+				  justify-content: space-between;
+				  align-items: center;
+				  background-color: #f5ede6;
+				  padding: 24px 48px;
+				  height: 100px;
+		  
+				  .bottom-left {
+					display: flex;
+					align-items: center;
+					gap: 32px;
+					width: 50%; // Ensure both sections have the same size
+				  }
+		  
+				  .bottom-right {
+					display: flex;
+					align-items: center;
+					gap: 24px;
+					justify-content: flex-end; // Move to the right side of the page
+					width: 50%; // Ensure consistent size
+		  
+					.user-box {
+					  display: flex;
+					  align-items: center;
+					  gap: 24px;
+		  
+					  .login-user {
+						cursor: pointer;
+		  
+						img {
+						  width: 40px;
+						  height: 40px;
+						  border-radius: 50%;
+						  object-fit: cover;
+						  box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+						}
+					  }
+		  
+					  .join-box {
+						display: flex;
+						align-items: center;
+						gap: 12px;
+						font-family: "Inter", sans-serif;
+						font-size: 16px;
+						color: #4b3d39;
+						cursor: pointer;
+		  
+						&:hover {
+						  color: #a67c52;
+						}
+					  }
+		  
+					  .lan-box {
+						display: flex;
+						align-items: center;
+						gap: 12px;
+		  
+						.notification-icon {
+						  color: #4b3d39;
+						  font-size: 24px;
+						  cursor: pointer;
+						  transition: transform 0.3s ease;
+		  
+						  &:hover {
+							transform: scale(1.2);
+						  }
+						}
+		  
+						.btn-lang {
+						  padding: 6px;
+						  min-width: unset;
+						  text-transform: none;
+						  display: flex;
+						  align-items: center;
+						  gap: 8px;
+						  cursor: pointer;
+		  
+						  .flag img {
+							width: 24px;
+							height: auto;
+							border-radius: 2px;
+							box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+						  }
+		  
+						  &:hover {
+							color: #d4af37;
+						  }
+						}
+					  }
+					}
+				  }
+		  
+				  .logo-box {
+					display: flex;
+					justify-content: center;
+					align-items: center;
+		  
+					img {
+					  width: 220px; // Bigger logo size
+					  height: auto;
+					  font-family: "Playfair Display", serif; // Luxurious font style
+					  font-weight: bold;
+					  font-style: italic;
+					  text-align: center;
+					  color: #4b3d39;
+					  transition: transform 0.3s ease, box-shadow 0.3s ease;
+		  
+					  &:hover {
+						transform: scale(1.2); // Slightly larger on hover
+						box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); // Glowing effect
+					  }
+					}
+				  }
+		  
+				  .nav-item {
+					position: relative;
+					display: flex;
+					align-items: center;
+					gap: 8px;
+					color: #4b3d39;
+					font-family: "Judson", serif; // Luxurious font style
+					font-size: 20px;
+					font-weight: 500;
+					text-transform: capitalize;
+					cursor: pointer;
+					transition: color 0.3s ease;
+		  
+					&:hover {
+					  color: #a67c52;
+					}
+		  
+					&.active {
+					  color: #d4af37;
+					  font-weight: bold;
+		  
+					  .page-locator {
+						width: 12px;
+						height: 12px;
+						margin-left: 4px; // Little gap
+						transform: rotate(-45deg);
+						background: #d4af37;
+						animation: fadeIn 0.3s ease-in-out;
+					  }
+					}
+				  }
 				}
+			  }
 			}
-		}
-	}
-
+		  
+			@keyframes fadeIn {
+			  from {
+				opacity: 0;
+				transform: scale(0.8);
+			  }
+			  to {
+				opacity: 1;
+				transform: scale(1);
+			  }
+			}
+		  }
 
 	.header-main {
 		position: relative;
@@ -1588,4 +1629,5 @@ body::-webkit-scrollbar {
 	border-radius: 2px;
 	margin-right: 8px;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.15);
+}
 }

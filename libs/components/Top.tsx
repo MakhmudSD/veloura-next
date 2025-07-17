@@ -142,157 +142,172 @@ const Top = () => {
 	if (device == 'mobile') {
 		return (
 			<Stack className={'top'}>
-				<Link href={'/'}>
-					<div>{t('Home')}</div>
+				<Link href="/">
+					<div className={`nav-item ${router.pathname === '/' ? 'active' : ''}`}>
+						{t('Home')}
+						{router.pathname === '/' && (
+							<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+						)}
+					</div>
 				</Link>
-				<Link href={'/product'}>
-					<div>{t('Products')}</div>
+				<Link href="/product">
+					<div className={`nav-item ${router.pathname === '/product' ? 'active' : ''}`}>
+						{t('Products')}
+						{router.pathname === '/product' && (
+							<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+						)}
+					</div>
 				</Link>
-				<Link href={'/store'}>
-					<div> {t('Stores')} </div>
+				<Link href="/store">
+					<div className={`nav-item ${router.pathname === '/store' ? 'active' : ''}`}>
+						{t('Stores')}
+						{router.pathname === '/store' && (
+							<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+						)}
+					</div>
 				</Link>
-				<Link href={'/community?articleCategory=FREE'}>
-					<div> {t('Community')} </div>
+				<Link href="/community">
+					<div className={`nav-item ${router.pathname === '/community' ? 'active' : ''}`}>
+						{t('Community')}
+						{router.pathname === '/community' && (
+							<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+						)}
+					</div>
 				</Link>
-				<Link href={'/cs'}>
-					<div> {t('CS')} </div>
+				<Link href="/cs">
+					<div className={`nav-item ${router.pathname === '/cs' ? 'active' : ''}`}>
+						{t('CS')}
+						{router.pathname === '/cs' && (
+							<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+						)}
+					</div>
 				</Link>
 			</Stack>
 		);
 	} else {
 		return (
-			<Stack className={'navbar'}>
-				<Stack className={`navbar-main ${colorChange ? 'transparent' : ''} ${bgColor ? 'transparent' : ''}`}>
-					<Stack className={'container'}>
-						<Box component={'div'} className={'logo-box'}>
-							<Link href={'/'}>
-								<img src="/img/logo/white_on_trans.png" alt="Veloura-logo" />
-							</Link>
-						</Box>
-						<Box component={'div'} className={'router-box'}>
-							<Link href={'/'}>
-								<div>{t('Home')}</div>
-							</Link>
-							<Link href={'/product'}>
-								<div>{t('Products')}</div>
-							</Link>
-							<Link href={'/store'}>
-								<div> {t('Stores')} </div>
-							</Link>
-							<Link href={'/community?articleCategory=FREE'}>
-								<div> {t('Community')} </div>
-							</Link>
-							{user?._id && (
-								<Link href={'/mypage'}>
-									<div> {t('My Page')} </div>
-								</Link>
-							)}
-							<Link href={'/cs'}>
-								<div> {t('CS')} </div>
-							</Link>
-						</Box>
-						<Box component={'div'} className={'user-box'}>
-							{user?._id ? (
-								<>
-									<div className={'login-user'} onClick={(event: any) => setLogoutAnchor(event.currentTarget)}>
-										<img
-											src={
-												user?.memberImage ? `${REACT_APP_API_URL}/${user?.memberImage}` : '/img/profile/defaultUser.svg'
-											}
-											alt=""
-										/>
-									</div>
-
-									<Menu
-										id="basic-menu"
-										anchorEl={logoutAnchor}
-										open={logoutOpen}
-										onClose={() => {
-											setLogoutAnchor(null);
-										}}
-										sx={{ mt: '5px' }}
-									>
-										<MenuItem onClick={() => logOut()}>
-											<Logout fontSize="small" style={{ color: 'blue', marginRight: '10px' }} />
-											Logout
-										</MenuItem>
-									</Menu>
-								</>
-							) : (
-								<Link href={'/account/join'}>
-									<div className={'join-box'}>
-										<AccountCircleOutlinedIcon />
-										<span>
-											{t('Login')} / {t('Register')}
-										</span>
-									</div>
-								</Link>
-							)}
-
-							<div className={'lan-box'}>
-								{user?._id && <NotificationsOutlinedIcon className={'notification-icon'} />}
-								<Button
-									disableRipple
-									className="btn-lang"
-									onClick={langClick}
-									endIcon={<CaretDown size={14} color="#616161" weight="fill" />}
-								>
-									<Box component={'div'} className={'flag'}>
-										{lang !== null ? (
-											<img src={`/img/flag/lang${lang}.png`} alt={'usaFlag'} />
-										) : (
-											<img src={`/img/flag/langen.png`} alt={'usaFlag'} />
-										)}
-									</Box>
-								</Button>
-
-								<StyledMenu anchorEl={anchorEl2} open={drop} onClose={langClose} sx={{ position: 'absolute' }}>
-									<MenuItem disableRipple onClick={langChoice} id="en">
-										<img
-											className="img-flag"
-											src={'/img/flag/langen.png'}
-											onClick={langChoice}
-											id="en"
-											alt={'usaFlag'}
-										/>
-										{t('English')}
-									</MenuItem>
-									<MenuItem disableRipple onClick={langChoice} id="kr">
-										<img
-											className="img-flag"
-											src={'/img/flag/langkr.png'}
-											onClick={langChoice}
-											id="uz"
-											alt={'koreanFlag'}
-										/>
-										{t('Korean')}
-									</MenuItem>
-									<MenuItem disableRipple onClick={langChoice} id="ru">
-										<img
-											className="img-flag"
-											src={'/img/flag/langru.png'}
-											onClick={langChoice}
-											id="ru"
-											alt={'russiaFlag'}
-										/>
-										{t('Russian')}
-									</MenuItem>
-									<MenuItem disableRipple onClick={langChoice} id="">
-										<img
-											className="img-flag"
-											src={'/img/flag/uzb-flag.png'}
-											onClick={langChoice}
-											id="uz"
-											alt={'uzbekFlag'}
-										/>
-										{t('Uzbek')}
-									</MenuItem>
-								</StyledMenu>
+			<div className="navbar">
+				{/* Top Navbar */}
+				<div className="navbar-main">
+					<div className="container">
+						<div className="top-navbar">
+							<div className="top-left">
+								<div className="marquee">
+									<span>✨ Elevate Every Moment with Veloura</span>
+									<span>🎁 Best Offers</span>
+									<span>🏬 100+ Stores</span>
+									<span>👥 Thousands of Happy Users</span>
+									<span>🌿 Curated Scents for Every Mood</span>
+									<span>💎 Premium Ingredients</span>
+								</div>
 							</div>
-						</Box>
-					</Stack>
-				</Stack>
-			</Stack>
+						</div>
+
+						{/* Bottom Navbar */}
+						<div className="bottom-navbar">
+							<div className="bottom-left">
+								<Link href="/">
+									<div className={`nav-item ${router.pathname === '/' ? 'active' : ''}`}>
+										{t('Home')}
+										{router.pathname === '/' && (
+											<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+										)}
+									</div>
+								</Link>
+								<Link href="/product">
+									<div className={`nav-item ${router.pathname === '/product' ? 'active' : ''}`}>
+										{t('Products')}
+										{router.pathname === '/product' && (
+											<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+										)}
+									</div>
+								</Link>
+								<Link href="/store">
+									<div className={`nav-item ${router.pathname === '/store' ? 'active' : ''}`}>
+										{t('Stores')}
+										{router.pathname === '/store' && (
+											<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+										)}
+									</div>
+								</Link>
+								<Link href="/community">
+									<div className={`nav-item ${router.pathname === '/community' ? 'active' : ''}`}>
+										{t('Community')}
+										{router.pathname === '/community' && (
+											<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+										)}
+									</div>
+								</Link>
+								{user?._id && (
+									<Link href="/mypage">
+										<div className={`nav-item ${router.pathname === '/mypage' ? 'active' : ''}`}>
+											{t('My Page')}
+											{router.pathname === '/mypage' && (
+												<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+											)}
+										</div>
+									</Link>
+								)}
+								<Link href="/cs">
+									<div className={`nav-item ${router.pathname === '/cs' ? 'active' : ''}`}>
+										{t('CS')}
+										{router.pathname === '/cs' && (
+											<img src="/img/icons/page-locator.png" alt="Page Locator" className="page-locator" />
+										)}
+									</div>
+								</Link>
+							</div>
+							<div className="bottom-center">
+								<div className="logo-box">
+									<Link href="/">
+										<img src="/img/logo/logo-name.svg" alt="Veloura-logo" />
+									</Link>
+								</div>
+							</div>
+							<div className="bottom-right">
+								<div className="user-box">
+									{user?._id ? (
+										<>
+											<div className="login-user">
+												<img
+													src={user?.memberImage ? `/img/profile/${user.memberImage}` : '/img/profile/defaultUser3.svg'}
+													alt="User Avatar"
+												/>
+											</div>
+											<div className="lan-box">
+												<NotificationsOutlinedIcon className="notification-icon" />
+												<div className="btn-lang">
+													<div className="flag">
+														<img src="/img/flag/langen.png" alt="Language Flag" />
+													</div>
+												</div>
+											</div>
+										</>
+									) : (
+										<>
+											<Link href="/account/join">
+												<div className="join-box">
+													<span>
+														{t('Login')} / {t('Register')}
+													</span>
+												</div>
+											</Link>
+											<div className="lan-box">
+												<NotificationsOutlinedIcon className="notification-icon" />
+												<div className="btn-lang">
+													<div className="flag">
+														<img src="/img/flag/langen.png" alt="Language Flag" />
+													</div>
+												</div>
+											</div>
+										</>
+									)}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 		);
 	}
 };
