@@ -347,34 +347,6 @@ const Top = () => {
 												{t('English')}
 											</MenuItem>
 
-											<MenuItem disableRipple onClick={langChoice} id="uz">
-												<Box
-													component="div"
-													sx={{
-														width: '24px',
-														height: '18px',
-														borderRadius: '3px',
-														overflow: 'hidden',
-														display: 'flex',
-														alignItems: 'center',
-														justifyContent: 'center',
-														marginRight: '8px',
-													}}
-												>
-													<img
-														src="/img/flag/uzb-flag.png"
-														alt="uzbekFlag"
-														style={{
-															width: '100%',
-															height: '100%',
-															objectFit: 'cover',
-															display: 'block',
-														}}
-													/>
-												</Box>
-												{t('Uzbek')}
-											</MenuItem>
-
 											<MenuItem disableRipple onClick={langChoice} id="kr">
 												<Box
 													component="div"
@@ -403,7 +375,7 @@ const Top = () => {
 												{t('Korean')}
 											</MenuItem>
 
-											<MenuItem disableRipple onClick={langChoice} id="ru">
+											<MenuItem disableRipple onClick={langChoice} id="uz">
 												<Box
 													component="div"
 													sx={{
@@ -418,8 +390,8 @@ const Top = () => {
 													}}
 												>
 													<img
-														src="/img/flag/langru.png"
-														alt="russianFlag"
+														src="/img/flag/uzb-flag.png"
+														alt="uzbekFlag"
 														style={{
 															width: '100%',
 															height: '100%',
@@ -428,7 +400,7 @@ const Top = () => {
 														}}
 													/>
 												</Box>
-												{t('Russian')}
+												{t('Uzbek')}
 											</MenuItem>
 										</StyledMenu>
 									</div>
