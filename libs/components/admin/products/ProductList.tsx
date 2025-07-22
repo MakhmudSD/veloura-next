@@ -149,16 +149,25 @@ export const ProductPanelList = (props: ProductPanelListType) => {
 									<TableRow hover key={product?._id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
 										<TableCell align="left">{product._id}</TableCell>
 										<TableCell align="left" className={'name'}>
-											<Stack direction={'row'}>
-												<Link href={`/product/detail?id=${product?._id}`}>
+											{product.productStatus === ProductStatus.AVAILABLE ? (
+												<Stack direction={'row'}>
+													<Link href={`/property/detail?id=${product?._id}`}>
+														<div>
+															<Avatar alt="Remy Sharp" src={productImage} sx={{ ml: '2px', mr: '10px' }} />
+														</div>
+													</Link>
+													<Link href={`/property/detail?id=${product?._id}`}>
+														<div>{product.productTitle}</div>
+													</Link>
+												</Stack>
+											) : (
+												<Stack direction={'row'}>
 													<div>
 														<Avatar alt="Remy Sharp" src={productImage} sx={{ ml: '2px', mr: '10px' }} />
 													</div>
-												</Link>
-												<Link href={`/product/detail?id=${product?._id}`}>
-													<div>{product.productTitle}</div>
-												</Link>
-											</Stack>
+													<div style={{ marginTop: '10px' }}>{product.productTitle}</div>
+												</Stack>
+											)}
 										</TableCell>
 										<TableCell align="center">{product.productPrice}</TableCell>
 										<TableCell align="center">{product.memberData?.memberNick}</TableCell>
