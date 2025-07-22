@@ -58,14 +58,14 @@ const withLayoutFull = (Component: any) => {
 					</Head>
 					<Stack id="pc-wrap">
 						<Stack id={'top'}>
-							<Top />
+	 						<Top />
 						</Stack>
 
 						<Stack id={'main'}>
 							<Component {...props} />
-						</Stack>
+						</Stack> 
 
-						{user?._id && <Chat />}
+						<Chat />
 
 						<Stack id={'footer'}>
 							<Footer />
