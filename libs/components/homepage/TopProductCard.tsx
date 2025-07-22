@@ -23,6 +23,10 @@ const TopProductCard = (props: TopProductCardProps) => {
 
 	/** HANDLERS **/
 
+	const pushDetailHandler = async (productId: string) => {
+		console.log('id:', productId);
+		router.push({ pathname: '/product/detail', query: { id: productId } });
+	};
 	if (device === 'mobile') {
 		return (
 			<Stack className="top-card-box">
@@ -30,12 +34,15 @@ const TopProductCard = (props: TopProductCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages[0]})` }}
+					onClick={() => pushDetailHandler(product._id)}
+
 				>
 					<div>${product?.productPrice}</div>
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}>{product?.productTitle}</strong>
-					<p className={'desc'}>{product?.productAddress}</p>
+				<strong className={'title'} onClick={() => pushDetailHandler(product._id)}>
+						{product?.productTitle}
+					</strong>					<p className={'desc'}>{product?.productAddress}</p>
 					<div className={'options'}>
 						<div>
 							<img src="/img/icons/bed.svg" alt="" />
@@ -82,11 +89,15 @@ const TopProductCard = (props: TopProductCardProps) => {
 					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages[0]})` }}
+					onClick={() => pushDetailHandler(product._id)}
+
 				>
 					<div>${product?.productPrice}</div>
 				</Box>
 				<Box component={'div'} className={'info'}>
-					<strong className={'title'}>{product?.productTitle}</strong>
+					<strong className={'title'} onClick={() => pushDetailHandler(product._id)}>
+						{product?.productTitle}
+					</strong>
 					<p className={'desc'}>{product?.productAddress}</p>
 					<div className={'options'}>
 						<div>

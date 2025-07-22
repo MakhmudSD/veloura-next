@@ -3,7 +3,7 @@ import { Stack, Box, Divider, Typography } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import { REACT_APP_API_URL } from '../../config';
+import { REACT_APP_API_URL, topProductRank } from '../../config';
 import { formatterStr } from '../../utils';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
@@ -13,10 +13,12 @@ import { Product } from '../../types/product/product';
 
 interface ProductBigCardProps {
 	product: Product;
+	likeProductHandler: any
+
 }
 
 const ProductBigCard = (props: ProductBigCardProps) => {
-	const { product } = props;
+	const { product, likeProductHandler } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
@@ -36,7 +38,7 @@ const ProductBigCard = (props: ProductBigCardProps) => {
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages?.[0]})` }}
 				>
-					{product?.productRank && product?.productRank >= 50 && (
+					{product?.productRank && product?.productRank >= topProductRank && (
 						<div className={'status'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<span>top</span>
@@ -77,6 +79,8 @@ const ProductBigCard = (props: ProductBigCardProps) => {
 								color={'default'}
 								onClick={(e: any) => {
 									e.stopPropagation();
+									likeProductHandler(user, product?._id)
+
 								}}
 							>
 								{product?.meLiked && product?.meLiked[0]?.myFavorite ? (

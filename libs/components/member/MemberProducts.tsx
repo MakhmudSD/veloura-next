@@ -7,6 +7,8 @@ import { ProductsInquiry } from '../../types/product/product.input';
 import { T } from '../../types/common';
 import { useRouter } from 'next/router';
 import { ProductCard } from '../mypage/ProductCard';
+import { GET_PRODUCTS } from '../../../apollo/user/query';
+import { useQuery } from '@apollo/client';
 
 const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
@@ -17,10 +19,26 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 	const [total, setTotal] = useState<number>(0);
 
 	/** APOLLO REQUESTS **/
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		skip: !searchFilter?.search?.memberId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setStoreProducts(data?.getProducts?.list);
+			setTotal(data?.getProducts?.metaCounter[0]?.total ?? 0);
+		},
+	});
 
 	/** LIFECYCLES **/
-	useEffect(() => {}, [searchFilter]);
-
+	useEffect(() => {
+		getProductsRefetch().then();
+	}, [searchFilter]);
 	useEffect(() => {
 		if (memberId)
 			setSearchFilter({ ...initialInput, search: { ...initialInput.search, memberId: memberId as string } });

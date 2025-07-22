@@ -6,7 +6,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Product } from '../../types/product/product';
 import Link from 'next/link';
 import { formatterStr } from '../../utils';
-import { REACT_APP_API_URL } from '../../config';
+import { REACT_APP_API_URL, topProductRank } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
@@ -14,13 +14,13 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 
 interface ProductCardType {
 	product: Product;
-	likeproductHandler?: any;
+	likeProductHandler?: any;
 	myFavorites?: boolean;
 	recentlyVisited?: boolean;
 }
 
 const ProductCard = (props: ProductCardType) => {
-	const { product, likeproductHandler, myFavorites, recentlyVisited } = props;
+	const { product, likeProductHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const imagePath: string = product?.productImages[0]
@@ -41,7 +41,7 @@ const ProductCard = (props: ProductCardType) => {
 					>
 						<img src={imagePath} alt="" />
 					</Link>
-					{product && product?.productRank > 0 && (
+					{product && product?.productRank > topProductRank && (
 						<Box component={'div'} className={'top-badge'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<Typography>TOP</Typography>
@@ -102,7 +102,7 @@ const ProductCard = (props: ProductCardType) => {
 									<RemoveRedEyeIcon />
 								</IconButton>
 								<Typography className="view-cnt">{product?.productViews}</Typography>
-								<IconButton color={'default'} onClick={() => likeproductHandler(user, product?._id)}>
+								<IconButton color={'default'} onClick={() => likeProductHandler(user, product?._id)}>
 									{myFavorites ? (
 										<FavoriteIcon color="primary" />
 									) : product?.meLiked && product?.meLiked[0]?.myFavorite ? (

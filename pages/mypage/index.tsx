@@ -9,15 +9,17 @@ import MyFavorites from '../../libs/components/mypage/MyFavorites';
 import RecentlyVisited from '../../libs/components/mypage/RecentlyVisited';
 import MyProfile from '../../libs/components/mypage/MyProfile';
 import MyArticles from '../../libs/components/mypage/MyArticles';
-import { useReactiveVar } from '@apollo/client';
+import { useMutation, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../apollo/store';
 import MyMenu from '../../libs/components/mypage/MyMenu';
 import WriteArticle from '../../libs/components/mypage/WriteArticle';
 import MemberFollowers from '../../libs/components/member/MemberFollowers';
-import { sweetErrorHandling } from '../../libs/sweetAlert';
+import { sweetErrorHandling, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import MemberFollowings from '../../libs/components/member/MemberFollowings';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AddNewProduct from '../../libs/components/mypage/AddNewProduct';
+import { SUBSCRIBE, UNSUBSCRIBE, LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
+import { Messages } from '../../libs/config';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -32,33 +34,72 @@ const MyPage: NextPage = () => {
 	const category: any = router.query?.category ?? 'myProfile';
 
 	/** APOLLO REQUESTS **/
+	const [subscribe] = useMutation(SUBSCRIBE);
+	const [unsubscribe] = useMutation(UNSUBSCRIBE);
+	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (!user._id) router.push('/').then();
+		if (!user._id) {
+			console.log('User not logged in, redirecting to home page.');
+			router.push('/').then();
+		}
 	}, [user]);
 
 	/** HANDLERS **/
 	const subscribeHandler = async (id: string, refetch: any, query: any) => {
 		try {
+			console.log('Subscribing to member with ID:', id); // Log the ID
+			if (!id) throw new Error(Messages.error1);
+			if (!user._id) throw new Error(Messages.error2);
+			await subscribe({ variables: { input: id } });
+			await sweetTopSmallSuccessAlert('Subscribed successfully', 800);
+			await refetch({ input: query });
 		} catch (err: any) {
+			console.error('Error subscribing to member:', err);
 			sweetErrorHandling(err).then();
 		}
 	};
 
 	const unsubscribeHandler = async (id: string, refetch: any, query: any) => {
 		try {
+			console.log('Unsubscribing from member with ID:', id);
+			if (!id) throw new Error(Messages.error1);
+			if (!user._id) throw new Error(Messages.error2);
+			await unsubscribe({ variables: { input: id } });
+			await sweetTopSmallSuccessAlert('Unsubscribed successfully', 800);
+			await refetch({ input: query });
 		} catch (err: any) {
+			console.error('Error unsubscribing from member:', err);
 			sweetErrorHandling(err).then();
 		}
 	};
 
 	const redirectToMemberPageHandler = async (memberId: string) => {
 		try {
-			if (memberId === user?._id) await router.push(`/mypage?memberId=${memberId}`);
-			else await router.push(`/member?memberId=${memberId}`);
+			console.log('Redirecting to member page with ID:', memberId);
+			if (memberId === user?._id) {
+				await router.push(`/mypage?memberId=${memberId}`);
+			} else {
+				await router.push(`/member?memberId=${memberId}`);
+			}
 		} catch (error) {
+			console.error('Error redirecting to member page:', error);
 			await sweetErrorHandling(error);
+		}
+	};
+
+	const likeMemberHandler = async (id: string, refetch: any, query: any) => {
+		try {
+			console.log('Liking member with ID:', id);
+			if (!id) return;
+			if (!user._id) throw new Error(Messages.error2);
+			await likeTargetMember({ variables: { input: id } });
+			await sweetTopSmallSuccessAlert('Liked successfully', 800);
+			await refetch({ input: query });
+		} catch (err: any) {
+			console.error('Error liking target member:', err);
+			sweetErrorHandling(err).then();
 		}
 	};
 
@@ -75,7 +116,7 @@ const MyPage: NextPage = () => {
 							</Stack>
 							<Stack className="main-config" mb={'76px'}>
 								<Stack className={'list-config'}>
-									{category === 'addproduct' && <AddNewProduct />}
+									{category === 'addProduct' && <AddNewProduct />}
 									{category === 'myProducts' && <MyProducts />}
 									{category === 'myFavorites' && <MyFavorites />}
 									{category === 'recentlyVisited' && <RecentlyVisited />}
@@ -86,6 +127,7 @@ const MyPage: NextPage = () => {
 										<MemberFollowers
 											subscribeHandler={subscribeHandler}
 											unsubscribeHandler={unsubscribeHandler}
+											likeMemberHandler={likeMemberHandler}
 											redirectToMemberPageHandler={redirectToMemberPageHandler}
 										/>
 									)}
@@ -93,6 +135,7 @@ const MyPage: NextPage = () => {
 										<MemberFollowings
 											subscribeHandler={subscribeHandler}
 											unsubscribeHandler={unsubscribeHandler}
+											likeMemberHandler={likeMemberHandler}
 											redirectToMemberPageHandler={redirectToMemberPageHandler}
 										/>
 									)}

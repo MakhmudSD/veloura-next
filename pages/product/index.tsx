@@ -74,7 +74,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 			if (!id) return;
 			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
 			await likeTargetProduct({ variables: { input: id } });
-			await getProductsRefetch({ input: searchFilter });
+			await getProductsRefetch({ input: initialInput });
 			await sweetTopSmallSuccessAlert('success', 800);
 		} catch (err: any) {
 			console.log('ERROR on likeProductHandler', err.message);
@@ -179,7 +179,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 								</div>
 							) : (
 								products.map((product: Product) => (
-									<ProductCard product={product} likeproductHandler={likeProductHandler} key={product._id} />
+									<ProductCard product={product} likeProductHandler={likeProductHandler} key={product._id} />
 								))
 							)}
 						</Stack>

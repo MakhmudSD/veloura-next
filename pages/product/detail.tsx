@@ -1,5 +1,5 @@
 import React, { ChangeEvent, useEffect, useState } from 'react';
-import { Box, Button, Checkbox, Stack, Typography } from '@mui/material';
+import { Box, Button, Checkbox, CircularProgress, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutFull from '../../libs/components/layout/LayoutFull';
 import { NextPage } from 'next';
@@ -10,11 +10,11 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import WestIcon from '@mui/icons-material/West';
 import EastIcon from '@mui/icons-material/East';
-import { useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Product } from '../../libs/types/product/product';
 import moment from 'moment';
-import { formatterStr } from '../../libs/utils';
+import { formatterStr, likeTargetProductHandler } from '../../libs/utils';
 import { REACT_APP_API_URL } from '../../libs/config';
 import { userVar } from '../../apollo/store';
 import { CommentInput, CommentsInquiry } from '../../libs/types/comment/comment.input';
@@ -27,6 +27,11 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import ProductBigCard from '../../libs/components/common/ProductBigCard';
+import { GET_COMMENTS, GET_PRODUCT, GET_PRODUCTS } from '../../apollo/user/query';
+import { Direction, Message } from '../../libs/enums/common.enum';
+import { T } from '../../libs/types/common';
+import { CREATE_COMMENT, LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
+import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
@@ -36,16 +41,16 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
-const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
+const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
 	const [productId, setproductId] = useState<string | null>(null);
-	const [product, setproduct] = useState<Product | null>(null);
+	const [product, setProduct] = useState<Product | null>(null);
 	const [slideImage, setSlideImage] = useState<string>('');
-	const [destinationproduct, setDestinationproduct] = useState<Product[]>([]);
+	const [destinationProducts, setDestinationProducts] = useState<Product[]>([]);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
-	const [productComments, setproductComments] = useState<Comment[]>([]);
+	const [productComments, setProductComments] = useState<Comment[]>([]);
 	const [commentTotal, setCommentTotal] = useState<number>(0);
 	const [insertCommentData, setInsertCommentData] = useState<CommentInput>({
 		commentGroup: CommentGroup.PRODUCT,
@@ -54,6 +59,67 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 	});
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+	const [createComment] = useMutation(CREATE_COMMENT);
+
+	const {
+		loading: getProductLoading,
+		data: getProductData,
+		error: getProductError,
+		refetch: getProductRefetch,
+	} = useQuery(GET_PRODUCT, {
+		fetchPolicy: 'network-only',
+		variables: { input: productId },
+		skip: !productId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getProduct) setProduct(data?.getProduct);
+			if (data?.getProduct) setSlideImage(data?.getProduct?.propertyImages[0]);
+		},
+	});
+
+
+	// PropertyDetail.tsx - Adjust GET_PROPERTIES query's skip condition and onCompleted
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: {
+			input: {
+				page: 1,
+				limit: 4,
+				sort: 'createdAt',
+				direction: Direction.DESC,
+				search: {
+					locationList: product?.productLocation ? [product?.productLocation] : [],
+				},
+			},
+		},
+		skip: !productId && !product,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getProducts?.list) setDestinationProducts(data?.getProducts?.list);
+		},
+	});
+
+	const {
+		loading: getCommentsLoading,
+		data: getCommentsData,
+		error: getCommentsError,
+		refetch: getComentsRefetch,
+	} = useQuery(GET_COMMENTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialComment },
+		skip: !commentInquiry.search.commentRefId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			if (data?.getComments?.list) setProductComments(data?.getComments?.list);
+			setCommentTotal(data?.getComments?.metaCounter[0]?.total ?? 0);
+		},
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -72,7 +138,11 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 		}
 	}, [router]);
 
-	useEffect(() => {}, [commentInquiry]);
+	useEffect(() => {
+		if (commentInquiry.search.commentRefId) {
+			getComentsRefetch({ input: commentInquiry });
+		}
+	}, [commentInquiry]);
 
 	/** HANDLERS **/
 	const changeImageHandler = (image: string) => {
@@ -83,6 +153,49 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 		commentInquiry.page = value;
 		setCommentInquiry({ ...commentInquiry });
 	};
+
+	const likeProductHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
+			await likeTargetProduct({ variables: { input: id } }); // server update
+			await getProductRefetch({
+				variables: { input: id },
+			});
+			await getProductsRefetch({
+				input: {
+					page: 1,
+					limit: 4,
+					sort: 'createdAt',
+					direction: Direction.DESC,
+					search: {
+						locationList: [product?.productLocation],
+					},
+				},
+			}); // frontend update
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('ERROR on likeProductHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
+
+	const createCommentHandler = async () => {
+		try {
+			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
+			await createComment({ variables: { input: insertCommentData } });
+			setInsertCommentData({ ...insertCommentData, commentContent: '' });
+			await getComentsRefetch({ input: commentInquiry });
+		} catch (err: any) {
+			await sweetErrorHandling(err);
+		}
+	};
+
+	if(getProductLoading) {
+		return (<Stack sx={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: '1000px'}}>
+			<CircularProgress size={'4rem'}/>
+		</Stack>)
+	}
 
 	if (device === 'mobile') {
 		return <div>PRODUCT DETAIL PAGE</div>;
@@ -167,7 +280,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 												<FavoriteBorderIcon
 													fontSize={'medium'}
 													// @ts-ignore
-													onClick={() => likeproductHandler(user, product?._id)}
+													onClick={() => likeProductHandler(user, product?._id)}
 												/>
 											)}
 											<Typography>{product?.productLikes}</Typography>
@@ -397,6 +510,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 										<Button
 											className={'submit-review'}
 											disabled={insertCommentData.commentContent === '' || user?._id === ''}
+											onClick={createCommentHandler}
 										>
 											<Typography className={'title'}>Submit Review</Typography>
 											<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
@@ -488,7 +602,7 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 								</Stack>
 							</Stack>
 						</Stack>
-						{destinationproduct.length !== 0 && (
+						{destinationProducts.length !== 0 && (
 							<Stack className={'similar-products-config'}>
 								<Stack className={'title-pagination-box'}>
 									<Stack className={'title-box'}>
@@ -515,10 +629,14 @@ const ProductDetail: NextPage = ({ initialComment, ...props }: any) => {
 											el: '.swiper-similar-pagination',
 										}}
 									>
-										{destinationproduct.map((product: Product) => {
+										{destinationProducts.map((product: Product) => {
 											return (
 												<SwiperSlide className={'similar-homes-slide'} key={product.productTitle}>
-													<ProductBigCard product={product} key={product?._id} />
+													<ProductBigCard
+														product={product}
+														likeProductHandler={likeProductHandler}
+														key={product?._id}
+													/>
 												</SwiperSlide>
 											);
 										})}

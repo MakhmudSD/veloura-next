@@ -6,11 +6,18 @@ import { REACT_APP_API_URL } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { Product } from '../../types/product/product';
+import router from 'next/router';
 
 interface TrendProductCardProps {
   product: Product;
   likeProductHandler: any;
 }
+
+	/** HANDLERS **/
+	const pushDetailHandler = async (productId: string) => {
+		console.log('id:', productId);
+		router.push({pathname: '/product/detail', query: {id: productId}})
+	};
 
 const TrendProductCard = ({ product, likeProductHandler }: TrendProductCardProps) => {
   const user = useReactiveVar(userVar);
@@ -18,7 +25,9 @@ const TrendProductCard = ({ product, likeProductHandler }: TrendProductCardProps
   return (
     <Stack className="trend-card-box" key={product._id}>
     {/* IMAGE AREA */}
-    <Box className="card-img">
+    <Box className="card-img" 					onClick={() => pushDetailHandler(product._id)}
+
+>
       <img
         className="main-img"
         src={`${REACT_APP_API_URL}/${product?.productImages[0]}`}
@@ -58,8 +67,9 @@ const TrendProductCard = ({ product, likeProductHandler }: TrendProductCardProps
   
     {/* ✅ INFO AREA OUTSIDE card-img */}
     <Box className="info">
-      <Typography className="title">{product.productTitle}</Typography>
-  
+    <strong className={'title'} onClick={() => pushDetailHandler(product._id)}>
+						{product.productTitle}
+					</strong>  
       <Box className="meta">
         <Box className="meta-left">
           <Box className="meta-item">

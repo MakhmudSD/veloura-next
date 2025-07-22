@@ -9,6 +9,12 @@ import StoreCard from '../../libs/components/common/StoreCard';
 import { useRouter } from 'next/router';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { Member } from '../../libs/types/member/member';
+import { LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
+import { useMutation, useQuery } from '@apollo/client';
+import { GET_STORES } from '../../apollo/user/query';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import { Messages } from '../../libs/config';
+import { Message } from '../../libs/enums/common.enum';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -32,6 +38,23 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 	const [searchText, setSearchText] = useState<string>('');
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
+
+	const {
+		loading: getStoresLoading,
+		data: getStoresData,
+		error: getStoresError,
+		refetch: getStoresRefetch,
+	} = useQuery(GET_STORES, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: any) => {
+			setStores(data?.getStores?.list);
+			setTotal(data?.getStores?.metaCounter[0]?.total);
+		},
+	});
+
 	/** LIFECYCLES **/
 	useEffect(() => {
 		if (router.query.input) {
@@ -42,6 +65,10 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 
 		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
 	}, [router]);
+
+	useEffect(() => {
+		getStoresRefetch({ variables: { input: searchFilter } }).then();
+	}, [searchFilter]);
 
 	/** HANDLERS **/
 	const sortingClickHandler = (e: MouseEvent<HTMLElement>) => {
@@ -84,6 +111,21 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 		});
 		setCurrentPage(value);
 	};
+
+	const likeMemberHandler = async (user: any, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
+			await likeTargetMember({ variables: { input: id } }); // server update
+
+			await getStoresRefetch({ input: searchFilter }); // frontend update
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.error('ERROR on likeMemberHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		}
+	};
+
 
 	if (device === 'mobile') {
 		return <h1>STORES PAGE MOBILE</h1>;
@@ -139,7 +181,7 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 							</div>
 						) : (
 							stores.map((store: Member) => {
-								return <StoreCard store={store} key={store._id} />;
+								return <StoreCard store={store} likeMemberHandler={likeMemberHandler} key={store._id} />;
 							})
 						)}
 					</Stack>

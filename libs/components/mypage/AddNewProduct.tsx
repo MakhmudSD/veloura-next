@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { ProductCategory, ProductGender, ProductLocation, ProductMaterial } from '../../enums/product.enum';
-import { productSize, REACT_APP_API_URL } from '../../config';
+import {  REACT_APP_API_URL, ringSize } from '../../config';
 import { ProductInput } from '../../types/product/product.input';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
@@ -329,8 +329,8 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 										<option disabled value="select">
 											Select
 										</option>
-										{productSize.map(
-											(size) =>
+										{ringSize.map(
+											(size: number) =>
 												size !== 0 && (
 													<option key={size} value={size}>
 														{size}
