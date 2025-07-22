@@ -390,7 +390,7 @@ const Top = () => {
 													}}
 												>
 													<img
-														src="/img/flag/uzb-flag.png"
+														src="/img/flag/languz.png"
 														alt="uzbekFlag"
 														style={{
 															width: '100%',
