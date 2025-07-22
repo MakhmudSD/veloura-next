@@ -10,7 +10,7 @@ import { BoardArticlesInquiry } from '../../types/board-article/board-article.in
 import { LIKE_TARGET_BOARD_ARTICLE } from '../../../apollo/user/mutation';
 import { DocumentNode } from 'graphql';
 import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Messages } from '../../config';
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 
@@ -127,7 +127,4 @@ MemberArticles.defaultProps = {
 };
 
 export default MemberArticles;
-function useMutation(LIKE_TARGET_BOARD_ARTICLE: DocumentNode): [any] {
-	throw new Error('Function not implemented.');
-}
 
