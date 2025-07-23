@@ -6,12 +6,10 @@ import AnimatedSnackbar from '../common/Animations'; // your custom snackbar com
 
 const BRANDS = [
   { name: 'Cartier', logoUrl: '/img/icons/brands/cariter.png' },
-  { name: 'Boucheron', logoUrl: '/img/icons/brands/boucheron.png' },
-  { name: 'Bvlgari', logoUrl: '/img/icons/brands/bulgari.png' },
-  { name: 'Tiffany', logoUrl: '/img/icons/brands/tiffany.png' },
+  { name: 'Bvlgari', logoUrl: '/img/icons/brands/bulgari2.png' },
+  { name: 'Tiffany', logoUrl: '/img/icons/brands/tiffany3.png' },
   { name: 'Harry Winston', logoUrl: '/img/icons/brands/winston.png' },
   { name: 'YSL', logoUrl: '/img/icons/brands/tsl.png' },
-  { name: 'Gucci', logoUrl: '/img/icons/brands/gucci.png' },
 ];
 
 const BrandsSection = () => {
@@ -48,9 +46,9 @@ const BrandsSection = () => {
       <Stack className="brands-section">
         <Stack className="container">
           <Box className="brands-top">
-            <Typography component="span">Top Brands</Typography>
+            <Typography component="span">Attractive Jewelry</Typography>
             <Typography component="p">
-              Discover our exclusive selection of top luxury brands.
+              Gorgeous Brands
             </Typography>
           </Box>
           <Stack className="card-box">
@@ -69,13 +67,6 @@ const BrandsSection = () => {
                 </Box>
                 <Typography className="brand-heading">
                   {brand.name}{' '}
-                  <EastIcon
-                    sx={{
-                      fontSize: '18px',
-                      verticalAlign: 'middle',
-                      color: '#734A1F',
-                    }}
-                  />
                 </Typography>
               </Box>
             ))}
