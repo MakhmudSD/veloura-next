@@ -130,6 +130,7 @@ export const CREATE_PRODUCT = gql`
 			productBrand
 			productLocation
 			productStatus
+			productAddress 
 			productMaterial
 			productGender
 			productTitle
@@ -164,6 +165,7 @@ export const UPDATE_PRODUCT = gql`
 			productLocation
 			productStatus
 			productMaterial
+			productAddress
 			productGender
 			productTitle
 			productPrice

@@ -16,26 +16,27 @@ const BrandsSection = () => {
   const router = useRouter();
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-
   const handleClick = (brandName: string) => {
-    const normalizedBrand = brandName.trim().toLowerCase();
+    const normalizedBrand = brandName.trim();
+  
     const input = {
       page: 1,
       limit: 9,
       sort: 'createdAt',
       direction: 'DESC',
       search: {
-        brand: normalizedBrand,
-      },
+        text: brandName
+      }
     };
-
+  
     setSnackbarMessage(`Searching for ${brandName} products...`);
     setOpenSnackbar(true);
-
+  
     setTimeout(() => {
       router.push(`/product?input=${encodeURIComponent(JSON.stringify(input))}`);
     }, 1000);
   };
+  
 
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);

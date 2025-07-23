@@ -7,9 +7,11 @@ import {  REACT_APP_API_URL, ringSize } from '../../config';
 import { ProductInput } from '../../types/product/product.input';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
-import { sweetMixinErrorAlert } from '../../sweetAlert';
-import { useReactiveVar } from '@apollo/client';
+import { sweetMixinErrorAlert, sweetMixinSuccessAlert } from '../../sweetAlert';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
+import { CREATE_PRODUCT, UPDATE_PRODUCT } from '../../../apollo/user/mutation';
+import { GET_PRODUCT } from '../../../apollo/user/query';
 
 const AddNewProduct = ({ initialValues, ...props }: any) => {
 	const device = useDeviceDetect();
@@ -22,7 +24,19 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
-	let getProductData: any, getProductLoading: any;
+		const [createProduct] = useMutation(CREATE_PRODUCT);
+		const [updateProduct] = useMutation(UPDATE_PRODUCT);
+
+		const {
+			loading: getProductLoading,
+			data: getProductData,
+			error: getProductError,
+			refetch: getProductRefetch,
+		} = useQuery(GET_PRODUCT, {
+			fetchPolicy: 'network-only',
+			variables: { input: router.query.productId }
+		});
+	
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -92,8 +106,11 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 			const responseImages = response.data.data.imagesUploader;
 
 			console.log('+responseImages: ', responseImages);
-			setInsertProductData({ ...insertProductData, productImages: responseImages });
-		} catch (err: any) {
+			setInsertProductData(prev => ({
+				...prev,
+				productImages: [...(prev.productImages || []), ...responseImages],
+			}));
+				} catch (err: any) {
 			console.log('err: ', err.message);
 			await sweetMixinErrorAlert(err.message);
 		}
@@ -119,15 +136,48 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 		}
 	};
 
-	const insertProductHandler = useCallback(async () => {}, [insertProductData]);
+	const insertProductHandler = useCallback(async () => {
+		try {
+			const result = await createProduct({
+				variables: {
+					input: insertProductData
+				}
+			})
 
-	const updateproductHandler = useCallback(async () => {}, [insertProductData]);
+			await sweetMixinSuccessAlert('Product added successfully!');
+			await router.push({
+				pathname: '/mypage',
+				query: { category: 'myProducts' },
+			});
+		} catch(err: any) {
+			console.error('Error inserting product:', err.message);
+			await sweetMixinErrorAlert(err).then()
+		}
+	}, [insertProductData]);
 
+	const updateProductHandler = useCallback(async () => {
+		try {
+			insertProductData._id = getProductData?.getProduct?._id; // corrected variable name
+			const result = await updateProduct({ // corrected function name
+				variables: { 
+					input: insertProductData // corrected variable name
+				}
+			});
+			await sweetMixinSuccessAlert('Product updated successfully!'); // corrected alert message
+			await router.push({
+				pathname: '/mypage',
+				query: { category: 'myProducts' },
+			}); 
+		} catch(err: any) {
+			console.error('Error updating product:', err.message); // corrected error message
+			await sweetMixinErrorAlert(err).then()
+		} 
+	}, [insertProductData]);
 	if (user?.memberType !== 'STORE') {
 		router.back();
 	}
 
-	console.log('+insertproductData', insertProductData);
+	console.log('+insertProductData', insertProductData);
 
 	if (device === 'mobile') {
 		return <div>ADD NEW product MOBILE PAGE</div>;
@@ -176,16 +226,16 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 										value={insertProductData.productCategory || 'select'}
 										onChange={({ target: { value } }) =>
 											// @ts-ignore
-											setInsertproductData({ ...insertProductData, productCategory: value })
+											setInsertProductData({ ...insertProductData, productCategory: value })
 										}
 									>
 										<>
 											<option selected={true} disabled={true} value={'select'}>
 												Select
 											</option>
-											{productCategory.map((type: any) => (
-												<option value={`${type}`} key={type}>
-													{type}
+											{productCategory.map((category: any) => (
+												<option value={`${category}`} key={category}>
+													{category}
 												</option>
 											))}
 										</>
@@ -204,7 +254,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 										value={insertProductData.productLocation || 'select'}
 										onChange={({ target: { value } }) =>
 											// @ts-ignore
-											setInsertproductData({ ...insertProductData, productLocation: value })
+											setInsertProductData({ ...insertProductData, productLocation: value })
 										}
 									>
 										<>
@@ -450,7 +500,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 
 						<Stack className="buttons-row">
 							{router.query.productId ? (
-								<Button className="next-button" disabled={doDisabledCheck()} onClick={updateproductHandler}>
+								<Button className="next-button" disabled={doDisabledCheck()} onClick={updateProductHandler}>
 									<Typography className="next-button-text">Save</Typography>
 								</Button>
 							) : (
@@ -470,7 +520,7 @@ AddNewProduct.defaultProps = {
 	initialValues: {
 		productTitle: '',
 		productPrice: 0,
-		productType: '',
+		productCategory: '',
 		productLocation: '',
 		productAddress: '',
 		productBarter: false,

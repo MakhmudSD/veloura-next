@@ -166,18 +166,7 @@
 						line-height: normal;
 						letter-spacing: 2.7px;
 						text-transform: uppercase;
-
-						// &::after {
-						// 	content: "";
-						// 	position: absolute;
-						// 	bottom: -10px;
-						// 	left: 50%;
-						// 	transform: translateX(-50%);
-						// 	width: 200px;
-						// 	height: 3px;
-						// 	background: $dark-green;
-						// 	border-radius: 2px;
-						// }
+						animation: fadeIn 0.5s ease;
 					}
 
 					p {

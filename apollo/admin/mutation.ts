@@ -41,7 +41,7 @@ export const UPDATE_PRODUCT_BY_ADMIN = gql`
 	mutation UpdateProductByAdmin($input: productUpdate!) {
 		updateProductByAdmin(input: $input) {
 			_id
-			productType
+			productCategory
 			productStatus
 			productLocation
 			productAddress
@@ -70,7 +70,7 @@ export const REMOVE_PRODUCT_BY_ADMIN = gql`
 	mutation RemoveProductByAdmin($input: String!) {
 		removeProductByAdmin(productId: $input) {
 			_id
-			productType
+			prodductCategory 
 			productStatus
 			productLocation
 			productAddress

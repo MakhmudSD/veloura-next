@@ -8,11 +8,12 @@ import {
 } from '../../enums/product.enum';
 
 export interface ProductInput {
+	_id: any;
 	productCategory: ProductCategory;
 	productLocation: ProductLocation;
 	productOrigin: string;
 	productAddress: string;
-	productColor: string;
+	productColor?: string;
 	productMaterial: ProductMaterial;
 	productGender: ProductGender;
 	productTitle: string;

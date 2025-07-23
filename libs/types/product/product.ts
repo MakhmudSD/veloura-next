@@ -24,7 +24,7 @@ export interface Product {
 	productAddress: string;
 	productStatus: ProductStatus;
 	productOrigin: string;
-	productColor: string;
+	productColor?: string;
 	productMaterial: ProductMaterial;
 	productGender: ProductGender;
 	productTitle: string;
