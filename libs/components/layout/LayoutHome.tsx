@@ -3,7 +3,7 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import Head from 'next/head';
 import Top from '../Top';
 import Footer from '../Footer';
-import { Stack, Typography } from '@mui/material';
+import { Box, Button, Link, Stack, Typography } from '@mui/material';
 import { userVar } from '../../../apollo/store';
 import { useReactiveVar } from '@apollo/client';
 import { getJwtToken, updateUserInfo } from '../../auth';
@@ -57,17 +57,18 @@ const withLayoutMain = (Component: any) => {
 						<Stack id="top">
 							<Top />
 						</Stack>
-
 						<Stack className="header-main">
-							<div className="video-wrapper">
-								<img src="/img/banner/main-banner3.png" alt="Main Banner" className="hero-image" />
+							<div className="img-wrapper"></div>
+
+							<div className="overlay-content">
+								<h1>Welcome to Veloura</h1>
+								<p>Discover the best products for your lifestyle</p>
+								<Link href="/product" style={{ textDecoration: 'none' }}>
+					<Button variant="contained" className="shop-now-btn">
+						Shop Now
+					</Button>
+				</Link>
 							</div>
-							{/* <div className="intro-text">
-								<Typography variant="h2">Discover Timeless Jewelry</Typography>
-								<Typography variant="body1">
-									Explore our unique collection and find your next statement piece.
-								</Typography>
-							</div> */}
 						</Stack>
 
 						<Stack id="main">

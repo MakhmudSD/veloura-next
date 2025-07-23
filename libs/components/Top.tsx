@@ -295,7 +295,7 @@ const Top = () => {
 										<Link href={'/account/join'}>
 											<div className={'join-box'}>
 												<span>
-													{t('Login')} / {t('Register')}
+													{t('Login')}
 												</span>
 											</div>
 										</Link>

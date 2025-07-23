@@ -6,7 +6,6 @@ import TopStores from '../libs/components/homepage/TopStores';
 import Events from '../libs/components/homepage/Events';
 import BrandsSection from '../libs/components/homepage/BrandSection';
 import { Stack } from '@mui/material';
-import Advertisement from '../libs/components/homepage/Advertisement';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import TopProducts from '../libs/components/homepage/TopProducts';
 import TrendProducts from '../libs/components/homepage/TrendProducts';
@@ -25,7 +24,6 @@ const Home: NextPage = () => {
 			<Stack className={'home-page'}>
 				<BrandsSection />
 				<TrendProducts />
-				<Advertisement />
 				<TopProducts />
 				<TopStores />
 			</Stack>
@@ -35,7 +33,6 @@ const Home: NextPage = () => {
 			<Stack className={'home-page'}>
 				<BrandsSection />
 				<TrendProducts />
-				<Advertisement />
 				<TopProducts />
 				<TopStores />
 				<Events />
