@@ -93,16 +93,9 @@ const TrendProducts = (props: TrendProductsProps) => {
 			<Stack className={'trend-products'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<Box component={'div'} className={'left'}>
-							<span>TRENDING</span>
-							<p>Trend is based on likes</p>
-						</Box>
-						<Box component={'div'} className={'right'}>
-							<div className={'pagination-box'}>
-								<WestIcon className={'swiper-trend-prev'} />
-								<div className={'swiper-trend-pagination'}></div>
-								<EastIcon className={'swiper-trend-next'} />
-							</div>
+						<Box component={'div'} className={'trends-top'}>
+							<span>Designed for Everyday Glamour</span>
+							<p>Soon-to-be staples in your rotation</p>
 						</Box>
 					</Stack>
 					<Stack className={'card-box'}>
@@ -111,26 +104,9 @@ const TrendProducts = (props: TrendProductsProps) => {
 								Trends Empty
 							</Box>
 						) : (
-							<Swiper
-								className={'trend-product-swiper'}
-								slidesPerView={'auto'}
-								modules={[Autoplay, Navigation, Pagination]}
-								navigation={{
-									nextEl: '.swiper-trend-next',
-									prevEl: '.swiper-trend-prev',
-								}}
-								pagination={{
-									el: '.swiper-trend-pagination',
-								}}
-							>
-								{trendProducts.map((product: Product) => {
-									return (
-										<SwiperSlide key={product._id} className={'trend-product-slide'}>
-											<TrendProductCard product={product} likeProductHandler={likeProductHandler} />
-										</SwiperSlide>
-									);
-								})}
-							</Swiper>
+							trendProducts.map((product: Product) => (
+								<TrendProductCard product={product} likeProductHandler={likeProductHandler} />
+							))
 						)}
 					</Stack>
 				</Stack>
