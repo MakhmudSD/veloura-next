@@ -24,5 +24,22 @@ export const userVar = makeVar<CustomJwtPayload>({
 	memberBlocks: 0,
 });
 
-//@ts-ignore 
+export interface ProductInBasket {
+	id: any;
+	_id: string;
+	productId: string;
+	productTitle: string;
+	productImages: string;
+	productPrice: number;
+	itemQuantity: number;
+	orderId?: string; // set after order created/fetched
+  }
+  
+  export const basketItemsVar = makeVar<ProductInBasket[]>([]);
+
+export const wishlistItemsVar = makeVar<
+	Array<{ productId: string; name: string; image: string; price: number; quantity: number }>
+>([]);
+
+//@ts-ignore
 export const socketVar = makeVar<WebSocket>();

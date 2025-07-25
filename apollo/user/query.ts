@@ -87,26 +87,34 @@ export const GET_MEMBER = gql(`
  *************************/
 
 // --- Get My Orders ---
+// apollo/user/query.ts
+
 export const GET_MY_ORDERS = gql`
   query GetMyOrders($input: OrderInquiry!) {
     getMyOrders(input: $input) {
-      id
+      _id
       orderTotal
+      orderDelivery
       orderStatus
       createdAt
-      items {
-        id
+      orderItems {
+        _id
+        productId
         itemQuantity
         itemPrice
-        productId {
-          id
-          name
-          price
+        productData {
+          _id
+          productTitle
+          productPrice
+          productImages
         }
       }
     }
   }
 `;
+
+
+
 
 /**************************
  *        PRODUCT        *

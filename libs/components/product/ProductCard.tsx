@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { formatterStr } from '../../utils';
 import { REACT_APP_API_URL, topProductRank } from '../../config';
 import { useMutation, useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
+import { basketItemsVar, userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { CREATE_ORDER } from '../../../apollo/user/mutation';
@@ -20,15 +20,36 @@ interface ProductCardType {
 	recentlyVisited?: boolean;
 }
 
-const [createOrder] = useMutation(CREATE_ORDER);
-
 const ProductCard = (props: ProductCardType) => {
+	const [createOrder] = useMutation(CREATE_ORDER);
 	const { product, likeProductHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const imagePath: string = product?.productImages[0]
 		? `${REACT_APP_API_URL}/${product?.productImages[0]}`
 		: '/img/banner/header1.svg';
+
+	const handleAdd = (id: string, title: string, image: string, price: number) => {
+		const currentItems = basketItemsVar();
+		const index = currentItems.findIndex(item => item.productId === id);
+		let updatedItems = [...currentItems];
+
+		if (index > -1) {
+			updatedItems[index].itemQuantity += 1;
+		} else {
+			updatedItems.push({
+				id: id, // Assuming id is the same as productId
+				_id: id, // Assuming _id is the same as productId
+				productId: id,
+				productTitle: title,
+				productImages: image,
+				productPrice: price,
+				itemQuantity: 1,
+			});
+		}
+
+		basketItemsVar(updatedItems); // Trigger reactive update
+	};
 
 	if (device === 'mobile') {
 		return <div>Product CARD</div>;
@@ -48,35 +69,19 @@ const ProductCard = (props: ProductCardType) => {
 						<Box component={'div'} className={'top-badge'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<Typography>TOP</Typography>
-							<Button
-								onClick={() => {
-									createOrder({
-										variables: {
-											input: [
-												{
-													productId: product._id, // or product.id
-													itemPrice: product.productPrice,
-													itemQuantity: 1,
-												},
-											],
-										},
-									})
-										.then((res) => {
-											console.log('Item added to basket', res.data);
-											// Optionally: Show toast, disable button, etc.
-										})
-										.catch((err) => {
-											console.error('Failed to add to basket', err.message);
-										});
-								}}
-							>
-								Add to Basket
-							</Button>
 						</Box>
 					)}
 					<Box component={'div'} className={'price-box'}>
 						<Typography>${formatterStr(product?.productPrice)}</Typography>
 					</Box>
+					<Button
+						variant="contained"
+						color="primary"
+						sx={{ textTransform: 'none', fontWeight: 600 }}
+						onClick={() => handleAdd(product._id, product.productTitle, imagePath, product.productPrice)}
+					>
+						Add to Basket
+					</Button>
 				</Stack>
 				<Stack className="bottom">
 					<Stack className="name-address">

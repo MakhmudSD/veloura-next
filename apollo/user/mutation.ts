@@ -125,32 +125,33 @@ export const LIKE_TARGET_MEMBER = gql`
 
 // --- Create Order ---
 export const CREATE_ORDER = gql`
-  mutation CreateOrder($input: [OrderItemInput!]!) {
-    createOrder(input: $input) {
-      id
-      orderTotal
-      orderDelivery
-      orderStatus
-      createdAt
-      items {
-        id
-        itemQuantity
-        itemPrice
-        productId {
-          id
-          name
-          price
-        }
+ mutation CreateOrder($input: [OrderItemInput!]!) {
+  createOrder(input: $input) {
+    _id
+    orderTotal
+    orderDelivery
+    orderStatus
+    createdAt
+    orderItems {
+      _id
+      itemQuantity
+      itemPrice
+      productId
+      productData {
+        _id
+        productTitle
+        productPrice
+        productImages 
       }
     }
   }
-`;
-
+}`;
+  
 // --- Update Order ---
 export const UPDATE_ORDER = gql`
   mutation UpdateOrder($input: OrderUpdateInput!) {
     updateOrder(input: $input) {
-      id
+      _id
       orderStatus
     }
   }
