@@ -1,5 +1,5 @@
 import React from 'react';
-import { Stack, Typography, Box } from '@mui/material';
+import { Stack, Typography, Box, Button } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -7,10 +7,11 @@ import { Product } from '../../types/product/product';
 import Link from 'next/link';
 import { formatterStr } from '../../utils';
 import { REACT_APP_API_URL, topProductRank } from '../../config';
-import { useReactiveVar } from '@apollo/client';
+import { useMutation, useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { CREATE_ORDER } from '../../../apollo/user/mutation';
 
 interface ProductCardType {
 	product: Product;
@@ -18,6 +19,8 @@ interface ProductCardType {
 	myFavorites?: boolean;
 	recentlyVisited?: boolean;
 }
+
+const [createOrder] = useMutation(CREATE_ORDER);
 
 const ProductCard = (props: ProductCardType) => {
 	const { product, likeProductHandler, myFavorites, recentlyVisited } = props;
@@ -45,6 +48,30 @@ const ProductCard = (props: ProductCardType) => {
 						<Box component={'div'} className={'top-badge'}>
 							<img src="/img/icons/electricity.svg" alt="" />
 							<Typography>TOP</Typography>
+							<Button
+								onClick={() => {
+									createOrder({
+										variables: {
+											input: [
+												{
+													productId: product._id, // or product.id
+													itemPrice: product.productPrice,
+													itemQuantity: 1,
+												},
+											],
+										},
+									})
+										.then((res) => {
+											console.log('Item added to basket', res.data);
+											// Optionally: Show toast, disable button, etc.
+										})
+										.catch((err) => {
+											console.error('Failed to add to basket', err.message);
+										});
+								}}
+							>
+								Add to Basket
+							</Button>
 						</Box>
 					)}
 					<Box component={'div'} className={'price-box'}>

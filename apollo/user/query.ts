@@ -83,7 +83,33 @@ export const GET_MEMBER = gql(`
 `);
 
 /**************************
- *        product        *
+ *        CART        *
+ *************************/
+
+// --- Get My Orders ---
+export const GET_MY_ORDERS = gql`
+  query GetMyOrders($input: OrderInquiry!) {
+    getMyOrders(input: $input) {
+      id
+      orderTotal
+      orderStatus
+      createdAt
+      items {
+        id
+        itemQuantity
+        itemPrice
+        productId {
+          id
+          name
+          price
+        }
+      }
+    }
+  }
+`;
+
+/**************************
+ *        PRODUCT        *
  *************************/
 
 export const GET_PRODUCT = gql`

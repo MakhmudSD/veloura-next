@@ -13,7 +13,7 @@ import { Direction, Message } from '../../libs/enums/common.enum';
 import { GET_PRODUCTS } from '../../apollo/user/query';
 import { useMutation, useQuery } from '@apollo/client';
 import { T } from '../../libs/types/common';
-import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
+import { CREATE_ORDER, LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
 import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import ProductCard from '../../libs/components/product/ProductCard';
 
@@ -37,22 +37,21 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [filterSortName, setFilterSortName] = useState('New');
 
 	/** APOLLO REQUESTS **/
-
-		const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT)
-		const {
-			loading: getProductsLoading,
-			data: getProductsData,
-			error: getProductsError,
-			refetch: getProductsRefetch,
-		} = useQuery(GET_PRODUCTS, {
-			fetchPolicy: 'network-only',
-			variables: { input: searchFilter },
-			notifyOnNetworkStatusChange: true,
-			onCompleted: (data: T) => {
-				setProducts(data?.getProducts?.list);
-				setTotal(data?.getProducts?.metaCounter[0]?.total)
-			},
-		});
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setProducts(data?.getProducts?.list);
+			setTotal(data?.getProducts?.metaCounter[0]?.total);
+		},
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -65,23 +64,23 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	}, [router]);
 
 	useEffect(() => {
-		console.log("searchFilter:", searchFilter)
+		console.log('searchFilter:', searchFilter);
 	}, [searchFilter]);
 
 	/** HANDLERS **/
-		const likeProductHandler = async (user: T, id: string) => {
-			try {
-				if(!id) return
-				if(!user._id) throw new Error(Message.SOMETHING_WENT_WRONG)
-				await likeTargetProduct({variables: {input: id}}) // server update
-			
-				await getProductsRefetch({ input: initialInput}) // frontend update
-				await sweetTopSmallSuccessAlert("success", 800)
-			} catch(err: any) {
-				console.log("ERROR on likeProductHandler", err.message)
-				sweetMixinErrorAlert(err.message).then()
-			}
+	const likeProductHandler = async (user: T, id: string) => {
+		try {
+			if (!id) return;
+			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
+			await likeTargetProduct({ variables: { input: id } }); // server update
+
+			await getProductsRefetch({ input: initialInput }); // frontend update
+			await sweetTopSmallSuccessAlert('success', 800);
+		} catch (err: any) {
+			console.log('ERROR on likeProductHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
 		}
+	};
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
 		searchFilter.page = value;
 		await router.push(
@@ -176,7 +175,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 									</div>
 								) : (
 									products.map((product: Product) => {
-										return <ProductCard product={product} likeProductHandler={likeProductHandler} key={product?._id}/>;
+										return <ProductCard product={product} likeProductHandler={likeProductHandler} key={product?._id} />;
 									})
 								)}
 							</Stack>
@@ -218,7 +217,7 @@ ProductList.defaultProps = {
 		search: {
 			pricesRange: {
 				start: 0,
-				end: 2000000, 
+				end: 2000000,
 			},
 		},
 	},
