@@ -283,293 +283,345 @@
 			}
 		} 
 		
-		.trend-products {
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			position: relative;
-			overflow-x: auto;
-			scroll-snap-type: x mandatory;
-			padding: 40px 20px;
-			gap: 30px;
-			scroll-padding: 100px;
-			scroll-behavior: smooth;
-		
-			&::-webkit-scrollbar {
-				display: none;
-			}
-			.container {
-			  .info-box {
-				display: flex;
-				flex-direction: column;
-				gap: 20px;
-				justify-content: space-between;
-				align-items: center;
-				margin-top: 110px;
-				margin-bottom: 35px;
-		  
-				.trends-top {
-				  width: 673px;
-				  height: 58px;
-				  margin-left: 80px;
-		  
-				  span {
-					color: #222;
-					text-align: center;
-					font-family: "Judson";
-					font-size: 50px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: normal;
-					text-transform: capitalize;
-				  }
-		  
-				  p {
-					color: rgba(46, 46, 46, 0.80);
-					text-align: center;
-					font-family: "Inter";
-					font-size: 16px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 30px;
-				  }
-				}
-			  }
-		  
-			  .card-box {
-				margin-top: 64px;
-				display: flex;
-				flex-direction: row;
-				overflow-x: scroll;
-				scroll-snap-type: x mandatory;
-				gap: 20px;
-				padding-bottom: 20px;
-		  
-				.trend-card-box {
-					position: relative;
-					display: flex;
-					flex-direction: column;
-					justify-content: space-between;
-					align-items: stretch;
-					width: 427px;
-					height: 523px;
-					flex-shrink: 0;
-					border: 1px solid #2A1F1C;
-					background: #E4E3DA;
-					border-radius: 12px;
-					overflow: hidden;
-					transition: transform 0.3s ease, opacity 0.3s ease;
-					gap: 10px;
-					scroll-snap-align: center;
-		
-					&:nth-child(odd) {
-						transform: scale(0.8);
-						opacity: 0.7;
-					}
-		
-					&:hover {
-						transform: scale(1.05);
-						opacity: 1;
-					}
-		  
+		@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&display=swap');
 
-					&.main {
-						transform: scale(1.2);
-						opacity: 1;
-					}
-  		
-				  .card-img {
-					position: relative;
-					width: 100%;
-					height: 70%;
-					overflow: hidden;
-					border-radius: 12px 12px 0 0;
-					cursor: pointer;
-					z-index: 1;
-		  
-					.main-img,
-					.hover-img {
-					  position: absolute;
-					  top: 0;
-					  left: 0;
-					  width: 100%;
-					  height: 100%;
-					  object-fit: cover;
-					  transition: opacity 0.4s ease-in-out;
-					}
-		  
-					.main-img {
-					  opacity: 1;
-					  z-index: 1;
-					}
-		  
-					.hover-img {
-					  opacity: 0;
-					  z-index: 2;
-					}
-		  
-					&:hover {
-					  .main-img {
-						opacity: 0.15;
-					  }
-		  
-					  .hover-img {
-						opacity: 1;
-					  }
-		  
-					  .add-to-cart-btn {
-						margin-top: 10px;
-						padding: 10px;
-						background: #000;
-						color: #fff;
-						text-align: center;
-						font-family: "Inter";
-						font-size: 14px;
-						font-weight: 600;
-						border-radius: 6px;
-						cursor: pointer;
-						transition: background 0.3s ease;
+$blue: #006bb6;
+$yellow: #fdb927;
+$slate: #26282a;
+
+body {
+  margin: 0;
+  font-family: 'Quicksand', sans-serif;
+  background: $blue;
+  color: $slate;
+}
+
+p {
+  font-family: 'Quicksand', sans-serif;
+}
+
+h1 {
+  text-align: center;
+  margin: 1em auto;
+  color: $yellow;
+}
+
+.trend-products {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden; /* Hide overflow for smooth scrolling */
+  padding: 40px 20px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
+
+    .info-box {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 110px;
+      margin-bottom: 35px;
+
+      .trends-top {
+        width: 673px;
+        height: 58px;
+        margin-left: 80px;
+
+        span {
+          color: #222;
+          text-align: center;
+          font-family: "Judson";
+          font-size: 50px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: normal;
+          text-transform: capitalize;
+        }
+
+        p {
+          color: rgba(46, 46, 46, 0.8);
+          text-align: center;
+          font-family: "Inter";
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 30px;
+        }
+      }
+    }
+
+    .card-box {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start; // Changed to flex-start
+      align-items: center;
+      gap: 20px;
+      position: relative;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      padding: 20px;
+      scroll-padding: 20px;
+      cursor: grab;  // Enable cursor grab
+
+      &::-webkit-scrollbar {
+        display: none;
+      }
+
+      .trend-card-box {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        width: 427px;
+        height: 523px;
+        flex-shrink: 0;
+        border: 1px solid #2a1f1c;
+        background: #e4e3da;
+        border-radius: 12px;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;  // Transition all properties
+        scroll-snap-align: center;
+		scroll-snap-stop: always; 
+		transition: transform 0.4s ease, opacity 0.4s ease;
+		transform: scale(0.95);
 	
-						&:hover {
-							background: #444;
-						}
-					}
-					  .view-box,
-					  .like-btn {
-						opacity: 1;
-						pointer-events: auto;
-						visibility: visible;
-					  }
-					}
-		  
-					.badge {
-					  position: absolute;
-					  top: 12px;
-					  left: 12px;
-					  display: flex;
-					  width: auto;
-					  height: auto;
-					  padding: 4px 12px;
-					  justify-content: center;
-					  align-items: center;
-					  border-radius: 40px;
-					  opacity: 0.9;
-					  background: #fff;
-					  z-index: 3;
-		  
-					  .badge-text {
-						color: #2E2E2E;
-						font-family: "Judson";
-						font-size: 18px;
-						font-weight: 400;
-						text-transform: capitalize;
-						z-index: 4;
-					  }
-					}
-		  
-					.view-box {
-					  bottom: 12px;
-					  left: 12px;
-					  background: rgba(255, 255, 255, 0.85);
-					  border-radius: 12px;
-					  padding: 5px 10px;
-					  font-family: $font;
-					  font-size: 12px;
-					  font-weight: 400;
-					  color: #121212;
-					  display: flex;
-					  align-items: center;
-					  gap: 6px;
-		  
-					  svg {
-						font-size: 16px;
-					  }
-					}
-		  
-					.add-to-basket-btn {
-					  bottom: 12px;
-					  left: 50%;
-					  transform: translateX(-50%);
-					  background: #000;
-					  color: #fff;
-					  border-radius: 6px;
-					  padding: 8px 16px;
-					  font-size: 14px;
-					  font-weight: 600;
-					  display: flex;
-					  align-items: center;
-					  justify-content: center;
-					}
-		  
-					.like-btn {
-					  bottom: 12px;
-					  right: 12px;
-					  background: #fff;
-					  border-radius: 50%;
-					  padding: 8px;
-					  display: flex;
-					  align-items: center;
-					  justify-content: center;
-					  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
-		  
-					  &:hover {
-						transform: scale(1.1);
-					  }
-		  
-					  svg {
-						font-size: 20px;
-					  }
-					}
-				  }
-		  
-				
-				}
-				.info {
-					padding: 14px 18px;
-				 display: flex;
-				 flex-direction: column;
-				 background: #fff;
-				 border: 1px solid #ddd;
-				 border-top: none;
-				 box-shadow: 0 1px 4px rgba(24, 26, 32, 0.07);
-				 border-radius: 0 0 12px 12px;
-		   
-					 .title {
-					   width: 216px;
-					   height: 23px;
-			 			color: #2E2E2E;
-					 font-family: "Judson";
-					 font-size: 22px;
-					 font-weight: 400;
-					 text-transform: capitalize;
-					 }
-		   
-					 .meta {
-					   display: flex;
-					   justify-content: space-between;
-					   align-items: center;
-					   margin-bottom: 10px;
-		   
-					   .price {
-						 color: #2E2E2E;
-						 font-family: "Inter";
-						 font-size: 16px;
-						 font-weight: 400;
-						 line-height: 30px;
-					   }
-					 }
-				   }
+		// When centered (visually in scroll center), scale up
+		&.active {
+		  transform: scale(1.01);
+		  opacity: 1;
+		  z-index: 10;
+		}
+        .card-img {
+          position: relative;
+          width: 100%;
+          height: 100%;
+          overflow: hidden;
+          border-radius: 12px;
+          cursor: pointer;
+
+          .main-img,
+          .hover-img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.4s ease-in-out;
+          }
+
+          .main-img {
+            opacity: 1;
+            z-index: 1;
+          }
+
+          .hover-img {
+            opacity: 0;
+            z-index: 2;
+          }
+
+          &:hover {
+            .main-img {
+              opacity: 0.15;
+            }
+
+            .hover-img {
+              opacity: 1;
+            }
+          }
+
+          .badge {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.1); // softer transparent
+            backdrop-filter: blur(4px);
+            color: #000;
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 500;
+            z-index: 3;
+          }
+
+          .btn-group {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 30px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease-in-out;
+            z-index: 3;
+
+			.view-box {
+			  background: transparent;
+			  border: 1px solid #000;
+			  padding: 6px 10px;
+			  border-radius: 20px;
+			  font-size: 12px;
+			  font-weight: 500;
+			  color: #000;
+			  display: flex;
+			  align-items: center;
+			  gap: 4px;
+			  cursor: pointer;
+			  transition: all 0.3s ease;
+			
+			  svg,
+			  img {
+				filter: none;
+				color: inherit; // fallback for svg fill
+				transition: filter 0.3s ease, color 0.3s ease;
 			  }
 			}
-		  }		  
 
-		.video-frame {
-			width: 100%;
-			height: 678px;
-			background: black;
-			transform: perspective(0px);
-			box-shadow: -3px 0px 20px 14px #34343480;
-		}
+			.like-btn {
+				background: transparent;
+				border: 1px solid #000;
+				padding: 6px 10px;
+				border-radius: 20px;
+				cursor: pointer;
+				transition: none; // no hover transition
+			  
+				&.glow {
+				  animation: glowAnim 0.6s ease forwards;
+				}
+			  }
+			  
+			  @keyframes glowAnim {
+				0% {
+				  box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+				}
+				50% {
+				  box-shadow: 0 0 8px 4px rgba(255, 0, 0, 0.9);
+				}
+				100% {
+				  box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+				}
+			  }
+			  
+			
+
+
+		
+			  
+			  .add-to-basket-btn {
+				background: #000;
+				color: #fff;
+				width: 164.659px;
+				height: 50.341px;
+				flex-shrink: 0;
+				border-radius: 20px;
+				padding: 8px 18px;
+				font-size: 15px;
+				font-weight: 900;
+				letter-spacing: 1px;
+				text-transform: uppercase;
+				cursor: pointer;
+				border: none;
+				transition: all 0.3s ease;
+				
+				&:hover {
+					background: none;     // black background
+					color: #000;          // white text
+					border: 1px solid #000;
+				  }
+				&.glow {
+				  animation: glow-on-click 0.6s ease;
+				}
+			  
+				span {
+				  color: #eeeeee;
+				  text-align: center;
+				  font-family: "Judson";
+				  font-size: 14px;
+				  font-style: normal;
+				  font-weight: 900;
+				  line-height: 8px;
+				  letter-spacing: 2.1px;
+				  text-transform: uppercase;
+
+				  &:hover {
+					color: #000;         
+				  }
+				}
+			  }
+			}			  
+        }
+        &:hover {
+          .btn-group {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+          }
+        }
+      }
+
+      .info-bottom {
+        margin-top: 10px;
+        text-align: center;
+
+        .info {
+          background: none;
+          border: none;
+
+          .title {
+            color: #2e2e2e;
+            font-family: "Judson";
+            font-size: 22px;
+            font-weight: 400;
+            text-transform: capitalize;
+          }
+
+          .meta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+
+            .price {
+              color: #2e2e2e;
+              font-family: "Inter";
+              font-size: 16px;
+              font-weight: 400;
+              line-height: 30px;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@keyframes glow-on-click {
+	0% {
+	  box-shadow: 0 0 0px #fff;
+	}
+	50% {
+	  box-shadow: 0 0 15px 5px rgba(255, 255, 255, 0.7);
+	}
+	100% {
+	  box-shadow: 0 0 0px #fff;
+	}
+  }
 
 		.top-products {
 			padding: 108px 0px 76px;

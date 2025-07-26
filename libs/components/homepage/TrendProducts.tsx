@@ -44,24 +44,23 @@ const TrendProducts = (props: TrendProductsProps) => {
 
 	const likeProductHandler = async (user: T, id: string) => {
 		try {
-			if(!id) return
-			if(!user._id) throw new Error(Message.SOMETHING_WENT_WRONG)
-			await likeTargetProduct({variables: {input: id}}) // server update
-		
-			await getProductsRefetch({ input: initialInput}) // frontend update
-			await sweetTopSmallSuccessAlert("success", 800)
-		} catch(err: any) {
-			console.log("ERROR on likeProductHandler", err.message)
-			sweetMixinErrorAlert(err.message).then()
+		  if (!id) return;
+		  if (!user._id) throw new Error('Something went wrong');
+	  
+		  await likeTargetProduct({ variables: { input: id } }); // just server update, no refetch
+	  
+		} catch (err: any) {
+		  console.error("ERROR on likeProductHandler", err.message);
 		}
-	}
+	  };
 
 	if (device === 'mobile') {
 		return (
 			<Stack className={'trend-products'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<span>TRENDING</span>
+					<span>Designed for Everyday Glamour</span>
+					<p>Soon-to-be staples in your rotation</p>
 					</Stack>
 					<Stack className={'card-box'}>
 						{trendProducts.length === 0 ? (
@@ -105,7 +104,8 @@ const TrendProducts = (props: TrendProductsProps) => {
 							</Box>
 						) : (
 							trendProducts.map((product: Product) => (
-								<TrendProductCard product={product} likeProductHandler={likeProductHandler} />
+								<TrendProductCard product={product}    key={product._id}
+								likeProductHandler={likeProductHandler} />
 							))
 						)}
 					</Stack>
@@ -119,7 +119,7 @@ TrendProducts.defaultProps = {
 	initialInput: {
 		page: 1,
 		limit: 8,
-		sort: 'productLikes',
+		sort: 'productViews',
 		direction: 'DESC',
 		search: {},
 	},
