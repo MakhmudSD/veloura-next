@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
 import { Stack, Box, Typography, IconButton } from '@mui/material';
-import FavoriteIcon from '@mui/icons-material/Favorite'; // filled heart
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'; // outline heart
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { REACT_APP_API_URL } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { basketItemsVar, userVar } from '../../../apollo/store';
 import { Product } from '../../types/product/product';
 import router from 'next/router';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
 
 interface TrendProductCardProps {
   product: Product;
   likeProductHandler: any;
+  myFavorites?: boolean;
+  recentlyVisited?: boolean;
 }
 
 const pushDetailHandler = async (productId: string) => {
@@ -21,13 +24,13 @@ const pushDetailHandler = async (productId: string) => {
 const handleAdd = (id: string, title: string, image: string, price: number) => {
   const currentItems = basketItemsVar();
   const index = currentItems.findIndex((item) => item.productId === id);
-  let updatedItems = [...currentItems];
+  const updatedItems = [...currentItems];
 
   if (index > -1) {
     updatedItems[index].itemQuantity += 1;
   } else {
     updatedItems.push({
-      id: id,
+      id,
       _id: id,
       productId: id,
       productTitle: title,
@@ -40,24 +43,25 @@ const handleAdd = (id: string, title: string, image: string, price: number) => {
   basketItemsVar(updatedItems);
 };
 
-const TrendProductCard = ({ product, likeProductHandler }: TrendProductCardProps) => {
+const TrendProductCard = (props: TrendProductCardProps) => {
+  const { product, likeProductHandler, myFavorites, recentlyVisited } = props;
+  const device = useDeviceDetect();
   const user = useReactiveVar(userVar);
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(product?.meLiked?.[0]?.myFavorite || false);
   const [glow, setGlow] = useState(false);
 
-  const imagePath: string = product?.productImages[0]
-    ? `${REACT_APP_API_URL}/${product?.productImages[0]}`
+  const imagePath: string = product?.productImages?.[0]
+    ? `${REACT_APP_API_URL}/${product.productImages[0]}`
     : '/img/banner/header1.svg';
 
-	const handleLikeClick = (e: React.MouseEvent) => {
-		e.preventDefault();    // Add this line to prevent default browser behavior
-		e.stopPropagation();
-		likeProductHandler(user, product._id);
-		setLiked(!liked);
-		setGlow(true);
-		setTimeout(() => setGlow(false), 600);
-	  };
-	  
+  const handleLikeClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    likeProductHandler(user, product._id);
+    setLiked((prev) => !prev);
+    setGlow(true);
+    setTimeout(() => setGlow(false), 600);
+  };
 
   const handleAddClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -70,47 +74,38 @@ const TrendProductCard = ({ product, likeProductHandler }: TrendProductCardProps
         <Stack className="trend-card-box" key={product._id}>
           <Box className="card-img" onClick={() => pushDetailHandler(product._id)}>
             <img className="main-img" src={imagePath} alt={product.productTitle} />
-            {product?.productImages[1] && (
+            {product?.productImages?.[1] && (
               <img
                 className="hover-img"
-                src={`${REACT_APP_API_URL}/${product?.productImages[1]}`}
+                src={`${REACT_APP_API_URL}/${product.productImages[1]}`}
                 alt={product.productTitle}
               />
             )}
-
             {product?.productCategory && (
               <Box className="badge">
-                <Typography className="badge-text">{product?.productCategory}</Typography>
+                <Typography className="badge-text">{product.productCategory}</Typography>
               </Box>
             )}
-
-            <div className="btn-group">
-              <Box className="view-box">
-                <RemoveRedEyeIcon sx={{ fontSize: 14 }} />
-                <Typography>{product?.productViews}</Typography>
-              </Box>
-
-              <button className="add-to-basket-btn" onClick={handleAddClick} >
-                <span>Add to Wishlist</span>
-              </button>
-
-              <IconButton
-                className={`like-btn ${liked ? 'liked' : ''} ${glow ? 'glow' : ''}`}
-                onClick={handleLikeClick}
-                aria-label="like"
-                size="small"
-                disableRipple
-              >
-                {liked ? (
-                  <FavoriteIcon sx={{ color: 'red' }} />
-                ) : (
-                  <FavoriteBorderIcon sx={{ color: 'black' }} />
-                )}
-              </IconButton>
-            </div>
+            {!recentlyVisited && (
+              <div className="btn-group">
+                <Box className="view-box">
+                  <RemoveRedEyeIcon sx={{ fontSize: 14 }} />
+                  <Typography>{product?.productViews}</Typography>
+                </Box>
+                <button className="add-to-basket-btn" onClick={handleAddClick}>
+                  <span>Add to Cart</span>
+                </button>
+                <IconButton color="default" onClick={handleLikeClick}>
+                  {(liked || myFavorites || product?.meLiked?.[0]?.myFavorite) ? (
+                    <FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
+                </IconButton>
+              </div>
+            )}
           </Box>
         </Stack>
-
         <Stack className="info-bottom">
           <Box className="info">
             <strong className="title" onClick={() => pushDetailHandler(product._id)}>
