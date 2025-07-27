@@ -1,193 +1,192 @@
-// CategoryProducts.tsx
-import React, { useState, useEffect } from 'react';
-import { Stack, Box, Divider } from '@mui/material';
+import React, { useState } from 'react';
+import { Stack, Button, Typography, Box, Divider } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
+import TopProductCard from './CategoryProductCard';
 import { ProductsInquiry } from '../../types/product/product.input';
 import { Product } from '../../types/product/product';
 import { GET_PRODUCTS } from '../../../apollo/user/query';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { T } from '../../types/common';
-import { useRouter } from 'next/router';
-
+import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
+import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { Message } from '../../enums/common.enum';
 import CategoryProductCard from './CategoryProductCard';
 
 interface CategoryProductsProps {
-  initialInput: ProductsInquiry;
+	initialInput: ProductsInquiry;
 }
 
+// Full enum category list for filter buttons
+const CATEGORY_ENUM = ['RING', 'NECKLACE', 'EARRINGS', 'BRACELET', 'DIAMOND', 'GIFT', 'WEDDING_RING'];
+
 const CategoryProducts = (props: CategoryProductsProps) => {
-  const { initialInput } = props;
-  const device = useDeviceDetect();
-  const [categoryProducts, setCategoryProducts] = useState<Product[]>([]);
-  const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>('RING'); // Default to 'RING'
+	const { initialInput } = props;
+	const device = useDeviceDetect();
+	const [categoryProducts, setCategoryProducts] = useState<Product[]>([]);
+	const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
-  /** APOLLO REQUESTS **/
+	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
 
-  const {
-    loading: getProductsLoading,
-    data: getProductsData,
-    error: getProductsError,
-    refetch: getProductsRefetch,
-  } = useQuery(GET_PRODUCTS, {
-    fetchPolicy: 'cache-and-network',
-    variables: { input: initialInput },
-    notifyOnNetworkStatusChange: true,
-    onCompleted: (data: T) => {
-      setCategoryProducts(data?.getProducts?.list);
-    },
-  });
-
-  useEffect(() => {
-	getProductsRefetch({
-	  input: {
-		...initialInput,
-		search: {
-		  ...initialInput.search,
-		  categoryList: [selectedCategory], // THIS IS THE FIX
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: { input: initialInput },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setCategoryProducts(data?.getProducts?.list);
 		},
-	  },
 	});
-  }, [selectedCategory]);
-  
-  const handleCategoryClick = (category: string) => {
-    setSelectedCategory(category);
-  };
 
-  const categoryList = [
-    'RING',
-    'NECKLACE',
-    'BRACELET',
-    'EARRING',
-    'DIAMOND',
-    'WEDDING RINGS',
-    'GIFT',
-  ];
+	/** HANDLERS **/
 
-  const filteredProducts = selectedCategory
-    ? categoryProducts.filter(
-        (product) => product.productCategory === selectedCategory
-      )
-    : categoryProducts;
+	// Filter products by selectedCategory (if any)
+	const filteredProducts = selectedCategory
+		? categoryProducts.filter((p) => {
+				if (Array.isArray(p.productCategory)) {
+					return p.productCategory.includes(selectedCategory);
+				}
+				return p.productCategory === selectedCategory;
+		  })
+		: categoryProducts;
 
-  if (device === 'mobile') {
-    return (
-      <Stack className="category-products">
-        <Stack className="container">
-          <Stack className="category-left">
-            <Box className="info">
-              <span>Good products</span>
-              <h1>Discover Our Best Picks</h1>
-              <p>Check out our Top products</p>
-            </Box>
-            <Box className="category-list">
-              {categoryList.map((category) => (
-                <span key={category} onClick={() => handleCategoryClick(category)}>
-                  {category}
-                </span>
-              ))}
-            </Box>
-          </Stack>
+	// Handle category selection from filter list
+	const handleCategorySelect = (category: string | null) => {
+		setSelectedCategory(category);
+	};
 
-          <Stack className="card-box">
-            <Swiper
-              className="category-product-swiper"
-              slidesPerView={'auto'}
-              centeredSlides={true}
-              spaceBetween={15}
-              modules={[Autoplay]}
-            >
-              {filteredProducts.map((product: Product) => {
-                return (
-                  <SwiperSlide className="category-product-slide" key={product?._id}>
-                    <CategoryProductCard product={product} />
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
-          </Stack>
-        </Stack>
-      </Stack>
-    );
-  } else {
-    return (
-      <div className="category-products">
-        <div className="container">
-          <div className="category-left">
-            <div className="info">
-              <span>Shop by Category</span>
-              <h1>Fresh Styles, Limitless Performance</h1>
-              <p>
-                Explore our latest collections, crafted with innovation and style, to
-                elevate your workout game to new heights.
-              </p>
-            </div>
-            <div className="category-list">
-              {categoryList.map((category) => (
-                <React.Fragment key={category}>
-                  <span
-                    onClick={() => handleCategoryClick(category)}
-                    onMouseEnter={() => setHoveredCategory(category)}
-                    onMouseLeave={() => setHoveredCategory(null)}
-                    className="category-list-item"
-                    style={{
-                      marginLeft: selectedCategory === category ? '15px' : '0',
-                      transition: 'margin-left 0.3s ease',
-                      display: 'flex',
-                      alignItems: 'center',
-                    }}
-                  >
-                    {category}
-                    {hoveredCategory === category && (
-                      <img
-                        src="/img/icons/page-locator.png"
-                        alt="Page Locator"
-                        className="page-locator"
-                      />
-                    )}
-                  </span>
-                  <Divider sx={{ backgroundColor: 'red', height: '2px' }} />
-                </React.Fragment>
-              ))}
-            </div>
-          </div>
-          <div className="card-box">
-            <Swiper
-              className="category-product-swiper"
-              slidesPerView={1}
-              spaceBetween={15}
-              modules={[Autoplay, Navigation, Pagination]}
-              navigation={{
-                nextEl: '.swiper-category-next',
-                prevEl: '.swiper-category-prev',
-              }}
-              pagination={{
-                el: '.swiper-category-pagination',
-              }}
-            >
-              {filteredProducts.map((product: Product) => (
-                <SwiperSlide key={product._id}>
-                  <CategoryProductCard product={product} selectedCategory={selectedCategory} />
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
-        </div>
-      </div>
-    );
-  }
+	if (device === 'mobile') {
+		return (
+			<Stack className={'category-products'}>
+				<Stack className={'container'}>
+					{/* Category Filter Buttons */}
+					<Stack direction="row" spacing={1} mb={2} flexWrap="wrap" justifyContent="center">
+						<Button
+							variant={selectedCategory === null ? 'contained' : 'outlined'}
+							onClick={() => handleCategorySelect(null)}
+							size="small"
+						>
+							All
+						</Button>
+						{CATEGORY_ENUM.map((cat) => (
+							<Button
+								key={cat}
+								variant={selectedCategory === cat ? 'contained' : 'outlined'}
+								size="small"
+								onClick={() => handleCategorySelect(cat)}
+							>
+								{cat.replace('_', ' ')}
+							</Button>
+						))}
+					</Stack>
+
+					<Stack className={'info-box'}>
+						<span>Shop by Category</span>
+						<h1>Fresh Styles, Limitless Performance</h1>
+						<p>
+							Explore our latest collections, crafted with innovation and style, to elevate your workout game to new
+							heights.
+						</p>
+					</Stack>
+
+					<Stack className={'card-box'}>
+						<Swiper
+							className={'category-product-swiper'}
+							slidesPerView={1}
+							centeredSlides={true}
+							spaceBetween={15}
+							modules={[Autoplay]}
+						>
+							{filteredProducts.map((product: Product) => (
+								<SwiperSlide className={'category-product-slide'} key={product?._id}>
+									<TopProductCard product={product}  />
+								</SwiperSlide>
+							))}
+						</Swiper>
+					</Stack>
+				</Stack>
+			</Stack>
+		);
+	} else {
+		return (
+			<Stack className={'category-products'}>
+				<Stack className={'container'}>
+					{/* Category Filter Buttons */}
+
+					<Stack className={'info-box'}>
+						<h1>Shop by Category</h1>
+						<div className="heading-underline" />
+
+						<Stack className="category-filter-buttons">
+							<Button
+								className={`category-filter-button ${selectedCategory === null ? 'active' : ''}`}
+								onClick={() => handleCategorySelect(null)}
+							>
+								All
+								<span className="page-locator" />
+							</Button>
+
+							{CATEGORY_ENUM.map((cat) => (
+								<Button
+									key={cat}
+									className={`category-filter-button ${selectedCategory === cat ? 'active' : ''}`}
+									onClick={() => handleCategorySelect(cat)}
+								>
+									{cat.replace('_', ' ')}
+									<span className="page-locator" />
+								</Button>
+							))}
+						</Stack>
+					</Stack>
+					<Stack className={'card-box'}>
+						{filteredProducts.length === 0 ? (
+							// Show sad face message *inside* the swiper card area
+							<Box className="no-products-message">
+								<img src="/img/icons/no-jewelry.png" alt="" />
+							</Box>
+						) : (
+							<Swiper
+								className={'top-product-swiper'}
+								slidesPerView={1}
+								spaceBetween={15}
+								centeredSlides={true}
+								modules={[Autoplay, Navigation, Pagination]}
+								navigation={{
+									nextEl: '.swiper-top-next',
+									prevEl: '.swiper-top-prev',
+								}}
+								pagination={{
+									el: '.swiper-top-pagination',
+								}}
+							>
+								{filteredProducts.map((product: Product) => (
+									<SwiperSlide className={'top-product-slide'} key={product?._id}>
+										<CategoryProductCard product={product}  />
+									</SwiperSlide>
+								))}
+							</Swiper>
+						)}
+					</Stack>
+				</Stack>
+			</Stack>
+		);
+	}
 };
 
 CategoryProducts.defaultProps = {
-  initialInput: {
-    page: 1,
-    limit: 8,
-    sort: 'productCategory',
-    direction: 'DESC',
-    search: 'RING',
-  },
+	initialInput: {
+		page: 1,
+		limit: 8,
+		sort: 'productRank',
+		direction: 'DESC',
+		search: {},
+	},
 };
 
 export default CategoryProducts;

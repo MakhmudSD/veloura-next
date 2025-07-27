@@ -26,6 +26,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
+
 	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(
 		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
 	);
@@ -55,13 +56,16 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (router.query.input) {
-			const inputObj = JSON.parse(router?.query?.input as string);
-			setSearchFilter(inputObj);
-		}
+		const updatedInput = router?.query?.input
+			? JSON.parse(router?.query?.input as string)
+			: { ...initialInput };
 
-		setCurrentPage(searchFilter.page === undefined ? 1 : searchFilter.page);
-	}, [router]);
+		
+
+		setSearchFilter(updatedInput);
+		setCurrentPage(updatedInput.page ?? 1);
+		getProductsRefetch({ input: updatedInput });
+	}, [router.query]);
 
 	useEffect(() => {
 		console.log('searchFilter:', searchFilter);
@@ -72,24 +76,19 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 		try {
 			if (!id) return;
 			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
-			await likeTargetProduct({ variables: { input: id } }); // server update
-
-			await getProductsRefetch({ input: initialInput }); // frontend update
+			await likeTargetProduct({ variables: { input: id } });
+			await getProductsRefetch({ input: initialInput });
 			await sweetTopSmallSuccessAlert('success', 800);
 		} catch (err: any) {
 			console.log('ERROR on likeProductHandler', err.message);
 			sweetMixinErrorAlert(err.message).then();
 		}
 	};
+
 	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
-		searchFilter.page = value;
-		await router.push(
-			`/product?input=${JSON.stringify(searchFilter)}`,
-			`/product?input=${JSON.stringify(searchFilter)}`,
-			{
-				scroll: false,
-			},
-		);
+		const updatedFilter = { ...searchFilter, page: value };
+		setSearchFilter(updatedFilter);
+		await router.push(`/product?input=${JSON.stringify(updatedFilter)}`, undefined, { scroll: false });
 		setCurrentPage(value);
 	};
 
@@ -104,19 +103,25 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	};
 
 	const sortingHandler = (e: React.MouseEvent<HTMLLIElement>) => {
+		let updatedFilter = { ...searchFilter };
 		switch (e.currentTarget.id) {
 			case 'new':
-				setSearchFilter({ ...searchFilter, sort: 'createdAt', direction: Direction.ASC });
+				updatedFilter.sort = 'createdAt';
+				updatedFilter.direction = Direction.ASC;
 				setFilterSortName('New');
 				break;
 			case 'lowest':
-				setSearchFilter({ ...searchFilter, sort: 'productPrice', direction: Direction.ASC });
+				updatedFilter.sort = 'productPrice';
+				updatedFilter.direction = Direction.ASC;
 				setFilterSortName('Lowest Price');
 				break;
 			case 'highest':
-				setSearchFilter({ ...searchFilter, sort: 'productPrice', direction: Direction.DESC });
+				updatedFilter.sort = 'productPrice';
+				updatedFilter.direction = Direction.DESC;
 				setFilterSortName('Highest Price');
+				break;
 		}
+		setSearchFilter(updatedFilter);
 		setSortingOpen(false);
 		setAnchorEl(null);
 	};
@@ -133,39 +138,25 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 							<Button onClick={sortingClickHandler} endIcon={<KeyboardArrowDownRoundedIcon />}>
 								{filterSortName}
 							</Button>
-							<Menu anchorEl={anchorEl} open={sortingOpen} onClose={sortingCloseHandler} sx={{ paddingTop: '5px' }}>
-								<MenuItem
-									onClick={sortingHandler}
-									id={'new'}
-									disableRipple
-									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
-								>
+							<Menu anchorEl={anchorEl} open={sortingOpen} onClose={sortingCloseHandler}>
+								<MenuItem onClick={sortingHandler} id={'new'} disableRipple>
 									New
 								</MenuItem>
-								<MenuItem
-									onClick={sortingHandler}
-									id={'lowest'}
-									disableRipple
-									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
-								>
+								<MenuItem onClick={sortingHandler} id={'lowest'} disableRipple>
 									Lowest Price
 								</MenuItem>
-								<MenuItem
-									onClick={sortingHandler}
-									id={'highest'}
-									disableRipple
-									sx={{ boxShadow: 'rgba(149, 157, 165, 0.2) 0px 8px 24px' }}
-								>
+								<MenuItem onClick={sortingHandler} id={'highest'} disableRipple>
 									Highest Price
 								</MenuItem>
 							</Menu>
 						</div>
 					</Box>
+
 					<Stack className={'product-page'}>
 						<Stack className={'filter-config'}>
-							{/* @ts-ignore */}
 							<Filter searchFilter={searchFilter} setSearchFilter={setSearchFilter} initialInput={initialInput} />
 						</Stack>
+
 						<Stack className="main-config" mb={'76px'}>
 							<Stack className={'list-config'}>
 								{products?.length === 0 ? (
@@ -174,11 +165,16 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 										<p>No Products found!</p>
 									</div>
 								) : (
-									products.map((product: Product) => {
-										return <ProductCard product={product} likeProductHandler={likeProductHandler} key={product?._id} />;
-									})
+									products.map((product: Product) => (
+										<ProductCard
+											product={product}
+											likeProductHandler={likeProductHandler}
+											key={product._id}
+										/>
+									))
 								)}
 							</Stack>
+
 							<Stack className="pagination-config">
 								{products.length !== 0 && (
 									<Stack className="pagination-box">

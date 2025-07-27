@@ -7,8 +7,8 @@ import Events from '../libs/components/homepage/Events';
 import BrandsSection from '../libs/components/homepage/BrandSection';
 import { Stack } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
-import TopProducts from '../libs/components/homepage/TopProducts';
 import TrendProducts from '../libs/components/homepage/TrendProducts';
+import CategoryProducts from '../libs/components/homepage/CategoryProducts';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -24,7 +24,7 @@ const Home: NextPage = () => {
 			<Stack className={'home-page'}>
 				<BrandsSection />
 				<TrendProducts />
-				<TopProducts />
+				<CategoryProducts />
 				<TopStores />
 			</Stack>
 		);
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
 			<Stack className={'home-page'}>
 				<BrandsSection />
 				<TrendProducts />
-				<TopProducts />
+				<CategoryProducts />
 				<TopStores />
 				<Events />
 				<CommunityBoards />

@@ -1,61 +1,86 @@
-// CategoryProductCard.tsx
 import React from 'react';
-import { Stack, Box, Button } from '@mui/material';
+import { Stack, Box, Divider, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { REACT_APP_API_URL } from '../../config';
 import { useRouter } from 'next/router';
+import { useReactiveVar } from '@apollo/client';
+import { userVar } from '../../../apollo/store';
 import { Product } from '../../types/product/product';
 
 interface CategoryProductCardProps {
-  product: Product;
-  selectedCategory?: string | null; // Optional: To know the selected category
+	product: Product;
 }
 
 const CategoryProductCard = (props: CategoryProductCardProps) => {
-  const { product, selectedCategory } = props;
-  const device = useDeviceDetect();
-  const router = useRouter();
+	const { product } = props;
+	const device = useDeviceDetect();
+	const router = useRouter();
+	const user = useReactiveVar(userVar);
 
-  const pushDetailHandler = async (productId: string) => {
-    // Navigate to product detail page AND pass the selected category as query
-    router.push({
-      pathname: '/product/detail',
-      query: { id: productId, category: selectedCategory || '' }, // Pass category
-    });
-  };
+	/** HANDLERS **/
+	const pushCategoryFilter = (category: string) => {
+		const input = {
+			page: 1,
+			limit: 9,
+			sort: 'createdAt',
+			direction: 'DESC',
+			search: {
+				pricesRange: {
+					start: 0,
+					end: 2000000,
+				},
+				categoryList: [category], // ✅ this is the key part
+			},
+		};
+		router.push({
+			pathname: '/product',
+			query: { input: JSON.stringify(input) },
+		});
+	};
 
-  if (device === 'mobile') {
-    return (
-      <Stack className="category-card-box">
-        <Box
-          component={'div'}
-          className="card-img"
-          style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages[0]})` }}
-          onClick={() => pushDetailHandler(product._id)}
-        ></Box>
-        <Box component={'div'} className="info">
-          <Button className="title" onClick={() => pushDetailHandler(product._id)}>
-            Explore our {product?.productCategory}s
-          </Button>
-        </Box>
-      </Stack>
-    );
-  } else {
-    return (
-      <div className="category-card-box">
-        <div
-          className="card-img"
-          style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages[0]})` }}
-          onClick={() => pushDetailHandler(product._id)}
-        ></div>
-        <div className="info">
-          <Button className="title" onClick={() => pushDetailHandler(product._id)}>
-            <span>Explore our {product?.productCategory}s</span>
-          </Button>
-        </div>
-      </div>
-    );
-  }
+	// Prepare category list
+	const categoryList = Array.isArray(product.productCategory) ? product.productCategory : [product.productCategory];
+	if (device === 'mobile') {
+		return (
+			<Stack className="category-card-box">
+				<Box
+					className={'card-img'}
+					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages[0]})` }}
+					onClick={() => pushCategoryFilter(categoryList[0])}
+				>
+					<button
+						className="title"
+						onClick={(e) => {
+							e.stopPropagation(); // Prevent box click trigger
+							pushCategoryFilter(product.productCategory);
+						}}
+					>
+						<span>{categoryList[0]}</span>
+					</button>
+				</Box>  
+			</Stack>
+		);
+	} else {
+		return (
+			<Stack className="category-card-box">
+				<Box
+					className={'card-img'}
+					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages[0]})` }}
+					onClick={() => pushCategoryFilter(categoryList[0])}
+				>
+					<button
+						className="title"
+						onClick={(e) => {
+							e.stopPropagation(); // Prevent box click trigger
+							pushCategoryFilter(product.productCategory);
+						}}
+					>
+						<span>{categoryList[0]}</span>
+					</button>
+				</Box>
+			</Stack>
+		);
+	}
 };
 
 export default CategoryProductCard;
