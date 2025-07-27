@@ -4,7 +4,8 @@ export enum ProductCategory {
 	EARRINGS = 'EARRINGS',
 	BRACELET = 'BRACELET',
 	DIAMOND = 'DIAMOND',
-	SET = 'SET',
+	GIFT = 'GIFT',
+	WEDDING_RING = 'WEDDING_RING',
 }
 
 export enum ProductStatus {

@@ -31,54 +31,13 @@ const TopProductCard = (props: TopProductCardProps) => {
 		return (
 			<Stack className="top-card-box">
 				<Box
-					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages[0]})` }}
 					onClick={() => pushDetailHandler(product._id)}
-
 				>
-					<div>${product?.productPrice}</div>
-				</Box>
-				<Box component={'div'} className={'info'}>
-				<strong className={'title'} onClick={() => pushDetailHandler(product._id)}>
-						{product?.productTitle}
-					</strong>					<p className={'desc'}>{product?.productAddress}</p>
-					<div className={'options'}>
-						<div>
-							<img src="/img/icons/bed.svg" alt="" />
-							<span>{product?.productGender} gender</span>
-						</div>
-						<div>
-							<img src="/img/icons/room.svg" alt="" />
-							<span>{product?.productMaterial} material</span>
-						</div>
-						<div>
-							<img src="/img/icons/expand.svg" alt="" />
-							<span>{product?.productSize} size</span>
-						</div>
-					</div>
-					<Divider sx={{ mt: '15px', mb: '17px' }} />
-					<div className={'bott'}>
-						<p>
-							{' '}
-							{product.productRent ? 'Rent' : ''} {product.productRent && product.productBarter && '/'}{' '}
-							{product.productBarter ? 'Barter' : ''}
-						</p>
-						<div className="view-like-box">
-							<IconButton color={'default'}>
-								<RemoveRedEyeIcon />
-							</IconButton>
-							<Typography className="view-cnt">{product?.productViews}</Typography>
-							<IconButton color={'default'} onClick={() => likeProductHandler(user, product?._id)}>
-								{product?.meLiked && product?.meLiked[0]?.myFavorite ? (
-									<FavoriteIcon style={{ color: 'red' }} />
-								) : (
-									<FavoriteIcon />
-								)}
-							</IconButton>
-							<Typography className="view-cnt">{product?.productLikes}</Typography>
-						</div>
-					</div>
+					<button className={'title'} onClick={() => pushDetailHandler(product._id)}>
+						<span>{product?.productCategory}</span>
+					</button>
 				</Box>
 			</Stack>
 		);
@@ -86,55 +45,13 @@ const TopProductCard = (props: TopProductCardProps) => {
 		return (
 			<Stack className="top-card-box">
 				<Box
-					component={'div'}
 					className={'card-img'}
 					style={{ backgroundImage: `url(${REACT_APP_API_URL}/${product?.productImages[0]})` }}
 					onClick={() => pushDetailHandler(product._id)}
-
 				>
-					<div>${product?.productPrice}</div>
-				</Box>
-				<Box component={'div'} className={'info'}>
-					<strong className={'title'} onClick={() => pushDetailHandler(product._id)}>
-						{product?.productTitle}
-					</strong>
-					<p className={'desc'}>{product?.productAddress}</p>
-					<div className={'options'}>
-						<div>
-							<img src="/img/icons/bed.svg" alt="" />
-							<span>{product?.productGender} gender</span>
-						</div>
-						<div>
-							<img src="/img/icons/room.svg" alt="" />
-							<span>{product?.productMaterial} material</span>
-						</div>
-						<div>
-							<img src="/img/icons/expand.svg" alt="" />
-							<span>{product?.productSize} size</span>
-						</div>
-					</div>
-					<Divider sx={{ mt: '15px', mb: '17px' }} />
-					<div className={'bott'}>
-						<p>
-							{' '}
-							{product.productRent ? 'Rent' : ''} {product.productRent && product.productBarter && '/'}{' '}
-							{product.productBarter ? 'Barter' : ''}
-						</p>
-						<div className="view-like-box">
-							<IconButton color={'default'}>
-								<RemoveRedEyeIcon />
-							</IconButton>
-							<Typography className="view-cnt">{product?.productViews}</Typography>
-							<IconButton color={'default'} onClick={() => likeProductHandler(user, product?._id)}>
-								{product?.meLiked && product?.meLiked[0]?.myFavorite ? (
-									<FavoriteIcon style={{ color: 'red' }} />
-								) : (
-									<FavoriteIcon />
-								)}
-							</IconButton>
-							<Typography className="view-cnt">{product?.productLikes}</Typography>
-						</div>
-					</div>
+					<button className={'title'} onClick={() => pushDetailHandler(product._id)}>
+						<span>{product?.productCategory}</span>
+					</button>
 				</Box>
 			</Stack>
 		);

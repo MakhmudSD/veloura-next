@@ -65,7 +65,7 @@ const TopProducts = (props: TopProductsProps) => {
 					<Stack className={'card-box'}>
 						<Swiper
 							className={'top-product-swiper'}
-							slidesPerView={'auto'}
+							slidesPerView={1}
 							centeredSlides={true}
 							spaceBetween={15}
 							modules={[Autoplay]}
@@ -87,22 +87,15 @@ const TopProducts = (props: TopProductsProps) => {
 			<Stack className={'top-products'}>
 				<Stack className={'container'}>
 					<Stack className={'info-box'}>
-						<Box component={'div'} className={'left'}>
-							<span>Top products</span>
-							<p>Check out our Top products</p>
-						</Box>
-						<Box component={'div'} className={'right'}>
-							<div className={'pagination-box'}>
-								<WestIcon className={'swiper-top-prev'} />
-								<div className={'swiper-top-pagination'}></div>
-								<EastIcon className={'swiper-top-next'} />
-							</div>
-						</Box>
+							<span>Shop by Category</span>
+							<h1>Fresh Styles, Limitless Performance</h1>
+							<p>Explore our latest collections, crafted with innovation and style, to elevate your workout game to new heights.</p>
+						
 					</Stack>
 					<Stack className={'card-box'}>
 						<Swiper
 							className={'top-product-swiper'}
-							slidesPerView={'auto'}
+							slidesPerView={1}
 							spaceBetween={15}
 							modules={[Autoplay, Navigation, Pagination]}
 							navigation={{
