@@ -41,6 +41,7 @@
 		"graphql": "^15.5.0",
 		"gsap": "^3.13.0",
 		"i18next": "^21.6.11",
+		"install": "^0.13.0",
 		"js-cookie": "^3.0.1",
 		"jwt-decode": "^3.1.2",
 		"material-ui-pickers": "^2.2.4",

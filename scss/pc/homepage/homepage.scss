@@ -958,107 +958,381 @@
 
 		.top-stores {
 			position: relative;
-			padding: 153px 0px 135px;
+			padding: 80px 0;
 			width: 100%;
-			height: 722px;
+			flex-shrink: 0;
 			display: flex;
 			flex-direction: row;
 			background: #f6f6f6;
-
+		  
 			.container {
-				position: relative;
-				flex-direction: column;
+			  flex-direction: column;
+			  align-items: center;
+		  
+			  .info-box {
+				display: flex;
+				flex-direction: row;
+				justify-content: space-between;
 				align-items: center;
-
-				.wrapper {
-					width: 100%;
-					margin-top: 83px;
+				margin-bottom: 40px;
+				padding: 0 20px;
+		  
+				.left {
+				  display: flex;
+				  flex-direction: column;
+				  align-items: flex-start;
+		  
+				  span {
+					color: #2e2e2e;
+					text-align: center;
+					font-family: "Judson";
+					font-size: 45px;
+					font-style: normal;
+					font-weight: 500;
+					line-height: 1.2;
+					text-transform: capitalize;
+				  }
+				}
+		  
+				.right {
+				  display: flex;
+				  flex-direction: row;
+				  align-items: flex-end;
+				  gap: 15px;
+		  
+				  .pagination-box {
 					display: flex;
 					flex-direction: row;
 					align-items: center;
-					justify-content: space-between;
-
-					.switch-btn {
-						width: 53px;
-						height: 53px;
+		  
+					.swiper-pagination-bullet.swiper-pagination-bullet-active {
+					  background: #000000;
+					}
+		  
+					.swiper-top-next,
+					.swiper-top-prev {
+					  cursor: pointer;
+					  width: 22px;
+					  height: 22px;
+					  display: flex;
+					  align-items: center;
+					  justify-content: center;
+					  opacity: 0.7;
+					  transition: opacity 0.2s ease;
+		  
+					  &:hover {
+						opacity: 1;
+					  }
+					}
+				  }
+		  
+				  .more-box {
+					display: flex;
+					flex-direction: row;
+					cursor: pointer;
+					align-items: center;
+					transition: color 0.2s ease, transform 0.2s ease;
+		  
+					&:hover {
+					  transform: translateX(3px);
+					  color: #cd865c;
+					}
+		  
+					span {
+					  color: rgba(46, 46, 46, 0.8);
+					  text-align: center;
+					  font-family: "Inter", sans-serif;
+					  font-size: 18px;
+					  font-style: normal;
+					  font-weight: 400;
+					  line-height: 1.3;
+					}
+		  
+					img {
+					  margin-left: 8px;
+					  width: 16px;
+					  height: 16px;
+					}
+				  }
+				}
+			  }
+		  
+			  .wrapper {
+				width: 100%;
+				margin-top: 60px;
+				display: flex;
+				gap: 25px;
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+				padding: 0 20px;
+		  
+				.switch-btn {
+				  width: 65px;
+				  height: 65px;
+				  display: flex;
+				  align-items: center;
+				  justify-content: center;
+				  border-radius: 50%;
+				  background: #ffffff;
+				  box-shadow: 0px 5px 20px rgba(5, 16, 54, 0.08);
+				  cursor: pointer;
+				  transition: all 0.2s ease;
+		  
+				  &:hover {
+					transform: scale(1.1);
+				  }
+		  
+				  svg {
+					width: 24px;
+					height: 24px;
+					stroke: #333;
+				  }
+		  
+				  &.swiper-stores-next {
+					// transform: rotate(180deg);
+				  }
+				}
+		  
+				.top-store-card {
+				  display: flex;
+				  width: 578.66px;
+				  flex-direction: column;
+				  align-items: flex-start;
+				  transition: transform 0.2s ease, box-shadow 0.2s ease;
+				  cursor: pointer;
+				  border-radius: 12px;
+				  overflow: hidden;
+				  background-color: #fff;
+		  
+				  &:hover {
+					transform: translateY(-4px);
+					box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+				  }
+		  
+				  .store-image-container {
+					display: flex;
+					flex-direction: column;
+					align-items: flex-start;
+					align-self: stretch;
+					overflow: hidden;
+		  
+					img {
+					  height: 280px;
+					  width: 100%;
+					  object-fit: cover;
+					  transition: transform 0.3s ease;
+		  
+					  &:hover {
+						transform: scale(1.03);
+					  }
+					}
+				  }
+		  
+				  .top-store-card-down {
+					display: grid;
+					grid-template-columns: 1fr auto;
+					grid-template-rows: auto auto auto; /* Added row for description */
+					grid-template-areas:
+					  "info stats"
+					  "desc stats" /* Added desc row */
+					  "viewBtn likeBtn";
+					padding: 20px;
+					gap: 18px;
+					align-items: start;
+				  
+					// INFO SECTION
+					.top-store-card-info {
+					  grid-area: info;
+					  display: flex;
+					  flex-direction: column;
+					  gap: 8px;
+				  
+					  h1 {
+						margin-left: 1px;
+						color: #222;
+						font-family: "Inter", sans-serif;
+						font-size: 14px;
+						font-weight: 500;
+						line-height: 1.2;
+						letter-spacing: 0.3px;
+						text-transform: uppercase;
+						margin-bottom: 4px;
+					  }
+				  
+					  strong {
+						color: #222;
+						font-family: "Playfair Display", serif;
+						font-size: 20px;
+						font-weight: 600;
+						line-height: 1.1;
+						letter-spacing: 0.4px;
+						text-transform: none;
+					  }
+				  
+					  .type {
+						color: #777;
+						font-family: "Inter", sans-serif;
+						font-size: 12px;
+						font-weight: 500;
+						font-style: italic;
+						line-height: 1.3;
+						letter-spacing: 0.2px;
+						text-transform: uppercase;
+						margin-top: 4px;
+					  }
+				  
+					  p {
+						color: #555;
+						font-family: "Inter", sans-serif;
+						font-size: 13px;
+						font-weight: 400;
+						line-height: 1.4;
+						letter-spacing: -0.1px;
+					  }
+					}
+				  
+					// STORE DESCRIPTION
+					.top-store-card-middle {
+					  grid-area: desc;
+					  font-family: "Inter", sans-serif;
+					  font-size: 14px;
+					  color: #666;
+					  line-height: 1.4;
+					}
+				  
+					// STATS
+					.stats-row {
+					  grid-area: stats;
+					  display: flex;
+					  flex-direction: row;
+					  align-items: center;
+					  justify-content: flex-end;
+					  gap: 16px;
+				  
+					  .stat-item {
 						display: flex;
 						align-items: center;
-						justify-content: center;
-						border-radius: 50%;
-						background: #ffffff;
-						filter: drop-shadow(0px 10px 35px rgba(5, 16, 54, 0.1));
+						color: #888;
+						font-family: "Judson", serif;
+						font-weight: 500;
+						font-size: 15px;
+				  
+						.icon img {
+						  width: 22px;
+						  height: 22px;
+						  margin-right: 8px;
+						  opacity: 0.8;
+						}
+				  
+						&:not(:last-child) {
+						  position: relative;
+				  
+						  &::after {
+							content: "";
+							position: absolute;
+							top: 50%;
+							right: -8px;
+							transform: translateY(-50%);
+							width: 1px;
+							height: 70%;
+							background-color: #ccc;
+						  }
+						}
+					  }
+					}
+				  
+					// VIEW STORE BUTTON
+					.view-store-btn {
+					  grid-area: viewBtn;
+					  display: flex;
+					  align-items: center;
+					  justify-content: center;
+					  width: fit-content;
+					  height: 36px;
+					  padding: 0 20px;
+					  border: 1px solid #444;
+					  background-color: transparent;
+					  border-radius: 22px;
+					  cursor: pointer;
+					  transition: background-color 0.2s ease, color 0.2s ease;
+				  
+					  &:hover {
+						background-color: #d4af37;
+						color: #fff;
+						box-shadow: 0 3px 8px rgba(212, 175, 55, 0.4);
+					  }
+				  
+					  span {
+						color: #444;
+						font-family: "Inter", sans-serif;
+						font-size: 13px;
+						font-weight: 500;
+						text-transform: uppercase;
+						line-height: 1;
+					  }
+					}
+				  
+					// LIKE BUTTON
+					.interaction-buttons {
+					  grid-area: likeBtn;
+					  display: flex;
+					  justify-content: flex-end;
+					  align-items: flex-end;
+				  
+					  .like-btn {
+						background: transparent;
+						border: none;
+						padding: 0;
 						cursor: pointer;
-
-						svg {
-							width: 14px;
-							height: 14px;
+						transition: transform 0.2s ease;
+				  
+						&:hover {
+						  transform: scale(1.1);
 						}
-
-						&.swiper-stores-next {
-							transform: rotate(180deg);
-						}
+					  }
 					}
-
-					.card-wrapper {
-						width: 1174px;
-						height: 280px;
-						display: flex;
-						flex-direction: row;
-
-						.top-stores-swiper {
-							width: 99.7%;
-							height: 280px;
-							display: flex;
-							flex-direction: row;
-
-							.top-stores-slide {
-								width: auto;
-								height: auto;
-								display: flex;
-							}
-						}
-
-						.top-stores-card {
-							width: 205px;
-							height: 280px;
-							display: flex;
-							flex-direction: column;
-
-							img {
-								width: 209px;
-								height: 209px;
-								border-radius: 50%;
-								cursor: pointer;
-								object-fit: cover;
-							}
-
-							strong {
-								margin-top: 20px;
-								color: #181a20;
-								text-align: center;
-								font-family: $font;
-								font-size: 15px;
-								font-style: normal;
-								font-weight: 600;
-								line-height: normal;
-								text-transform: capitalize;
-								cursor: pointer;
-							}
-
-							span {
-								color: #181a20;
-								text-align: center;
-								font-family: $font;
-								font-size: 15px;
-								font-style: normal;
-								font-weight: 400;
-								line-height: 28px;
-							}
-						}
-					}
+				  }
 				}
+			  }
 			}
-		}
+		  }
+		  
+		  @keyframes shake {
+			0% {
+			  transform: translateX(0);
+			}
+		  
+			25% {
+			  transform: translateX(-1px);
+			}
+		  
+			50% {
+			  transform: translateX(1px);
+			}
+		  
+			75% {
+			  transform: translateX(-0.5px);
+			}
+		  
+			100% {
+			  transform: translateX(0);
+			}
+		  }
+		  
+		  @keyframes glowAnim {
+			0% {
+			  box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.5);
+			}
+		  
+			50% {
+			  box-shadow: 0 0 5px 2px rgba(255, 0, 0, 0.7);
+			}
+		  
+			100% {
+			  box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+			}
+		  }
 
 		.icon-wall {
 			display: flex;
@@ -1084,8 +1358,8 @@
 					align-items: center;
 
 					img {
-						width: 69.486px;
-						height: 50.603px;
+						width: 79.486px;
+						height: 60.603px;
 						transform: rotate(-56.008deg);
 						flex-shrink: 0;
 					}
@@ -1101,7 +1375,7 @@
 						color: rgba(34, 34, 34, 0.80);
 						text-align: justify;
 						font-family: "Judson";
-						font-size: 20px;
+						font-size: 22px;
 						font-style: normal;
 						font-weight: 400;
 						line-height: normal;

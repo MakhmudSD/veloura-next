@@ -110,7 +110,7 @@ const Top = () => {
 	);
 
 	const changeNavbarColor = () => {
-		if (window.scrollY > 50) {
+		if (window.scrollY > 180) {
 			setColorChange(false);  // Apply 'colored' class
 		  } else {
 			setColorChange(true); // Apply 'transparent' class
