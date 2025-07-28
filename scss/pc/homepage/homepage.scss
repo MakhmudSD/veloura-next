@@ -1060,100 +1060,52 @@
 			}
 		}
 
-		.events {
-			position: relative;
-			padding: 100px 0px 92px;
-			width: 100%;
-			height: 810px;
+		.icon-wall {
 			display: flex;
 			flex-direction: row;
-			background: #181a20;
+			align-items: center;
+			justify-content: space-between;
+			width: 100%;
+			height: 145px;
+			flex-shrink: 0;
+			background: #EDDDCE;
+
 
 			.container {
-				flex-direction: column;
-				align-items: center;
+				flex-direction: row;
+				justify-content: space-between;
+				align-items: flex-end;				
 
-				.card-wrapper {
-					position: relative;
-					margin-top: 48px;
-					width: 100%;
+				.icon-wrapper {
 					height: auto;
 					display: flex;
 					flex-direction: row;
 					justify-content: space-between;
+					align-items: center;
 
-					.event-card {
-						position: relative;
-						width: 300px;
-						height: 420px;
-						border-radius: 12px;
-						opacity: 0.9;
-						cursor: pointer;
-						transition: opacity 0.4s;
+					img {
+						width: 69.486px;
+						height: 50.603px;
+						transform: rotate(-56.008deg);
+						flex-shrink: 0;
+					}
 
-						&:hover {
-							opacity: 1;
-							scale: 1.05;
-							transition: 0.3s;
+					.img-rotate {
+						width: 70.487px;
+						height: 56.213px;
+						transform: rotateY(37.975deg);
+						flex-shrink: 0;
+			 		}
 
-							.more {
-								opacity: 1;
-							}
-						}
-
-						.info {
-							position: absolute;
-							display: flex;
-							flex-direction: column;
-							top: 35px;
-							left: 10px;
-							right: 10px;
-
-							strong {
-								color: #f64747;
-								font-family: $font;
-								font-size: 25px;
-								font-style: normal;
-								font-weight: 600;
-								line-height: normal;
-								text-transform: capitalize;
-							}
-
-							span {
-								color: #f66767;
-								font-family: $font;
-								font-size: 20px;
-								font-style: normal;
-								font-weight: 500;
-								line-height: 28px;
-								text-transform: capitalize;
-							}
-						}
-
-						.more {
-							position: absolute;
-							left: 10px;
-							right: 10px;
-							bottom: 41px;
-							display: flex;
-							flex-direction: row;
-							align-items: center;
-							opacity: 0;
-
-							span {
-								padding: 0px 5px;
-								border-radius: 5px;
-								background: #fffdfdc4;
-								color: #9c67f6;
-								font-family: $font;
-								font-size: 16px;
-								font-style: normal;
-								font-weight: 400;
-								line-height: 26px;
-								text-align: justify;
-								cursor: pointer;
-							}
-						}
+					span {
+						color: rgba(34, 34, 34, 0.80);
+						text-align: justify;
+						font-family: "Judson";
+						font-size: 20px;
+						font-style: normal;
+						font-weight: 400;
+						line-height: normal;
+						text-transform: capitalize;
 					}
 				}
 			}

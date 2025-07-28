@@ -3,12 +3,12 @@ import useDeviceDetect from '../libs/hooks/useDeviceDetect';
 import withLayoutMain from '../libs/components/layout/LayoutHome';
 import CommunityBoards from '../libs/components/homepage/CommunityBoards';
 import TopStores from '../libs/components/homepage/TopStores';
-import Events from '../libs/components/homepage/Events';
 import BrandsSection from '../libs/components/homepage/BrandSection';
 import { Stack } from '@mui/material';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import TrendProducts from '../libs/components/homepage/TrendProducts';
 import CategoryProducts from '../libs/components/homepage/CategoryProducts';
+import IconWall from '../libs/components/homepage/IconWall';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -34,8 +34,8 @@ const Home: NextPage = () => {
 				<BrandsSection />
 				<TrendProducts />
 				<CategoryProducts />
+				<IconWall  />
 				<TopStores />
-				<Events />
 				<CommunityBoards />
 			</Stack>
 		);
