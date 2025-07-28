@@ -67,13 +67,6 @@ const CategoryProducts = (props: CategoryProductsProps) => {
 				<Stack className={'container'}>
 					{/* Category Filter Buttons */}
 					<Stack direction="row" spacing={1} mb={2} flexWrap="wrap" justifyContent="center">
-						<Button
-							variant={selectedCategory === null ? 'contained' : 'outlined'}
-							onClick={() => handleCategorySelect(null)}
-							size="small"
-						>
-							All
-						</Button>
 						{CATEGORY_ENUM.map((cat) => (
 							<Button
 								key={cat}
@@ -81,6 +74,7 @@ const CategoryProducts = (props: CategoryProductsProps) => {
 								size="small"
 								onClick={() => handleCategorySelect(cat)}
 							>
+								<span className="page-locator" />
 								{cat.replace('_', ' ')}
 							</Button>
 						))}
@@ -105,7 +99,7 @@ const CategoryProducts = (props: CategoryProductsProps) => {
 						>
 							{filteredProducts.map((product: Product) => (
 								<SwiperSlide className={'category-product-slide'} key={product?._id}>
-									<TopProductCard product={product}  />
+									<TopProductCard product={product} />
 								</SwiperSlide>
 							))}
 						</Swiper>
@@ -120,17 +114,12 @@ const CategoryProducts = (props: CategoryProductsProps) => {
 					{/* Category Filter Buttons */}
 
 					<Stack className={'info-box'}>
-						<h1>Shop by Category</h1>
+						<span>Shop by Category</span>
+						<h1>Fresh Styles, Limitless Performance</h1>
+						<p>Explore our latest collections, crafted with innovation and style, to elevate your workout game to new heights.</p>
 						<div className="heading-underline" />
 
 						<Stack className="category-filter-buttons">
-							<Button
-								className={`category-filter-button ${selectedCategory === null ? 'active' : ''}`}
-								onClick={() => handleCategorySelect(null)}
-							>
-								All
-								<span className="page-locator" />
-							</Button>
 
 							{CATEGORY_ENUM.map((cat) => (
 								<Button
@@ -138,8 +127,9 @@ const CategoryProducts = (props: CategoryProductsProps) => {
 									className={`category-filter-button ${selectedCategory === cat ? 'active' : ''}`}
 									onClick={() => handleCategorySelect(cat)}
 								>
-									{cat.replace('_', ' ')}
 									<span className="page-locator" />
+									{cat.replace('_', ' ')}
+									
 								</Button>
 							))}
 						</Stack>

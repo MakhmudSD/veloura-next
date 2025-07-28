@@ -23,7 +23,6 @@
 	}
 
 	.home-page {
-		@import url('https://fonts.googleapis.com/css?family=Quicksand:300,400,500,700&display=swap');
 
 		$blue: #006bb6;
 		$yellow: #fdb927;
@@ -714,11 +713,14 @@
 			flex-direction: row;
 			justify-content: center;
 			align-items: center;
-			background: #2B1F1C;
+			background: 
+			url('/img/fiber/naqsh.png') no-repeat center center / cover, 
+			#4d3518;
 
 			.container {
 				display: flex;
 				flex-direction: row;
+
 
 
 				.info-box {
@@ -728,14 +730,13 @@
 					justify-content: center;
 					align-items: flex-start;
 
-					h1 {
-						width: 750px;
+					span {
 						color: #FFF;
 						text-align: justify;
 
 						/* H6 (Caps) */
 						font-family: "Judson";
-						font-size: 48px;
+						font-size: 18px;
 						font-style: normal;
 						font-weight: 400;
 						line-height: normal;
@@ -743,28 +744,32 @@
 						text-transform: uppercase;
 					}
 
-					.heading-underline {
-						width: 95%;
-						height: 1px;
-						top: 0;
-						background-color: #CD865C; // matching highlight color
-						margin-top: -40px;
-						border-radius: 2px;
-						animation: underlineGrow 0.5s ease-out;
+					h1 {
+						width: 800px;
+						color: #FFF;
+						text-align: justify;
+
+						/* H6 (Caps) */
+						font-family: "Judson";
+						font-size: 38px;
+						font-style: normal;
+						font-weight: 400;
+						line-height: normal;
+						letter-spacing: normal;
+						text-transform: uppercase;
 					}
 
-					@keyframes underlineGrow {
-						from {
-							width: 0;
-							opacity: 0;
-						}
+					p {
+						width: 601px;color: #FFF;
 
-						to {
-							width: 120px;
-							opacity: 1;
-						}
+						/* Body Text */
+						font-family: "Inter";
+						font-size: 16px;
+						font-style: normal;
+						font-weight: 400;
+						line-height: 30px; /* 187.5% */
 					}
-
+				
 					.category-filter-buttons {
 						display: flex;
 						flex-direction: column;
@@ -785,6 +790,8 @@
 							font-weight: 400;
 							line-height: 77px;
 							padding: 0 10px;
+							margin-left: -33px;
+							
 							transition: all 0.3s ease;
 							position: relative;
 							cursor: pointer;
@@ -825,18 +832,7 @@
 							&.active {
 								color: #CD865C;
 								transform: translateX(20px);
-					
-								&::before {
-									transform: translateY(-50%) scaleX(1);
-								}
-					
-								// Bold underline when active
-								&::after {
-									width: 90%;
-									height: 2px;
-									background-color: #CD865C;
-								}
-					
+			
 								.page-locator {
 									opacity: 1;
 									transform: rotate(-45deg) translateX(0);
@@ -844,8 +840,8 @@
 							}
 					
 							.page-locator {
-								width: 14px;
-								height: 14px;
+								width: 10px;
+								height: 10px;
 								margin-left: 4px;
 								background: url('/img/icons/page-locator.png') no-repeat center/contain;
 								transition: opacity 0.3s ease, transform 0.3s ease;

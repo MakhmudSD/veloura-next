@@ -54,6 +54,7 @@ const Top = () => {
 	};
 
 	/** LIFECYCLES **/
+	
 	useEffect(() => {
 		if (localStorage.getItem('locale') === null) {
 			localStorage.setItem('locale', 'en');
@@ -109,11 +110,11 @@ const Top = () => {
 	);
 
 	const changeNavbarColor = () => {
-		if (window.scrollY >= 50) {
-			setColorChange(true);
-		} else {
-			setColorChange(false);
-		}
+		if (window.scrollY > 50) {
+			setColorChange(false);  // Apply 'colored' class
+		  } else {
+			setColorChange(true); // Apply 'transparent' class
+		  }
 	};
 
 	const handleCartClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -216,7 +217,7 @@ const Top = () => {
 		return (
 			<div className="navbar">
 				{/* Top Navbar */}
-				<div className={`navbar-main ${colorChange ? 'colored' : 'transparent'}`}>
+				<div className={`navbar-main`}>
 					<div className="container">
 						<div className="top-navbar">
 							<div className="top-left">
@@ -232,7 +233,7 @@ const Top = () => {
 						</div>
 
 						{/* Bottom Navbar */}
-						<div className="bottom-navbar">
+						<div className={`bottom-navbar ${colorChange ? 'colored' : 'transparent'}`}>
 							<div className="bottom-left">
 								<Link href="/">
 									<div className={`nav-item ${router.pathname === '/' ? 'active' : ''}`}>
