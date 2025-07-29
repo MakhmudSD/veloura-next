@@ -126,6 +126,7 @@ body::-webkit-scrollbar {
 					  display: flex;
 					  align-items: center;
 					  gap: 28px;
+					  margin-left: 20px;
 				  
 					  .nav-item {
 						position: relative;
@@ -134,8 +135,8 @@ body::-webkit-scrollbar {
 						gap: 8px;
 						color: #4b3d39;
 						font-family: "Judson", serif;
-						font-size: 18px;
-						font-weight: 550;
+						font-size: 22px;
+						font-weight: 700;
 						text-transform: capitalize;
 						cursor: pointer;
 						transition: color 0.3s ease;
@@ -196,6 +197,7 @@ body::-webkit-scrollbar {
 					  justify-content: flex-end;
 					  min-width: 200px; // Prevent shrinking or extending
 					  max-width: 200px; // Prevent extending beyond this width
+					  margin-right: 20px;
 				  
 					  .user-box {
 						display: flex;

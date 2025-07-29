@@ -8,7 +8,7 @@ const BRANDS = [
   { name: 'Cartier', logoUrl: '/img/icons/brands/cariter.png' },
   { name: 'Bvlgari', logoUrl: '/img/icons/brands/bulgari2.png' },
   { name: 'Tiffany', logoUrl: '/img/icons/brands/tiffany3.png' },
-  { name: 'Harry Winston', logoUrl: '/img/icons/brands/winston.png' },
+  { name: 'Van Cleef & Arpels', logoUrl: '/img/icons/brands/vanCleef.png' },
   { name: 'YSL', logoUrl: '/img/icons/brands/tsl.png' },
 ];
 

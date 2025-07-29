@@ -150,6 +150,8 @@
 			flex-direction: row;
 			justify-content: center;
 			align-items: flex-start;
+			background: url('/img/fiber/naqsh.png') no-repeat center center / cover, hsl(0, 0%, 100%);
+
 
 			.container {
 				display: flex;
@@ -684,7 +686,7 @@
 			align-items: center;
 			background:
 				url('/img/fiber/naqsh.png') no-repeat center center / cover,
-				#4d3518;
+				#795426;
 
 			.container {
 				display: flex;
@@ -698,6 +700,7 @@
 					flex-direction: column;
 					justify-content: center;
 					align-items: flex-start;
+					gap: 20px;
 
 					span {
 						color: #FFF;
@@ -801,7 +804,7 @@
 							}
 
 							&.active {
-								color: #CD865C;
+								color: #e67a3b;
 								transform: translateX(20px);
 
 								.page-locator {
@@ -1106,113 +1109,143 @@
 							}
 
 							.top-store-card-down {
-								display: grid;
-								grid-template-columns: 1fr auto;
-								grid-template-rows: auto auto auto;
-								/* Added row for description */
-								grid-template-areas:
-									"info stats"
-									"desc stats"
-									/* Added desc row */
-									"viewBtn likeBtn";
+								display: flex;
+								flex-direction: column; // ← changed from row to column
+								justify-content: flex-start;
+								align-items: stretch;
+								width: 100%;
+								height: auto;
 								padding: 20px;
 								gap: 18px;
-								align-items: start;
 								background: #ffff;
-
-
+							
 								// INFO SECTION
 								.top-store-card-info {
-									grid-area: info;
+									width: 100%;
+									padding: 20px 24px;
+									background: linear-gradient(135deg, #fff, #f9f9f9);
+									border-radius: 12px;
+									box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
+								
 									display: flex;
-									flex-direction: column;
-									gap: 8px;
-
+									flex-direction: row;
+									align-items: center;
+									justify-content: space-evenly;
+									gap: 20px; /* space between items */
+								
 									h1 {
-										margin-left: 1px;
-										color: #222;
+										font-family: "Inter", sans-serif;
+										font-size: 14px;
+										font-weight: 600;
+										color: #444;
+										letter-spacing: 0.8px;
+										line-height: 1.5;
+										text-transform: uppercase;
+										white-space: nowrap;
+										img {
+											width: 26px;
+											height: 26px;
+											margin-right: 4px;
+											margin-top: -6px;
+											vertical-align: middle;
+										}
+									}
+								
+									strong {
+										font-family: "Playfair Display", serif;
+										font-size: 25px;
+										font-weight: 800;
+										color: #1a1a1a;
+										line-height: 1.5;
+										white-space: nowrap; // Removed comment
+									}
+								
+									p {
 										font-family: "Inter", sans-serif;
 										font-size: 14px;
 										font-weight: 500;
-										line-height: 1.2;
-										letter-spacing: 0.3px;
-										text-transform: uppercase;
-										margin-bottom: 4px;
-									}
-
-									strong {
-										color: #222;
-										font-family: "Playfair Display", serif;
-										font-size: 20px;
-										font-weight: 600;
-										line-height: 1.1;
-										letter-spacing: 0.4px;
-										text-transform: none;
-									}
-
-									.type {
-										color: #777;
-										font-family: "Inter", sans-serif;
-										font-size: 12px;
-										font-weight: 500;
-										font-style: italic;
-										line-height: 1.3;
-										letter-spacing: 0.2px;
-										text-transform: uppercase;
-										margin-top: 4px;
-									}
-
-									p {
 										color: #555;
-										font-family: "Inter", sans-serif;
-										font-size: 13px;
-										font-weight: 400;
-										line-height: 1.4;
-										letter-spacing: -0.1px;
+										line-height: 1.5;
+										white-space: nowrap;
+
+										img {
+											width: 26px;
+											height: 26px;
+											margin-right: 4px;
+											margin-top: -6px;
+											vertical-align: middle;
+										}
 									}
 								}
-
-								// STORE DESCRIPTION
+								
+							
 								.top-store-card-middle {
-									grid-area: desc;
+									width: 100%;
+									max-height: 120px;          // limit height so it doesn't overflow layout
+									padding: 12px 16px;
+									padding-top: 15px;
+									background: rgba(255, 255, 255, 0.9);
+									border-radius: 8px;
+									box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+								
 									font-family: "Inter", sans-serif;
 									font-size: 14px;
 									color: #666;
 									line-height: 1.4;
+								
+									display: flex;
+									align-items: center;    // align text at top
+									justify-content: center;
+									text-align: center;
+								
+									overflow-y: auto;          // vertical scrollbar when content too long
+									overflow-x: hidden;        // prevent horizontal scroll
+								
+									/* Optional: nice scrollbar for Webkit browsers */
+									&::-webkit-scrollbar {
+										width: 6px;
+									}
+								
+									&::-webkit-scrollbar-thumb {
+										background-color: rgba(100, 100, 100, 0.3);
+										border-radius: 3px;
+									}
 								}
-
-								// STATS
+								
+							
+								// STATS ROW
 								.stats-row {
-									grid-area: stats;
 									display: flex;
 									flex-direction: row;
 									align-items: center;
-									justify-content: space-between;
+									justify-content: space-evenly;
+									width: 100%;
 									gap: 16px;
-
+									padding: 10px;
+							
 									.stat-item {
 										display: flex;
 										align-items: center;
-										gap: 6px; // space between icon and text
+										gap: 6px;
 										color: #555;
 										font-family: "Judson", serif;
 										font-weight: 700;
-										font-size: 16px; // unified font size for both number and label
-
+										font-size: 16px;
+							
 										.icon img {
 											width: 20px;
 											height: 20px;
 											opacity: 0.85;
 										}
-
+							
 										span {
 											display: inline-block;
-											font-size: inherit; // ensures consistent size
+											font-size: inherit;
 										}
-
+							
 										&:not(:last-child) {
 											position: relative;
-
+							
 											&::after {
 												content: "";
 												position: absolute;
@@ -1226,29 +1259,29 @@
 										}
 									}
 								}
-
-
-								// VIEW STORE BUTTON
+							
+								// VIEW BUTTON
 								.view-store-btn {
-									grid-area: viewBtn;
 									display: flex;
+									flex-direction: row;
 									align-items: center;
 									justify-content: center;
-									width: 100%;
+									width: 80%;
 									height: 36px;
 									padding: 2px 10px;
+									margin-left: 50px;
 									border: 1px solid #444;
 									background-color: transparent;
 									border-radius: 22px;
 									cursor: pointer;
 									transition: background-color 0.2s ease, color 0.2s ease;
-
+							
 									&:hover {
 										background-color: #d4af37;
 										color: #fff;
 										box-shadow: 0 3px 8px rgba(212, 175, 55, 0.4);
 									}
-
+							
 									span {
 										color: #444;
 										font-family: "Inter", sans-serif;
@@ -1258,27 +1291,55 @@
 										line-height: 1;
 									}
 								}
-
+							
 								// LIKE BUTTON
 								.interaction-buttons {
-									grid-area: likeBtn;
 									display: flex;
-									justify-content: flex-end;
-									align-items: flex-end;
-
+									flex-direction: row;
+									justify-content: space-around;
+									align-items: center;    // vertically center icon, number, and button
+									gap: 16px;              // space between view-box and like-btn
+								  
+									.view-box {
+									  display: flex;
+									  align-items: center;
+									  gap: 6px;             // space between eye icon and number
+								  
+									  svg {
+										font-size: 20px;    // consistent icon size
+										color: #666;
+									  }
+								  
+									  p, /* if Typography renders p */
+									  span, /* or span */
+									  .MuiTypography-root { // specifically for MUI Typography
+										font-family: "Inter", sans-serif;
+										font-size: 14px;
+										color: #444;
+										margin: 0;
+										line-height: 1;
+									  }
+									}
+								  
 									.like-btn {
-										background: transparent;
-										border: none;
-										padding: 0;
-										cursor: pointer;
-										transition: transform 0.2s ease;
-
-										&:hover {
-											transform: scale(1.1);
-										}
+									  padding: 0;
+									  width: 36px;
+									  height: 36px;
+									  display: flex;
+									  align-items: center;
+									  justify-content: center;
+									  cursor: pointer;
+									  transition: transform 0.2s ease;
+								  
+									  &.glow {
+										/* example glow effect */
+										box-shadow: 0 0 8px 2px rgba(222, 51, 51, 0.8);
+										color: #d52929 !important;
+									  }
 									}
 								}
 							}
+							
 						}
 
 					}
@@ -1464,7 +1525,7 @@
 			.container {
 				display: flex;
 				flex-direction: column;
-				align-items: flex-start;
+				align-items: center;
 		
 				.info-box {
 					display: flex;
@@ -1540,10 +1601,11 @@
 					.wrapper {
 						width: 100%;
 						margin-top: -30px;
+						margin-right: 65px;
 						display: flex;
 						flex-direction: column;
 						align-items: stretch;
-						justify-content: flex-start;
+						justify-content: center;
 						gap: 20px;
 						padding: 0 20px;
 						overflow: hidden;
@@ -1627,6 +1689,7 @@
 								flex-direction: row;
 								align-items: flex-start;
 								justify-content: flex-start;
+								margin-right: 100px;
 								padding: 20px 0;
 								gap: 20px;
 								
@@ -1638,7 +1701,7 @@
 									flex: 0 0 auto;								
 									height: 630px;
 									flex-direction: column;
-									align-items: flex-start;
+									align-items:center;
 									justify-content: space-between;
 									cursor: pointer;
 									border: 1px solid #e0e0e0;
