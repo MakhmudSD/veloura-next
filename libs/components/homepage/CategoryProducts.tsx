@@ -138,7 +138,7 @@ const CategoryProducts = (props: CategoryProductsProps) => {
 						{filteredProducts.length === 0 ? (
 							// Show sad face message *inside* the swiper card area
 							<Box className="no-products-message">
-								<img src="/img/icons/no-jewelry.png" alt="" />
+								<img src="/img/icons/no-jewelry2.png" alt="" />
 							</Box>
 						) : (
 							<Swiper
