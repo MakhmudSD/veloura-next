@@ -978,6 +978,11 @@
 							cursor: pointer;
 							align-items: center;
 							transition: color 0.2s ease, transform 0.2s ease;
+							border: 2px solid #cd865c;
+							border-radius: 20px;
+							padding: 8px 16px;
+							background: rgba(205, 134, 92, 0.1);
+
 
 							&:hover {
 								transform: translateX(3px);
@@ -1184,7 +1189,7 @@
 									align-items: center;
 									justify-content: space-between;
 									gap: 16px;
-								
+
 									.stat-item {
 										display: flex;
 										align-items: center;
@@ -1193,21 +1198,21 @@
 										font-family: "Judson", serif;
 										font-weight: 700;
 										font-size: 16px; // unified font size for both number and label
-								
+
 										.icon img {
 											width: 20px;
 											height: 20px;
 											opacity: 0.85;
 										}
-								
+
 										span {
 											display: inline-block;
 											font-size: inherit; // ensures consistent size
 										}
-								
+
 										&:not(:last-child) {
 											position: relative;
-								
+
 											&::after {
 												content: "";
 												position: absolute;
@@ -1221,7 +1226,7 @@
 										}
 									}
 								}
-								
+
 
 								// VIEW STORE BUTTON
 								.view-store-btn {
@@ -1380,6 +1385,7 @@
 			align-items: center;
 			flex-shrink: 0;
 			background-color: #E4E3D6;
+
 			.container {
 				display: flex;
 				flex-direction: row;
@@ -1387,11 +1393,13 @@
 				align-items: center;
 				width: 100%;
 				height: 100%;
+
 				.shipping-content {
 					display: flex;
 					flex-direction: row;
 					align-items: flex-start;
 					justify-content: space-between;
+
 					.shipping-icon {
 						display: flex;
 						align-items: center;
@@ -1400,6 +1408,7 @@
 						height: 95.086px;
 						flex-shrink: 0;
 					}
+
 					.shipping-info {
 						display: flex;
 						flex-direction: column;
@@ -1430,173 +1439,322 @@
 							font-size: 14px;
 							font-style: normal;
 							font-weight: 400;
-							line-height: 24px; /* 171.429% */
+							line-height: 24px;
+							/* 171.429% */
 						}
 					}
 				}
-			
+
 			}
 		}
 
 		.community-board {
 			position: relative;
-			padding: 124px 0px 61px;
+			padding: 100px 0;
 			width: 100%;
-			height: 860px;
+			height: 1102px;
+			flex-shrink: 0;
+			margin-top: 30px;
 			display: flex;
-			flex-direction: row;
-
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			background: url('/img/fiber/naqsh.png') no-repeat center center / cover;
+		
 			.container {
+				display: flex;
 				flex-direction: column;
-				align-items: center;
-
-				.community-main {
-					width: 100%;
-					margin-top: 60px;
+				align-items: flex-start;
+		
+				.info-box {
 					display: flex;
-					flex-direction: row;
 					justify-content: space-between;
-
-					.center-line {
-						height: 90%;
-						align-self: end;
-					}
-
-					.content-top {
-						margin-bottom: 26px;
-						width: 100%;
-						height: 30px;
+					align-items: center;
+					width: 100%;
+					padding: 0 20px;
+		
+					.left {
 						display: flex;
-						flex-direction: row;
-						justify-content: flex-end;
-						align-items: center;
-
+						flex-direction: column;
+						align-items: flex-start;
+						gap: 10px;
+						width: 60%;
+		
+						h3 {
+							color: #4c3633;
+							font-family: 'Judson';
+							font-size: 18px;
+							font-weight: 400;
+							letter-spacing: 2.7px;
+							text-transform: uppercase;
+							text-align: center;
+						}
+		
 						span {
-							font-family: $font;
-							font-style: normal;
-							font-weight: 500;
-							font-size: 16px;
-							line-height: 36px;
-							color: #616161;
-							cursor: pointer;
-						}
-
-						img {
-							margin-left: 10px;
-							width: 12px;
-							height: 12px;
+							width: 504px;
+							color: #2e2e2e;
+							font-family: 'Judson';
+							font-size: 50px;
+							font-weight: 400;
+							text-transform: capitalize;
 						}
 					}
-
-					.community-left {
-						width: 642px;
-						height: auto;
+		
+					.right {
 						display: flex;
-						flex-direction: column;
-
-						.card-wrap {
+						align-items: flex-end;
+						gap: 15px;
+		
+						.more-box {
 							display: flex;
-							flex-direction: row;
-							flex-wrap: wrap;
-
-							.vertical-card {
-								margin-right: 12px;
-								margin-bottom: 18px;
-								width: 202px;
-								display: flex;
-								flex-direction: column;
-								cursor: pointer;
-
-								.community-img {
-									width: 100%;
-									height: 141px;
-									background-size: cover;
-									background-repeat: round;
-									border-radius: 5px;
-
-									div {
-										width: 32px;
-										height: 32px;
-										display: flex;
-										justify-content: center;
-										align-items: center;
-										background: #f54d56;
-										border-radius: 5px 0px;
-										font-family: $font;
-										font-style: normal;
-										font-weight: 400;
-										font-size: 19px;
-										line-height: 36px;
-										letter-spacing: -0.015em;
-										color: #bdbdbd;
-									}
-								}
-
-								strong {
-									margin-top: 10px;
-									font-family: $font;
-									font-style: normal;
-									font-weight: 700;
-									font-size: 18px;
-									line-height: 36px;
-									letter-spacing: 0.105em;
-									color: #000000;
-								}
-
-								span {
-									font-family: $font;
-									font-style: normal;
-									font-weight: 400;
-									font-size: 16px;
-									line-height: 19px;
-									letter-spacing: -0.015em;
-									color: #d3d3d3;
-								}
+							align-items: center;
+							padding: 8px 12px;
+							border: 2px solid #cd865c;
+							border-radius: 20px;
+							background: rgba(205, 134, 92, 0.1);
+							cursor: pointer;
+							transition: color 0.2s ease, transform 0.2s ease;
+		
+							&:hover {
+								transform: translateX(3px);
+								color: #cd865c;
 							}
-						}
-					}
-
-					.community-right {
-						width: 590px;
-						height: auto;
-						display: flex;
-						flex-direction: column;
-
-						.horizontal-card {
-							display: flex;
-							flex-direction: row;
-							cursor: pointer;
-							margin-bottom: 34px;
-
+		
+							span {
+								color: rgba(46, 46, 46, 0.8);
+								font-family: 'Inter', sans-serif;
+								font-size: 18px;
+								font-weight: 600;
+							}
+		
 							img {
-								width: 180px;
-								height: 111px;
-								border-radius: 7px;
+								margin-left: 8px;
+								width: 16px;
+								height: 16px;
+							}
+						}
+					}
+				}
+		
+		
+					.wrapper {
+						width: 100%;
+						margin-top: -30px;
+						display: flex;
+						flex-direction: column;
+						align-items: stretch;
+						justify-content: flex-start;
+						gap: 20px;
+						padding: 0 20px;
+						overflow: hidden;
+		
+						.switch-btn {
+							width: 100px;
+							height: 100px;
+							display: flex;
+							align-items: center;
+							justify-content: center;
+		
+							.swiper-button-prev,
+							.swiper-button-next {
+								position: absolute;
+								top: 60%;
+								width: 60px;
+								height: 60px;
+								border-radius: 50%;
+								background: rgba(255, 255, 255, 0.9);
+								color: #555;
+								display: flex;
+								justify-content: center;
+								align-items: center;
+								box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+								z-index: 10;
+								transition: background 0.3s, color 0.3s;
+							}
+		
+							.swiper-button-prev {
+								left: -60px;
+							}
+		
+							.swiper-button-next {
+								right: -60px;
+							}
+		
+							.swiper-button-prev:hover,
+							.swiper-button-next:hover {
+								background: rgba(0, 0, 0, 0.9);
+								color: #fff;
+							}
+						}
+		
+						.community-box {
+							width: 100%;
+							height: 100%;
+							display: flex;
+							flex-direction: row;
+							align-items: flex-start;
+							justify-content: space-between;
+							// left: 50%;
+		
+							button {
+								width: 157px;
+								height: 50px;
+								flex-shrink: 0;
+							}
+		
+							span {
+								width: 112px;
+								height: 10px;
+								color: #fff;
+								text-align: center;
+								font-family: 'Judson';
+								font-size: 14px;
+								font-weight: 700;
+								letter-spacing: 2.1px;
+								text-transform: uppercase;
+								cursor: pointer;
+							}
+		
+							img {
+								margin-left: 10px;
+								width: 12px;
+								height: 12px;
 							}
 
-							div {
-								margin-left: 25px;
+							.card-wrap {
+								width: 100%;
 								display: flex;
-								flex-direction: column;
+								flex-direction: row;
+								align-items: flex-start;
+								justify-content: flex-start;
+								padding: 20px 0;
+								gap: 20px;
+								
+									.vertical-card {
+									display: flex;
+									width: 90%; // Full card
+									max-width: 648px;
+									margin-left: 330px;
+									flex: 0 0 auto;								
+									height: 630px;
+									flex-direction: column;
+									align-items: flex-start;
+									justify-content: space-between;
+									cursor: pointer;
+									border: 1px solid #e0e0e0;
+									border-radius: 5%;
+									overflow: hidden;
+									transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+		
+									.community-img {
+										width: 608px;
+										height: 350px;
+										background-size: cover;
+										background-repeat: no-repeat;
+										background-position: center;
 
-								strong {
-									margin-top: 15px;
-									font-family: $font;
-									font-style: normal;
-									font-weight: 500;
-									font-size: 13px;
-									letter-spacing: 0.105em;
-									color: #212121;
-								}
+										img {
+											height: 380px;
+											width: 100%;
+											object-fit: cover;
+											transition: transform 0.3s ease;
+										}
+									}
+		
+									.badge {
+										position: fixed;
+										top: 10px;
+										left: 138px;
+										padding: 4px 12px;
+										border-radius: 20px;
+										background-color: rgba(5, 5, 5, 0.1);
+										backdrop-filter: blur(4px);
+										color: #ff6600;
+										font-size: 22px;
+										font-weight: 500;
+										z-index: 2;
+									}
+		
+									.community-info {
+										display: flex;
+										flex-direction: column;
+										align-items: center;
+										width: 100%;
+										height: 100%;
+										padding-bottom: 50px;
+										background-color: rgba(255, 255, 255, 0.9);
+										border-radius: 12px;
+										gap: 10px;
+										box-sizing: border-box;
+										text-align: left;
+										transition: background 0.3s ease;
+		
+										.date {
+											width: 464px;
+											margin-top: 10px;
+											color: rgba(46, 46, 46, 0.8);
+											font-family: 'Judson';
+											font-size: 20px;
+											font-weight: 400;
+											letter-spacing: 2.7px;
+											text-transform: uppercase;
+										}
+		
+										strong {
+											color: #000;
+											font-family: 'Judson';
+											font-size: 25px;
+											font-weight: 400;
+											text-transform: capitalize;
+										}
+		
+										.article-content {
+											width: 100%; /* or max-width: 464px; */
+											padding-bottom: 40px;
+											color: rgba(46, 46, 46, 0.8);
+											font-family: 'Inter';
+											font-size: 16px;
+											font-weight: 400;
+											line-height: 30px;
+											word-wrap: break-word;
+											overflow-wrap: break-word;
+											box-sizing: border-box;
+										  }
+										  
+										  h2 {
+											display: flex;
+											align-items: center;
+											justify-content: center;
+											width: 157px;
+											height: 50px;
+											flex-shrink: 0;
+											margin-top: 75px;
+											margin-left: 20px;
+											color: #ffffff;
+											border-radius: 10%;
+											background: #000;
+											.btn {
+												width: 112px;
+												height: 10px;
+												flex-shrink: 0;
+												color: #FFF;
+												text-align: center;
 
-								span {
-									font-family: $font;
-									font-style: normal;
-									font-weight: 500;
-									font-size: 13px;
-									line-height: 36px;
-									letter-spacing: 0.105em;
-									color: #bdbdbd;
+												/* Button */
+												font-family: "Judson";
+												font-size: 14px;
+												font-style: normal;
+												font-weight: 700;
+												line-height: 8px; /* 57.143% */
+												letter-spacing: 2.1px;
+												text-transform: uppercase;
+												color: white;
+
+
+											}
+										}
+
+									}
 								}
 							}
 						}
@@ -1604,5 +1762,5 @@
 				}
 			}
 		}
+		
 	}
-}

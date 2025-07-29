@@ -40,7 +40,6 @@ const Home: NextPage = () => {
 				<TopStores />
 				<Shipping  />
 				<CommunityBoards />
-
 			</Stack>
 		);
 	}
