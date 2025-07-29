@@ -9,6 +9,7 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import TrendProducts from '../libs/components/homepage/TrendProducts';
 import CategoryProducts from '../libs/components/homepage/CategoryProducts';
 import IconWall from '../libs/components/homepage/IconWall';
+import Shipping from '../libs/components/homepage/Shipping';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -25,6 +26,7 @@ const Home: NextPage = () => {
 				<BrandsSection />
 				<TrendProducts />
 				<CategoryProducts />
+				<IconWall  />
 				<TopStores />
 			</Stack>
 		);
@@ -36,7 +38,9 @@ const Home: NextPage = () => {
 				<CategoryProducts />
 				<IconWall  />
 				<TopStores />
+				<Shipping  />
 				<CommunityBoards />
+
 			</Stack>
 		);
 	}
