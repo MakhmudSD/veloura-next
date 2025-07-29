@@ -5,16 +5,20 @@ import { Box, Button, Typography } from '@mui/material';
 import Moment from 'react-moment';
 import { BoardArticle } from '../../types/board-article/board-article';
 import { useRouter } from 'next/router';
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+
 
 interface CommunityCardProps {
 	vertical: boolean;
 	article: BoardArticle;
 	index: number;
+	recentlyVisited?: boolean;
+
 }
 
 const CommunityCard = (props: CommunityCardProps) => {
 	const router = useRouter();
-	const { vertical, article, index } = props;
+	const { vertical, article, index, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const articleImage = article?.articleImage
 		? `${process.env.REACT_APP_API_URL}/${article?.articleImage}`
@@ -49,6 +53,14 @@ const CommunityCard = (props: CommunityCardProps) => {
 					>
 						<h2 className="btn">More Detail</h2>
 					</div>
+					{!recentlyVisited && (
+              <div className="btn-group">
+                <Box className="view-box">
+                  <RemoveRedEyeIcon />
+                  <Typography>{article?.articleViews}</Typography>
+                </Box>
+              </div>
+            )}
 				</Box>
 			</Box>
 		);

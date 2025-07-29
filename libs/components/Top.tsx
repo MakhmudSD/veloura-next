@@ -303,7 +303,7 @@ const Top = () => {
 												size="large"
 											>
 												<Badge badgeContent={totalQuantity} color="secondary" showZero>
-													<ShoppingCartIcon />
+													<img src="/img/icons/shop-bag.svg" alt="Shopping Cart" />
 												</Badge>
 											</IconButton>
 
