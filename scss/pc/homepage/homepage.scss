@@ -1384,7 +1384,7 @@
 			justify-content: space-between;
 			align-items: center;
 			flex-shrink: 0;
-			background-color: #E4E3D6;
+			background: #EDDDCE;
 
 			.container {
 				display: flex;
@@ -1634,7 +1634,7 @@
 									display: flex;
 									width: 90%; // Full card
 									max-width: 648px;
-									margin-left: 330px;
+									margin-left: 70px;
 									flex: 0 0 auto;								
 									height: 630px;
 									flex-direction: column;
@@ -1645,6 +1645,10 @@
 									border-radius: 5%;
 									overflow: hidden;
 									transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+									&:hover {
+										transform: translateY(-4px);
+										box-shadow: 0 6px 15px rgba(0, 0, 0, 0.12);
+									}
 		
 									.community-img {
 										width: 608px;
@@ -1662,17 +1666,18 @@
 									}
 		
 									.badge {
-										position: fixed;
+										position: relative;
 										top: 10px;
-										left: 138px;
+										left: 458px;
 										padding: 4px 12px;
 										border-radius: 20px;
 										background-color: rgba(5, 5, 5, 0.1);
 										backdrop-filter: blur(4px);
-										color: #ff6600;
+										color: #e8e1dc;
 										font-size: 22px;
 										font-weight: 500;
 										z-index: 2;
+									
 									}
 		
 									.community-info {
