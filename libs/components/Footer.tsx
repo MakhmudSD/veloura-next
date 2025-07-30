@@ -73,7 +73,8 @@ const Footer = () => {
 				<Stack className={'main'}>
 					<Stack className={'left'}>
 						<Box component={'div'} className={'footer-box'}>
-							<img src="/img/logo/logoWhite.svg" alt="" className={'logo'} />
+							<img src="/img/logo/white_on_black2.png" alt="" className={'logo'} />
+							<span>Veloura</span>
 						</Box>
 						<Box component={'div'} className={'footer-box'}>
 							<span>total free customer care</span>
