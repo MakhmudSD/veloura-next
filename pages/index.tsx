@@ -10,6 +10,7 @@ import TrendProducts from '../libs/components/homepage/TrendProducts';
 import CategoryProducts from '../libs/components/homepage/CategoryProducts';
 import IconWall from '../libs/components/homepage/IconWall';
 import Shipping from '../libs/components/homepage/Shipping';
+import DualNavigationCards from '../libs/components/homepage/DualCard';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -40,6 +41,7 @@ const Home: NextPage = () => {
 				<TopStores />
 				<Shipping  />
 				<CommunityBoards />
+				<DualNavigationCards />
 			</Stack>
 		);
 	}
