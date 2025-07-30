@@ -1,196 +1,130 @@
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Box, Stack, Typography } from '@mui/material';
+import { useRouter } from 'next/router';
+import { Box, Stack } from '@mui/material';
 import CommunityCard from './CommunityCard';
 import { BoardArticle } from '../../types/board-article/board-article';
 import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
 import { useQuery } from '@apollo/client';
-import { BoardArticleCategory } from '../../enums/board-article.enum';
-import router, { useRouter } from 'next/router';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Navigation, Pagination } from 'swiper';
+import { Autoplay, Navigation } from 'swiper';
+
 import 'swiper/css';
 import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 
 const CommunityBoards = () => {
-	const device = useDeviceDetect();
-	const router = useRouter();
+  const router = useRouter();
+  const [articles, setArticles] = useState<BoardArticle[]>([]);
+  const [loading, setLoading] = useState(true); // Add loading state
 
-	const [searchCommunity, setSearchCommunity] = useState({
-		page: 1,
-		sort: 'articleViews',
-		direction: 'DESC',
-	});
-	const [newsArticles, setNewsArticles] = useState<BoardArticle[]>([]);
-	const [freeArticles, setFreeArticles] = useState<BoardArticle[]>([]);
-	const [recommendArticles, setRecommendArticles] = useState<BoardArticle[]>([]);
+  const {
+    loading: getArticlesLoading,
+    data: getArticlesData,
+    error: getArticlesError,
+    refetch: getArticlesRefetch,
+  } = useQuery(GET_BOARD_ARTICLES, {
+    fetchPolicy: 'network-only',
+    variables: {
+      input: {
+        page: 1,
+        limit: 10,
+        sort: 'articleViews',
+        direction: 'DESC',
+        search: {}, // Remove specific category filter
+      },
+    },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data) => {
+      setArticles(data?.getBoardArticles?.list || []);
+      setLoading(false); // Set loading to false on completion
+    },
+    onError: (error) => {
+      console.error('Error fetching articles:', error);
+      setLoading(false); // Ensure loading is set to false on error
+    },
+  });
 
-	/** APOLLO REQUESTS **/
+  useEffect(() => {
+    getArticlesRefetch();
+  }, []);
 
-	const {
-		loading: getNewsArticlesLoading,
-		data: getNewsArticlesData,
-		error: getNewsArticlesError,
-		refetch: getNewsArticlesRefetch,
-	} = useQuery(GET_BOARD_ARTICLES, {
-		fetchPolicy: 'network-only',
-		variables: {
-			input: {
-				...searchCommunity,
-				limit: 10,
-				search: { articleCategory: BoardArticleCategory.NEWS },
-			},
-		},
-		notifyOnNetworkStatusChange: true,
-		onCompleted: (data) => {
-			setNewsArticles(data?.getBoardArticles?.list || []);
-		},
-	});
-
-	const {
-		loading: getFreeArticlesLoading,
-		data: getFreeArticlesData,
-		error: getFreeArticlesError,
-		refetch: getFreeArticlesRefetch,
-	} = useQuery(GET_BOARD_ARTICLES, {
-		fetchPolicy: 'network-only',
-		variables: {
-			input: {
-				...searchCommunity,
-				limit: 10,
-				search: { articleCategory: BoardArticleCategory.FREE },
-			},
-		},
-		notifyOnNetworkStatusChange: true,
-		onCompleted: (data) => {
-			setFreeArticles(data?.getBoardArticles?.list || []);
-		},
-	});
-
-	const {
-		loading: getTrendArticlesLoading,
-		data: getTrendArticlesData,
-		error: getTrendArticlesError,
-		refetch: getTrendArticlesRefetch,
-	} = useQuery(GET_BOARD_ARTICLES, {
-		fetchPolicy: 'network-only',
-		variables: {
-			input: {
-				...searchCommunity,
-				limit: 10,
-				search: { articleCategory: BoardArticleCategory.RECOMMEND },
-			},
-		},
-		notifyOnNetworkStatusChange: true,
-		onCompleted: (data) => {
-			setRecommendArticles(data?.getBoardArticles?.list || []);
-		},
-	});
-	useEffect(() => {
-		getNewsArticlesRefetch();
-		getFreeArticlesRefetch();
-		getTrendArticlesRefetch();
-	}, [searchCommunity]);
-
-	if (device === 'mobile') {
-		return <div>COMMUNITY BOARDS (MOBILE)</div>;
-	} else {
-		return (
-			<Stack className={'community-board'}>
-				<Stack className={'container'}>
-					<Stack className={'info-box'}>
-						<Box className={'left'}>
-							<h3>POPULAR POST</h3>
-							<span>Featured Stories About Jewellery</span>
-						</Box>
-						<Box className={'right'}>
-							<div className={'more-box'} onClick={() => router.push('/article')}>
-								<span>View All Articles</span>
-								<img src="/img/icons/rightup.svg" alt="" />
-							</div>
-						</Box>
-					</Stack>
-					<Stack className="wrapper">
-						<Box className="switch-btn swiper-community-prev">
-							<div className="swiper-button-prev"></div>
-						</Box>
-						<Stack className={'community-box'}>
-							<Stack className={'card-wrap'}>
-								<Swiper
-						slidesPerView={2}
-						spaceBetween={30}
-							loop={true}
-							initialSlide={2}
-							// centeredSlides={true}
-							modules={[Autoplay, Navigation, Pagination]}
-							navigation={{
-								nextEl: '.swiper-community-next',
-								prevEl: '.swiper-community-prev',
-							}}
-								>
-									{newsArticles.map((article: BoardArticle, index: number) => (
-										<SwiperSlide key={article?._id}>
-											<CommunityCard vertical={true} article={article} index={index} />
-										</SwiperSlide>
-									))}
-								</Swiper>
-							</Stack>
-
-							<Stack className={'community-box'}>
-								<Stack className={'card-wrap'}>
-									<Swiper
-										slidesPerView={2}
-										spaceBetween={30}
-											loop={true}
-											initialSlide={2}
-											// centeredSlides={true}
-											modules={[Autoplay, Navigation, Pagination]}
-											navigation={{
-												nextEl: '.swiper-community-next',
-												prevEl: '.swiper-community-prev',
-											}}
-									>
-										{recommendArticles.map((article: BoardArticle, index: number) => (
-											<SwiperSlide key={article?._id}>
-												<CommunityCard vertical={true} article={article} index={index} />
-											</SwiperSlide>
-										))}
-									</Swiper>
-								</Stack>
-							</Stack>
-							<Stack className={'community-box'}>
-								<Stack className={'card-wrap'}>
-									<Swiper 
-									slidesPerView={2}
-									spaceBetween={30}
-										loop={true}
-										initialSlide={2}
-										// centeredSlides={true}
-										modules={[Autoplay, Navigation, Pagination]}
-										navigation={{
-											nextEl: '.swiper-community-next',
-											prevEl: '.swiper-community-prev',
-										}}
-									>
-										{freeArticles.map((article: BoardArticle, index: number) => (
-											<SwiperSlide key={article?._id}>
-												<CommunityCard vertical={true} article={article} index={index} />
-											</SwiperSlide>
-										))}
-									</Swiper>
-									<Box className="switch-btn swiper-community-prev">
-										<div className="swiper-button-next"></div>
-									</Box>{' '}
-								</Stack>
-							</Stack>
-						</Stack>
-					</Stack>
-				</Stack>
-			</Stack>
-		);
-	}
+  return (
+    <Stack className={'community-board'}>
+      <Stack className={'container'}>
+        <Stack className={'info-box'}>
+          <Box className={'left'}>
+            <h3>POPULAR POST</h3>
+            <span>Featured Stories About Jewellery</span>
+          </Box>
+          <Box className={'right'}>
+            <div className={'more-box'} onClick={() => router.push('/article')}>
+              <span>View All Articles</span>
+              <img src="/img/icons/rightup.svg" alt="" />
+            </div>
+          </Box>
+        </Stack>
+        <Stack className="wrapper">
+          <Box className="switch-btn swiper-community-prev">
+            <div className="swiper-button-prev"></div>
+          </Box>
+          <Stack className={'community-box'}>
+            <Stack className={'card-wrap'}>
+              {loading ? (
+                <Box component={'div'} className={'empty-list'}>
+                  <Box className={'empty-list-content'}>
+                    <span>Loading Articles...</span>
+                  </Box>
+                </Box>
+              ) : articles.length !== 0 ? (
+                <Box component={'div'} className={'empty-list'}>
+                  <Box className={'empty-list-content'}>
+                    <img src="/img/icons/empty.png" alt="" />
+                    <span>OOPS</span>
+                    <strong>
+                      There are no articles available at the moment
+                    </strong>
+                    <p>
+                      It is a long established fact that a reader will be
+                      distracted by the readable content of a page when looking
+                      at its layout. The point of using Lorem Ipsum is that it
+                      has a more-or-less normal.
+                    </p>
+                    <div onClick={() => router.push('/')}>
+                      <h2>Back to Home</h2>
+                    </div>
+                  </Box>
+                </Box>
+              ) : (
+                <Swiper
+                  slidesPerView={2}
+                  spaceBetween={30}
+                  loop={true}
+                  initialSlide={0} // Changed from 2
+                  modules={[Autoplay, Navigation]}
+                  navigation={{
+                    nextEl: '.swiper-community-next',
+                    prevEl: '.swiper-community-prev',
+                  }}
+                  autoplay={{
+                    delay: 2500,
+                    disableOnInteraction: false,
+                  }}
+                >
+                  {articles.map((article: BoardArticle) => (
+                    <SwiperSlide key={article?._id}>
+                      <CommunityCard vertical={true} article={article} index={0} />
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              )}
+            </Stack>
+          </Stack>
+          <Box className="switch-btn swiper-community-next">
+            <div className="swiper-button-next"></div>
+          </Box>
+        </Stack>
+      </Stack>
+    </Stack>
+  );
 };
 
 export default CommunityBoards;

@@ -746,7 +746,8 @@ body::-webkit-scrollbar {
 		flex-direction: column;
 		background-color: #222; /* Dark background for contrast */
 		width: 100%;
-		height: 932px;
+		height: auto;
+		min-height: 400px;
 		flex-shrink: 0;
 	  
 		.main {
@@ -756,12 +757,14 @@ body::-webkit-scrollbar {
 			align-items: flex-start;
 			flex-wrap: wrap;
 			gap: 40px;
-			padding: 150px 143px;
-		  
+			padding: 100px 20px; /* Adjusted padding for responsiveness */		  
 			.left {
 			  flex: 1;
 			  display: flex;
 			  flex-direction: column;
+			  justify-content: space-between;
+		      align-items: flex-start;
+			  margin-left: 100px;
 			  gap: 20px;
 		  
 			  .footer-left-top {
@@ -776,12 +779,11 @@ body::-webkit-scrollbar {
 				.brand-info {
 				  display: flex;
 				  flex-direction: row;
-				
-				  max-width: 600px;
+				  max-width: 500px;
 				  word-break: break-word;
 				  /* Removed conflicting margin-right */
 				  .logo {
-					margin-top: -75px;
+					margin-top: -35px;
 					width: 250px;
 					height: 207px;
 					flex-shrink: 0;
@@ -878,6 +880,8 @@ body::-webkit-scrollbar {
 				width: auto;
 				margin-top: -25px;
 				gap: 20px;
+				flex: 1; /* Equal width distribution */
+				min-width: 150px; /* Prevent columns from collapsing */
 				 /* 280% */ /*  fit content based on the inside items */
 				h1 {
 					color: #FFF;
@@ -1000,6 +1004,7 @@ body::-webkit-scrollbar {
 		  
 			.divider {
 				flex: 1;
+				width: 80%; /* Reduced width */
 				height: 1px;
 				/* ──▁▁  transparent in the middle  ▁▁── */
 				background: linear-gradient(
