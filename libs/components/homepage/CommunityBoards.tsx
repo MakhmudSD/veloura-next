@@ -74,7 +74,7 @@ const CommunityBoards = () => {
                     <span>Loading Articles...</span>
                   </Box>
                 </Box>
-              ) : articles.length !== 0 ? (
+              ) : articles.length === 0 ? (
                 <Box component={'div'} className={'empty-list'}>
                   <Box className={'empty-list-content'}>
                     <img src="/img/icons/empty.png" alt="" />
