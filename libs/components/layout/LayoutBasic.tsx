@@ -29,9 +29,9 @@ const withLayoutBasic = (Component: any) => {
 
 			switch (router.pathname) {
 				case '/product':
-					title = 'Product Search';
-					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/properties.png';
+					title = 'Shop';
+					desc = 'Home / Shop';
+					bgImage = '/img/banner/home-banner3.png';
 					break;
 				case '/store':
 					title = 'Stores';
@@ -154,3 +154,4 @@ const withLayoutBasic = (Component: any) => {
 };
 
 export default withLayoutBasic;
+
