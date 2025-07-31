@@ -1,12 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   Typography,
-  MenuItem,
-  Select,
-  FormControl,
-  InputLabel,
-  Box,
+  Checkbox,
+  FormControlLabel,
+  Slider,
 } from "@mui/material";
 import useDeviceDetect from "../../hooks/useDeviceDetect";
 import {
@@ -17,6 +15,15 @@ import {
 } from "../../enums/product.enum";
 import { ProductsInquiry } from "../../types/product/product.input";
 import { useRouter } from "next/router";
+import CloseIcon from "@mui/icons-material/Close";
+import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+
+type FilterKey =
+  | "locationList"
+  | "categoryList"
+  | "materialList"
+  | "genderList"
+  | "options";
 
 interface FilterType {
   searchFilter: ProductsInquiry;
@@ -25,260 +32,137 @@ interface FilterType {
 }
 
 const Filter = (props: FilterType) => {
-  const { searchFilter, setSearchFilter, initialInput } = props;
+  const { searchFilter, setSearchFilter } = props;
   const device = useDeviceDetect();
   const router = useRouter();
 
-  const [locations, setLocations] = useState<ProductLocation[]>(
-    Object.values(ProductLocation)
-  );
-  const [categories, setCategories] = useState<ProductCategory[]>(
-    Object.values(ProductCategory)
-  );
+  const [locations] = useState<ProductLocation[]>(Object.values(ProductLocation));
+  const [categories] = useState<ProductCategory[]>(Object.values(ProductCategory));
+  const [materials] = useState<ProductMaterial[]>(Object.values(ProductMaterial));
+  const [genders] = useState<ProductGender[]>(Object.values(ProductGender));
+  const [openFilter, setOpenFilter] = useState<string | null>(null);
 
-  const [showMore, setShowMore] = useState<boolean>(false);
+  const friendlyNames: Record<string, string> = {
+    productRent: "Rent",
+    productBarter: "Barter",
+  };
 
-  /** LIFECYCLES **/
-	useEffect(() => {
-		  if (searchFilter?.search?.locationList?.length == 0) {
-			delete searchFilter.search.locationList;
-			setShowMore(false);
-			router
-			  .push(
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				{ scroll: false }
-			  )
-			  .then();
-		  }
-	  
-		  if (searchFilter?.search?.categoryList?.length == 0) {
-			delete searchFilter.search.categoryList;
-			router
-			  .push(
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				{ scroll: false }
-			  )
-			  .then();
-		  }
-	  
-		  if (searchFilter?.search?.materialList?.length == 0) {
-			delete searchFilter.search.materialList;
-			router
-			  .push(
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				{ scroll: false }
-			  )
-			  .then();
-		  }
-	  
-		  if (searchFilter?.search?.options?.length == 0) {
-			delete searchFilter.search.options;
-			router
-			  .push(
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				{ scroll: false }
-			  )
-			  .then();
-		  }
-	  
-		  if (searchFilter?.search?.genderList?.length == 0) {
-			delete searchFilter.search.genderList;
-			router
-			  .push(
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				`/product?input=${JSON.stringify({
-				  ...searchFilter,
-				  search: {
-					...searchFilter.search,
-				  },
-				})}`,
-				{ scroll: false }
-			  )
-			  .then();
-		  }
-	  
-		  if (searchFilter?.search?.locationList) setShowMore(true);
-		}, [searchFilter]);
+  /** Watch for filter changes and update URL **/
+  useEffect(() => {
+    // Remove empty arrays from search to avoid redundant queries
+    const cleanedSearch = { ...searchFilter.search };
+    Object.keys(cleanedSearch).forEach((key) => {
+      if (Array.isArray(cleanedSearch[key]) && cleanedSearch[key].length === 0) {
+        delete cleanedSearch[key];
+      }
+    });
 
-  /** HANDLERS **/
-  const productLocationSelectHandler = useCallback(
-    async (location: string) => {
-      const currentList = searchFilter?.search?.locationList || [];
-      const isSelected = currentList.includes(location as ProductLocation);
-
-      const newLocationList = isSelected
-        ? currentList.filter(item => item !== location)
-        : [...currentList, location];
-
-      const newSearchFilter = {
+    // Push filters to URL
+    router.push(
+      `/product?input=${encodeURIComponent(JSON.stringify({
         ...searchFilter,
-        search: {
-          ...searchFilter.search,
-          locationList: newLocationList,
-        },
-      };
+        search: cleanedSearch
+      }))}`,
+      undefined,
+      { scroll: false }
+    );
+  }, [searchFilter]);
 
-      await router.push(
-        `/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
-        undefined,
-        { scroll: false }
-      );
-    },
-    [searchFilter, router]
-  );
+  /** Toggle dropdown filter box **/
+  const toggleFilter = (filterName: string) => {
+    setOpenFilter((prev) => (prev === filterName ? null : filterName));
+  };
 
-  const productCategorySelectHandler = useCallback(
-    async (category: string) => {
-      const currentList = searchFilter?.search?.categoryList || [];
-      const isSelected = currentList.includes(category as ProductCategory);
+  /** Update checkbox filters **/
+  const updateFilterList = (key: FilterKey, value: string) => {
+    setSearchFilter((prev: ProductsInquiry) => {
+      const currentList = prev?.search?.[key] || [];
+      const isSelected = currentList.includes(value);
 
-      const newCategoryList = isSelected
-        ? currentList.filter(item => item !== category)
-        : [...currentList, category];
-
-      const newSearchFilter = {
-        ...searchFilter,
-        search: {
-          ...searchFilter.search,
-          categoryList: newCategoryList,
-        },
-      };
-
-      await router.push(
-        `/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
-        undefined,
-        { scroll: false }
-      );
-    },
-    [searchFilter, router]
-  );
-
-  const productMaterialSelectHandler = useCallback(
-    (event: any) => {
-      const value = event.target.value;
-      setSearchFilter((prev: any) => ({
+      return {
         ...prev,
         search: {
           ...prev.search,
-          materialList: value ? [value] : [],
+          [key]: isSelected
+            ? currentList.filter((item: string) => item !== value)
+            : [...currentList, value],
         },
-      }));
-    },
-    [setSearchFilter]
-  );
+      };
+    });
+  };
 
-  const productGenderSelectHandler = useCallback(
-    (event: any) => {
-      const value = event.target.value;
-      setSearchFilter((prev: any) => ({
+  /** Update options (Rent/Barter) **/
+  const productOptionSelectHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchFilter((prev: ProductsInquiry) => {
+      const currentList = prev?.search?.options || [];
+      const isSelected = currentList.includes(value);
+
+      return {
         ...prev,
         search: {
           ...prev.search,
-          genderList: value ? [value] : [],
+          options: isSelected
+            ? currentList.filter((item) => item !== value)
+            : [...currentList, value],
         },
-      }));
-    },
-    [setSearchFilter]
-  );
+      };
+    });
+  };
 
-  const productOptionSelectHandler = useCallback(
-    async (option: string) => {
-      const currentList = searchFilter?.search?.options || [];
-      const isSelected = currentList.includes(option);
+  /** Price range update **/
+  const productPriceHandler = (start: number, end: number) => {
+    setSearchFilter((prev: ProductsInquiry) => ({
+      ...prev,
+      search: {
+        ...prev.search,
+        pricesRange: { start, end },
+      },
+    }));
+  };
 
-      const newOptionList = isSelected
-        ? currentList.filter(item => item !== option)
-        : [...currentList, option];
+  /** Selected filters for chips **/
+  const selectedFilters = [
+    ...(searchFilter?.search?.locationList || []).map((f: string) => ({
+      type: "locationList" as FilterKey,
+      label: f,
+    })),
+    ...(searchFilter?.search?.categoryList || []).map((f: string) => ({
+      type: "categoryList" as FilterKey,
+      label: f,
+    })),
+    ...(searchFilter?.search?.materialList || []).map((f: string) => ({
+      type: "materialList" as FilterKey,
+      label: f,
+    })),
+    ...(searchFilter?.search?.genderList || []).map((f: string) => ({
+      type: "genderList" as FilterKey,
+      label: f,
+    })),
+    ...(searchFilter?.search?.options || []).map((f: string) => ({
+      type: "options" as FilterKey,
+      label: f,
+    })),
+  ];
 
-      const newSearchFilter = {
-        ...searchFilter,
+  /** Remove selected filter chip **/
+  const removeFilterChip = (
+    type: keyof ProductsInquiry["search"],
+    value: string
+  ) => {
+    setSearchFilter((prev: ProductsInquiry) => {
+      const list = prev.search[type] as string[] | undefined;
+      if (!list) return prev;
+
+      return {
+        ...prev,
         search: {
-          ...searchFilter.search,
-          options: newOptionList,
+          ...prev.search,
+          [type]: list.filter((v) => v !== value),
         },
       };
-
-      await router.push(
-        `/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
-        undefined,
-        { scroll: false }
-      );
-    },
-    [searchFilter, router]
-  );
-
-  const productPriceHandler = useCallback(
-    async (value: number, type: string) => {
-      const pricesRange = {
-        ...searchFilter.search.pricesRange,
-        [type]: value,
-      };
-
-      const newSearchFilter = {
-        ...searchFilter,
-        search: {
-          ...searchFilter.search,
-          pricesRange,
-        },
-      };
-
-      await router.push(
-        `/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
-        undefined,
-        { scroll: false }
-      );
-    },
-    [searchFilter]
-  );
+    });
+  };
 
   if (device === "mobile") {
     return <div>PRODUCTS FILTER</div>;
@@ -286,172 +170,209 @@ const Filter = (props: FilterType) => {
 
   return (
     <Stack className="filter-main">
-      {/* Location */}
-      <Stack className="filter-box location" mb="30px">
+      {/* LOCATION */}
+      <div
+        className={`filter-box ${openFilter === "location" ? "active" : ""}`}
+        onClick={() => toggleFilter("location")}
+      >
         <Typography className="title">Location</Typography>
-        <Stack className="product-location">
-          {locations.map((location) => {
-            const selected = (searchFilter?.search?.locationList || []).includes(location);
-            return (
-              <Stack
-                key={location}
-                onClick={() => productLocationSelectHandler(location)}
-                sx={{
-                  cursor: "pointer",
-                  padding: "4px 8px",
-                  fontWeight: selected ? "bold" : "normal",
-                  color: selected ? "#181a20" : "#717171",
-                  borderRadius: 1,
-                  backgroundColor: selected ? "rgba(24, 26, 32, 0.1)" : "transparent",
-                  "&:hover": {
-                    backgroundColor: "rgba(24, 26, 32, 0.05)",
-                  },
+        <KeyboardArrowDownRoundedIcon className="dropdown-icon" />
+        {openFilter === "location" && (
+          <div className="filter-overlay">
+            <div className="filter-header">
+              <h4>Select Location</h4>
+              <CloseIcon onClick={() => setOpenFilter(null)} />
+            </div>
+            <div className="filter-content">
+              {locations.map((location) => (
+                <FormControlLabel
+                  key={location}
+                  control={
+                    <Checkbox
+                      checked={searchFilter?.search?.locationList?.includes(location)}
+                      onChange={() => updateFilterList("locationList", location)}
+                    />
+                  }
+                  label={location}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* CATEGORY */}
+      <div
+        className={`filter-box ${openFilter === "category" ? "active" : ""}`}
+        onClick={() => toggleFilter("category")}
+      >
+        <Typography className="title">Category</Typography>
+        <KeyboardArrowDownRoundedIcon className="dropdown-icon" />
+        {openFilter === "category" && (
+          <div className="filter-overlay">
+            <div className="filter-header">
+              <h4>Select Category</h4>
+              <CloseIcon onClick={() => setOpenFilter(null)} />
+            </div>
+            <div className="filter-content">
+              {categories.map((category) => (
+                <FormControlLabel
+                  key={category}
+                  control={
+                    <Checkbox
+                      checked={searchFilter?.search?.categoryList?.includes(category)}
+                      onChange={() => updateFilterList("categoryList", category)}
+                    />
+                  }
+                  label={category}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* MATERIAL */}
+      <div
+        className={`filter-box ${openFilter === "material" ? "active" : ""}`}
+        onClick={() => toggleFilter("material")}
+      >
+        <Typography className="title">Material</Typography>
+        <KeyboardArrowDownRoundedIcon className="dropdown-icon" />
+        {openFilter === "material" && (
+          <div className="filter-overlay">
+            <div className="filter-header">
+              <h4>Select Material</h4>
+              <CloseIcon onClick={() => setOpenFilter(null)} />
+            </div>
+            <div className="filter-content">
+              {materials.map((material) => (
+                <FormControlLabel
+                  key={material}
+                  control={
+                    <Checkbox
+                      checked={searchFilter?.search?.materialList?.includes(material)}
+                      onChange={() => updateFilterList("materialList", material)}
+                    />
+                  }
+                  label={material}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* GENDER */}
+      <div
+        className={`filter-box ${openFilter === "gender" ? "active" : ""}`}
+        onClick={() => toggleFilter("gender")}
+      >
+        <Typography className="title">Gender</Typography>
+        <KeyboardArrowDownRoundedIcon className="dropdown-icon" />
+        {openFilter === "gender" && (
+          <div className="filter-overlay">
+            <div className="filter-header">
+              <h4>Select Gender</h4>
+              <CloseIcon onClick={() => setOpenFilter(null)} />
+            </div>
+            <div className="filter-content">
+              {genders.map((gender) => (
+                <FormControlLabel
+                  key={gender}
+                  control={
+                    <Checkbox
+                      checked={searchFilter?.search?.genderList?.includes(gender)}
+                      onChange={() => updateFilterList("genderList", gender)}
+                    />
+                  }
+                  label={gender}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* OPTIONS (Rent, Barter) */}
+      <div
+        className={`filter-box ${openFilter === "options" ? "active" : ""}`}
+        onClick={() => toggleFilter("options")}
+      >
+        <Typography className="title">Options</Typography>
+        <KeyboardArrowDownRoundedIcon className="dropdown-icon" />
+        {openFilter === "options" && (
+          <div className="filter-overlay">
+            <div className="filter-header">
+              <h4>Select Options</h4>
+              <CloseIcon onClick={() => setOpenFilter(null)} />
+            </div>
+            <div className="filter-content">
+              {Object.keys(friendlyNames).map((option) => (
+                <FormControlLabel
+                  key={option}
+                  control={
+                    <Checkbox
+                      checked={searchFilter?.search?.options?.includes(option)}
+                      value={option}
+                      onChange={productOptionSelectHandler}
+                    />
+                  }
+                  label={friendlyNames[option]}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* PRICE RANGE */}
+      <div
+        className={`filter-box ${openFilter === "price" ? "active" : ""}`}
+        onClick={() => toggleFilter("price")}
+      >
+        <Typography className="title">Price</Typography>
+        <KeyboardArrowDownRoundedIcon className="dropdown-icon" />
+        {openFilter === "price" && (
+          <div className="filter-overlay">
+            <div className="filter-header">
+              <h4>Select Price Range</h4>
+              <CloseIcon onClick={() => setOpenFilter(null)} />
+            </div>
+            <div className="filter-content">
+              <Slider
+                value={[
+                  searchFilter?.search?.pricesRange?.start || 0,
+                  searchFilter?.search?.pricesRange?.end || 2000000,
+                ]}
+                onChange={(e, newValue) => {
+                  const [start, end] = newValue as number[];
+                  productPriceHandler(start, end);
                 }}
-              >
-                <Typography>{location}</Typography>
-              </Stack>
-            );
-          })}
-        </Stack>
-      </Stack>
+                min={0}
+                max={2000000}
+                step={10000}
+              />
+            </div>
+          </div>
+        )}
+      </div>
 
-      {/* Product Category */}
-      <Stack className="filter-box category" mb="30px">
-        <Typography className="title">Product Category</Typography>
-        <Stack className="menu-items">
-          {categories.map((category: string) => {
-            const isSelected = searchFilter?.search?.categoryList?.includes(category as ProductCategory);
-            return (
-              <MenuItem
-                key={category}
-                value={category}
-                selected={isSelected}
-                onClick={() => productCategorySelectHandler(category)}
-              >
-                {category}
-              </MenuItem>
-            );
-          })}
-        </Stack>
-      </Stack>
-
-      {/* Jewelry Material */}
-	  <Stack className="filter-box material" mb="30px">
-  <Typography className="title">Jewelry Material</Typography>
-  <div className="menu-items">
-    {[
-      { label: "Any", value: "" },
-      { label: "Gold", value: ProductMaterial.GOLD },
-      { label: "Diamond", value: ProductMaterial.DIAMOND },
-      { label: "Silver", value: ProductMaterial.SILVER },
-      { label: "Platinum", value: ProductMaterial.PLATINUM },
-      { label: "Gemstone", value: ProductMaterial.GEMSTONE },
-    ].map((item) => (
-      <MenuItem
-        key={item.value}
-        selected={searchFilter?.search?.materialList?.[0] === item.value}
-        onClick={() =>
-          productMaterialSelectHandler({
-            target: { value: item.value },
-          })
-        }
-      >
-        {item.label}
-      </MenuItem>
-    ))}
-  </div>
-</Stack>
-
-
-      {/* Gender */}
-	  <Stack className="filter-box gender" mb="30px">
-  <Typography className="title">Gender</Typography>
-  <Stack className="menu-items">
-    {/* "Any" option */}
-    <MenuItem
-      value=""
-      onClick={() => productGenderSelectHandler({ target: { value: "" } })}
-      selected={!searchFilter?.search?.genderList?.[0]}
-      sx={{
-        fontWeight: !searchFilter?.search?.genderList?.[0] ? "bold" : "normal",
-        cursor: "pointer",
-      }}
-    >
-      Any
-    </MenuItem>
-
-    {/* Men */}
-    <MenuItem
-      value={ProductGender.MEN}
-      onClick={() => productGenderSelectHandler({ target: { value: ProductGender.MEN } })}
-      selected={searchFilter?.search?.genderList?.[0] === ProductGender.MEN}
-      sx={{
-        fontWeight: searchFilter?.search?.genderList?.[0] === ProductGender.MEN ? "bold" : "normal",
-        cursor: "pointer",
-      }}
-    >
-      Men
-    </MenuItem>
-
-    {/* Women */}
-    <MenuItem
-      value={ProductGender.WOMEN}
-      onClick={() => productGenderSelectHandler({ target: { value: ProductGender.WOMEN } })}
-      selected={searchFilter?.search?.genderList?.[0] === ProductGender.WOMEN}
-      sx={{
-        fontWeight: searchFilter?.search?.genderList?.[0] === ProductGender.WOMEN ? "bold" : "normal",
-        cursor: "pointer",
-      }}
-    >
-      Women
-    </MenuItem>
-  </Stack>
-</Stack>
-
-
-{/* Options */}
-<Stack className="filter-box options" mb="30px">
-  <Typography className="title">Options</Typography>
-  <div className="menu-items">
-  {['productBarter', 'productRent'].map((option) => {
-    const selected = (searchFilter?.search?.options || []).includes(option);
-    const label = option === "productBarter" ? "Barter" : "Rent";
-    return (
-      <Stack
-        key={option}
-        onClick={() => productOptionSelectHandler(option)}
-      >
-        <MenuItem>{label}</MenuItem>
-      </Stack>
-    );
-  })}
-  </div>
-</Stack>
-
-
-    {/* Price Range */}
-<Stack className="filter-box price" mb="30px">
-  <Typography className="title">Price Range</Typography>
-  <div className="menu-items">
-    <Stack className="square-year-input">
-      <input
-        type="number"
-        placeholder="$ min"
-        min={0}
-        value={searchFilter?.search?.pricesRange?.start ?? 0}
-        onChange={(e: any) => productPriceHandler(e.target.value, "start")}
-      />
-      <div className="central-divider" />
-      <input
-        type="number"
-        placeholder="$ max"
-        value={searchFilter?.search?.pricesRange?.end ?? 0}
-        onChange={(e: any) => productPriceHandler(e.target.value, "end")}
-      />
-    </Stack>
-  </div>
-</Stack>
-
+      {/* Selected Filter Chips */}
+      {selectedFilters.length > 0 && (
+        <div className="filter-history">
+          {selectedFilters.map((chip) => (
+            <div
+              key={`${chip.type}-${chip.label}`}
+              className="chip"
+              onClick={() => removeFilterChip(chip.type, chip.label)}
+            >
+              {friendlyNames[chip.label] || chip.label}
+              <span>×</span>
+            </div>
+          ))}
+        </div>
+      )}
     </Stack>
   );
 };

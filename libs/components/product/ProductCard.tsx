@@ -12,6 +12,7 @@ import { basketItemsVar, userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { CREATE_ORDER } from '../../../apollo/user/mutation';
+import { MemberAuthType } from '../../enums/member.enum';
 
 interface ProductCardType {
 	product: Product;
@@ -51,6 +52,8 @@ const ProductCard = (props: ProductCardType) => {
 		basketItemsVar(updatedItems); // Trigger reactive update
 	};
 
+	
+
 	if (device === 'mobile') {
 		return <div>Product CARD</div>;
 	} else {
@@ -65,15 +68,41 @@ const ProductCard = (props: ProductCardType) => {
 					>
 						<img src={imagePath} alt="" />
 					</Link>
-					{product && product?.productRank > topProductRank && (
-						<Box component={'div'} className={'top-badge'}>
-							<img src="/img/icons/electricity.svg" alt="" />
-							<Typography>TOP</Typography>
-						</Box>
-					)}
-					<Box component={'div'} className={'price-box'}>
-						<Typography>${formatterStr(product?.productPrice)}</Typography>
-					</Box>
+					{product && (
+  <>
+    {product.productRank > topProductRank && (
+      <Box  className="top-badge">
+		<img src="/img/icons/top.png" alt="Top icon" />
+        <Typography>TOP</Typography>
+      </Box>
+    )}
+
+    {/* New Badge: if created within 7 days */}
+    {Date.now() - new Date(product.createdAt).getTime() < 7 * 24 * 60 * 60 * 1000 && (
+      <Box className="new-badge">
+        <img src="/img/icons/sparkle.png" alt="Sparkle" />
+        <Typography>NEW</Typography>
+      </Box>
+    )}
+
+    {/* Trending/Hot Badge: if productView is high */}
+    {product.productViews > 5 && (
+      <Box className="trending-badge">
+        <img src="/img/icons/fire.png" alt="Fire" />
+        <Typography>HOT</Typography> {/* or TRENDING */}
+      </Box>
+    )}
+
+    {/* Best Badge: if productLikes is high */}
+    {product.productLikes > 3 && (
+      <Box className="best-badge">
+        <img src="/img/icons/best.png" alt="" />
+        <Typography>BEST</Typography>
+      </Box>
+    )}
+  </>
+)}
+
 					<Button
 						variant="contained"
 						color="primary"
@@ -84,7 +113,7 @@ const ProductCard = (props: ProductCardType) => {
 					</Button>
 				</Stack>
 				<Stack className="bottom">
-					<Stack className="name-address">
+					<Stack className="name-owner">
 						<Stack className="name">
 							<Link
 								href={{
@@ -95,23 +124,17 @@ const ProductCard = (props: ProductCardType) => {
 								<Typography>{product.productTitle}</Typography>
 							</Link>
 						</Stack>
-						<Stack className="address">
-							<Typography>
-								{product.productAddress}, {product.productLocation}
+						<Stack className="owner">
+							<Typography variant="body2" color="textSecondary">
+								{product.memberData?.memberNick ? product.memberData.memberNick : 'User'} Store
 							</Typography>
 						</Stack>
 					</Stack>
-					<Stack className="options">
-						<Stack className="option">
-							<img src="/img/icons/bed.svg" alt="" /> <Typography>{product.productGender} gender</Typography>
-						</Stack>
-						<Stack className="option">
-							<img src="/img/icons/room.svg" alt="" /> <Typography>{product.productMaterial} Material</Typography>
-						</Stack>
-						<Stack className="option">
-							<img src="/img/icons/expand.svg" alt="" /> <Typography>{product.productSize} Size</Typography>
-						</Stack>
-					</Stack>
+
+					<Box component={'div'} className={'price-box'}>
+						<Typography>${formatterStr(product?.productPrice)}</Typography>
+					</Box>
+
 					<Stack className="divider"></Stack>
 					<Stack className="type-buttons">
 						<Stack className="type">
