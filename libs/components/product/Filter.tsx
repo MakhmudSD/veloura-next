@@ -1,732 +1,459 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from "react";
 import {
-	Stack,
-	Typography,
-	Checkbox,
-	Button,
-	OutlinedInput,
-	FormControl,
-	InputLabel,
-	Select,
-	MenuItem,
-	Tooltip,
-	IconButton,
-} from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { ProductCategory, ProductGender, ProductLocation, ProductMaterial } from '../../enums/product.enum';
-import { ProductsInquiry } from '../../types/product/product.input';
-import { useRouter } from 'next/router';
-import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
-import { productWeight } from '../../config';
-import RefreshIcon from '@mui/icons-material/Refresh';
-
-const MenuProps = {
-	PaperProps: {
-		style: {
-			maxHeight: '200px',
-		},
-	},
-};
+  Stack,
+  Typography,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Box,
+} from "@mui/material";
+import useDeviceDetect from "../../hooks/useDeviceDetect";
+import {
+  ProductCategory,
+  ProductGender,
+  ProductLocation,
+  ProductMaterial,
+} from "../../enums/product.enum";
+import { ProductsInquiry } from "../../types/product/product.input";
+import { useRouter } from "next/router";
 
 interface FilterType {
-	searchFilter: ProductsInquiry;
-	setSearchFilter: any;
-	initialInput: ProductsInquiry;
+  searchFilter: ProductsInquiry;
+  setSearchFilter: any;
+  initialInput: ProductsInquiry;
 }
 
 const Filter = (props: FilterType) => {
-	const { searchFilter, setSearchFilter, initialInput } = props;
-	const device = useDeviceDetect();
-	const router = useRouter();
-	const [locations, setLocations] = useState<ProductLocation[]>(Object.values(ProductLocation));
-	const [categories, setCategories] = useState<ProductCategory[]>(Object.values(ProductCategory));
-	const [searchText, setSearchText] = useState<string>('');
-	const [showMore, setShowMore] = useState<boolean>(false);
+  const { searchFilter, setSearchFilter, initialInput } = props;
+  const device = useDeviceDetect();
+  const router = useRouter();
 
-	/** LIFECYCLES **/
+  const [locations, setLocations] = useState<ProductLocation[]>(
+    Object.values(ProductLocation)
+  );
+  const [categories, setCategories] = useState<ProductCategory[]>(
+    Object.values(ProductCategory)
+  );
+
+  const [showMore, setShowMore] = useState<boolean>(false);
+
+  /** LIFECYCLES **/
 	useEffect(() => {
-		if (searchFilter?.search?.locationList?.length == 0) {
+		  if (searchFilter?.search?.locationList?.length == 0) {
 			delete searchFilter.search.locationList;
 			setShowMore(false);
 			router
-				.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					{ scroll: false },
-				)
-				.then();
-		}
-
-		if (searchFilter?.search?.categoryList?.length == 0) {
+			  .push(
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				{ scroll: false }
+			  )
+			  .then();
+		  }
+	  
+		  if (searchFilter?.search?.categoryList?.length == 0) {
 			delete searchFilter.search.categoryList;
 			router
-				.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					{ scroll: false },
-				)
-				.then();
-		}
-
-		if (searchFilter?.search?.materialList?.length == 0) {
+			  .push(
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				{ scroll: false }
+			  )
+			  .then();
+		  }
+	  
+		  if (searchFilter?.search?.materialList?.length == 0) {
 			delete searchFilter.search.materialList;
 			router
-				.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					{ scroll: false },
-				)
-				.then();
-		}
-
-		if (searchFilter?.search?.options?.length == 0) {
+			  .push(
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				{ scroll: false }
+			  )
+			  .then();
+		  }
+	  
+		  if (searchFilter?.search?.options?.length == 0) {
 			delete searchFilter.search.options;
 			router
-				.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					{ scroll: false },
-				)
-				.then();
-		}
-
-		if (searchFilter?.search?.genderList?.length == 0) {
+			  .push(
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				{ scroll: false }
+			  )
+			  .then();
+		  }
+	  
+		  if (searchFilter?.search?.genderList?.length == 0) {
 			delete searchFilter.search.genderList;
 			router
-				.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-						},
-					})}`,
-					{ scroll: false },
-				)
-				.then();
-		}
-
-		if (searchFilter?.search?.locationList) setShowMore(true);
-	}, [searchFilter]);
-
-	/** HANDLERS **/
-	const productLocationSelectHandler = useCallback(
-		async (e: any) => {
-			try {
-				const isChecked = e.target.checked;
-				const value = e.target.value;
-				if (isChecked) {
-					await router.push(
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, locationList: [...(searchFilter?.search?.locationList || []), value] },
-						})}`,
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, locationList: [...(searchFilter?.search?.locationList || []), value] },
-						})}`,
-						{ scroll: false },
-					);
-				} else if (searchFilter?.search?.locationList?.includes(value)) {
-					await router.push(
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								locationList: searchFilter?.search?.locationList?.filter((item: string) => item !== value),
-							},
-						})}`,
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								locationList: searchFilter?.search?.locationList?.filter((item: string) => item !== value),
-							},
-						})}`,
-						{ scroll: false },
-					);
-				}
-
-				if (searchFilter?.search?.categoryList?.length == 0) {
-					alert('error');
-				}
-
-				console.log('productLocationSelectHandler:', e.target.value);
-			} catch (err: any) {
-				console.log('ERROR, productLocationSelectHandler:', err);
-			}
-		},
-		[searchFilter],
-	);
-
-	const productCategorySelectHandler = useCallback(
-		async (e: any) => {
-			try {
-				const isChecked = e.target.checked;
-				const value = e.target.value;
-				if (isChecked) {
-					await router.push(
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, categoryList: [...(searchFilter?.search?.categoryList || []), value] },
-						})}`,
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: { ...searchFilter.search, categoryList: [...(searchFilter?.search?.categoryList || []), value] },
-						})}`,
-						{ scroll: false },
-					);
-				} else if (searchFilter?.search?.categoryList?.includes(value)) {
-					await router.push(
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								categoryList: searchFilter?.search?.categoryList?.filter((item: string) => item !== value),
-							},
-						})}`,
-						`/product?input=${JSON.stringify({
-							...searchFilter,
-							search: {
-								...searchFilter.search,
-								categoryList: searchFilter?.search?.categoryList?.filter((item: string) => item !== value),
-							},
-						})}`,
-						{ scroll: false },
-					);
-				}
-
-				if (searchFilter?.search?.categoryList?.length == 0) {
-					alert('error');
-				}
-
-				console.log('productCategorySelectHandler:', e.target.value);
-			} catch (err: any) {
-				console.log('ERROR, productCategorySelectHandler:', err);
-			}
-		},
-		[searchFilter],
-	);
-
-	const productMaterialSelectHandler = useCallback(
-		(selectedMaterial?: ProductMaterial) => {
-		  const currentList: ProductMaterial[] = searchFilter?.search?.materialList || [];
-	  
-		  let newMaterialList: ProductMaterial[] = [];
-	  
-		  if (!selectedMaterial) {
-			// Clear all if "Any" clicked
-			newMaterialList = [];
-		  } else {
-			if (currentList.includes(selectedMaterial)) {
-			  // Remove it
-			  newMaterialList = currentList.filter((item) => item !== selectedMaterial);
-			} else {
-			  // Add it
-			  newMaterialList = [...currentList, selectedMaterial];
-			}
+			  .push(
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				`/product?input=${JSON.stringify({
+				  ...searchFilter,
+				  search: {
+					...searchFilter.search,
+				  },
+				})}`,
+				{ scroll: false }
+			  )
+			  .then();
 		  }
 	  
-		  const newFilter = {
-			...searchFilter,
-			search: {
-			  ...searchFilter.search,
-			  materialList: newMaterialList, // ✅ Always defined
-			},
-		  };
-	  
-		  setSearchFilter(newFilter);
-		},
-		[searchFilter],
-	  );
-	  
-	  const productGenderSelectHandler = useCallback(
-		(selectedGender?: ProductGender) => {
-		  const currentList: ProductGender[] = searchFilter?.search?.genderList || [];
-	  
-		  let newGenderList: ProductGender[] = [];
-	  
-		  if (!selectedGender) {
-			newGenderList = [];
-		  } else {
-			if (currentList.includes(selectedGender)) {
-			  newGenderList = currentList.filter((g) => g !== selectedGender);
-			} else {
-			  newGenderList = [...currentList, selectedGender];
-			}
-		  }
-	  
-		  const newFilter = {
-			...searchFilter,
-			search: {
-			  ...searchFilter.search,
-			  genderList: newGenderList, // ✅ Always defined
-			},
-		  };
-	  
-		  setSearchFilter(newFilter);
-		},
-		[searchFilter],
-	  );
-	  
+		  if (searchFilter?.search?.locationList) setShowMore(true);
+		}, [searchFilter]);
 
-	  const productOptionSelectHandler = useCallback(
-		async (e: any) => {
-			const isChecked = e.target.checked;
-			const value = e.target.value;
-	
-			let newOptions = searchFilter?.search?.options || [];
-	
-			if (isChecked) {
-				newOptions = [...newOptions, value];
-			} else {
-				newOptions = newOptions.filter((item: string) => item !== value);
-			}
-	
-			const cleanedOptions = newOptions.length > 0 ? newOptions : undefined;
-	
-			const newFilter = {
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-					options: cleanedOptions,
-				},
-			};
-	
-			setSearchFilter(newFilter);
-	
-			await router.push(
-				`/product?input=${JSON.stringify(newFilter)}`,
-				`/product?input=${JSON.stringify(newFilter)}`,
-				{ scroll: false },
-			);
-		},
-		[searchFilter],
-	);
-	
-	
+  /** HANDLERS **/
+  const productLocationSelectHandler = useCallback(
+    async (location: string) => {
+      const currentList = searchFilter?.search?.locationList || [];
+      const isSelected = currentList.includes(location as ProductLocation);
 
-	const productWeightHandler = useCallback(
-		(value: number) => {
-			const newFilter = {
-				...searchFilter,
-				search: {
-					...searchFilter.search,
-					weightList: value || undefined,
-				},
-			};
-			setSearchFilter(newFilter);
-		},
-		[searchFilter],
-	);
+      const newLocationList = isSelected
+        ? currentList.filter(item => item !== location)
+        : [...currentList, location];
 
-	const productPriceHandler = useCallback(
-		async (value: number, type: string) => {
-			if (type == 'start') {
-				await router.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							pricesRange: { ...searchFilter.search.pricesRange, start: value * 1 },
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							pricesRange: { ...searchFilter.search.pricesRange, start: value * 1 },
-						},
-					})}`,
-					{ scroll: false },
-				);
-			} else {
-				await router.push(
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							pricesRange: { ...searchFilter.search.pricesRange, end: value * 1 },
-						},
-					})}`,
-					`/product?input=${JSON.stringify({
-						...searchFilter,
-						search: {
-							...searchFilter.search,
-							pricesRange: { ...searchFilter.search.pricesRange, end: value * 1 },
-						},
-					})}`,
-					{ scroll: false },
-				);
-			}
-		},
-		[searchFilter],
-	);
+      const newSearchFilter = {
+        ...searchFilter,
+        search: {
+          ...searchFilter.search,
+          locationList: newLocationList,
+        },
+      };
 
-	const refreshHandler = async () => {
-		try {
-			setSearchText('');
-			setShowMore(false);
-			setSearchFilter(initialInput);
-			await router.push(
-				`/product?input=${JSON.stringify(initialInput)}`,
-				`/product?input=${JSON.stringify(initialInput)}`,
-				{ scroll: false },
-			);
-		} catch (err: any) {
-			console.log('ERROR, refreshHandler:', err);
-		}
-	};
+      await router.push(
+        `/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
+        undefined,
+        { scroll: false }
+      );
+    },
+    [searchFilter, router]
+  );
 
-	if (device === 'mobile') {
-		return <div>PRODUCTS FILTER</div>;
-	} else {
-		return (
-			<Stack className={'filter-main'}>
-				<Stack className={'find-your-home'} mb={'40px'}>
-					<Typography className={'title-main'}>Find Your Jewelry</Typography>
-					<Stack className={'input-box'}>
-						<OutlinedInput
-							value={searchText}
-							type={'text'}
-							className={'search-input'}
-							placeholder={'What are you looking for?'}
-							onChange={(e: any) => setSearchText(e.target.value)}
-							onKeyDown={(event: any) => {
-								if (event.key == 'Enter') {
-									setSearchFilter({
-										...searchFilter,
-										search: { ...searchFilter.search, text: searchText },
-									});
-								}
-							}}
-							endAdornment={
-								<>
-									<CancelRoundedIcon
-										onClick={() => {
-											setSearchText('');
-											setSearchFilter({
-												...searchFilter,
-												search: { ...searchFilter.search, text: '' },
-											});
-										}}
-									/>
-								</>
-							}
-						/>
-						<img src={'/img/icons/search_icon.png'} alt={''} />
-						<Tooltip title="Reset">
-							<IconButton onClick={refreshHandler}>
-								<RefreshIcon />
-							</IconButton>
-						</Tooltip>
-					</Stack>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<p className={'title'} style={{ textShadow: '0px 3px 4px #b9b9b9' }}>
-						Location
-					</p>
-					<Stack
-						className={`product-location`}
-						style={{ height: showMore ? '253px' : '115px' }}
-						onMouseEnter={() => setShowMore(true)}
-						onMouseLeave={() => {
-							if (!searchFilter?.search?.locationList) {
-								setShowMore(false);
-							}
-						}}
-					>
-						{locations.map((location: string) => {
-							return (
-								<Stack className={'input-box'} key={location}>
-									<Checkbox
-										id={location}
-										className="product-checkbox"
-										color="default"
-										size="small"
-										value={location}
-										checked={(searchFilter?.search?.locationList || []).includes(location as ProductLocation)}
-										onChange={productLocationSelectHandler}
-									/>
-									<label htmlFor={location} style={{ cursor: 'pointer' }}>
-										<Typography className="product-type">{location}</Typography>
-									</label>
-								</Stack>
-							);
-						})}
-					</Stack>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Product Category</Typography>
-					{categories.map((category: string) => (
-						<Stack className={'input-box'} key={category}>
-							<Checkbox
-								id={category}
-								className="product-checkbox"
-								color="default"
-								size="small"
-								value={category}
-								onChange={productCategorySelectHandler}
-								checked={(searchFilter?.search?.categoryList || []).includes(category as ProductCategory)}
-							/>
-							<label style={{ cursor: 'pointer' }}>
-								<Typography className="product_category">{category}</Typography>
-							</label>
-						</Stack>
-					))}
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Jewelry</Typography>
-					<Stack className="button-group">
-						<Button
-							sx={{
-								borderRadius: '12px 0 0 12px',
-								border:
-									!searchFilter?.search?.materialList || searchFilter.search.materialList.length === 0
-										? '2px solid #181A20'
-										: '1px solid #b9b9b9',
-							}}
-							onClick={() => productMaterialSelectHandler(undefined)} // Clear filter
-						>
-							Any
-						</Button>
+  const productCategorySelectHandler = useCallback(
+    async (category: string) => {
+      const currentList = searchFilter?.search?.categoryList || [];
+      const isSelected = currentList.includes(category as ProductCategory);
 
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.materialList?.includes(ProductMaterial.GOLD)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.materialList?.includes(ProductMaterial.GOLD) ? undefined : 'none',
-							}}
-							onClick={() => productMaterialSelectHandler(ProductMaterial.GOLD)}
-						>
-							Gold
-						</Button>
+      const newCategoryList = isSelected
+        ? currentList.filter(item => item !== category)
+        : [...currentList, category];
 
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.materialList?.includes(ProductMaterial.DIAMOND)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.materialList?.includes(ProductMaterial.DIAMOND) ? undefined : 'none',
-							}}
-							onClick={() => productMaterialSelectHandler(ProductMaterial.DIAMOND)}
-						>
-							Diamond
-						</Button>
+      const newSearchFilter = {
+        ...searchFilter,
+        search: {
+          ...searchFilter.search,
+          categoryList: newCategoryList,
+        },
+      };
 
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.materialList?.includes(ProductMaterial.SILVER)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.materialList?.includes(ProductMaterial.SILVER) ? undefined : 'none',
-							}}
-							onClick={() => productMaterialSelectHandler(ProductMaterial.SILVER)}
-						>
-							Silver
-						</Button>
+      await router.push(
+        `/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
+        undefined,
+        { scroll: false }
+      );
+    },
+    [searchFilter, router]
+  );
 
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.materialList?.includes(ProductMaterial.PLATINUM)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								borderLeft: searchFilter?.search?.materialList?.includes(ProductMaterial.PLATINUM) ? undefined : 'none',
-							}}
-							onClick={() => productMaterialSelectHandler(ProductMaterial.PLATINUM)}
-						>
-							Platinum
-						</Button>
+  const productMaterialSelectHandler = useCallback(
+    (event: any) => {
+      const value = event.target.value;
+      setSearchFilter((prev: any) => ({
+        ...prev,
+        search: {
+          ...prev.search,
+          materialList: value ? [value] : [],
+        },
+      }));
+    },
+    [setSearchFilter]
+  );
 
-						<Button
-							sx={{
-								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.materialList?.includes(ProductMaterial.GEMSTONE)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-							}}
-							onClick={() => productMaterialSelectHandler(ProductMaterial.GEMSTONE)}
-						>
-							Gemstone
-						</Button>
-					</Stack>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Gender</Typography>
-					<Stack className="button-group">
-						<Button
-							sx={{
-								borderRadius: '12px 0 0 12px',
-								border:
-									!searchFilter?.search?.genderList || searchFilter.search.genderList.length === 0
-										? '2px solid #181A20'
-										: '1px solid #b9b9b9',
-							}}
-							onClick={() => productGenderSelectHandler(undefined)}
-						>
-							Any
-						</Button>
+  const productGenderSelectHandler = useCallback(
+    (event: any) => {
+      const value = event.target.value;
+      setSearchFilter((prev: any) => ({
+        ...prev,
+        search: {
+          ...prev.search,
+          genderList: value ? [value] : [],
+        },
+      }));
+    },
+    [setSearchFilter]
+  );
 
-						<Button
-							sx={{
-								borderRadius: 0,
-								border: searchFilter?.search?.genderList?.includes(ProductGender.MEN)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								...(searchFilter?.search?.genderList?.includes(ProductGender.MEN) ? {} : { borderLeft: 'none' }),
-							}}
-							onClick={() => productGenderSelectHandler(ProductGender.MEN)}
-						>
-							Men
-						</Button>
+  const productOptionSelectHandler = useCallback(
+    async (option: string) => {
+      const currentList = searchFilter?.search?.options || [];
+      const isSelected = currentList.includes(option);
 
-						<Button
-							sx={{
-								borderRadius: '0 12px 12px 0',
-								border: searchFilter?.search?.genderList?.includes(ProductGender.WOMEN)
-									? '2px solid #181A20'
-									: '1px solid #b9b9b9',
-								...(searchFilter?.search?.genderList?.includes(ProductGender.WOMEN) ? {} : { borderLeft: 'none' }),
-							}}
-							onClick={() => productGenderSelectHandler(ProductGender.WOMEN)}
-						>
-							Women
-						</Button>
-					</Stack>
-				</Stack>
+      const newOptionList = isSelected
+        ? currentList.filter(item => item !== option)
+        : [...currentList, option];
 
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Options</Typography>
-					<Stack className={'input-box'}>
-						<Checkbox
-							id={'Barter'}
-							className="product-checkbox"
-							color="default"
-							size="small"
-							value={'productBarter'}
-							checked={(searchFilter?.search?.options || []).includes('productBarter')}
-							onChange={productOptionSelectHandler}
-						/>
-						<label htmlFor={'Barter'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Barter</Typography>
-						</label>
-					</Stack>
-					<Stack className={'input-box'}>
-						<Checkbox
-							id={'Rent'}
-							className="product-checkbox"
-							color="default"
-							size="small"
-							value={'productRent'}
-							checked={(searchFilter?.search?.options || []).includes('productRent')}
-							onChange={productOptionSelectHandler}
-						/>
-						<label htmlFor={'Rent'} style={{ cursor: 'pointer' }}>
-							<Typography className="propert-type">Rent</Typography>
-						</label>
-					</Stack>
-				</Stack>
-				<Stack className={'find-your-home'} mb={'30px'}>
-					<Typography className={'title'}>Jewelry Weight in gramm</Typography>
-					<FormControl fullWidth>
-						<InputLabel id="product-weight-label">Weight</InputLabel>
-						<Select
-							labelId="product-weight-label"
-							id="product-weight-select"
-							value={searchFilter?.search?.weightList ?? ''}
-							label="Weight"
-							onChange={(e) => productWeightHandler(Number(e.target.value))}
-							MenuProps={MenuProps}
-						>
-							{productWeight.map((weight) => (
-								<MenuItem key={weight} value={weight}>
-									{weight}
-								</MenuItem>
-							))}
-						</Select>
-					</FormControl>
-				</Stack>
+      const newSearchFilter = {
+        ...searchFilter,
+        search: {
+          ...searchFilter.search,
+          options: newOptionList,
+        },
+      };
 
-				<Stack className={'find-your-home'}>
-					<Typography className={'title'}>Price Range</Typography>
-					<Stack className="square-year-input">
-						<input
-							type="number"
-							placeholder="$ min"
-							min={0}
-							value={searchFilter?.search?.pricesRange?.start ?? 0}
-							onChange={(e: any) => {
-								if (e.target.value >= 0) {
-									productPriceHandler(e.target.value, 'start');
-								}
-							}}
-						/>
-						<div className="central-divider"></div>
-						<input
-							type="number"
-							placeholder="$ max"
-							value={searchFilter?.search?.pricesRange?.end ?? 0}
-							onChange={(e: any) => {
-								if (e.target.value >= 0) {
-									productPriceHandler(e.target.value, 'end');
-								}
-							}}
-						/>
-					</Stack>
-				</Stack>
-			</Stack>
-		);
-	}
+      await router.push(
+        `/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
+        undefined,
+        { scroll: false }
+      );
+    },
+    [searchFilter, router]
+  );
+
+  const productPriceHandler = useCallback(
+    async (value: number, type: string) => {
+      const pricesRange = {
+        ...searchFilter.search.pricesRange,
+        [type]: value,
+      };
+
+      const newSearchFilter = {
+        ...searchFilter,
+        search: {
+          ...searchFilter.search,
+          pricesRange,
+        },
+      };
+
+      await router.push(
+        `/product?input=${encodeURIComponent(JSON.stringify(newSearchFilter))}`,
+        undefined,
+        { scroll: false }
+      );
+    },
+    [searchFilter]
+  );
+
+  if (device === "mobile") {
+    return <div>PRODUCTS FILTER</div>;
+  }
+
+  return (
+    <Stack className="filter-main">
+      {/* Location */}
+      <Stack className="filter-box location" mb="30px">
+        <Typography className="title">Location</Typography>
+        <Stack className="product-location">
+          {locations.map((location) => {
+            const selected = (searchFilter?.search?.locationList || []).includes(location);
+            return (
+              <Stack
+                key={location}
+                onClick={() => productLocationSelectHandler(location)}
+                sx={{
+                  cursor: "pointer",
+                  padding: "4px 8px",
+                  fontWeight: selected ? "bold" : "normal",
+                  color: selected ? "#181a20" : "#717171",
+                  borderRadius: 1,
+                  backgroundColor: selected ? "rgba(24, 26, 32, 0.1)" : "transparent",
+                  "&:hover": {
+                    backgroundColor: "rgba(24, 26, 32, 0.05)",
+                  },
+                }}
+              >
+                <Typography>{location}</Typography>
+              </Stack>
+            );
+          })}
+        </Stack>
+      </Stack>
+
+      {/* Product Category */}
+      <Stack className="filter-box category" mb="30px">
+        <Typography className="title">Product Category</Typography>
+        <Stack className="menu-items">
+          {categories.map((category: string) => {
+            const isSelected = searchFilter?.search?.categoryList?.includes(category as ProductCategory);
+            return (
+              <MenuItem
+                key={category}
+                value={category}
+                selected={isSelected}
+                onClick={() => productCategorySelectHandler(category)}
+              >
+                {category}
+              </MenuItem>
+            );
+          })}
+        </Stack>
+      </Stack>
+
+      {/* Jewelry Material */}
+	  <Stack className="filter-box material" mb="30px">
+  <Typography className="title">Jewelry Material</Typography>
+  <div className="menu-items">
+    {[
+      { label: "Any", value: "" },
+      { label: "Gold", value: ProductMaterial.GOLD },
+      { label: "Diamond", value: ProductMaterial.DIAMOND },
+      { label: "Silver", value: ProductMaterial.SILVER },
+      { label: "Platinum", value: ProductMaterial.PLATINUM },
+      { label: "Gemstone", value: ProductMaterial.GEMSTONE },
+    ].map((item) => (
+      <MenuItem
+        key={item.value}
+        selected={searchFilter?.search?.materialList?.[0] === item.value}
+        onClick={() =>
+          productMaterialSelectHandler({
+            target: { value: item.value },
+          })
+        }
+      >
+        {item.label}
+      </MenuItem>
+    ))}
+  </div>
+</Stack>
+
+
+      {/* Gender */}
+	  <Stack className="filter-box gender" mb="30px">
+  <Typography className="title">Gender</Typography>
+  <Stack className="menu-items">
+    {/* "Any" option */}
+    <MenuItem
+      value=""
+      onClick={() => productGenderSelectHandler({ target: { value: "" } })}
+      selected={!searchFilter?.search?.genderList?.[0]}
+      sx={{
+        fontWeight: !searchFilter?.search?.genderList?.[0] ? "bold" : "normal",
+        cursor: "pointer",
+      }}
+    >
+      Any
+    </MenuItem>
+
+    {/* Men */}
+    <MenuItem
+      value={ProductGender.MEN}
+      onClick={() => productGenderSelectHandler({ target: { value: ProductGender.MEN } })}
+      selected={searchFilter?.search?.genderList?.[0] === ProductGender.MEN}
+      sx={{
+        fontWeight: searchFilter?.search?.genderList?.[0] === ProductGender.MEN ? "bold" : "normal",
+        cursor: "pointer",
+      }}
+    >
+      Men
+    </MenuItem>
+
+    {/* Women */}
+    <MenuItem
+      value={ProductGender.WOMEN}
+      onClick={() => productGenderSelectHandler({ target: { value: ProductGender.WOMEN } })}
+      selected={searchFilter?.search?.genderList?.[0] === ProductGender.WOMEN}
+      sx={{
+        fontWeight: searchFilter?.search?.genderList?.[0] === ProductGender.WOMEN ? "bold" : "normal",
+        cursor: "pointer",
+      }}
+    >
+      Women
+    </MenuItem>
+  </Stack>
+</Stack>
+
+
+{/* Options */}
+<Stack className="filter-box options" mb="30px">
+  <Typography className="title">Options</Typography>
+  <div className="menu-items">
+  {['productBarter', 'productRent'].map((option) => {
+    const selected = (searchFilter?.search?.options || []).includes(option);
+    const label = option === "productBarter" ? "Barter" : "Rent";
+    return (
+      <Stack
+        key={option}
+        onClick={() => productOptionSelectHandler(option)}
+      >
+        <MenuItem>{label}</MenuItem>
+      </Stack>
+    );
+  })}
+  </div>
+</Stack>
+
+
+    {/* Price Range */}
+<Stack className="filter-box price" mb="30px">
+  <Typography className="title">Price Range</Typography>
+  <div className="menu-items">
+    <Stack className="square-year-input">
+      <input
+        type="number"
+        placeholder="$ min"
+        min={0}
+        value={searchFilter?.search?.pricesRange?.start ?? 0}
+        onChange={(e: any) => productPriceHandler(e.target.value, "start")}
+      />
+      <div className="central-divider" />
+      <input
+        type="number"
+        placeholder="$ max"
+        value={searchFilter?.search?.pricesRange?.end ?? 0}
+        onChange={(e: any) => productPriceHandler(e.target.value, "end")}
+      />
+    </Stack>
+  </div>
+</Stack>
+
+    </Stack>
+  );
 };
 
 export default Filter;
