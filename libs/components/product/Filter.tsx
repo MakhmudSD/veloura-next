@@ -49,24 +49,29 @@ const Filter = (props: FilterType) => {
 
   /** Watch for filter changes and update URL **/
   useEffect(() => {
-    // Remove empty arrays from search to avoid redundant queries
-    const cleanedSearch = { ...searchFilter.search };
-    Object.keys(cleanedSearch).forEach((key) => {
-      if (Array.isArray(cleanedSearch[key]) && cleanedSearch[key].length === 0) {
-        delete cleanedSearch[key];
-      }
-    });
-
-    // Push filters to URL
-    router.push(
-      `/product?input=${encodeURIComponent(JSON.stringify({
-        ...searchFilter,
-        search: cleanedSearch
-      }))}`,
-      undefined,
-      { scroll: false }
-    );
+    const handler = setTimeout(() => {
+      const cleanedSearch = { ...searchFilter.search };
+      (Object.keys(cleanedSearch) as (keyof typeof cleanedSearch)[]).forEach((key) => {
+        if (Array.isArray(cleanedSearch[key]) && cleanedSearch[key]!.length === 0) {
+          delete cleanedSearch[key];
+        }
+      });
+  
+      router.replace(
+        {
+          pathname: "/product",
+          query: {
+            input: JSON.stringify({ ...searchFilter, search: cleanedSearch }),
+          },
+        },
+        undefined,
+        { scroll: false, shallow: true } // ✅ shallow prevents full _next/data reload
+      );
+    }, 400);
+  
+    return () => clearTimeout(handler);
   }, [searchFilter]);
+  
 
   /** Toggle dropdown filter box **/
   const toggleFilter = (filterName: string) => {
@@ -340,19 +345,19 @@ const Filter = (props: FilterType) => {
               <CloseIcon onClick={() => setOpenFilter(null)} />
             </div>
             <div className="filter-content">
-              <Slider
-                value={[
-                  searchFilter?.search?.pricesRange?.start || 0,
-                  searchFilter?.search?.pricesRange?.end || 2000000,
-                ]}
-                onChange={(e, newValue) => {
-                  const [start, end] = newValue as number[];
-                  productPriceHandler(start, end);
-                }}
-                min={0}
-                max={2000000}
-                step={10000}
-              />
+            <Slider
+  value={[
+    searchFilter?.search?.pricesRange?.start || 0,
+    searchFilter?.search?.pricesRange?.end || 2000000,
+  ]}
+  onChangeCommitted={(e: any, newValue: number[]) => {
+    const [start, end] = newValue as number[];
+    productPriceHandler(start, end);
+  }}
+  min={0}
+  max={2000000}
+  step={10000}
+/>
             </div>
           </div>
         )}
