@@ -341,37 +341,129 @@ const Filter = (props: FilterType) => {
         )}
       </div>
 
-      {/* PRICE RANGE */}
-      <div
-        className={`filter-box ${openFilter === "price" ? "active" : ""}`}
-        onClick={() => toggleFilter("price")}
-      >
-        <Typography className="title">Price</Typography>
-        <KeyboardArrowDownRoundedIcon className="dropdown-icon" />
-        {openFilter === "price" && (
-          <div className="filter-overlay">
-            <div className="filter-header">
-              <h4>Select Price Range</h4>
-              <CloseIcon onClick={() => setOpenFilter(null)} />
-            </div>
-            <div className="filter-content">
-            <Slider
-  value={[
-    searchFilter?.search?.pricesRange?.start || 0,
-    searchFilter?.search?.pricesRange?.end || 2000000,
-  ]}
-  onChangeCommitted={(e: any, newValue: number[]) => {
-    const [start, end] = newValue as number[];
-    productPriceHandler(start, end);
-  }}
-  min={0}
-  max={2000000}
-  step={10000}
-/>
-            </div>
-          </div>
-        )}
+
+{/* PRICE RANGE */}
+<div
+  className={`filter-box ${openFilter === "price" ? "active" : ""}`}
+>
+  <Typography 
+    className="title" 
+    onClick={() => toggleFilter("price")}
+    style={{ cursor: "pointer" }}
+  >
+    Price
+  </Typography>
+  <KeyboardArrowDownRoundedIcon 
+    className="dropdown-icon" 
+    onClick={() => toggleFilter("price")} 
+    style={{ cursor: "pointer" }}
+  />
+  
+  {openFilter === "price" && (
+    <div className="filter-overlay price-range">
+      <div className="filter-header">
+        <h4>Select Price Range</h4>
+        <CloseIcon onClick={() => setOpenFilter(null)} style={{ cursor: "pointer" }} />
       </div>
+
+      <div className="filter-content" style={{ width: "100%" }}>
+        {/* SLIDER */}
+        <Slider
+          value={[
+            searchFilter?.search?.pricesRange?.start || 0,
+            searchFilter?.search?.pricesRange?.end || 20000000,
+          ]}
+          min={0}
+          max={20000000}
+          step={null}
+          marks={[
+            { value: 0, label: "₩0" },
+            { value: 5000000, label: "₩5M" },
+            { value: 10000000, label: "₩10M" },
+            { value: 20000000, label: "₩20M" },
+          ]}
+          onChange={(e: any, newValue: number[]) => {
+            const [start, end] = newValue;
+            productPriceHandler(start, end);
+          }}
+          valueLabelDisplay="auto"
+          sx={{
+            width: "90%",
+            margin: "0 auto",
+            color: "#d4b483",
+            "& .MuiSlider-thumb": {
+              borderRadius: "50%",
+              width: 20,
+              height: 20,
+              backgroundColor: "#fff",
+              border: "2px solid #d4b483",
+            },
+            "& .MuiSlider-valueLabel": {
+              backgroundColor: "#2e2424",
+              borderRadius: "6px",
+            },
+          }}
+        />
+
+        {/* INPUT FIELDS */}
+        <div
+          className="price-inputs"
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "12px",
+            gap: "8px",
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <input
+            type="number"
+            min={0}
+            max={20000000}
+            value={searchFilter?.search?.pricesRange?.start || 0}
+            onChange={(e) => {
+              const value = Math.min(20000000, Math.max(0, Number(e.target.value)));
+              productPriceHandler(value, searchFilter?.search?.pricesRange?.end || 20000000);
+            }}
+            className="price-field"
+            placeholder="Min ₩"
+            style={{
+              width: "50%",
+              textAlign: "center",
+              padding: "8px",
+              border: "1px solid #d4b483",
+              borderRadius: "6px",
+              fontSize: "16px",
+            }}
+          />
+          <span className="separator" style={{ alignSelf: "center" }}> - </span>
+          <input
+            type="number"
+            min={0}
+            max={20000000}
+            value={searchFilter?.search?.pricesRange?.end || 20000000}
+            onChange={(e) => {
+              const value = Math.min(20000000, Math.max(0, Number(e.target.value)));
+              productPriceHandler(searchFilter?.search?.pricesRange?.start || 0, value);
+            }}
+            className="price-field"
+            placeholder="Max ₩"
+            style={{
+              width: "50%",
+              textAlign: "center",
+              padding: "8px",
+              border: "1px solid #d4b483",
+              borderRadius: "6px",
+              fontSize: "16px",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  )}
+</div>
+
+      
 
       {/* Selected Filter Chips */}
       {selectedFilters.length > 0 && (
