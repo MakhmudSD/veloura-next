@@ -68,12 +68,12 @@ const TrendProducts = (props: TrendProductsProps) => {
 						<p>Soon-to-be staples in your rotation</p>
 					</Stack>
 					<Stack className={'card-box'}>
-						{trendProducts.length !== 0 ? (
+						{trendProducts.length === 0 ? (
 							<Box component={'div'} className={'empty-list'}>
 								<Box className={'empty-list-content'}>
 									<img src="/img/icons/empty.png" alt="" />
 									<span>OOPS</span>
-									<strong>There are no articles available at the moment</strong>
+									<strong>There are no products available at the moment</strong>
 									<p>
 										It is a long established fact that a reader will be distracted by the readable content of a page
 										when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.
@@ -115,12 +115,12 @@ const TrendProducts = (props: TrendProductsProps) => {
 					</Stack>
 					<Stack className={'card-box'}>
 						<div className="swiper-button-prev"></div>
-            {trendProducts.length !== 0 ? (
+            {trendProducts.length === 0 ? (
 							<Box component={'div'} className={'empty-list'}>
 								<Box className={'empty-list-content'}>
 									<img src="/img/icons/empty.png" alt="" />
 									<span>OOPS</span>
-									<strong>There are no articles available at the moment</strong>
+									<strong>There are no products available at the moment</strong>
 									<p>
 										It is a long established fact that a reader will be distracted by the readable content of a page
 										when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.

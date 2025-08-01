@@ -7,8 +7,13 @@ import {
   MenuItem,
   Pagination,
   Stack,
-  Typography
+  Typography,
+  OutlinedInput,
+  IconButton,
+  Tooltip
 } from '@mui/material';
+import CancelRoundedIcon from '@mui/icons-material/CancelRounded';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Filter from '../../libs/components/product/Filter';
@@ -43,6 +48,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [sortingOpen, setSortingOpen] = useState(false);
   const [filterSortName, setFilterSortName] = useState('Recommendations');
+  const [searchText, setSearchText] = useState<string>('');
 
   const { refetch } = useQuery(GET_PRODUCTS, {
     fetchPolicy: 'network-only',
@@ -63,6 +69,31 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
     );
     refetch({ input: searchFilter });
   }, [searchFilter]);
+
+  /** Debounce auto search for searchText **/
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearchFilter((prev) => ({
+        ...prev,
+        search: { ...prev.search, text: searchText }
+      }));
+    }, 400);
+    return () => clearTimeout(handler);
+  }, [searchText]);
+
+  const refreshHandler = async () => {
+    try {
+      setSearchText('');
+      setSearchFilter(initialInput);
+      await router.push(
+        `/product?input=${JSON.stringify(initialInput)}`,
+        `/product?input=${JSON.stringify(initialInput)}`,
+        { scroll: false }
+      );
+    } catch (err: any) {
+      console.log('ERROR, refreshHandler:', err);
+    }
+  };
 
   const handlePaginationChange = async (
     event: ChangeEvent<unknown>,
@@ -112,6 +143,34 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
   return (
     <div id="product-list-page">
       <div className="container">
+        {/* Search Input Row */}
+        <Stack className={'find-your-product'} mb={'30px'}>
+          <Typography className={'title-main'}>Find Your Product</Typography>
+          <img src={'/img/icons/search_icon.png'} alt={''} />
+          <Stack className={'input-box'}>
+            <OutlinedInput
+              value={searchText}
+              type={'text'}
+              className={'search-input'}
+              placeholder={'What product are you looking for?'}
+              onChange={(e: any) => setSearchText(e.target.value)}
+              endAdornment={
+                <>
+                  <CancelRoundedIcon
+                    onClick={() => setSearchText('')}
+                    style={{ cursor: 'pointer' }}
+                  />
+                </>
+              }
+            />
+            <Tooltip title="Clear All">
+              <IconButton onClick={refreshHandler}>
+                <RefreshIcon />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+        </Stack>
+
         {/* Filter + Sort Row */}
         <Box className="filter-top-bar">
           <span className="filter-label">

@@ -5,6 +5,7 @@ import {
   Checkbox,
   FormControlLabel,
   Slider,
+  Button,
 } from "@mui/material";
 import useDeviceDetect from "../../hooks/useDeviceDetect";
 import {
@@ -32,7 +33,7 @@ interface FilterType {
 }
 
 const Filter = (props: FilterType) => {
-  const { searchFilter, setSearchFilter } = props;
+  const { searchFilter, setSearchFilter, initialInput } = props;
   const device = useDeviceDetect();
   const router = useRouter();
 
@@ -41,6 +42,8 @@ const Filter = (props: FilterType) => {
   const [materials] = useState<ProductMaterial[]>(Object.values(ProductMaterial));
   const [genders] = useState<ProductGender[]>(Object.values(ProductGender));
   const [openFilter, setOpenFilter] = useState<string | null>(null);
+  const [searchText, setSearchText] = useState("");
+
 
   const friendlyNames: Record<string, string> = {
     productRent: "Rent",
@@ -167,6 +170,13 @@ const Filter = (props: FilterType) => {
         },
       };
     });
+  };
+
+
+  /** Clear all filters **/
+  const clearAllFilters = () => {
+    setSearchFilter(initialInput);
+    setSearchText("");
   };
 
   if (device === "mobile") {
@@ -365,18 +375,29 @@ const Filter = (props: FilterType) => {
 
       {/* Selected Filter Chips */}
       {selectedFilters.length > 0 && (
-        <div className="filter-history">
-          {selectedFilters.map((chip) => (
-            <div
-              key={`${chip.type}-${chip.label}`}
-              className="chip"
-              onClick={() => removeFilterChip(chip.type, chip.label)}
-            >
-              {friendlyNames[chip.label] || chip.label}
-              <span>×</span>
-            </div>
-          ))}
-        </div>
+     <div className="filter-history">
+     <div className="chip-list">
+       {selectedFilters.map((chip) => (
+         <div key={`${chip.type}-${chip.label}`} className="chip-wrapper">
+           <div
+             className="chip"
+             onClick={() => removeFilterChip(chip.type, chip.label)}
+           >
+             {friendlyNames[chip.label] || chip.label}
+             <span>×</span>
+           </div>
+         </div>
+       ))}
+     </div>
+   
+     {selectedFilters.length > 0 && (
+       <div className="clear-all" onClick={clearAllFilters}>
+         <img src="/img/icons/clear-all.png" alt="Clear All" />
+       </div>
+     )}
+   </div>
+   
+     
       )}
     </Stack>
   );
