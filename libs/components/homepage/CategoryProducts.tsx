@@ -114,7 +114,7 @@ const CategoryProducts = (props: CategoryProductsProps) => {
 					{/* Category Filter Buttons */}
 
 					<Stack className={'info-box'}>
-						<span>Shop by Category</span>
+						<h3>Shop by Category</h3>
 						<h1>Fresh Styles, Limitless Performance</h1>
 						<p>Explore our latest collections, crafted with innovation and style, to elevate your workout game to new heights.</p>
 						<div className="heading-underline" />
