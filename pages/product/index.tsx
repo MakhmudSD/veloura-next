@@ -22,10 +22,12 @@ import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { Product } from '../../libs/types/product/product';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import { Direction } from '../../libs/enums/common.enum';
+import { Direction, Message } from '../../libs/enums/common.enum';
 import { GET_PRODUCTS } from '../../apollo/user/query';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import ProductCard from '../../libs/components/product/ProductCard';
+import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
+import { T } from '../../libs/types/common';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -48,20 +50,41 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [filterSortName, setFilterSortName] = useState('Recommendations');
 	const [searchText, setSearchText] = useState<string>('');
 
-	const { refetch } = useQuery(GET_PRODUCTS, {
-		fetchPolicy: 'network-only',
+
+
+	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'cache-and-network',
 		variables: { input: searchFilter },
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data) => {
-			setProducts(data?.getProducts?.list || []);
-			setTotal(data?.getProducts?.metaCounter[0]?.total || 0);
+			setProducts(data?.getProducts?.list);
 		},
 	});
+
+
+		const likeProductHandler = async (user: T, id: string) => {
+			try {
+				if (!id) return;
+				if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
+	
+				await likeTargetProduct({ variables: { input: id } }); // just server update, no refetch
+				await getProductsRefetch({ input: initialInput }); // frontend update
+			} catch (err: any) {
+				console.error('ERROR on likeProductHandler', err.message);
+			}
+		};
 
 	/** Sync router + refetch products when searchFilter changes **/
 	useEffect(() => {
 		router.push(`/product?input=${encodeURIComponent(JSON.stringify(searchFilter))}`, undefined, { scroll: false });
-		refetch({ input: searchFilter });
+		getProductsRefetch({ input: searchFilter });
 	}, [searchFilter]);
 
 	/** Debounce auto search for searchText **/
@@ -194,7 +217,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 								<div className="no-data">No Products Found! ✨</div>
 							) : (
 								products.map((product: Product) => (
-									<ProductCard product={product} likeProductHandler={() => {}} key={product._id} />
+									<ProductCard product={product} likeProductHandler={likeProductHandler} />
 								))
 							)}
 						</Stack>

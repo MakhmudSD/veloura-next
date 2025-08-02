@@ -133,7 +133,7 @@ const TopStores = (props: TopStoresProps) => {
 							<Swiper
 								className="top-stores-swiper"
 								slidesPerView={2}
-								spaceBetween={20}
+								spaceBetween={10}
 								modules={[Autoplay, Navigation, Pagination]}
 								navigation={{
 									nextEl: '.swiper-stores-next',

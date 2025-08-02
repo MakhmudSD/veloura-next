@@ -62,66 +62,74 @@ const CommunityBoards = () => {
             </div>
           </Box>
         </Stack>
-        <Stack className="wrapper">
-          <Box className="switch-btn swiper-community-prev">
-            <div className="swiper-button-prev"></div>
-          </Box>
-          <Stack className={'community-box'}>
-            <Stack className={'card-wrap'}>
-              {loading ? (
-                <Box component={'div'} className={'empty-list'}>
-                  <Box className={'empty-list-content'}>
-                    <span>Loading Articles...</span>
-                  </Box>
-                </Box>
-              ) : articles.length === 0 ? (
-                <Box component={'div'} className={'empty-list'}>
-                  <Box className={'empty-list-content'}>
-                    <img src="/img/icons/empty.png" alt="" />
-                    <span>OOPS</span>
-                    <strong>
-                      There are no articles available at the moment
-                    </strong>
-                    <p>
-                      It is a long established fact that a reader will be
-                      distracted by the readable content of a page when looking
-                      at its layout. The point of using Lorem Ipsum is that it
-                      has a more-or-less normal.
-                    </p>
-                    <div onClick={() => router.push('/')}>
-                      <h2>Back to Home</h2>
-                    </div>
-                  </Box>
-                </Box>
-              ) : (
-                <Swiper
-                  slidesPerView={2}
-                  spaceBetween={30}
-                  loop={true}
-                  initialSlide={0} // Changed from 2
-                  modules={[Autoplay, Navigation]}
-                  navigation={{
-                    nextEl: '.swiper-community-next',
-                    prevEl: '.swiper-community-prev',
-                  }}
-                  autoplay={{
-                    delay: 2500,
-                    disableOnInteraction: false,
-                  }}
-                >
-                  {articles.map((article: BoardArticle) => (
-                    <SwiperSlide key={article?._id}>
-                      <CommunityCard vertical={true} article={article} index={0} />
-                    </SwiperSlide>
-                  ))}
-                </Swiper>
-              )}
-            </Stack>
-          </Stack>
-          <Box className="switch-btn swiper-community-next">
-            <div className="swiper-button-next"></div>
-          </Box>
+        <div className="wrapper">
+      {/* Prev button */}
+      <Box
+        className={`switch-btn swiper-community-prev ${
+          articles.length === 0 ? "hidden" : ""
+        }`}
+      >
+        <div className="swiper-button-prev"></div>
+      </Box>
+
+      <Stack className="community-box">
+        <Stack className="card-wrap">
+          {loading ? (
+            <Box component="div" className="empty-list">
+              <Box className="empty-list-content">
+                <span>Loading Articles...</span>
+              </Box>
+            </Box>
+          ) : articles.length === 0 ? (
+            <Box component="div" className="empty-list">
+              <Box className="empty-list-content">
+                <img src="/img/icons/empty.png" alt="" />
+                <span>OOPS</span>
+                <strong>
+                  There are no articles available at the moment
+                </strong>
+                <p>
+                  It is a long established fact that a reader will be
+                  distracted by the readable content of a page when looking at
+                  its layout. The point of using Lorem Ipsum is that it has a
+                  more-or-less normal.
+                </p>
+                <div onClick={() => router.push("/")}>
+                  <h2>Back to Home</h2>
+                </div>
+              </Box>
+            </Box>
+          ) : (
+            <Swiper
+              slidesPerView={3}
+              spaceBetween={15}
+              loop={true}
+              modules={[ Navigation]}
+              navigation={{
+                nextEl: ".swiper-community-next",
+                prevEl: ".swiper-community-prev",
+              }}
+              
+            >
+              {articles.map((article: BoardArticle) => (
+                <SwiperSlide key={article?._id}>
+                  <CommunityCard vertical={true} article={article} index={0} />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
         </Stack>
+      </Stack>
+
+      {/* Next button */}
+      <Box
+        className={`switch-btn swiper-community-next ${
+          articles.length === 0 ? "hidden" : ""
+        }`}
+      >
+        <div className="swiper-button-next"></div>
+      </Box>
+    </div>
       </Stack>
     </Stack>
   );

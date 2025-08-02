@@ -765,390 +765,327 @@ body::-webkit-scrollbar {
 	position: relative;
 	width: 100%;
 	height: auto;
-	color: #4b3d39; /* Dark text color for contrast */
+	color: #4b3d39;
 	font-family: 'Inter', sans-serif;
-
+  
 	.footer-container {
+	  display: flex;
+	  flex-direction: column;
+	  background-color: #222;
+	  width: 100%;
+	  height: auto;
+	  min-height: 320px; // reduced height
+	  flex-shrink: 0;
+  
+	  .main {
 		display: flex;
-		flex-direction: column;
-		background-color: #222; /* Dark background for contrast */
-		width: 100%;
-		height: auto;
-		min-height: 400px;
-		flex-shrink: 0;
-	  
-		.main {
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: flex-start;
+		flex-wrap: wrap;
+		gap: 30px; // slightly reduced
+		padding: 70px 20px; // reduced vertical padding
+  
+		.left {
+		  flex: 1;
+		  display: flex;
+		  flex-direction: column;
+		  justify-content: space-between;
+		  align-items: flex-start;
+		  margin-left: 70px; // reduced from 100px
+		  gap: 15px;
+  
+		  .footer-left-top {
 			display: flex;
 			flex-direction: row;
 			justify-content: space-between;
 			align-items: flex-start;
+			gap: 15px;
 			flex-wrap: wrap;
-			gap: 40px;
-			padding: 100px 20px; /* Adjusted padding for responsiveness */		  
-			.left {
-			  flex: 1;
-			  display: flex;
-			  flex-direction: column;
-			  justify-content: space-between;
-		      align-items: flex-start;
-			  margin-left: 100px;
-			  gap: 20px;
-		  
-			  .footer-left-top {
-				display: flex;
-				justify-content: space-between;
-				align-items: flex-start;
-				gap: 20px;
-				flex-wrap: wrap;
-		  
-				
-		  
-				.brand-info {
-				  display: flex;
-				  flex-direction: row;
-				  max-width: 500px;
-				  word-break: break-word;
-				  /* Removed conflicting margin-right */
-				  .logo {
-					margin-top: -35px;
-					width: 250px;
-					height: 207px;
-					flex-shrink: 0;
-				  }
-		  
-				  p {
-					width: 560px;
-					color: rgba(255, 255, 255, 0.7);
-					font-family: 'Inter';
-					font-size: 16px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 30px; /* 187.5% */
-				  }
-				}
-			  }
-		  
-			  .footer-left-bottom {
-				margin-top: 30px;
-				display: flex;
-				flex-direction: column;
-				align-items: flex-start;
-				justify-content: space-between;
-				flex-wrap: wrap;
-				margin-left: 55px;
-				/* Removed conflicting margin-left */
-				gap: 20px;
-		  
-				h1 {
-				  color: #fff;
-				  font-family: 'Judson';
-				  font-size: 35px;
-				  font-style: normal;
-				  font-weight: 700;
-				  line-height: 34px; /* 97.143% */
-				}
-		  
-				p {
-				  color: #fff;
-				  font-family: 'Inter';
-				  font-size: 14px;
-				  font-style: normal;
-				  font-weight: 400;
-				  line-height: 20px; /* 142.857% */
-				  text-transform: capitalize;
-				  word-break: break-word;
-				}
-		  
-				.subscribe-row {
-				  display: flex;
-				  
-		  
-				  input {
-					width: 503px;
-					height: 54px;
-					flex-shrink: 0;
-					padding-left: 15px;
-					border-radius: 60px;
-					background: #fff;
-					color: #343333;
-					font-family: 'Outfit';
-					font-size: 16px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 20px; /* 142.857% */
-					text-align: justify;
-				  }
-		  
-				  img {
-					width: 44px;
-					height: 44px;
-					flex-shrink: 0;
-					margin-left: -55px;
-					margin-top: 5px;
-				  }
-				}
-			  }
-			}
-		  
-			.right {
+  
+			.brand-info {
 			  display: flex;
 			  flex-direction: row;
-			  justify-content: space-between; /* Changed from row to space-between */
-			  align-items: flex-start;
-			  width: auto; /* Set to auto to fit content */
-			  /* height: 250px;   Removed fixed height to allow for dynamic content */
-			  gap: 114px;
-			  margin-right: 150px;
-		  
-			  .categories,
-			  .resources,
-			  .useful-links {
-				/* Removed flex: 1 as it was conflicting */
-				width: auto;
-				margin-top: -25px;
-				gap: 20px;
-				flex: 1; /* Equal width distribution */
-				min-width: 150px; /* Prevent columns from collapsing */
-				 /* 280% */ /*  fit content based on the inside items */
-				h1 {
-					color: #FFF;
+			  max-width: 450px; // reduced
+			  word-break: break-word;
+  
+			  .logo {
+				width: 200px; // reduced from 250px
+				height: auto;
+				flex-shrink: 0;
+			  }
+  
+			  p {
+				width: 480px; // reduced from 560px
+				margin-top: 45px;
 
-					font-family: "Judson";
-					font-size: 25px;
-					font-style: normal;
-					font-weight: 800;
-					line-height: 70px;
-				}
-		  
-				span {
-					color: rgba(255, 255, 255, 0.70);
-					font-family: Inter;
-					font-size: 16px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 50px; /* 312.5% */
-					text-transform: capitalize;
-					word-break: break-word; /* Added word-break property */
-				}
-			  }
-			  .categories {
-				margin-right: auto;
-			  }
-		  
-			  .useful-links {
-				margin-left: auto;
-			  }
-		  
-			  .resources {
-				text-align: center;
+				color: rgba(255, 255, 255, 0.7);
+				font-family: 'Inter';
+				font-size: 14px; // reduced from 16px
+				font-weight: 400;
+				line-height: 26px; // reduced from 30px
 			  }
 			}
 		  }
-	  
-		.second {
+  
+		  .footer-left-bottom {
+			margin-top: 20px; // reduced
 			display: flex;
 			flex-direction: column;
-			align-items: center;
-			justify-content: center;
-			width: 100%;
-			margin-top: -40px;
-	  
-		  .row1 {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: center;
-			width: 100%;
-			height: 100%;
-			margin-top: 30px;
-			padding: 0 150px;
-	  
-			.content {
-				display: flex;
-				flex-direction: row;
-				align-items: center;
-				justify-content: space-evenly;
-	  
-			  .icon {
-				display: flex;
-				flex-direction: row;
-				justify-content: center;
-				align-items: center;
-				width: 83px;
-				height: 83px;
-				flex-shrink: 0;
-				background: rgba(255, 255, 255, 0.1);
-				border-radius: 50%;
-				box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-				transition: background-color 0.3s ease, transform 0.3s ease;
-				img {
-					width: 39px;
-					height: 39px;
-					flex-shrink: 0;
-				}
-			  }
-	  
-			  .info {
-				display: flex;
-				flex-direction: column;
-				align-items: flex-start;
-				justify-content: space-between;
-				width: 100%;
-				height: 100%;
-				margin-left: 20px;
-				gap: 10px;
-				h1 {
-					color: #FFF;
-					font-family: "Judson";
-					font-size: 25px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: normal;
-					text-transform: capitalize;
-				}
-	  
-				p {
-					width: 284px;
-					color: rgba(255, 255, 255, 0.70);
-					font-family: "Inter";
-					font-size: 14px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 22px; /* 157.143% */
-				}
-			  }
-			}
-		  }
-	  
-		  .row2 {
-			margin-top: 20px;
-			display: flex;
-			flex-direction: row;
-			justify-content: center;
-			align-items: center;
-			gap: 15px;
-			// padding: 0 60px; // overall row padding if needed
-		  
-			.divider {
-				flex: 1;
-				width: 80%; /* Reduced width */
-				height: 1px;
-				/* ──▁▁  transparent in the middle  ▁▁── */
-				background: linear-gradient(
-				  to right,
-				  #ccc 0%,          /* visible left segment */
-				  #ccc 35%,         /* adjust 35 % for how long the left part shows */
-				  transparent 50%,  /* start of the central gap */
-				  transparent 50%,  /* end of the central gap (gap width ≈ 30 %) */
-				  #ccc 65%,         /* visible right segment */
-				  #ccc 100%         /* right end */
-				);
-				opacity: 0.5;
-			  }
-			  
-			  
-			  
-		  
-			.social {
-				display: flex;
-				flex-direction: row;
-				justify-content: center;
-				align-items: center;
-				gap: 15px;
-				margin-top: 30px;
-				
-		  
-			  svg {
-				font-size: 24px;
-				cursor: pointer;
-				color: #ccc;
-				&:hover {
-				  color: #d4af37; // Gold hover effect
-				}
-			  }
-			}
-		  }
-		  
-		  
-	  
-		  .row3 {
-			margin-top: 20px;
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
 			align-items: flex-start;
+			justify-content: space-between;
 			flex-wrap: wrap;
-			gap: 20px;
-	  
-			.bottom {
-			  p {
-				margin-right: 1150px;
-				width: 308px;
-				height: 18px;
+			margin-left: 45px; // reduced
+			gap: 15px;
+  
+			h1 {
+			  color: #fff;
+			  font-family: 'Judson';
+			  font-size: 24px; // reduced from 35px
+			  font-weight: 700;
+			  line-height: 30px;
+			}
+  
+			p {
+			  color: #fff;
+			  font-family: 'Inter';
+			  font-size: 13px; // reduced from 14px
+			  font-weight: 400;
+			  line-height: 14px; // reduced
+			  text-transform: capitalize;
+			  word-break: break-word;
+			}
+  
+			.subscribe-row {
+			  display: flex;
+  
+			  input {
+				width: 370px; // reduced from 503px
+				height: 38px; // reduced from 54px
+				flex-shrink: 0;
+				padding-left: 15px;
+				border-radius: 60px;
+				background: #fff;
+				color: #343333;
+				font-family: 'Outfit';
+				font-size: 14px; // reduced
+				font-weight: 400;
+				line-height: 20px;
+			  }
+  
+			  img {
+				width: 30px; // reduced from 44px
+				height: 30px;
+				flex-shrink: 0;
+				margin-left: -50px;
+				margin-top: 4px;
+			  }
+			}
+		  }
+		}
+  
+		.right {
+		  display: flex;
+		  flex-direction: row;
+		  justify-content: space-between;
+		  align-items: flex-start;
+		  width: auto;
+		  margin-top: 45px;
+		  gap: 90px; // reduced from 114px
+		  margin-right: 120px;
+  
+		  .categories,
+		  .resources,
+		  .useful-links {
+			width: auto;
+			margin-top: -25px;
+			flex: 1;
+			min-width: 140px; // reduced slightly
+  
+			h1 {
+			  color: #fff;
+			  font-family: 'Judson';
+			  font-size: 22px; // reduced from 25px
+			  font-weight: 800;
+			  line-height: 60px; // reduced from 70px
+			}
+  
+			span {
+			  color: rgba(255, 255, 255, 0.7);
+			  font-family: 'Inter';
+			  font-size: 14px; // reduced from 16px
+			  font-weight: 400;
+			  line-height: 40px; // reduced from 50px
+			  text-transform: capitalize;
+			  word-break: break-word;
+			}
+		  }
+		}
+	  }
+  
+	  .second {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		width: 100%;
+		margin-top: -50px; // reduced
+  
+		.row1 {
+		  display: flex;
+		  flex-direction: row;
+		  justify-content: space-between;
+		  align-items: center;
+		  width: 100%;
+		  margin-top: 30px;
+		  padding: 0 100px; // reduced
+  
+		  .content {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-evenly;
+  
+			.icon {
+			  display: flex;
+			  justify-content: center;
+			  align-items: center;
+			  width: 50px; // reduced from 83px
+			  height: 50px;
+			  background: rgba(255, 255, 255, 0.1);
+			  border-radius: 50%;
+			  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  
+			  img {
+				width: 24px; // reduced from 39px
+				height: 24px;
+			  }
+			}
+  
+			.info {
+			  display: flex;
+			  flex-direction: column;
+			  align-items: flex-start;
+			  justify-content: space-between;
+			  overflow-x: hidden;
+			  margin-left: 15px;
+			  gap: 10px;
+  
+			  h1 {
 				color: #FFF;
-				/* H5 */
 				font-family: "Judson";
-				font-size: 16px;
+				font-size: 25px;
 				font-style: normal;
 				font-weight: 400;
 				line-height: normal;
 				text-transform: capitalize;
 			  }
+  
+			  p {
+				width: 234px; // reduced from 284px
+				color: rgba(255, 255, 255, 0.7);
+				font-family: 'Inter';
+				font-size: 14px; // reduced from 14px
+				font-weight: 400;
+				line-height: 20px; // reduced from 22px
+			  }
 			}
-	  
-						.payment-cards {
-							display: flex;
-							flex-direction: row;
-							justify-content: center;
-							align-items: center;
-							width: 48px;
-							height: 30px;
-							flex-shrink: 0;
-							fill: rgba(65, 50, 50, 0.30);
-							stroke-width: 1px;
-							stroke: rgba(255, 255, 255, 0.25);
-							backdrop-filter: blur(7.5px);
-							gap: 10px;
-			
-							img {
-								width: 44px;
-								height: auto;
-							}
-						}
 		  }
 		}
-
-		.divider {
-			width: 1740px;
+  
+		.row2 {
+		  margin-top: 20px;
+		  display: flex;
+		  flex-direction: row;
+		  justify-content: center;
+		  align-items: center;
+		  gap: 12px; // reduced
+  
+		  .divider {
+			flex: 1;
+			width: 35%; // reduced from 40%
 			height: 1px;
-			background: rgba(255, 255, 255, 0.1);
-			margin-top: 40px;
-		}
-	  
-		/* Responsive Design */
-		@media (max-width: 768px) {
-		  .main {
-			flex-direction: column;
+			background: linear-gradient(
+			  to right,
+			  #ccc 0%,
+			  #ccc 35%,
+			  transparent 50%,
+			  transparent 50%,
+			  #ccc 65%,
+			  #ccc 100%
+			);
+			opacity: 0.5;
 		  }
-	  
-		  .right {
-			flex-direction: column;
-		  }
-	  
-		  .second {
-			.row1 {
-			  flex-direction: column;
+  
+		  .social {
+			display: flex;
+			flex-direction: row;
+			justify-content: center;
+			align-items: center;
+			gap: 15px;
+			margin-top: 30px;
+  
+			svg {
+			  font-size: 30px; // reduced from 24px
+			  cursor: pointer;
+			  color: #ccc;
+  
+			  &:hover {
+				color: #d4af37;
+			  }
 			}
-	  
-			.row3 {
-			  flex-direction: column;
-			  align-items: center;
+		  }
+		}
+  
+		.row3 {
+		width: 100%;
+		  margin-top: 20px;
+		  margin-bottom: 10px;
+		  display: flex;
+		  flex-direction: row;
+		  justify-content: space-around;
+		  align-items: center;
+		  flex-wrap: wrap;
+		  gap: 20px;
+  
+		  .bottom p {
+			color: #FFF;
+
+			/* H5 */
+			font-family: "Judson";
+			font-size: 16px;
+			font-style: normal;
+			font-weight: 400;
+			line-height: normal;
+			text-transform: capitalize;
+			color: rgba(255, 255, 255, 0.60)
+
+		  }
+  
+		  .payment-cards {
+			display: flex;
+			flex-direction: row;
+			align-items: center;
+			justify-content: space-between; // corrected from space-flex
+			gap: 10px;
+  
+			img {
+			  width: 36px; // reduced from 44px
+			  height: auto;
 			}
 		  }
 		}
 	  }
-}
-
+  
+	  .divider {
+		width: 90%; // instead of fixed 1740px
+		height: 1px;
+		background: rgba(245, 233, 233, 0.1);
+		margin-top: 30px; // reduced
+	  }
+	}
+  }
+  
 
 .MuiPaper-root.MuiMenu-paper {
 	padding: 8px;

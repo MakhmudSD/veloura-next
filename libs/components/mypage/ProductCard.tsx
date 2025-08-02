@@ -60,7 +60,7 @@ const ProductCard = (props: ProductCardType) => {
 									query: { id: product?._id },
 								}}
 							>
-								<Typography>{product.productTitle}</Typography>
+								<Typography>{product.productTitle}asd</Typography>
 							</Link>
 						</Stack>
 						<Stack className="address">

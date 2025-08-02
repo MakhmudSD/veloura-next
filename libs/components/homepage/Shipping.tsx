@@ -11,7 +11,7 @@ const Shipping = () => {
                     <Stack className="shipping-info">
                         <h1>FREE SHIPPING</h1>
                         <p>
-                        We are happy to offer international shipping for a flat rate of $40
+                        Happy to offer international shipping for a flat rate of $40
                         </p>
                     </Stack>                                
                 </Stack>
