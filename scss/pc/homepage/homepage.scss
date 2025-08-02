@@ -1049,12 +1049,12 @@
 
 						// Position farther out from the slider edges
 						.swiper-button-prev {
-							left: -40px; // move more to the left
+							// left: -10px; // move more to the left
 							font-size: 1.4rem;
 						}
 
 						.swiper-button-next {
-							right: -40px; // move more to the right
+							// right: -10px; // move more to the right
 							font-size: 1.4rem;
 						}
 
@@ -1677,7 +1677,7 @@
 						.swiper-button-prev,
 						.swiper-button-next {
 							position: absolute;
-							top: 60%;
+							top: 55%;
 							width: 40px;
 							height: 40px;
 							border-radius: 50%;
@@ -1694,6 +1694,7 @@
 
 						.swiper-button-prev {
 							left: -40px;
+							
 						}
 
 						.swiper-button-next {
