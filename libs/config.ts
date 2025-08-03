@@ -40,3 +40,6 @@ export const Messages = {
 };
 
 export const topProductRank = 2
+
+export const calculateStars = (comments: number, likes: number, views: number) =>
+	Math.min(5, (comments + likes + views) / 3);

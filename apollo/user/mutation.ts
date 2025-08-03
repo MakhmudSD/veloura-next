@@ -325,35 +325,56 @@ export const LIKE_TARGET_BOARD_ARTICLE = gql`
  *************************/
 
 export const CREATE_COMMENT = gql`
-	mutation CreateComment($input: CommentInput!) {
-		createComment(input: $input) {
-			_id
-			commentStatus
-			commentGroup
-			commentContent
-			commentRefId
-			memberId
-			parentId
-			createdAt
-			updatedAt
-		}
-	}
-`;
+  mutation CreateComment($input: CommentInput!) {
+    createComment(input: $input) {
+        _id
+        commentStatus
+        commentGroup
+        commentContent
+        commentRefId
+        memberId
+        createdAt
+        updatedAt
+        parentId
+        replies {
+            _id
+            commentStatus
+            commentGroup
+            commentContent
+            commentRefId
+            memberId
+            createdAt
+            updatedAt
+            parentId
+        }
+    }
+}`;
+
 
 export const UPDATE_COMMENT = gql`
-	mutation UpdateComment($input: CommentUpdate!) {
-		updateComment(input: $input) {
-			_id
-			commentStatus
-			commentGroup
-			commentContent
-			commentRefId
-			memberId
-			createdAt
-			updatedAt
-		}
-	}
+mutation UpdateComment($input: CommentUpdate!) {
+    updateComment(input: $input) {
+        _id
+        commentStatus
+        commentGroup
+        commentContent
+        commentRefId
+        memberId
+        createdAt
+        updatedAt
+    }
+}
 `;
+export const REMOVE_COMMENT = gql`
+  mutation RemoveComment($commentId: String!) {
+    removeComment(commentId: $commentId) {
+      _id
+      commentContent
+      commentStatus
+    }
+  }
+`;
+
 
 /**************************
  *         FOLLOW        *

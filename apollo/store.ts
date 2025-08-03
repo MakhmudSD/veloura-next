@@ -1,3 +1,4 @@
+import { ringSize } from './../libs/config';
 import { makeVar } from '@apollo/client';
 
 import { CustomJwtPayload } from '../libs/types/customJwtPayload';
@@ -33,6 +34,8 @@ export interface ProductInBasket {
 	productPrice: number;
 	itemQuantity: number;
 	orderId?: string; // set after order created/fetched
+	ringSize: number | null; // added for ring size
+	weight: number | null; // added for weight
   }
   
   export const basketItemsVar = makeVar<ProductInBasket[]>([]);

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Box, IconButton, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Box, IconButton, Rating, Typography } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
@@ -31,6 +31,9 @@ const ProductCard = ({
   const router = useRouter();
   const [liked, setLiked] = useState(product?.meLiked?.[0]?.myFavorite || false);
   const [glow, setGlow] = useState(false);
+  const [stars, setStars] = useState<number>(0);
+  
+
 
   const image1 = product?.productImages[0]
     ? `${REACT_APP_API_URL}/${product?.productImages[0]}`
@@ -39,6 +42,17 @@ const ProductCard = ({
     ? `${REACT_APP_API_URL}/${product?.productImages[1]}`
     : image1;
 
+      useEffect(() => {
+        if (product) {
+          const commentCount = product?.productComments || 0;
+          const likeCount = product?.productLikes || 0;
+          const viewCount = product?.productViews || 0;
+      
+          const calculatedStars = Math.min(5, (commentCount + likeCount + viewCount) / 3);
+          setStars(calculatedStars);
+        }
+      }, [product]);
+      
   const handleLikeClick = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -64,6 +78,8 @@ const ProductCard = ({
         productImages: image,
         productPrice: price,
         itemQuantity: 1,
+        ringSize: null,
+        weight: null
       });
     }
 
@@ -135,6 +151,15 @@ const ProductCard = ({
             ₩{formatterStr(product.productPrice)}
           </Typography>
           <Typography className="title">{product.productTitle}</Typography>
+          <Box className="product-stars">
+          <Rating
+            name="read-only"
+            value={stars}
+            readOnly
+            precision={0.5}
+            size="small"
+          />
+        </Box>
 
           <div className="meta">
             <div className="meta-item">

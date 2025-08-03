@@ -1,56 +1,96 @@
-import React from 'react';
-import { Stack, Typography } from '@mui/material';
-import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Comment } from '../../types/comment/comment';
-import { REACT_APP_API_URL } from '../../config';
+import React, { useState } from 'react';
+import { Stack, Typography, Button, TextField } from '@mui/material';
 import Moment from 'react-moment';
-import { useRouter } from 'next/router';
-import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
+import { REACT_APP_API_URL } from '../../config';
+import { Comment } from '../../types/comment/comment';
 
 interface ReviewProps {
-	comment: Comment;
+  comment: Comment;
+  userId: string;
+  onEdit: (id: string, content: string) => void;
+  onDelete: (id: string) => void;
 }
 
-const Review = (props: ReviewProps) => {
-	const { comment } = props;
-	const device = useDeviceDetect();
-	const router = useRouter();
-	const user = useReactiveVar(userVar);
-	const [value, setValue] = React.useState<number | null>(2);
-	const imagePath: string = comment?.memberData?.memberImage
-		? `${REACT_APP_API_URL}/${comment?.memberData?.memberImage}`
-		: '/img/profile/defaultUser.svg';
+const Review: React.FC<ReviewProps> = ({
+  comment,
+  userId,
+  onEdit,
+  onDelete,
+}) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editContent, setEditContent] = useState(comment.commentContent);
 
-	/** HANDLERS **/
-	const goMemberPage = (id: string) => {
-		if (id === user?._id) router.push('/mypage');
-		else router.push(`/member?memberId=${id}`);
-	};
-	if (device === 'mobile') {
-		return <div>REVIEW</div>;
-	} else {
-		return (
-			<Stack className={'review-config'}>
-				<Stack className={'review-mb-info'}>
-					<Stack className={'img-name-box'}>
-						<img src={imagePath} alt="" className={'img-box'} />
-						<Stack>
-							<Typography className={'name'} onClick={() => goMemberPage(comment?.memberData?._id as string)}>
-								{comment.memberData?.memberNick}
-							</Typography>
-							<Typography className={'date'}>
-								<Moment format={'DD MMMM, YYYY'}>{comment.createdAt}</Moment>
-							</Typography>
-						</Stack>
-					</Stack>
-				</Stack>
-				<Stack className={'desc-box'}>
-					<Typography className={'description'}>{comment.commentContent}</Typography>
-				</Stack>
-			</Stack>
-		);
-	}
+  return (
+    <Stack className="review-config">
+      <Stack direction="row" spacing={1} className="parent-comment">
+        <img
+          src={
+            comment.memberData?.memberImage
+              ? `${REACT_APP_API_URL}/${comment.memberData.memberImage}`
+              : '/img/profile/defaultUser.svg'
+          }
+          alt=""
+          className="img-box small"
+        />
+        <Stack className="comment-body">
+          <Stack direction="row" justifyContent="space-between" alignItems="center">
+            <Typography className="name">{comment.memberData?.memberNick}</Typography>
+            <Typography className="date">
+              <Moment format="DD MMM, YYYY HH:mm:ss">{comment.createdAt}</Moment>
+            </Typography>
+          </Stack>
+
+          {/* Comment Content */}
+          {isEditing ? (
+            <TextField
+              fullWidth
+              value={editContent}
+              onChange={(e) => setEditContent(e.target.value)}
+              size="small"
+              multiline
+            />
+          ) : (
+            <Typography className="description">{comment.commentContent}</Typography>
+          )}
+
+          {/* Actions */}
+          <Stack direction="row" spacing={2} mt={1}>
+            {userId === comment.memberId && (
+              <>
+                {isEditing ? (
+                  <>
+                    <Button
+                      size="small"
+                      variant="contained"
+                      color="success"
+                      onClick={() => {
+                        onEdit(comment._id, editContent);
+                        setIsEditing(false);
+                      }}
+                    >
+                      Save
+                    </Button>
+                    <Button size="small" onClick={() => setIsEditing(false)}>
+                      Cancel
+                    </Button>
+                  </>
+                ) : (
+                  <>
+                    <Button size="small" onClick={() => setIsEditing(true)}>
+                      Edit
+                    </Button>
+                    <Button size="small" color="error" onClick={() => onDelete(comment._id)}>
+                      Delete
+                    </Button>
+                  </>
+                )}
+              </>
+            )}
+          </Stack>
+        </Stack>
+      </Stack>
+    </Stack>
+  );
 };
 
 export default Review;

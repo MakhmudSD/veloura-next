@@ -15,6 +15,8 @@ export interface Comment {
 	/** from aggregation **/
 	meLiked?: MeLiked[];
 	memberData?: Member;
+
+	replies?: Comment[]; 
 }
 
 export interface Comments {

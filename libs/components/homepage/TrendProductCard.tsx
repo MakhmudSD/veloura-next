@@ -37,6 +37,8 @@ const handleAdd = (id: string, title: string, image: string, price: number) => {
       productImages: image,
       productPrice: price,
       itemQuantity: 1,
+      ringSize: null,
+      weight: null
     });
   }
 

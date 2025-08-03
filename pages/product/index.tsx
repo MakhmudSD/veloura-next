@@ -50,6 +50,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
   const [filterSortName, setFilterSortName] = useState('Recommendations');
   const [searchText, setSearchText] = useState<string>('');
 
+
   /** APOLLO REQUESTS **/
   const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
   const {
@@ -63,7 +64,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       setProducts(data?.getProducts?.list || []);
-      setTotal(data?.getProducts?.list?.metCounter[0]?.total || 0); // ✅ FIX total
+      setTotal(data?.getProducts?.metaCounter?.[0]?.total || 0); // ✅ Correct path
     },
   });
 
@@ -80,6 +81,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
   };
 
   /** Sync router + refetch products when searchFilter changes **/
+  
   useEffect(() => {
     router.push(
       `/product?input=${encodeURIComponent(JSON.stringify(searchFilter))}`,
@@ -99,6 +101,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
     }, 400);
     return () => clearTimeout(handler);
   }, [searchText]);
+
 
   const refreshHandler = async () => {
     try {

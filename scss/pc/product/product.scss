@@ -2,6 +2,7 @@
 	#product-list-page {
 		padding-bottom: 40px;
 		background: #f6f6f6;
+		background: url('/img/fiber/naqsh.png') no-repeat center center / cover, hsl(0, 0%, 100%);
 
 		.container {
 			display: flex;
@@ -31,7 +32,7 @@
 					justify-content: space-between;
 					gap: 10px;
 					width: 100%;
-					max-width: 800px;
+					max-width: 750px;
 					margin: 20px auto;
 
 					img {
@@ -43,7 +44,7 @@
 
 					.search-input {
 						flex: 1;
-						height: 44px;
+						height: 40px;
 						border-radius: 18px;
 						padding: 0 10px;
 						border: 1px solid #ccc;
@@ -88,7 +89,7 @@
 
 				.filter-label {
 					font-family: 'Playfair Display', serif;
-					font-size: 22px;
+					font-size: 18px;
 					font-weight: 700;
 					color: #676565;
 				}
@@ -100,7 +101,7 @@
 					flex-direction: row;
 					justify-content: space-evenly;
 					align-items: center;
-					margin-left: 140px;
+					margin-left: 110px;
 					gap: 35px;
 					flex: 1;
 
@@ -115,7 +116,7 @@
 
 						.title {
 							font-family: 'Playfair Display', serif;
-							font-size: 18px;
+							font-size: 16px;
 							font-weight: 600;
 							color: #2e2424;
 							letter-spacing: 0.5px;
@@ -124,7 +125,7 @@
 
 						/* arrow icon */
 						.dropdown-icon {
-							font-size: 22px;
+							font-size: 20px;
 							color: #7a6a4f;
 							transition: transform 0.3s ease;
 						}
@@ -172,14 +173,14 @@
 
 								h4 {
 									font-family: 'Playfair Display', serif;
-									font-size: 20px;
+									font-size: 16px;
 									font-weight: 700;
 									color: #2e2424;
 								}
 
 								svg {
 									cursor: pointer;
-									font-size: 22px;
+									font-size: 20px;
 									color: #2e2424;
 								}
 							}
@@ -190,7 +191,7 @@
 								gap: 15px;
 
 								label {
-									font-size: 16px;
+									font-size: 14px;
 									font-family: 'Lato', sans-serif;
 									color: #4a3c31;
 								}
@@ -210,7 +211,7 @@
 					padding-top: -10px;
 
 					span {
-						font-size: 22px;
+						font-size: 18px;
 						font-weight: 700;
 						font-family: 'Playfair Display', serif;
 						color: #676565;
@@ -511,6 +512,21 @@
 							  font-size: 24px;
 							  font-weight: 600;
 							}
+
+							.product-stars {
+								display: flex;
+								flex-direction: row;
+								justify-content: center;
+								align-items: center;
+								gap: 5px;
+								margin-top: 5px;
+							  
+								.review-count {
+								  font-size: 13px;
+								  color: #555;
+								}
+							  }
+							  
 					  
 							.price {
 							  color: #2e2e2e;
