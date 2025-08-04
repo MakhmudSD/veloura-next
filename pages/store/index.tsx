@@ -2,7 +2,7 @@ import React, { ChangeEvent, MouseEvent, useEffect, useState } from 'react';
 import { NextPage } from 'next';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
-import { Stack, Box, Button, Pagination } from '@mui/material';
+import { Stack, Box, Button, Pagination, Typography } from '@mui/material';
 import { Menu, MenuItem } from '@mui/material';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
 import StoreCard from '../../libs/components/common/StoreCard';
@@ -71,6 +71,12 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 	}, [searchFilter]);
 
 	/** HANDLERS **/
+	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
+		const updatedFilter = { ...searchFilter, page: value };
+		setSearchFilter(updatedFilter);
+		setCurrentPage(value);
+	};
+
 	const sortingClickHandler = (e: MouseEvent<HTMLElement>) => {
 		setAnchorEl(e.currentTarget);
 		setSortingOpen(true);
@@ -126,7 +132,6 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 		}
 	};
 
-
 	if (device === 'mobile') {
 		return <h1>STORES PAGE MOBILE</h1>;
 	} else {
@@ -135,21 +140,48 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 				<Stack className={'container'}>
 					<Stack className={'filter'}>
 						<Box component={'div'} className={'left'}>
-							<input
-								type="text"
-								placeholder={'Search for a store'}
-								value={searchText}
-								onChange={(e: any) => setSearchText(e.target.value)}
-								onKeyDown={(event: any) => {
-									if (event.key == 'Enter') {
+							<div className="search-box">
+								<input
+									type="text"
+									placeholder={'Search for a store'}
+									value={searchText}
+									onChange={(e: any) => setSearchText(e.target.value)}
+									onKeyDown={(event: any) => {
+										if (event.key == 'Enter') {
+											setSearchFilter({
+												...searchFilter,
+												search: { ...searchFilter.search, text: searchText },
+											});
+										}
+									}}
+								/>
+								<button
+									className="search-btn"
+									onClick={() =>
 										setSearchFilter({
 											...searchFilter,
 											search: { ...searchFilter.search, text: searchText },
-										});
+										})
 									}
-								}}
-							/>
+								>
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										width="18"
+										height="18"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth="2"
+										strokeLinecap="round"
+										strokeLinejoin="round"
+									>
+										<circle cx="11" cy="11" r="8"></circle>
+										<line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+									</svg>
+								</button>
+							</div>
 						</Box>
+
 						<Box component={'div'} className={'right'}>
 							<span>Sort by</span>
 							<div>
@@ -173,38 +205,50 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 							</div>
 						</Box>
 					</Stack>
-					<Stack className={'card-wrap'}>
+					<Stack className={'card-wrapper'}>
 						{stores?.length === 0 ? (
-							<div className={'no-data'}>
-								<img src="/img/icons/icoAlert.svg" alt="" />
-								<p>No Stores found!</p>
-							</div>
+							<Box component={'div'} className={'empty-list'}>
+								<Box className={'empty-list-content'}>
+									<img src="/img/icons/empty.png" alt="" />
+									<span>OOPS</span>
+									<strong>There are no agents available at the moment</strong>
+									<p>
+										It is a long established fact that a reader will be distracted by the readable content of a page
+										when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.
+									</p>
+									<div onClick={() => router.push('/')}>
+										<h2>Back to Home</h2>
+									</div>
+								</Box>
+							</Box>
 						) : (
 							stores.map((store: Member) => {
 								return <StoreCard store={store} likeMemberHandler={likeMemberHandler} key={store._id} />;
 							})
 						)}
 					</Stack>
-					<Stack className={'pagination'}>
-						<Stack className="pagination-box">
-							{stores.length !== 0 && Math.ceil(total / searchFilter.limit) > 1 && (
-								<Stack className="pagination-box">
-									<Pagination
-										page={currentPage}
-										count={Math.ceil(total / searchFilter.limit)}
-										onChange={paginationChangeHandler}
-										shape="circular"
-										color="primary"
-									/>
-								</Stack>
-							)}
-						</Stack>
+					<Stack className="pagination-box">
+					{stores.length !== 0 && Math.ceil(total / searchFilter.limit) > 1 && (
+					<Pagination
+						page={currentPage}
+						count={Math.ceil(total / searchFilter.limit)}
+						onChange={handlePaginationChange}
+						variant="outlined"
+						shape="rounded"
+						siblingCount={1}
+						boundaryCount={1}
+						hidePrevButton={false}
+						hideNextButton={false}
+						className="custom-pagination"
+					/>
+					)}
 
-						{stores.length !== 0 && (
-							<span>
-								Total {total} store{total > 1 ? 's' : ''} available
-							</span>
-						)}
+
+					{stores.length !== 0 && (
+				 <Typography className="total-result">
+				 Showing <strong>{stores.length}</strong> of <strong>{total}</strong> stores
+			   </Typography>
+					)}
 					</Stack>
 				</Stack>
 			</Stack>
@@ -218,7 +262,7 @@ StoreList.defaultProps = {
 		limit: 10,
 		sort: 'createdAt',
 		direction: 'DESC',
-		search: {"text": ''},
+		search: { text: '' },
 	},
 };
 

@@ -123,9 +123,20 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 
 
 	/** LIFECYCLES **/
+
 	useEffect(() => {
-		if (router.query.storeId) setMbId(router.query.storeId as string);
-	}, [router]);
+		if (!user || !user._id || !mbId) return;
+	  
+		// safe to proceed
+		getStoreRefetch({ variables: { input: mbId } });
+	  }, [user, mbId]);
+	  
+	useEffect(() => {
+		const storeId = router?.query?.storeId;
+		if (storeId && typeof storeId === 'string') {
+			setMbId(storeId);
+		}
+	}, [router.isReady, router.query.storeId]);
 
 	useEffect(() => {
 		if (searchFilter.search.memberId) {
