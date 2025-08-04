@@ -248,7 +248,44 @@
 					font-weight: 600;
 					font-size: 13px;
 				  }
+
+				  img {
+					width: 20px;
+					height: 20px;
+					flex-shrink: 0;
+				  }
 				}
+
+				.info-item-options {
+					display: flex;
+				  align-items: center;
+				  gap: 6px;
+				  font-size: 14px;
+				  background: #fafafa;
+				  border: 1px solid #e5e5e5;
+				  padding: 6px 12px;
+				  border-radius: 8px;
+				  color: #2c2c2c;
+				  font-family: "Inter", sans-serif;
+
+				  img {
+					width: 20px;
+					height: 20px;
+					flex-shrink: 0;
+				  }
+				  
+					.disabled {
+					  text-decoration: line-through;
+					  opacity: 0.6;
+					  color: #999;
+					}
+				  
+					strong {
+					  margin-right: 6px;
+					  font-weight: 600;
+					}
+				  }
+				  
 			  }
 			  
   

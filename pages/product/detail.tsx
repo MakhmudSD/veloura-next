@@ -367,17 +367,23 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 
 							<Box className="detail-other-info">
 								<div className="info-item">
-									<strong>Material:</strong> {product?.productMaterial || 'N/A'}
+									<img src="/img/icons/material-detail.png" alt="" />
+									 {product?.productMaterial || 'N/A'}
 								</div>
 								<div className="info-item">
-									<strong>Origin:</strong> {product?.productOrigin || 'N/A'}
-								</div>
+								<img src="/img/icons/origin.png" alt="" />
+								<strong>Origin:</strong>
+								{product?.productOrigin || 'N/A'}								</div>
 								<div className="info-item">
-									<strong>To Whom:</strong> {product?.productGender || 'N/A'}
+								<img src="/img/icons/gender.png" alt="" />
+								{product?.productGender || 'N/A'}								</div>
+								<div className="info-item-options">
+								<img src="/img/icons/options.png" alt="" />
+								<span className={!product?.productRent ? 'disabled' : ''}>Rent</span>
+								<span> / </span>
+								<span className={!product?.productBarter ? 'disabled' : ''}>Barter</span>
 								</div>
-								<div className="info-item">
-									<strong>Options:</strong> {product?.productRent || product?.productBarter || 'N/A'}
-								</div>
+
 							</Box>
 
 							<Box className="detail-testimonial">
