@@ -2,14 +2,17 @@ import React, { useState } from 'react';
 import { NextPage } from 'next';
 import { Pagination, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { ProductCard } from './ProductCard';
-import { useReactiveVar } from '@apollo/client';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { Product } from '../../types/product/product';
 import { StoreProductsInquiry } from '../../types/product/product.input';
 import { T } from '../../types/common';
 import { ProductStatus } from '../../enums/product.enum';
 import { userVar } from '../../../apollo/store';
 import { useRouter } from 'next/router';
+import { UPDATE_PRODUCT } from '../../../apollo/user/mutation';
+import { GET_STORE_PRODUCTS } from '../../../apollo/user/query';
+import { sweetErrorHandling, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { ProductCard } from './ProductCard';
 
 const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
@@ -20,6 +23,23 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 	const router = useRouter();
 
 	/** APOLLO REQUESTS **/
+	const [updateProduct] = useMutation(UPDATE_PRODUCT);
+
+	const {
+		loading: getStoreProductsLoading,
+		data: getStoreProductsData,
+		error: getStoreProductsError,
+		refetch: getStoreProductsRefetch,
+	} = useQuery(GET_STORE_PRODUCTS, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			console.log('Data fetched:', data);
+			setStoreProducts(data?.getStoreProducts?.list); // Create a new array to force re-render
+			setTotal(data?.getStoreProducts?.metaCounter[0]?.total ?? 0);
+		},
+	});
 
 	/** HANDLERS **/
 	const paginationHandler = (e: T, value: number) => {
@@ -30,10 +50,30 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 		setSearchFilter({ ...searchFilter, search: { productStatus: value } });
 	};
 
-	const deleteProductHandler = async (id: string) => {};
-
-	const updateProductHandler = async (status: string, id: string) => {};
-
+	const deleteProductHandler = async (id: string) => {
+		try {
+			if (sweetConfirmAlert('Are you sure you want to delete this product?')) {
+				await updateProduct({ variables: { input: {_id: id, productStatus: 'DELETE' }} });
+				console.log('Refetching data...');
+				await sweetTopSmallSuccessAlert('Product deleted successfully!');
+				await getStoreProductsRefetch({ input: searchFilter });
+			}
+		} catch (err: any) {
+			await sweetErrorHandling(err);
+		}
+	};
+	const updateProductHandler = async (status: string, id: string) => {
+		try {
+			if (sweetConfirmAlert(`Are you sure you want to update this product status to ${status}?`)) {
+				await updateProduct({ variables: { input: { _id: id, productStatus: status }} });
+			}
+			console.log('Refetching data...');
+			await getStoreProductsRefetch({ input: searchFilter });
+		} catch (err: any) { 
+			console.error('Mutation failed:', err);
+			await sweetErrorHandling(err);
+		}
+	};
 	if (user?.memberType !== 'STORE') {
 		router.back();
 	}
@@ -125,3 +165,7 @@ MyProducts.defaultProps = {
 };
 
 export default MyProducts;
+function sweetConfirmAlert(message: string): boolean {
+	return window.confirm(message); // Use browser's confirm dialog for simplicity
+}
+

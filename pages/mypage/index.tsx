@@ -40,11 +40,11 @@ const MyPage: NextPage = () => {
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (!user._id) {
-			console.log('User not logged in, redirecting to home page.');
-			router.push('/').then();
-		}
-	}, [user]);
+        if (!user._id) {
+            console.log('User not logged in, redirecting to home page.');
+            router.push('/').then();
+        }
+    }, [user]);
 
 	/** HANDLERS **/
 	const subscribeHandler = async (id: string, refetch: any, query: any) => {
@@ -74,10 +74,19 @@ const MyPage: NextPage = () => {
 			sweetErrorHandling(err).then();
 		}
 	};
+	useEffect(() => {
+		console.log('🧠 user._id:', user?._id);
+	}, [user]);
 
-	const redirectToMemberPageHandler = async (memberId: string) => {
+	const redirectToMemberPageHandler = async (memberId?: string) => {
 		try {
-			console.log('Redirecting to member page with ID:', memberId);
+			if (!memberId || memberId === 'undefined') {
+				console.warn('❌ Invalid memberId for redirect:', memberId);
+				return;
+			}
+	
+			console.log('✅ Redirecting to member page with ID:', memberId);
+	
 			if (memberId === user?._id) {
 				await router.push(`/mypage?memberId=${memberId}`);
 			} else {
@@ -88,7 +97,7 @@ const MyPage: NextPage = () => {
 			await sweetErrorHandling(error);
 		}
 	};
-
+	
 	const likeMemberHandler = async (id: string, refetch: any, query: any) => {
 		try {
 			console.log('Liking member with ID:', id);

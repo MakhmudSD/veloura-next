@@ -1,7 +1,9 @@
 #pc-wrap {
 	#my-page {
-		background: #f6f6f6;
+		background: url('/img/fiber/naqsh.png') no-repeat center center / cover, hsl(0, 0%, 100%);
 		.container {
+					background: url('/img/fiber/naqsh.png') no-repeat center center / cover, hsl(0, 0%, 100%);
+
 			.my-page {
 				position: relative;
 				width: 100%;
@@ -16,7 +18,7 @@
 					margin: 100px 0 200px 0;
 					border-radius: 12px;
 					border: 1px solid #c4c4c4;
-					background: #fff;
+					background: url('/img/fiber/naqsh.png') no-repeat center center / cover, hsl(0, 0%, 100%);
 					box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
 					.left-config {
 						position: relative;
@@ -33,57 +35,69 @@
 							position: relative;
 							display: flex;
 							flex-direction: row;
+						
 							.profile-img {
 								img {
-									width: 79px;
-									height: 79px;
+									width: 85px;
+									height: 85px;
 									border-radius: 50%;
+									object-fit: contain;
 									right: 30px;
 									bottom: 12px;
-									object-fit: cover;
 								}
 							}
+						
 							.user-info {
 								margin-left: 20px;
 								display: flex;
 								flex-direction: column;
+								justify-content: space-evenly;
+						
 								.user-name {
-									color: #181a20;
+									color: #3e2c20; // elegant dark brown
 									font-family: $font;
 									font-size: 15px;
 									font-style: normal;
 									font-weight: 600;
 									line-height: normal;
 								}
+						
 								.user-phone {
 									display: flex;
 									flex-direction: row;
+									align-items: center;
+						
 									img {
-										margin-top: 7px;
-										margin-right: 4px;
+										margin-right: 6px;
 										width: 16px;
 										height: 16px;
 									}
 								}
+						
 								.view-list {
 									font-weight: bold;
-									color: red;
+									color: #a47c5c; // luxury bronze accent
 								}
 							}
 						}
+						
 						.sections {
 							height: auto;
 							gap: 45px;
 							margin-top: 30px;
+						
 							.section {
 								height: auto;
+						
 								.title {
 									font-family: $font;
 									font-size: 15px;
 									font-style: normal;
 									font-weight: 400;
 									line-height: 28px;
+									color: #9e8c7c; // warm taupe
 								}
+						
 								.sub-section {
 									width: 230px;
 									height: 26px;
@@ -91,42 +105,52 @@
 									flex-direction: column;
 									align-items: center;
 									cursor: pointer;
-									padding: 0 5px 0 5px;
+									padding: 0 5px;
+						
 									li {
 										height: 33px;
 										margin-bottom: 6px;
 										border-radius: 4px;
+										transition: background 0.2s ease;
 									}
+						
 									.focus {
 										height: 50px;
-										background: #000000;
+										background: #c2a487; // light golden beige
 										border-radius: 10px;
+						
 										p {
 											font-size: 14px;
-											color: #ffffff;
+											color: #fffaf6; // soft creamy white
 										}
 									}
+						
 									.flex-box {
 										display: flex;
 										align-items: center;
+						
 										.com-icon {
 											display: flex;
 											flex-direction: row;
 											justify-content: flex-end;
 											margin-left: 11px;
 										}
+						
 										p {
 											font-size: 14px;
+											color: #5f4b3b; // soft brown
 										}
 									}
 								}
+						
 								img {
 									width: 16px;
 									height: 16px;
 								}
+						
 								.sub-title {
 									margin-left: 12px;
-									color: #181a20;
+									color: #5f4b3b; // softened dark brown
 									font-family: $font;
 									font-size: 14px;
 									font-style: normal;
@@ -135,6 +159,8 @@
 								}
 							}
 						}
+						
+						
 					}
 					.main-config {
 						position: relative;

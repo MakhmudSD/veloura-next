@@ -98,6 +98,8 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 			sweetErrorHandling(err).then();
 		}
 	}, [updateData]);
+
+
 	const doDisabledCheck = () => {
 		if (
 			updateData.memberNick === '' ||
@@ -108,8 +110,6 @@ const MyProfile: NextPage = ({ initialValues, ...props }: any) => {
 			return true;
 		}
 	};
-
-	console.log('+updateData', updateData);
 
 	if (device === 'mobile') {
 		return <>MY PROFILE PAGE MOBILE</>;

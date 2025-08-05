@@ -4,7 +4,9 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Pagination, Stack, Typography } from '@mui/material';
 import { Product } from '../../types/product/product';
 import { T } from '../../types/common';
-import { ProductCard } from './ProductCard';
+import ProductCard from '../product/ProductCard';
+import { useQuery } from '@apollo/client';
+import { GET_VISITED } from '../../../apollo/user/query';
 
 const RecentlyVisited: NextPage = () => {
 	const device = useDeviceDetect();
@@ -13,7 +15,19 @@ const RecentlyVisited: NextPage = () => {
 	const [searchVisited, setSearchVisited] = useState<T>({ page: 1, limit: 6 });
 
 	/** APOLLO REQUESTS **/
-
+	const {
+		loading: getVisitedLoading,
+		error: getFVisitedError,
+		data: getVisitedData,
+		refetch: getVisitedRefetch,
+	} = useQuery(GET_VISITED, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchVisited },
+		onCompleted: (data: T) => {
+			setRecentlyVisited(data.getVisited?.list);
+			setTotal(data.getVisited?.metaCounter?.[0]?.total || 0);
+		},
+	});
 	/** HANDLERS **/
 	const paginationHandler = (e: T, value: number) => {
 		setSearchVisited({ ...searchVisited, page: value });

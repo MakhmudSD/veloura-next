@@ -13,6 +13,8 @@ export interface ProductUpdate {
 	productLocation?: ProductLocation;
 	productOrigin?: string;
 	productColor?: string;
+	productWeightUnit? : number; // 0 - kg, 1 - g, 2 - l
+	productAddress?: string;
 	productMaterial?: ProductMaterial;
 	productGender?: ProductGender;
 	productTitle?: string;

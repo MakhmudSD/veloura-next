@@ -1,124 +1,134 @@
-import React from 'react';
-import { Stack, Typography, Box } from '@mui/material';
+import { Menu, MenuItem, Stack, Typography } from '@mui/material';
+import React, { useState } from 'react';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Product } from '../../types/product/product';
-import Link from 'next/link';
-import { formatterStr } from '../../utils';
-import { REACT_APP_API_URL, topProductRank } from '../../config';
-import { useReactiveVar } from '@apollo/client';
-import { userVar } from '../../../apollo/store';
 import IconButton from '@mui/material/IconButton';
-import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import ModeIcon from '@mui/icons-material/Mode';
+import DeleteIcon from '@mui/icons-material/Delete';
+import { formatterStr } from '../../utils';
+import Moment from 'react-moment';
+import { useRouter } from 'next/router';
+import { ProductStatus } from '../../enums/product.enum';
+import { Product } from '../../types/product/product';
 
-interface ProductCardType {
+interface ProductCardProps {
 	product: Product;
-	likeProductHandler?: any;
-	myFavorites?: boolean;
-	recentlyVisited?: boolean;
+	deleteProductHandler?: any;
+	memberPage?: boolean;
+	updateProductHandler?: any;
+	likeProductHandler?: any
+	
 }
 
-const ProductCard = (props: ProductCardType) => {
-	const { product, likeProductHandler, myFavorites, recentlyVisited } = props;
+export const ProductCard = (props: ProductCardProps) => {
+	const { product, deleteProductHandler, memberPage, updateProductHandler, likeProductHandler } = props;
 	const device = useDeviceDetect();
-	const user = useReactiveVar(userVar);
-	const imagePath: string = product?.productImages[0]
-		? `${REACT_APP_API_URL}/${product?.productImages[0]}`
-		: '/img/banner/header1.svg';
+	const router = useRouter();
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+	const open = Boolean(anchorEl);
+
+	/** HANDLERS **/
+	const pushEditProduct = async (id: string) => {
+		console.log('+pushEditProduct: ', id);
+		await router.push({
+			pathname: '/mypage',
+			query: { category: 'addProduct', productId: id },
+		});
+	};
+
+	const pushProductDetail = async (id: string) => {
+		if (memberPage)
+			await router.push({
+				pathname: '/product/detail',
+				query: { id: id },
+			});
+		else return;
+	};
+
+	const handleClick = (event: any) => {
+		setAnchorEl(event.currentTarget);
+	};
+
+	const handleClose = () => {
+		setAnchorEl(null);
+	};
 
 	if (device === 'mobile') {
-		return <div>Product CARD</div>;
-	} else {
+		return <div>MOBILE PRODUCT CARD</div>;
+	} else
 		return (
-			<Stack className="card-config">
-				<Stack className="top">
-					<Link
-						href={{
-							pathname: '/product/detail',
-							query: { id: product?._id },
+			<Stack className="product-card-box">
+				<Stack className="image-box" onClick={() => pushProductDetail(product?._id)}>
+					<img src={`${process.env.REACT_APP_API_URL}/${product.productImages[0]}`} alt="" />
+				</Stack>
+				<Stack className="information-box" onClick={() => pushProductDetail(product?._id)}>
+					<Typography className="name">{product.productTitle}</Typography>
+					<Typography className="address">{product.productAddress}</Typography>
+					<Typography className="price">
+						<strong>${formatterStr(product?.productPrice)}</strong>
+					</Typography>
+				</Stack>
+				<Stack className="date-box">
+					<Typography className="date">
+						<Moment format="DD MMMM, YYYY">{product.createdAt}</Moment>
+					</Typography>
+				</Stack>
+				<Stack className="status-box">
+					<Stack className="coloured-box" sx={{ background: '#E5F0FD' }} onClick={handleClick}>
+						<Typography className="status" sx={{ color: '#3554d1' }}>
+							{product.productStatus}
+						</Typography>
+					</Stack>
+				</Stack>
+				{!memberPage && product.productStatus !== 'SOLD' && (
+					<Menu
+						anchorEl={anchorEl}
+						open={open}
+						onClose={handleClose}
+						PaperProps={{
+							elevation: 0,
+							sx: {
+								width: '70px',
+								mt: 1,
+								ml: '10px',
+								overflow: 'visible',
+								filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+							},
+							style: {
+								padding: 0,
+								display: 'flex',
+								justifyContent: 'center',
+							},
 						}}
 					>
-						<img src={imagePath} alt="" />
-					</Link>
-					{product && product?.productRank > topProductRank && (
-						<Box component={'div'} className={'top-badge'}>
-							<img src="/img/icons/electricity.svg" alt="" />
-							<Typography>TOP</Typography>
-						</Box>
-					)}
-					<Box component={'div'} className={'price-box'}>
-						<Typography>${formatterStr(product?.productPrice)}</Typography>
-					</Box>
-				</Stack>
-				<Stack className="bottom">
-					<Stack className="name-address">
-						<Stack className="name">
-							<Link
-								href={{
-									pathname: '/product/detail',
-									query: { id: product?._id },
-								}}
-							>
-								<Typography>{product.productTitle}asd</Typography>
-							</Link>
-						</Stack>
-						<Stack className="address">
-							<Typography>
-								{product.productAddress}, {product.productLocation}
-							</Typography>
-						</Stack>
-					</Stack>
-					<Stack className="options">
-						<Stack className="option">
-							<img src="/img/icons/bed.svg" alt="" /> <Typography>{product.productCategory} Category</Typography>
-						</Stack>
-						<Stack className="option">
-							<img src="/img/icons/room.svg" alt="" /> <Typography>{product.productMaterial} material</Typography>
-						</Stack>
-						<Stack className="option">
-							<img src="/img/icons/expand.svg" alt="" /> <Typography>{product.productWeightUnit} gramm</Typography>
-						</Stack>
-					</Stack>
-					<Stack className="divider"></Stack>
-					<Stack className="type-buttons">
-						<Stack className="type">
-							<Typography
-								sx={{ fontWeight: 500, fontSize: '13px' }}
-								className={product.productRent ? '' : 'disabled-type'}
-							>
-								Rent
-							</Typography>
-							<Typography
-								sx={{ fontWeight: 500, fontSize: '13px' }}
-								className={product.productBarter ? '' : 'disabled-type'}
-							>
-								Barter
-							</Typography>
-						</Stack>
-						{!recentlyVisited && (
-							<Stack className="buttons">
-								<IconButton color={'default'}>
-									<RemoveRedEyeIcon />
-								</IconButton>
-								<Typography className="view-cnt">{product?.productViews}</Typography>
-								<IconButton color={'default'} onClick={() => likeProductHandler(user, product?._id)}>
-									{myFavorites ? (
-										<FavoriteIcon color="primary" />
-									) : product?.meLiked && product?.meLiked[0]?.myFavorite ? (
-										<FavoriteIcon color="primary" />
-									) : (
-										<FavoriteBorderIcon />
-									)}
-								</IconButton>
-								<Typography className="view-cnt">{product?.productLikes}</Typography>
-							</Stack>
+						{product.productStatus === 'AVAILABLE' && (
+							<>
+								<MenuItem
+									disableRipple
+									onClick={() => {
+										handleClose();
+										updateProductHandler(ProductStatus.SOLD, product?._id);
+									}}
+								>
+									Sold
+								</MenuItem>
+							</>
 						)}
-					</Stack>
+					</Menu>
+				)}
+
+				<Stack className="views-box">
+					<Typography className="views">{product.productViews.toLocaleString()}</Typography>
 				</Stack>
+				{!memberPage && product.productStatus === ProductStatus.AVAILABLE && (
+					<Stack className="action-box">
+						<IconButton className="icon-button" onClick={() => pushEditProduct(product._id)}>
+							<ModeIcon className="buttons" />
+						</IconButton>
+						<IconButton className="icon-button" onClick={() => deleteProductHandler(product._id)}>
+							<DeleteIcon className="buttons" />
+						</IconButton>
+					</Stack>
+				)}
 			</Stack>
 		);
 	}
-};
-
-export default ProductCard;

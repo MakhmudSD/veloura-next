@@ -1,3 +1,4 @@
+import { productWeight } from './../../config';
 import { Direction } from '../../enums/common.enum';
 import {
 	ProductCategory,
@@ -20,6 +21,7 @@ export interface ProductInput {
 	productPrice: number;
 	productSize: number;
 	productStock: number;
+	productWeightUnit: number; // 0 - kg, 1 - g, 2 - l
 	productComments: number;
 	productRank: number;
 	productViews: number;

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { ProductCategory, ProductGender, ProductLocation, ProductMaterial } from '../../enums/product.enum';
-import {  REACT_APP_API_URL, ringSize } from '../../config';
+import {  productWeight, REACT_APP_API_URL, ringSize } from '../../config';
 import { ProductInput } from '../../types/product/product.input';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
@@ -44,6 +44,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 			...insertProductData,
 			productTitle: getProductData?.getproduct ? getProductData?.getproduct?.productTitle : '',
 			productPrice: getProductData?.getproduct ? getProductData?.getproduct?.productPrice : 0,
+			productWeightUnit: getProductData?.getproduct ? getProductData?.getproduct?.productWeightUnit : 0, 
 			productCategory: getProductData?.getproduct ? getProductData?.getproduct?.productCategory : '',
 			productLocation: getProductData?.getproduct ? getProductData?.getproduct?.productLocation : '',
 			productOrigin: getProductData?.getproduct ? getProductData?.getproduct?.productOrigin : '',
@@ -117,24 +118,25 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 	}
 
 	const doDisabledCheck = () => {
-		if (
-			insertProductData.productTitle.trim() === '' ||
-			insertProductData.productPrice === 0 || // @ts-ignore
-			insertProductData.productCategory === '' || // @ts-ignore
-			insertProductData.productLocation === '' || // @ts-ignore
-			insertProductData.productAddress.trim() === '' || // @ts-ignore
+		const isInvalid =
+			!insertProductData.productTitle.trim() ||
+			!insertProductData.productPrice ||
+			!insertProductData.productCategory ||
+			!insertProductData.productLocation ||
+			!insertProductData.productWeightUnit ||  // checking weight
+			!insertProductData.productAddress.trim() ||
 			insertProductData.productBarter === null ||
-			insertProductData.productBarter === undefined || // @ts-ignore
-			insertProductData.productRent === '' || // @ts-ignore
-			insertProductData.productMaterial === '' || // @ts-ignore
-			insertProductData.productDesc === '' ||
-			insertProductData.productSize === 0 ||
-			insertProductData.productDesc === '' ||
-			insertProductData.productImages.length === 0
-		) {
-			return true;
-		}
+			insertProductData.productBarter === undefined ||
+			insertProductData.productRent === null ||
+			insertProductData.productRent === undefined ||
+			!insertProductData.productMaterial ||
+			!insertProductData.productGender ||
+			!(insertProductData.productDesc ?? '').trim() ||
+			!insertProductData.productImages?.length;
+	
+		return isInvalid; // ✅ return `true` or `false`, not `undefined`
 	};
+	
 
 	const insertProductHandler = useCallback(async () => {
 		try {
@@ -368,32 +370,20 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
-									<Typography className="title">Size</Typography>
-									<select
-										className="select-description"
-										value={insertProductData.productSize || 'select'}
+									<Typography className="title">Weight (g)</Typography>
+									<input
+										type="number"
+										className="description-input"
+										placeholder={'Enter weight'}
+										value={insertProductData.productWeightUnit || ''}
 										onChange={({ target: { value } }) =>
-											setInsertProductData({ ...insertProductData, productSize: parseInt(value) || 0 })
+										setInsertProductData({ ...insertProductData, productWeightUnit: parseFloat(value) || 0 })
 										}
-									>
-										<option disabled value="select">
-											Select
-										</option>
-										{ringSize.map(
-											(size: number) =>
-												size !== 0 && (
-													<option key={size} value={size}>
-														{size}
-													</option>
-												),
-										)}
-									</select>
-									<div className={'divider'}></div>
-									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
-								</Stack>
+									/>
+									</Stack>
+
 							</Stack>
 
-							<Typography className="product-title">product Description</Typography>
 							<Stack className="config-column">
 								<Typography className="title">Description</Typography>
 								<textarea
@@ -527,7 +517,7 @@ AddNewProduct.defaultProps = {
 		productRent: false,
 		productMaterial: '',
 		productGender: '',
-		productSize: 0,
+		productWeightUnit: 0,
 		productDesc: '',
 		productImages: [],
 	},

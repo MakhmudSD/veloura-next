@@ -4,7 +4,12 @@ import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Pagination, Stack, Typography } from '@mui/material';
 import { Product } from '../../types/product/product';
 import { T } from '../../types/common';
-import { ProductCard } from './ProductCard';
+import { useMutation, useQuery } from '@apollo/client';
+import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
+import { GET_FAVORITES } from '../../../apollo/user/query';
+import { Messages } from '../../config';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
+import ProductCard from '../product/ProductCard';
 
 const MyFavorites: NextPage = () => {
 	const device = useDeviceDetect();
@@ -13,6 +18,35 @@ const MyFavorites: NextPage = () => {
 	const [searchFavorites, setSearchFavorites] = useState<T>({ page: 1, limit: 6 });
 
 	/** APOLLO REQUESTS **/
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+
+	const {
+		loading: getFavoritesLoading,
+		error: getFavoritesError,
+		data: getFavoritesData,
+		refetch: getFavoritesRefetch,
+	} = useQuery(GET_FAVORITES, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFavorites },
+		onCompleted: (data: T) => {
+			setMyFavorites(data.getFavorites?.list);
+			setTotal(data.getFavorites?.metaCounter?.[0]?.total || 0);
+		},
+	});
+	const likeProductHandler = async (e: T, user: any, id: string) => {
+		try {
+			e.stopPropagation();
+			if(!id)	 return;
+			if(!user.id) throw new Error(Messages.error2)
+			await likeTargetProduct({
+				variables: { input: id },
+			});
+			await getFavoritesRefetch({input: searchFavorites});
+		} catch (err: any) {
+			console.error('Error liking property:', err.message);
+			sweetMixinErrorAlert(err.message).then()
+		}
+	}
 
 	/** HANDLERS **/
 	const paginationHandler = (e: T, value: number) => {
@@ -33,7 +67,7 @@ const MyFavorites: NextPage = () => {
 				<Stack className="favorites-list-box">
 					{myFavorites?.length ? (
 						myFavorites?.map((product: Product) => {
-							return <ProductCard product={product} myFavorites={true} />;
+							return <ProductCard product={product} key={product._id} likeProductHandler={likeProductHandler} myFavorites={true} />;
 						})
 					) : (
 						<div className={'no-data'}>

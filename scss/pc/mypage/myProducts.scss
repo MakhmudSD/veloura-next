@@ -6,15 +6,18 @@
 			display: flex;
 			flex-direction: column;
 			gap: 57px;
+
 			.main-title-box {
 				width: auto;
 				height: auto;
 				flex-direction: row;
 				justify-content: space-between;
+
 				.right-box {
 					width: 315px;
+
 					.main-title {
-						color: #181a20;
+						color: #3e3225;
 						font-family: $font;
 						font-size: 30px;
 						font-style: normal;
@@ -23,8 +26,9 @@
 						letter-spacing: 0.6px;
 						text-transform: capitalize;
 					}
+
 					.sub-title {
-						color: #181a20;
+						color: #7c6f63;
 						font-family: $font;
 						font-size: 14px;
 						font-style: normal;
@@ -33,9 +37,11 @@
 					}
 				}
 			}
+
 			.product-list-box {
 				width: 100%;
 				height: auto;
+
 				.tab-name-box {
 					width: 100%;
 					height: 49px;
@@ -44,9 +50,9 @@
 					align-items: flex-end;
 					gap: 10px;
 					border-radius: 12px 12px 0px 0px;
-					background: rgba(143, 143, 143, 0.08);
-					border-radius: 12px 12px 0px 0px;
-					border: 1px solid rgba(196, 196, 196, 0.79);
+					background: rgba(198, 176, 150, 0.08);
+					border: 1px solid rgba(198, 176, 150, 0.4);
+
 					.tab-name {
 						width: 110px;
 						height: 32px;
@@ -54,40 +60,50 @@
 						justify-content: center;
 						align-items: center;
 						cursor: pointer;
-						color: #000;
+						color: #5f5242;
 						font-family: $font;
 						font-size: 16px;
 						font-style: normal;
 						font-weight: 500;
 						line-height: 26px;
+
+						&:hover {
+							background: rgba(198, 176, 150, 0.1);
+							border-radius: 6px;
+						}
 					}
+
 					.active-tab-name {
 						width: 110px;
 						height: 32px;
 						display: flex;
 						justify-content: center;
 						align-items: center;
-						border-bottom: 2px solid #eb6753;
+						border-bottom: 2px solid #b28b67;
 						cursor: pointer;
-						color: #eb6753;
+						color: #b28b67;
 						font-family: $font;
 						font-size: 16px;
 						font-style: normal;
 						font-weight: 600;
 						line-height: 26px;
+						background: rgba(198, 176, 150, 0.12);
+						border-radius: 6px;
 					}
 				}
 			}
+
 			.list-box {
 				width: 100%;
 				height: auto;
 				min-height: 700px;
 				padding: 30px 28px;
 				border-radius: 0px 0px 12px 12px;
-				border: 1px solid rgba(196, 196, 196, 0.79);
+				border: 1px solid #e2d7cc;
 				border-top: none;
-				background: #fff;
-				box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
+				background: #fdfaf7;
+				box-shadow: 0px 1px 4px rgba(24, 26, 32, 0.05);
+
 				.listing-title-box {
 					width: 100%;
 					height: auto;
@@ -95,19 +111,22 @@
 					gap: 90px;
 					padding: 18px 15px 18px 33px;
 					border-radius: 12px;
-					background: #f6f6f6;
+					background: #f6f1eb;
+
 					.title-text {
-						color: #181a20;
+						color: #3e3225;
 						font-family: $font;
 						font-size: 15px;
 						font-style: normal;
 						font-weight: 600;
 						line-height: normal;
 					}
+
 					:first-child {
 						margin-right: 138px;
 					}
 				}
+
 				.product-card-box {
 					width: 100%;
 					height: auto;
@@ -115,58 +134,68 @@
 					margin-top: 30px;
 					padding-bottom: 30px;
 					border-bottom: 1px solid #ddd;
+
 					.image-box {
-						width: 110px;
-						height: 90px;
+						width: 120px;
+						height: 100px;
 						overflow: hidden;
 						margin-right: 25px;
 						padding-top: 1px;
+
 						img {
 							width: 100%;
 							height: 100%;
 							object-fit: contain;
 							border-radius: 12px;
+							border: 1px solid #e2d7cc;
+							background-color: #fffaf5;
 						}
 					}
+
 					.information-box {
 						width: 200px;
 						height: auto;
 						padding: 5px 0px;
+
 						.name {
 							margin-bottom: 8px;
-							color: #181a20;
+							color: #3e3225;
 							font-family: $font;
 							font-size: 13px;
 							font-style: normal;
 							font-weight: 600;
 							line-height: normal;
 						}
+
 						.address {
 							margin-bottom: 13px;
-							color: #717171;
+							color: #8d8278;
 							font-family: $font;
 							font-size: 11px;
 							font-style: normal;
 							font-weight: 400;
 							line-height: normal;
 						}
+
 						.price {
-							color: #181a20;
+							color: #5f5242;
 							font-family: $font;
 							font-size: 15px;
 							font-style: normal;
-							font-weight: 400;
+							font-weight: 500;
 							line-height: normal;
 						}
 					}
+
 					.date-box {
 						width: 135px;
 						height: 100%;
 						align-items: center;
 						justify-content: center;
 						margin-right: 55px;
+
 						.date {
-							color: #181a20;
+							color: #7c6f63;
 							font-family: $font;
 							font-size: 12px;
 							font-style: normal;
@@ -174,12 +203,14 @@
 							line-height: 26px;
 						}
 					}
+
 					.status-box {
 						width: 100px;
 						height: 100%;
 						align-items: center;
 						justify-content: center;
 						margin-right: 60px;
+
 						.coloured-box {
 							width: 93px;
 							height: 36px;
@@ -187,7 +218,10 @@
 							justify-content: center;
 							border-radius: 60px;
 							cursor: pointer;
+							background: rgba(198, 176, 150, 0.12);
+
 							.status {
+								color: #7c6f63;
 								font-family: $font;
 								font-size: 12px;
 								font-style: normal;
@@ -196,49 +230,57 @@
 							}
 						}
 					}
+
 					.views-box {
 						width: 35px;
 						height: 100%;
 						align-items: center;
 						justify-content: center;
 						margin-right: 75px;
+
 						.views {
-							color: #181a20;
-							font-family: $font;
-							font-size: 12px;
+							color: #5f5242;
+							font-family: "PlayfairDisplay", serif;
+							font-size: 16px;
 							font-style: normal;
-							font-weight: 400;
+							font-weight: 900;
 							line-height: 26px;
 						}
 					}
+
 					.action-box {
 						width: auto;
 						height: 100%;
 						flex-direction: row;
 						align-items: center;
 						justify-content: center;
+
 						.icon-button {
 							width: 40px;
 							height: 40px;
 							border-radius: 4px;
+
 							:hover {
-								background: #f6f6f6;
+								background: rgba(198, 176, 150, 0.1);
 							}
+
 							.buttons {
-								color: #181a20;
+								color: #3e3225;
 							}
 						}
 					}
 				}
+
 				.pagination-config {
 					width: 100%;
 					height: auto;
 					justify-content: center;
 					align-items: center;
 					margin-top: 30px;
+
 					.total-result {
 						p {
-							color: #181a20;
+							color: #5f5242;
 							text-align: center;
 							font-family: $font;
 							font-size: 14px;
