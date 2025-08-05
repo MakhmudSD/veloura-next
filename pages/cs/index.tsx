@@ -18,6 +18,9 @@ const CS: NextPage = () => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 
+	/** APOLLO REQUEST **/
+
+
 	/** HANDLERS **/
 	const changeTabHandler = (tab: string) => {
 		router.push(
