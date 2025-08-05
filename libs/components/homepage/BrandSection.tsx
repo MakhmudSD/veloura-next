@@ -16,24 +16,26 @@ const BrandsSection = () => {
   const router = useRouter();
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+
   const handleClick = (brandName: string) => {
-    const normalizedBrand = brandName.trim();
-  
     const input = {
       page: 1,
       limit: 9,
       sort: 'createdAt',
       direction: 'DESC',
       search: {
-        text: brandName
-      }
+        brand: brandName.trim(), // ✅ not text anymore!
+      },
     };
   
     setSnackbarMessage(`Searching for ${brandName} products...`);
     setOpenSnackbar(true);
   
     setTimeout(() => {
-      router.push(`/product?input=${encodeURIComponent(JSON.stringify(input))}`);
+      router.push({
+        pathname: '/product',
+        query: { input: JSON.stringify(input) },
+      });
     }, 1000);
   };
   
@@ -48,9 +50,7 @@ const BrandsSection = () => {
         <Stack className="container">
           <Box className="brands-top">
             <Typography component="span">Attractive Jewelry</Typography>
-            <Typography component="p">
-              Gorgeous Brands
-            </Typography>
+            <Typography component="p">Gorgeous Brands</Typography>
           </Box>
           <Stack className="card-box">
             {BRANDS.map((brand) => (
@@ -66,9 +66,7 @@ const BrandsSection = () => {
                 >
                   <img src={brand.logoUrl} alt={brand.name} />
                 </Box>
-                <Typography className="brand-heading">
-                  {brand.name}{' '}
-                </Typography>
+                <Typography className="brand-heading">{brand.name}</Typography>
               </Box>
             ))}
           </Stack>
@@ -80,7 +78,7 @@ const BrandsSection = () => {
         onClose={handleCloseSnackbar}
         message={snackbarMessage}
         severity="info"
-        />
+      />
     </>
   );
 };

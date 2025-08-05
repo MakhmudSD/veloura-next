@@ -129,7 +129,6 @@ const Filter = (props: FilterType) => {
     }));
   };
 
-  /** Selected filters for chips **/
   const selectedFilters = [
     ...(searchFilter?.search?.locationList || []).map((f: string) => ({
       type: "locationList" as FilterKey,
@@ -151,17 +150,25 @@ const Filter = (props: FilterType) => {
       type: "options" as FilterKey,
       label: f,
     })),
+    ...(searchFilter?.search?.text ? [{
+      type: 'text' as FilterKey,
+      label: searchFilter.search.text
+    }] : [])
   ];
-
-  /** Remove selected filter chip **/
+  
   const removeFilterChip = (
     type: keyof ProductsInquiry["search"],
     value: string
   ) => {
     setSearchFilter((prev: ProductsInquiry) => {
+      if (type === 'text') {
+        const { text, ...rest } = prev.search;
+        return { ...prev, search: rest };
+      }
+  
       const list = prev.search[type] as string[] | undefined;
       if (!list) return prev;
-
+  
       return {
         ...prev,
         search: {
@@ -171,13 +178,17 @@ const Filter = (props: FilterType) => {
       };
     });
   };
-
-
-  /** Clear all filters **/
+  
   const clearAllFilters = () => {
-    setSearchFilter(initialInput);
+    setSearchFilter({
+      ...initialInput,
+      search: {
+        text: searchFilter.search?.text || '', // 🟡 preserve brand name filter
+      },
+    });
     setSearchText("");
   };
+  
 
   if (device === "mobile") {
     return <div>PRODUCTS FILTER</div>;
