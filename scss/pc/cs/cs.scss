@@ -1,222 +1,245 @@
 #pc-wrap {
   .cs-page {
     position: relative;
-    padding: 60px 0px 60px;
+    padding: 60px 0;
     width: 100%;
     height: auto;
+
     .container {
       display: flex;
       flex-direction: column;
+
       .cs-main-info {
         display: flex;
         flex-direction: column;
+
         .info {
           display: flex;
           flex-direction: column;
           align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+
           span {
-            color: #000;
+            color: #2c1e15;
             font-family: $font;
-            font-size: 35px;
-            font-style: normal;
+            font-size: 36px;
             font-weight: 700;
-            line-height: normal;
             letter-spacing: 0.525px;
           }
+
           p {
-            color: #757575;
+            color: #a09387;
             font-family: $font;
             font-size: 16px;
-            font-style: normal;
             font-weight: 400;
-            line-height: normal;
           }
         }
+
         .btns {
           margin-top: 50px;
           display: flex;
-          flex-direction: row;
           justify-content: center;
+
           :first-child {
-            border-radius: 4px 0 0 4px;
+            border-radius: 6px 0 0 6px;
           }
+
           :last-child {
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 6px 6px 0;
           }
+
           div {
             width: 204px;
             height: 46px;
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 1px solid #EEE;
+            border: 1px solid #e6e2dc;
+            background: #fcfaf7;
             cursor: pointer;
-            color: #BDBDBD;
+            color: #b2a18b;
             font-family: $font;
             font-size: 14px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
+            font-weight: 900;
             letter-spacing: 0.42px;
+            transition: all 0.3s ease;
+
+            &:hover {
+              background-color: #d4b48c1a;
+              color: #8c7153;
+            }
+
             &.active {
-              border: 1px solid #725CE8;
-              background: #EB6753;
-              color: #FFF;
+              border-color: #c8aa74;
+              background: #b45f4d;
+              color: #fff;
             }
           }
         }
       }
+
       .cs-content {
         margin-top: 25px;
         display: flex;
         flex-direction: column;
+        
+
         .title {
           margin-bottom: 25px;
-          color: #000;
+          color: #2c1e15;
           font-family: $font;
-          font-size: 27px;
-          font-style: normal;
+          font-size: 28px;
           font-weight: 700;
-          line-height: normal;
           letter-spacing: 0.54px;
         }
+
         .pagination {
           margin-top: 50px;
           display: flex;
-          flex-direction: row;
           justify-content: center;
         }
+
         .notice-content {
           .main {
-            border: 1px solid #EEE;
+            border: 1px solid #e6e2dc;
+            border-radius: 8px;
+            background: #fdfaf6;
+
             .top {
               padding: 25px 33px;
               display: flex;
-              flex-direction: row;
               justify-content: space-between;
+
               span {
-                color: #000;
+                color: #3e2d20;
                 font-family: $font;
                 font-size: 14px;
-                font-style: normal;
-                font-weight: 400;
-                line-height: normal;
+                font-weight: 500;
                 text-transform: capitalize;
               }
             }
+
             .bottom {
               display: flex;
               flex-direction: column;
+
               .notice-card {
                 padding: 20px 14px 20px 30px;
                 display: flex;
-                flex-direction: row;
                 justify-content: space-between;
-                border: 1px solid #EEE;
+                border: 1px solid #e6e2dc;
+                background: #fdfaf6;
+
                 &.event {
-                  background: #F6D79A;
+                  background: #f4e7d2;
                 }
+
                 div {
                   padding: 6px 9px;
                   border-radius: 12px;
-                  border: 1px solid #EB6753;
-                  color: #EB6753;
+                  border: 1px solid #b45f4d;
+                  color: #b45f4d;
                   font-family: $font;
                   font-size: 12px;
-                  font-style: normal;
-                  font-weight: 400;
+                  font-weight: 500;
                 }
+
                 .notice-number {
                   margin-left: 18px;
                   width: 39px;
-                  color: #BDBDBD;
+                  color: #b2a18b;
                   font-family: $font;
                   font-size: 14px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: normal;
                 }
+
                 .notice-title {
                   width: 1060px;
-                  color: #000;
+                  color: #2c1e15;
                   font-family: $font;
                   font-size: 16px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: normal;
+                  font-weight: 500;
                 }
+
                 .notice-date {
-                  color: #BDBDBD;
+                  color: #b2a18b;
                   font-family: $font;
                   font-size: 14px;
-                  font-style: normal;
-                  font-weight: 400;
-                  line-height: normal;
                 }
               }
             }
-
           }
-
         }
+
         .faq-content {
           margin-top: 25px;
           display: flex;
           flex-direction: column;
+
           .categories {
             display: flex;
-            flex-direction: row;
             justify-content: center;
+
             div {
               width: 14%;
               height: 40px;
               display: flex;
               justify-content: center;
               align-items: center;
-              color: #BDBDBD;
-              text-align: center;
+              color: #b2a18b;
               font-family: $font;
               font-size: 15px;
-              font-style: normal;
               font-weight: 400;
-              line-height: normal;
               letter-spacing: -0.225px;
               cursor: pointer;
+              transition: all 0.3s ease;
+
+              &:hover {
+                color: #8c7153;
+              }
+
               &.active {
-                border-bottom: 1px solid #EB6753;
-                color: #EB6753;
+                border-bottom: 2px solid #b45f4d;
+                color: #b45f4d;
               }
             }
           }
+
           .wrap {
             margin-top: 50px;
+
             .MuiAccordionDetails-root {
               padding: 30px 20px;
-              background: #FAFAFA;
+              background: #fcfaf7;
             }
+
             .badge {
               margin: 0 24px;
               display: inline-block;
               padding: 4px 10px;
-              border: 1px solid #725CE8;
+              border: 1px solid #c8aa74;
               border-radius: 7px;
-              color: #725CE8;
+              color: #c8aa74;
+              font-weight: 500;
             }
+
             .question {
               .badge {
-                background: #e92C28;
+                background: #b45f4d;
                 color: #fff;
               }
             }
+
             .answer {
               margin-left: 80px;
               display: flex;
-              white-space: nowrap;
               align-items: center;
               flex-direction: row;
+              white-space: nowrap;
+
               .badge {
-                color: #EB6753;
-                border: 1px solid #EB6753;
+                color: #b45f4d;
+                border: 1px solid #b45f4d;
               }
             }
           }
