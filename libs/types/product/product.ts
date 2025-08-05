@@ -39,7 +39,7 @@ export interface Product {
 	productDesc?: string;
 	productWeightUnit?: boolean;
 	productBarter?: boolean;
-	productRent?: boolean;
+	productLimited?: boolean;
 	memberId: string;
 	soldAt?: Date;
 	deletedAt?: Date;

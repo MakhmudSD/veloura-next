@@ -141,7 +141,7 @@ export const GET_PRODUCT = gql`
 			productDesc
 			productWeightUnit
 			productBarter
-			productRent
+			productLimited
 			productImages
 			memberId
 			soldAt
@@ -206,7 +206,7 @@ export const GET_PRODUCTS = gql`
 				productDesc
 				productWeightUnit
 				productBarter
-				productRent
+				productLimited
 				productImages
 				authorId
 				memberId
@@ -276,7 +276,7 @@ export const GET_STORE_PRODUCTS = gql`
 				productDesc
 				productWeightUnit
 				productBarter
-				productRent
+				productLimited
 				productImages
 				memberId
 				soldAt
@@ -313,7 +313,7 @@ export const GET_FAVORITES = gql`
 				productDesc
 				productWeightUnit
 				productBarter
-				productRent
+				productLimited
 				productImages
 				authorId
 				memberId
@@ -378,7 +378,7 @@ export const GET_VISITED = gql`
 				productDesc
 				productWeightUnit
 				productBarter
-				productRent
+				productLimited
 				productImages
 				authorId
 				memberId

@@ -1,6 +1,6 @@
 export const REACT_APP_API_URL = `${process.env.REACT_APP_API_URL}`;
 
-export const availableProductOptions = ['productExchangeable', 'productRentalAvailable'];
+export const availableProductOptions = ['productBarter', 'productLimited'];
 
 const thisYear = new Date().getFullYear();
 

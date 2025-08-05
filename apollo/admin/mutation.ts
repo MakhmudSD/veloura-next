@@ -55,7 +55,6 @@ export const UPDATE_PRODUCT_BY_ADMIN = gql`
 			productImages
 			productDesc
 			productBarter
-			productRent
 			memberId
 			soldAt
 			deletedAt
@@ -84,7 +83,6 @@ export const REMOVE_PRODUCT_BY_ADMIN = gql`
 			productImages
 			productDesc
 			productBarter
-			productRent
 			memberId
 			soldAt
 			deletedAt

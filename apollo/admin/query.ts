@@ -61,7 +61,7 @@ export const GET_ALL_PRODUCTS_BY_ADMIN = gql`
 				productImages
 				productDesc
 				productBarter
-				productRent
+				productLimited
 				memberId
 				soldAt
 				deletedAt

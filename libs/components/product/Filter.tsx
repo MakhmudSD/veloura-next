@@ -46,7 +46,7 @@ const Filter = (props: FilterType) => {
 
 
   const friendlyNames: Record<string, string> = {
-    productRent: "Rent",
+    productLimited: "Limited Edition",
     productBarter: "Barter",
   };
 

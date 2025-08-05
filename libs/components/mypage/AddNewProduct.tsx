@@ -42,22 +42,23 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 	useEffect(() => {
 		setInsertProductData({
 			...insertProductData,
-			productTitle: getProductData?.getproduct ? getProductData?.getproduct?.productTitle : '',
-			productPrice: getProductData?.getproduct ? getProductData?.getproduct?.productPrice : 0,
-			productWeightUnit: getProductData?.getproduct ? getProductData?.getproduct?.productWeightUnit : 0, 
-			productCategory: getProductData?.getproduct ? getProductData?.getproduct?.productCategory : '',
-			productLocation: getProductData?.getproduct ? getProductData?.getproduct?.productLocation : '',
-			productOrigin: getProductData?.getproduct ? getProductData?.getproduct?.productOrigin : '',
-			productAddress: getProductData?.getproduct ? getProductData?.getproduct?.productAddress : '',
-			productBarter: getProductData?.getproduct ? getProductData?.getproduct?.productBarter : false,
-			productRent: getProductData?.getproduct ? getProductData?.getproduct?.productRent : false,
-			productMaterial: getProductData?.getproduct ? getProductData?.getproduct?.productMaterial : '',
-			productGender: getProductData?.getproduct ? getProductData?.getproduct?.productGender : '',
-			productColor: getProductData?.getproduct ? getProductData?.getproduct?.productColor : '',
-			productSize: getProductData?.getproduct ? getProductData?.getproduct?.productSize : 0,
-			productStock: getProductData?.getproduct ? getProductData?.getproduct?.productStock : 0,
-			productDesc: getProductData?.getproduct ? getProductData?.getproduct?.productDesc : '',
-			productImages: getProductData?.getproduct ? getProductData?.getproduct?.productImages : [],
+			productTitle: getProductData?.getProduct ? getProductData?.getProduct?.productTitle : '',
+			productPrice: getProductData?.getProduct ? getProductData?.getProduct?.productPrice : 0,
+			productWeightUnit: getProductData?.getProduct ? getProductData?.getProduct?.productWeightUnit : 0, 
+			productCategory: getProductData?.getProduct ? getProductData?.getProduct?.productCategory : '',
+			productLocation: getProductData?.getProduct ? getProductData?.getProduct?.productLocation : '',
+			productOrigin: getProductData?.getProduct ? getProductData?.getProduct?.productOrigin : '',
+			productAddress: getProductData?.getProduct ? getProductData?.getProduct?.productAddress : '',
+			productBarter: getProductData?.getProduct ? getProductData?.getProduct?.productBarter : false,
+			productLimited: getProductData?.getProduct ? getProductData?.getProduct?.productLimited : false,
+			productMaterial: getProductData?.getProduct ? getProductData?.getProduct?.productMaterial : '',
+			productGender: getProductData?.getProduct ? getProductData?.getProduct?.productGender : '',
+			productColor: getProductData?.getProduct ? getProductData?.getProduct?.productColor : '',
+			productSize: getProductData?.getProduct ? getProductData?.getProduct?.productSize : 0,
+			productStock: getProductData?.getProduct ? getProductData?.getProduct?.productStock : 0,
+			productDesc: getProductData?.getProduct ? getProductData?.getProduct?.productDesc : '',
+			productImages: getProductData?.getProduct ? getProductData?.getProduct?.productImages : [],
+			_id: getProductData?.getProduct ? getProductData?.getProduct?._id : '', // ✅ include ID here
 		});
 	}, [getProductLoading, getProductData]);
 
@@ -124,11 +125,11 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 			!insertProductData.productCategory ||
 			!insertProductData.productLocation ||
 			!insertProductData.productWeightUnit ||  // checking weight
-			!insertProductData.productAddress.trim() ||
+			!insertProductData.productAddress || // corrected to use trim()
 			insertProductData.productBarter === null ||
 			insertProductData.productBarter === undefined ||
-			insertProductData.productRent === null ||
-			insertProductData.productRent === undefined ||
+			insertProductData.productLimited === null || // corrected to check productLimited
+			insertProductData.productLimited === undefined || // added check for productLimited
 			!insertProductData.productMaterial ||
 			!insertProductData.productGender ||
 			!(insertProductData.productDesc ?? '').trim() ||
@@ -140,26 +141,28 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 
 	const insertProductHandler = useCallback(async () => {
 		try {
+			const { _id, ...inputWithoutId } = insertProductData;
+	
 			const result = await createProduct({
 				variables: {
-					input: insertProductData
+					input: inputWithoutId
 				}
-			})
-
+			});
+	
 			await sweetMixinSuccessAlert('Product added successfully!');
 			await router.push({
 				pathname: '/mypage',
 				query: { category: 'myProducts' },
 			});
-		} catch(err: any) {
+		} catch (err: any) {
 			console.error('Error inserting product:', err.message);
-			await sweetMixinErrorAlert(err).then()
+			await sweetMixinErrorAlert(err);
 		}
 	}, [insertProductData]);
+	
 
 	const updateProductHandler = useCallback(async () => {
 		try {
-			insertProductData._id = getProductData?.getProduct?._id; // corrected variable name
 			const result = await updateProduct({ // corrected function name
 				variables: { 
 					input: insertProductData // corrected variable name
@@ -178,6 +181,10 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 	if (user?.memberType !== 'STORE') {
 		router.back();
 	}
+
+	useEffect(() => {
+		if (!router.isReady) return;
+	}, [router.isReady]);
 
 	console.log('+insertProductData', insertProductData);
 
@@ -308,13 +315,13 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 									<img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
 								</Stack>
 								<Stack className="price-year-after-price">
-									<Typography className="title">Rent</Typography>
+									<Typography className="title">Limited Edition</Typography>
 									<select
 										className={'select-description'}
-										value={insertProductData.productRent ? 'yes' : 'no'}
-										defaultValue={insertProductData.productRent ? 'yes' : 'no'}
+										value={insertProductData.productLimited ? 'yes' : 'no'}
+										defaultValue={insertProductData.productLimited ? 'yes' : 'no'}
 										onChange={({ target: { value } }) =>
-											setInsertProductData({ ...insertProductData, productRent: value === 'yes' })
+											setInsertProductData({ ...insertProductData, productLimited: value === 'yes' })
 										}
 									>
 										<option disabled={true} selected={true}>
@@ -377,11 +384,10 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 										placeholder={'Enter weight'}
 										value={insertProductData.productWeightUnit || ''}
 										onChange={({ target: { value } }) =>
-										setInsertProductData({ ...insertProductData, productWeightUnit: parseFloat(value) || 0 })
+											setInsertProductData({ ...insertProductData, productWeightUnit: parseFloat(value) || 0 })
 										}
 									/>
-									</Stack>
-
+								</Stack>
 							</Stack>
 
 							<Stack className="config-column">
@@ -514,7 +520,7 @@ AddNewProduct.defaultProps = {
 		productLocation: '',
 		productAddress: '',
 		productBarter: false,
-		productRent: false,
+		productLimited: false,
 		productMaterial: '',
 		productGender: '',
 		productWeightUnit: 0,

@@ -28,9 +28,8 @@ export interface ProductInput {
 	productLikes: number;
 	productImages: string[];
 	productDesc?: string;
-	productIsLimitedEdition?: boolean;
 	productBarter?: boolean;
-	productRent?: boolean;
+	productLimited?: boolean;
 	memberId?: string;
 }
 

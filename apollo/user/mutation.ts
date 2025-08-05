@@ -184,7 +184,7 @@ export const CREATE_PRODUCT = gql`
 			productDesc
 			productWeightUnit
 			productBarter
-			productRent
+			productLimited
 			productImages
 			authorId
 			memberId
@@ -218,7 +218,7 @@ export const UPDATE_PRODUCT = gql`
 			productDesc
 			productWeightUnit
 			productBarter
-			productRent
+			productLimited
 			productImages
 			memberId
 			soldAt
@@ -250,7 +250,7 @@ export const LIKE_TARGET_PRODUCT = gql`
 			productDesc
 			productWeightUnit
 			productBarter
-			productRent
+			productLimited
 			productImages
 			authorId
 			memberId

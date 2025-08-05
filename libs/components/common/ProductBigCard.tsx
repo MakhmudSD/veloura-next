@@ -177,8 +177,8 @@ const ProductBigCard = ({
           </div>
 
           <div className="types">
-            <span className={product.productRent ? '' : 'disabled-type'}>
-              Rent
+            <span className={product.productLimited ? '' : 'disabled-type'}>
+              Limited
             </span>
             <span className={product.productBarter ? '' : 'disabled-type'}>
               Barter

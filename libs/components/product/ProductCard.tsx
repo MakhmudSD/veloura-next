@@ -177,8 +177,8 @@ const ProductCard = ({
           </div>
 
           <div className="types">
-            <span className={product.productRent ? '' : 'disabled-type'}>
-              Rent
+            <span className={product.productLimited ? '' : 'disabled-type'}>
+              Limited Edition
             </span>
             <span className={product.productBarter ? '' : 'disabled-type'}>
               Barter

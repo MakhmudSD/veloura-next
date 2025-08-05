@@ -22,9 +22,8 @@ export interface ProductUpdate {
 	productSize?: number;
 	productImages?: string[];
 	productDesc?: string;
-	productIsLimitedEdition?: boolean;
+	productLimited?: boolean;
 	productBarter?: boolean;
-	productRent?: boolean;
 	soldAt?: Date;
 	deletedAt?: Date;
 }

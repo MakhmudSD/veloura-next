@@ -379,7 +379,7 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 								{product?.productGender || 'N/A'}								</div>
 								<div className="info-item-options">
 								<img src="/img/icons/options.png" alt="" />
-								<span className={!product?.productRent ? 'disabled' : ''}>Rent</span>
+								<span className={!product?.productLimited ? 'disabled' : ''}>Limited Edition</span>
 								<span> / </span>
 								<span className={!product?.productBarter ? 'disabled' : ''}>Barter</span>
 								</div>
