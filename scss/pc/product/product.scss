@@ -2,8 +2,10 @@
 	#product-list-page {
 		padding-bottom: 40px;
 		background: #f6f6f6;
-		background: url('/img/fiber/naqsh.png') no-repeat center center / cover, hsl(0, 0%, 100%);
-
+		background:
+		linear-gradient(rgba(252, 250, 248, 0.82), rgba(252, 250, 248, 0.82)),
+		url('/img/fiber/naqsh.png') no-repeat center center / cover;
+	
 		.container {
 			display: flex;
 			flex-direction: column;
