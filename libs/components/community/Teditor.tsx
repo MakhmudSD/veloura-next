@@ -67,6 +67,7 @@ const TuiEditor = () => {
 			memoizedValues.articleImage = responseImage;
 
 			return `${REACT_APP_API_URL}/${responseImage}`;
+
 		} catch (err) {
 			console.log('Error, uploadImage:', err);
 		}

@@ -2,11 +2,24 @@ import Swal from 'sweetalert2';
 import 'animate.css';
 import { Messages } from './config';
 
+const commonCustomStyle = {
+	customClass: {
+		popup: 'swal2-popup-lux',
+		title: 'swal2-title-lux',
+		content: 'swal2-text-lux',
+		confirmButton: 'swal2-confirm-lux',
+		cancelButton: 'swal2-cancel-lux',
+	},
+	background: '#f9f6f2',
+	backdrop: 'rgba(34, 27, 24, 0.3)',
+};
+
 export const sweetErrorHandling = async (err: any) => {
 	await Swal.fire({
 		icon: 'error',
 		text: err.message,
 		showConfirmButton: false,
+		...commonCustomStyle,
 	});
 };
 
@@ -17,6 +30,7 @@ export const sweetTopSuccessAlert = async (msg: string, duration: number = 2000)
 		title: msg.replace('Definer: ', ''),
 		showConfirmButton: false,
 		timer: duration,
+		...commonCustomStyle,
 	});
 };
 
@@ -28,7 +42,8 @@ export const sweetContactAlert = async (msg: string, duration: number = 10000) =
 		},
 		showConfirmButton: false,
 		timer: duration,
-	}).then();
+		...commonCustomStyle,
+	});
 };
 
 export const sweetConfirmAlert = (msg: string) => {
@@ -41,8 +56,9 @@ export const sweetConfirmAlert = (msg: string) => {
 			},
 			showCancelButton: true,
 			showConfirmButton: true,
-			confirmButtonColor: '#e92C28',
+			confirmButtonColor: '#a67c52',
 			cancelButtonColor: '#bdbdbd',
+			...commonCustomStyle,
 		}).then((response) => {
 			if (response?.isConfirmed) resolve(true);
 			else resolve(false);
@@ -56,10 +72,11 @@ export const sweetLoginConfirmAlert = (msg: string) => {
 			text: msg,
 			showCancelButton: true,
 			showConfirmButton: true,
-			color: '#212121',
-			confirmButtonColor: '#e92C28',
+			color: '#2e2424',
+			confirmButtonColor: '#a67c52',
 			cancelButtonColor: '#bdbdbd',
 			confirmButtonText: 'Login',
+			...commonCustomStyle,
 		}).then((response) => {
 			if (response?.isConfirmed) resolve(true);
 			else resolve(false);
@@ -73,6 +90,7 @@ export const sweetErrorAlert = async (msg: string, duration: number = 3000) => {
 		title: msg,
 		showConfirmButton: false,
 		timer: duration,
+		...commonCustomStyle,
 	});
 };
 
@@ -82,6 +100,7 @@ export const sweetMixinErrorAlert = async (msg: string, duration: number = 3000)
 		title: msg,
 		showConfirmButton: false,
 		timer: duration,
+		...commonCustomStyle,
 	});
 };
 
@@ -91,11 +110,15 @@ export const sweetMixinSuccessAlert = async (msg: string, duration: number = 200
 		title: msg,
 		showConfirmButton: false,
 		timer: duration,
+		...commonCustomStyle,
 	});
 };
 
 export const sweetBasicAlert = async (text: string) => {
-	Swal.fire(text);
+	await Swal.fire({
+		text,
+		...commonCustomStyle,
+	});
 };
 
 export const sweetErrorHandlingForAdmin = async (err: any) => {
@@ -104,6 +127,7 @@ export const sweetErrorHandlingForAdmin = async (err: any) => {
 		icon: 'error',
 		text: errorMessage,
 		showConfirmButton: false,
+		...commonCustomStyle,
 	});
 };
 
@@ -118,6 +142,11 @@ export const sweetTopSmallSuccessAlert = async (
 		showConfirmButton: false,
 		timer: duration,
 		timerProgressBar: true,
+		customClass: {
+			popup: 'swal2-toast-lux',
+			title: 'swal2-title-lux',
+		},
+		background: '#f5ede6',
 	});
 
 	Toast.fire({

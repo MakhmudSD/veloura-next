@@ -1,13 +1,12 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { Stack, Typography } from '@mui/material';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { BoardArticle } from '../../types/board-article/board-article';
 import Moment from 'react-moment';
 import { REACT_APP_API_URL } from '../../config';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
-import IconButton from '@mui/material/IconButton';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -15,7 +14,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 interface CommunityCardProps {
 	boardArticle: BoardArticle;
 	size?: string;
-	likeArticleHandler: any
+	likeArticleHandler: any;
 }
 
 const CommunityCard = (props: CommunityCardProps) => {
@@ -23,9 +22,19 @@ const CommunityCard = (props: CommunityCardProps) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
-	const imagePath: string = boardArticle?.articleImage
-		? `${REACT_APP_API_URL}/${boardArticle?.articleImage}`
-		: '/img/community/communityImg.png';
+
+	// ✅ Extract first image from content
+	const getFirstImageFromContent = (html: string): string | null => {
+		const match = html?.match(/<img[^>]+src="([^">]+)"/);
+		return match ? match[1] : null;
+	};
+
+	const contentImage = getFirstImageFromContent(boardArticle.articleContent || '');
+	const imagePath: string = contentImage
+		? contentImage
+		: boardArticle?.articleImage
+			? `${REACT_APP_API_URL}/${boardArticle.articleImage}`
+			: '/img/community/communityImg.png';
 
 	/** HANDLERS **/
 	const chooseArticleHandler = (e: React.SyntheticEvent, boardArticle: BoardArticle) => {
@@ -54,8 +63,9 @@ const CommunityCard = (props: CommunityCardProps) => {
 				onClick={(e: any) => chooseArticleHandler(e, boardArticle)}
 			>
 				<Stack className="image-box">
-					<img src={imagePath} alt="" className="card-img" />
+					<img src={imagePath} alt="Article Image" className="card-img" />
 				</Stack>
+
 				<Stack className="desc-box" sx={{ marginTop: '-20px' }}>
 					<Stack>
 						<Typography
@@ -69,12 +79,16 @@ const CommunityCard = (props: CommunityCardProps) => {
 						</Typography>
 						<Typography className="title">{boardArticle?.articleTitle}</Typography>
 					</Stack>
+
 					<Stack className={'buttons'}>
 						<IconButton color={'default'}>
 							<RemoveRedEyeIcon />
 						</IconButton>
 						<Typography className="view-cnt">{boardArticle?.articleViews}</Typography>
-						<IconButton color={'default'} onClick={(e: any) => likeArticleHandler(e, user, boardArticle._id)}>
+						<IconButton
+							color={'default'}
+							onClick={(e: any) => likeArticleHandler(e, user, boardArticle._id)}
+						>
 							{boardArticle?.meLiked && boardArticle?.meLiked[0]?.myFavorite ? (
 								<FavoriteIcon color={'primary'} />
 							) : (
@@ -84,6 +98,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 						<Typography className="view-cnt">{boardArticle?.articleLikes}</Typography>
 					</Stack>
 				</Stack>
+
 				<Stack className="date-box">
 					<Moment className="month" format={'MMMM'}>
 						{boardArticle?.createdAt}
