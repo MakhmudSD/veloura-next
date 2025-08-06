@@ -195,3 +195,53 @@ export const GET_COMMENTS = gql`
 		}
 	}
 `;
+
+
+/**************************
+ *         NOTICE        *
+ *************************/
+
+export const GET_NOTICES = gql`
+  query GetNotices($input: NoticeInquiry!) {
+    getNotices(input: $input) {
+      list {
+        _id
+        noticeCategory
+        noticeStatus
+        noticeTitle
+        noticeContent
+        memberId
+        createdAt
+        updatedAt
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
+
+
+
+/**************************
+ *         INQUIRIES        *
+ *************************/
+
+export const GET_INQUIRIES = gql`
+  query GetInquiries {
+    getInquiries {
+      _id
+      inquiryType
+      content
+      reply
+      createdAt
+      updatedAt
+      memberId {
+        _id
+        memberNick
+        memberPhone
+        memberImage
+      }
+    }
+  }
+`;

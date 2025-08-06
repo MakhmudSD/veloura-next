@@ -34,6 +34,13 @@ export interface Member {
 	accessToken?: string;
 }
 
+export interface MemberOutput {
+  _id: string;
+  memberNick: string;
+  memberPhone: string;
+  memberImage?: string;
+}
+
 export interface Members {
 	list: Member[];
 	metaCounter: TotalCounter[];

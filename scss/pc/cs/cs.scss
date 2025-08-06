@@ -21,7 +21,7 @@
           gap: 10px;
 
           span {
-            color: #2c1e15;
+            color: #3b2c20;
             font-family: $font;
             font-size: 36px;
             font-weight: 700;
@@ -29,7 +29,7 @@
           }
 
           p {
-            color: #a09387;
+            color: #a49687;
             font-family: $font;
             font-size: 16px;
             font-weight: 400;
@@ -55,10 +55,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            border: 1px solid #e6e2dc;
-            background: #fcfaf7;
+            border: 1px solid #ddd2c4;
+            background: #fbf8f3;
             cursor: pointer;
-            color: #b2a18b;
+            color: #9e8e7a;
             font-family: $font;
             font-size: 14px;
             font-weight: 900;
@@ -66,13 +66,13 @@
             transition: all 0.3s ease;
 
             &:hover {
-              background-color: #d4b48c1a;
-              color: #8c7153;
+              background-color: #f1e7d8;
+              color: #7a5f48;
             }
 
             &.active {
-              border-color: #c8aa74;
-              background: #b45f4d;
+              border-color: #c3a873;
+              background: #b38c63;
               color: #fff;
             }
           }
@@ -83,11 +83,10 @@
         margin-top: 25px;
         display: flex;
         flex-direction: column;
-        
 
         .title {
           margin-bottom: 25px;
-          color: #2c1e15;
+          color: #3b2c20;
           font-family: $font;
           font-size: 28px;
           font-weight: 700;
@@ -102,9 +101,9 @@
 
         .notice-content {
           .main {
-            border: 1px solid #e6e2dc;
+            border: 1px solid #ddd2c4;
             border-radius: 8px;
-            background: #fdfaf6;
+            background: #fbf8f3;
 
             .top {
               padding: 25px 33px;
@@ -129,17 +128,17 @@
                 display: flex;
                 justify-content: space-between;
                 border: 1px solid #e6e2dc;
-                background: #fdfaf6;
+                background: #fbf8f3;
 
                 &.event {
-                  background: #f4e7d2;
+                  background: #f2e6d4;
                 }
 
                 div {
                   padding: 6px 9px;
                   border-radius: 12px;
-                  border: 1px solid #b45f4d;
-                  color: #b45f4d;
+                  border: 1px solid #b38c63;
+                  color: #b38c63;
                   font-family: $font;
                   font-size: 12px;
                   font-weight: 500;
@@ -148,21 +147,21 @@
                 .notice-number {
                   margin-left: 18px;
                   width: 39px;
-                  color: #b2a18b;
+                  color: #a18d7b;
                   font-family: $font;
                   font-size: 14px;
                 }
 
                 .notice-title {
                   width: 1060px;
-                  color: #2c1e15;
+                  color: #3b2c20;
                   font-family: $font;
                   font-size: 16px;
                   font-weight: 500;
                 }
 
                 .notice-date {
-                  color: #b2a18b;
+                  color: #a18d7b;
                   font-family: $font;
                   font-size: 14px;
                 }
@@ -186,7 +185,7 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              color: #b2a18b;
+              color: #a18d7b;
               font-family: $font;
               font-size: 15px;
               font-weight: 400;
@@ -195,12 +194,12 @@
               transition: all 0.3s ease;
 
               &:hover {
-                color: #8c7153;
+                color: #b38c63;
               }
 
               &.active {
-                border-bottom: 2px solid #b45f4d;
-                color: #b45f4d;
+                border-bottom: 2px solid #b38c63;
+                color: #b38c63;
               }
             }
           }
@@ -210,22 +209,22 @@
 
             .MuiAccordionDetails-root {
               padding: 30px 20px;
-              background: #fcfaf7;
+              background: #fbf8f3;
             }
 
             .badge {
               margin: 0 24px;
               display: inline-block;
               padding: 4px 10px;
-              border: 1px solid #c8aa74;
+              border: 1px solid #c3a873;
               border-radius: 7px;
-              color: #c8aa74;
+              color: #c3a873;
               font-weight: 500;
             }
 
             .question {
               .badge {
-                background: #b45f4d;
+                background: #b38c63;
                 color: #fff;
               }
             }
@@ -238,12 +237,150 @@
               white-space: nowrap;
 
               .badge {
-                color: #b45f4d;
-                border: 1px solid #b45f4d;
+                color: #b38c63;
+                border: 1px solid #b38c63;
               }
             }
           }
         }
+
+        .inquiry-content {
+          display: flex;
+          gap: 40px;
+        
+          .inquiry-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        
+            .inquiry-item {
+              padding: 20px;
+              border: 1px solid #d8c7ac;
+              border-radius: 12px;
+              background: #fdfaf5;
+              box-shadow: 0 2px 6px rgba(180, 145, 94, 0.08);
+        
+              .top-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 12px;
+        
+                .badge {
+                  padding: 4px 12px;
+                  border: 1px solid #c6a76d;
+                  border-radius: 12px;
+                  color: #a67c52;
+                  font-size: 13px;
+                  font-weight: 600;
+                  background: #fff9f2;
+                  font-family: 'Playfair Display', serif;
+                }
+        
+                .date {
+                  color: #998675;
+                  font-size: 13px;
+                  font-family: 'Judson', serif;
+                }
+              }
+        
+              .content {
+                color: #3e2d20;
+                font-size: 15px;
+                font-family: 'Judson', serif;
+                margin-bottom: 10px;
+                line-height: 1.6;
+              }
+        
+              .reply-box {
+                margin-top: 12px;
+                padding: 14px;
+                border-left: 4px solid #b38c63;
+                background: #fefbf8;
+                color: #4b3b2a;
+                border-radius: 8px;
+        
+                strong {
+                  display: block;
+                  margin-bottom: 6px;
+                  font-family: 'Playfair Display', serif;
+                }
+              }
+            }
+          }
+        
+          .submit-button {
+            background-color: #b38c63;
+            color: white;
+            font-weight: 600;
+            padding: 10px 22px;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        
+            &:hover {
+              background-color: #a07b54;
+            }
+          }
+        
+          .inquiry-modal {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 420px;
+            height: 620px;
+            background: #ffffff;
+            padding: 28px;
+            border-radius: 14px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            display: flex;
+            flex-direction: column;
+        
+            .form-section {
+              display: flex;
+              flex-direction: column;
+              // gap: 20px;
+              flex: 1;
+              overflow-y: auto;
+        
+              .field-group {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+              }
+        
+              .form-label {
+                font-size: 14px;
+                color: #3e2d20;
+                font-weight: 600;
+                font-family: 'Playfair Display', serif;
+              }
+              .MuiTextField-root {
+                background: #fdfaf6;
+                border-radius: 6px;
+              
+                textarea {
+                  font-size: 14px;
+                  padding: 12px;
+                  line-height: 1.5;
+                  box-sizing: border-box;
+                }
+              }
+              
+            }
+        
+            .MuiButton-root {
+              font-size: 14px;
+              border-radius: 8px;
+              background: #b38c63;
+        
+              &:hover {
+                background: #9e7a53;
+              }
+            }
+          }
+        }
+        
       }
     }
   }

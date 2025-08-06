@@ -405,61 +405,15 @@ export const UNSUBSCRIBE = gql`
 `;
 
 /**************************
- *        NOTICE        *
+ *         INQUIRY        *
  *************************/
-
-export const CREATE_NOTICE = gql`
-  mutation CreateNotice($input: NoticeInput!) {
-    createNotice(input: $input) {
+export const CREATE_INQUIRY = gql`
+  mutation CreateInquiry($input: CreateInquiryInput!) {
+    createInquiry(input: $input) {
       _id
-      noticeTitle
-      noticeContent
-      noticeCategory
-      noticeStatus
-      memberId
-    }
-  }
-`;
-
-export const UPDATE_NOTICE = gql`
-  mutation UpdateNotice($input: UpdateNoticeInput!) {
-    updateNotice(input: $input) {
-      _id
-      noticeTitle
-      noticeContent
-      noticeCategory
-      noticeStatus
-      memberId
-      createdAt
-      updatedAt
-    }
-  }
-`;
-
-export const DELETE_NOTICE = gql`
-  mutation DeleteNotice($input: String!) {
-    deleteNotice(input: $input) {
-      _id
-      noticeCategory
-      noticeStatus
-      noticeTitle
-      noticeContent
-      memberId
-      createdAt
-      updatedAt
-    }
-  }
-`;
-
-export const REMOVE_NOTICE_PERMANENTLY = gql`
-  mutation RemoveNoticePermanently($input: String!) {
-    removeNoticePermanently(input: $input) {
-      _id
-      noticeCategory
-      noticeStatus
-      noticeTitle
-      noticeContent
-      memberId
+      inquiryType
+      content
+      reply
       createdAt
       updatedAt
     }
