@@ -42,10 +42,18 @@ interface NoticeListProps {
 	loading?: boolean;
 	page: number;
 	limit: number;
-	refetch: () => void; // ✅ correctly typed
+	refetch: () => void;
+	onEditClick: (noticeId: string) => void; // ✅ new prop
 }
 
-export const NoticeList = ({ notices, loading = false, page, limit, refetch }: NoticeListProps) => {
+export const NoticeList = ({
+	notices,
+	loading = false,
+	page,
+	limit,
+	refetch,
+	onEditClick,
+}: NoticeListProps) => {
 	const [selectedIds, setSelectedIds] = useState<string[]>([]);
 	const router = useRouter();
 
@@ -71,7 +79,7 @@ export const NoticeList = ({ notices, loading = false, page, limit, refetch }: N
 	const handleDelete = async (id: string) => {
 		try {
 			await deleteNotice({ variables: { input: id } });
-			await refetch(); // ✅ simple call, no args
+			await refetch();
 		} catch (error) {
 			console.error('Delete failed:', error);
 		}
@@ -83,7 +91,7 @@ export const NoticeList = ({ notices, loading = false, page, limit, refetch }: N
 				selectedIds.map((id) => deleteNotice({ variables: { input: id } }))
 			);
 			setSelectedIds([]);
-			await refetch(); // ✅ refresh after all deletions
+			await refetch();
 		} catch (error) {
 			console.error('Bulk delete failed:', error);
 		}
@@ -140,11 +148,7 @@ export const NoticeList = ({ notices, loading = false, page, limit, refetch }: N
 										</TableCell>
 										<TableCell>
 											<Tooltip title="Edit">
-												<IconButton
-													onClick={() =>
-														router.push(`/admin/notice/create?id=${notice._id}`)
-													}
-												>
+												<IconButton onClick={() => onEditClick(notice._id as string)}>
 													<NotePencil size={20} />
 												</IconButton>
 											</Tooltip>
