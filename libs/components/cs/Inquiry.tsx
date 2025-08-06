@@ -1,185 +1,211 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Box,
-  Button,
-  MenuItem,
-  Stack,
-  TextField,
-  Typography,
-  Paper,
-  Divider,
-} from '@mui/material';
+import { Box, Button, MenuItem, Stack, TextField, Typography, Paper, Divider, Pagination } from '@mui/material';
 import { useReactiveVar, useMutation, useQuery } from '@apollo/client';
 import moment from 'moment';
 import { userVar } from '../../../apollo/store';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { CREATE_INQUIRY } from '../../../apollo/user/mutation';
-import { GET_INQUIRIES } from '../../../apollo/admin/query';
+import { CREATE_INQUIRY, DELETE_INQUIRY } from '../../../apollo/user/mutation';
+import { GET_MY_INQUIRIES } from '../../../apollo/user/query';
+import { sweetErrorAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 
-type InquiryType = 'GENERAL' | 'DELIVERY' | 'PRODUCT' | 'ACCOUNT';
+enum InquiryType {
+	GENERAL = 'GENERAL',
+	DELIVERY = 'DELIVERY',
+	PRODUCT = 'PRODUCT',
+	ACCOUNT = 'ACCOUNT',
+	ORDER = 'ORDER',
+}
+
 
 const Inquiry = () => {
-  const device = useDeviceDetect();
-  const user = useReactiveVar(userVar);
+	const device = useDeviceDetect();
+	const user = useReactiveVar(userVar);
+	const [inquiries, setInquiries] = useState<any[]>([]);
+	const [inquiryType, setInquiryType] = useState<InquiryType>(InquiryType.GENERAL);
+	const [content, setContent] = useState('');
+	const [page, setPage] = useState(1);
+	const limit = 5;
 
-  const [inquiryType, setInquiryType] = useState<InquiryType>('GENERAL');
-  const [content, setContent] = useState('');
-  const [createInquiry] = useMutation(CREATE_INQUIRY);
+	const [deleteInquiry] = useMutation(DELETE_INQUIRY);
+	const [createInquiry] = useMutation(CREATE_INQUIRY);
 
-  const { data, refetch } = useQuery(GET_INQUIRIES, {
-    skip: !user,
-    fetchPolicy: 'network-only',
-  });
+	const {
+		loading: getMyInquiriesLoading,
+		data: getMyInquiriesData,
+		error: getMyInquiriesError,
+		refetch: refetchInquiries,
+	} = useQuery(GET_MY_INQUIRIES, {
+		variables: { input: { page, limit } },
+		fetchPolicy: 'network-only',
+		onCompleted: (data) => console.log('✅ getMyInquiriesData:', data),
+		onError: (error) => {
+			console.error('❌ getMyInquiriesError:', error);
+			sweetErrorAlert('Failed to load inquiries.');
+		},
+	});
 
-  const [inquiries, setInquiries] = useState<any[]>([]);
+	useEffect(() => {
+		if (getMyInquiriesData?.getMyInquiries?.list) {
+			setInquiries(getMyInquiriesData.getMyInquiries.list);
+		}
+	}, [getMyInquiriesData]);
 
-  useEffect(() => {
-    if (data?.getMyInquiries) {
-      setInquiries(data.getMyInquiries);
-    }
-  }, [data]);
+	const total = getMyInquiriesData?.getMyInquiries?.metaCounter?.[0]?.total || 0;
+	const totalPages = Math.ceil(total / limit);
 
-  const handleSubmit = async () => {
-    if (!content.trim()) return;
+	const handleSubmit = async () => {
+		if (!content.trim()) {
+			sweetMixinErrorAlert('Please enter your inquiry.');
+			return;
+		}
+		try {
+			await createInquiry({ variables: { input: { inquiryType, content } } });
+			setContent('');
+			setInquiryType(InquiryType.GENERAL);
+			setPage(1);
+			await refetchInquiries({ input: { page: 1, limit } });
+		} catch (error) {
+			console.error('Failed to submit inquiry:', error);
+			sweetErrorAlert('Failed to submit inquiry.');
+		}
+	};
 
-    try {
-      const res = await createInquiry({
-        variables: {
-          input: {
-            inquiryType,
-            content,
-          },
-        },
-      });
+	const handleDelete = async (id: string) => {
+		const confirmed = window.confirm('Are you sure you want to delete this inquiry?');
+		if (!confirmed) return;
 
-      const newInquiry = res.data.createInquiry;
-      setInquiries([newInquiry, ...inquiries]);
-      setContent('');
-      setInquiryType('GENERAL');
-    } catch (error) {
-      console.error(error);
-      alert('Failed to submit inquiry.');
-    }
-  };
+		try {
+			const res = await deleteInquiry({ variables: { inquiryId: id } });
+			if (res.data.deleteInquiry) {
+				await refetchInquiries({ input: { page, limit } });
+			} else {
+				sweetErrorAlert('Could not delete inquiry. It may not belong to you.');
+			}
+		} catch (err) {
+			console.error('Delete failed:', err);
+			sweetMixinErrorAlert('Delete failed.');
+		}
+	};
 
-  if (device === 'mobile') return <div>Inquiry MOBILE</div>;
+	const handlePageChange = async (event: React.ChangeEvent<unknown>, value: number) => {
+		setPage(value);
+		await refetchInquiries({ input: { page: value, limit } });
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	};
 
-  return (
-    <Stack direction="row" spacing={4} className="inquiry-content" sx={{ px: 4, py: 4 }}>
-      {/* Left: Inquiry list */}
-      <Box className="inquiry-list" flex={2}>
-        <Typography variant="h5" fontWeight={600} mb={3}>
-          My Inquiries
-        </Typography>
+	if (!user) return <Typography className="inquiry-empty-msg">Please log in to view your inquiries.</Typography>;
+	if (device === 'mobile') return <div>Inquiry MOBILE</div>;
 
-        {inquiries.length === 0 ? (
-          <Typography>No inquiries submitted yet.</Typography>
-        ) : (
-          inquiries.map((inq) => (
-            <Paper
-              key={inq._id}
-              elevation={2}
-              sx={{
-                p: 2,
-                mb: 2,
-                borderRadius: 2,
-                backgroundColor: '#fafafa',
-              }}
-            >
-              <Box display="flex" justifyContent="space-between" alignItems="center" mb={1}>
-                <Box
-                  sx={{
-                    fontSize: 12,
-                    fontWeight: 600,
-                    px: 1.5,
-                    py: 0.5,
-                    bgcolor: '#e0e0e0',
-                    borderRadius: 10,
-                    textTransform: 'capitalize',
-                    color: '#555',
-                  }}
-                >
-                  {inq.inquiryType.toLowerCase()}
-                </Box>
-                <Typography variant="caption" color="text.secondary">
-                  {moment(inq.createdAt).format('YYYY.MM.DD')}
-                </Typography>
-              </Box>
+	return (
+		<Stack direction="row" spacing={4} className="inquiry-content">
+			{/* Left: Inquiry list */}
+			<Box className="inquiry-list">
+				<Typography variant="h5">My Inquiries</Typography>
 
-              <Typography fontSize={14} sx={{ whiteSpace: 'pre-line' }}>
-                {inq.content}
-              </Typography>
+				{inquiries.length === 0 ? (
+					<Typography>No inquiries submitted yet.</Typography>
+				) : (
+					inquiries.map((inq) => (
+						<Paper key={inq._id} className="inquiry-card">
+							<Box className="top-row">
+								<Box className="badge">{inq.inquiryType.toLowerCase()}</Box>
+								<Typography className="date" variant="caption">
+									{moment(inq.createdAt).format('YYYY.MM.DD')}
+								</Typography>
+							</Box>
 
-              {inq.reply && (
-                <Box mt={2} p={2} bgcolor="#f3f8ff" borderRadius={1}>
-                  <Typography fontSize={13} fontWeight={500} color="#3a4e74" mb={1}>
-                    🛠 Admin Reply:
-                  </Typography>
-                  <Typography fontSize={14}>{inq.reply}</Typography>
-                </Box>
-              )}
-            </Paper>
-          ))
-        )}
+							<Typography className="inquiry-content-text">{inq.content}</Typography>
+
+							{inq.reply && (
+								<Box className="reply-box">
+									<Typography className="reply-label">🛠 Admin Reply:</Typography>
+									<Typography className="reply-text">{inq.reply}</Typography>
+								</Box>
+							)}
+
+							<Box className="inquiry-actions">
+								<Button
+									variant="outlined"
+									color="error"
+									size="small"
+									className="delete-btn"
+									onClick={() => handleDelete(inq._id)}
+								>
+									Delete
+								</Button>
+							</Box>
+						</Paper>
+					))
+				)}
+
+				{totalPages > 0 && (
+					<Box className="pagination-wrapper">
+						<Pagination
+							count={totalPages}
+							page={page}
+							onChange={handlePageChange}
+							color="primary"
+							shape="rounded"
+						/>
+					</Box>
+				)}
+			</Box>
+
+      <Box className="inquiry-form-wrapper">
+  <Paper elevation={3} className="form-box">
+    <Typography variant="h6">Write a New Inquiry</Typography>
+
+    <Box className="form-inner">
+      {/* Dropdown */}
+      <Box className="field-group">
+        <Typography className="form-label">Select Category</Typography>
+        <TextField
+          select
+          value={inquiryType}
+          onChange={(e) => setInquiryType(e.target.value as InquiryType)}
+          size="small"
+          fullWidth
+        >
+          <MenuItem value="GENERAL">General</MenuItem>
+          <MenuItem value="DELIVERY">Delivery</MenuItem>
+          <MenuItem value="PRODUCT">Product</MenuItem>
+          <MenuItem value="ACCOUNT">Account</MenuItem>
+        </TextField>
       </Box>
 
-      {/* Right: Inquiry form */}
-      <Box flex={1} sx={{ position: 'sticky', top: 32 }}>
-        <Paper elevation={3} sx={{ p: 3, borderRadius: 3 }}>
-          <Typography variant="h6" fontWeight={600} mb={2}>
-            Write a New Inquiry
-          </Typography>
+      {/* Message */}
+      <Box className="field-group">
+        <span className="form-label">Your Message</span>
+        <TextField
+          multiline
+          rows={1}
+          placeholder="Write your inquiry here..."
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+          fullWidth
+        />
+      </Box>
 
-          <Stack spacing={2}>
-            <TextField
-              fullWidth
-              select
-              label="Select Category"
-              value={inquiryType}
-              onChange={(e) => setInquiryType(e.target.value as InquiryType)}
-              size="small"
-            >
-              <MenuItem value="GENERAL">General</MenuItem>
-              <MenuItem value="DELIVERY">Delivery</MenuItem>
-              <MenuItem value="PRODUCT">Product</MenuItem>
-              <MenuItem value="ACCOUNT">Account</MenuItem>
-            </TextField>
+      <Divider />
 
-			<Box display="flex" flexDirection="column" alignItems="flex-start" gap={1} width="100%">
-  <Typography className="form-label">Your Message</Typography>
-  <TextField
-    multiline
-    rows={4}
-    placeholder="Write your inquiry here..."
-    value={content}
-    onChange={(e) => setContent(e.target.value)}
-    size="small"
-    fullWidth
-    variant="outlined"
-    InputProps={{
-      style: {
-        padding: '12px',
-        fontSize: '14px',
-        lineHeight: '1.5',
-      },
-    }}
-    InputLabelProps={{
-      shrink: false, // if you are not using label prop
-    }}
-  />
+      <Button className="submit-btn" variant="contained" onClick={handleSubmit}>
+        Submit
+      </Button>
+    </Box>
+  </Paper>
 </Box>
 
+		</Stack>
+	);
+};
 
-            <Divider />
 
-            <Button variant="contained" onClick={handleSubmit}>
-              Submit
-            </Button>
-          </Stack>
-        </Paper>
-      </Box>
-    </Stack>
-  );
+Inquiry.defaultProps = {
+	initialInput: {
+		page: 1,
+		limit: 6,
+	},
 };
 
 export default Inquiry;
+``;

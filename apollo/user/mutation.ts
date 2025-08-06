@@ -420,3 +420,9 @@ export const CREATE_INQUIRY = gql`
   }
 `;
 
+export const DELETE_INQUIRY = gql`
+  mutation DeleteInquiry($inquiryId: String!) {
+    deleteInquiry(inquiryId: $inquiryId)
+  }
+`;
+

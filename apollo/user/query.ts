@@ -724,3 +724,21 @@ export const GET_NOTICE = gql`
     }
   }
 `;
+
+
+export const GET_MY_INQUIRIES = gql`
+  query GetMyInquiries($input: InquiryPaginationInput!) {
+    getMyInquiries(input: $input) {
+      list {
+        _id
+        inquiryType
+        content
+        reply
+        createdAt
+      }
+      metaCounter {
+        total
+      }
+    }
+  }
+`;
