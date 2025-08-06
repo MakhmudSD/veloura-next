@@ -215,9 +215,22 @@ export const REMOVE_NOTICE_PERMANENTLY = gql`
 `;
 
 
+
 /**************************
  *         INQUIRY        *
  *************************/
+export const CREATE_INQUIRY = gql`
+  mutation CreateInquiry($input: CreateInquiryInput!) {
+    createInquiry(input: $input) {
+      _id
+      inquiryType
+      content
+      reply
+      createdAt
+      updatedAt
+    }
+  }
+`;
 
 export const REPLY_TO_INQUIRY = gql`
 mutation ReplyToInquiry($input: ReplyInquiryInput!) {

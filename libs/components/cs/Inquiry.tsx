@@ -182,6 +182,7 @@ const Inquiry = () => {
           placeholder="Write your inquiry here..."
           value={content}
           onChange={(e) => setContent(e.target.value)}
+          size="small"
           fullWidth
         />
       </Box>

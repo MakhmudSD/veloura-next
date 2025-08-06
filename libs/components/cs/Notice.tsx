@@ -1,27 +1,23 @@
 import React from 'react';
 import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { useQuery } from '@apollo/client';
+import { GET_NOTICES } from '../../../apollo/user/query';
 
 const Notice = () => {
 	const device = useDeviceDetect();
 
 	/** APOLLO REQUESTS **/
-	/** LIFECYCLES **/
-	/** HANDLERS **/
+	const { data, loading, error } = useQuery(GET_NOTICES, {
+		variables: { input: { page: 1, limit: 20, search: {} } },
+		fetchPolicy: 'cache-and-network',
+	});
 
-	const data = [
-		{
-			no: 1,
-			event: true,
-			title: 'Register to use and get discounts',
-			date: '01.03.2024',
-		},
-		{
-			no: 2,
-			title: "It's absolutely free to upload and trade products",
-			date: '31.03.2024',
-		},
-	];
+	/** LIFECYCLES **/
+	const notices = data?.getNotices?.list || [];
+
+	/** HANDLERS **/
+	// none needed for public view
 
 	if (device === 'mobile') {
 		return <div>NOTICE MOBILE</div>;
@@ -36,13 +32,21 @@ const Notice = () => {
 						<span>date</span>
 					</Box>
 					<Stack className={'bottom'}>
-						{data.map((ele: any) => (
-							<div className={`notice-card ${ele?.event && 'event'}`} key={ele.title}>
-								{ele?.event ? <div>event</div> : <span className={'notice-number'}>{ele.no}</span>}
-								<span className={'notice-title'}>{ele.title}</span>
-								<span className={'notice-date'}>{ele.date}</span>
-							</div>
-						))}
+						{loading ? (
+							<span>Loading...</span>
+						) : error ? (
+							<span>Error loading notices.</span>
+						) : (
+							notices.map((ele: any, idx: number) => (
+								<div className={`notice-card ${ele?.event && 'event'}`} key={ele._id}>
+									<span className={'notice-number'}>{idx + 1}</span>
+									<span className={'notice-title'}>{ele.noticeTitle}</span>
+									<span className={'notice-date'}>
+										{new Date(ele.createdAt).toLocaleDateString('en-GB')}
+									</span>
+								</div>
+							))
+						)}
 					</Stack>
 				</Stack>
 			</Stack>
