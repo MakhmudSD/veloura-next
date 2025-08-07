@@ -125,11 +125,11 @@ const AdminProducts: NextPage = ({ initialInquiry, ...props }: any) => {
 					sort: 'createdAt',
 					search: {
 						...productsInquiry.search,
-						productLocationList: [newValue as ProductLocation],
+						productLocation: [newValue as ProductLocation],
 					},
 				});
 			} else {
-				delete productsInquiry?.search?.productLocationList;
+				delete productsInquiry?.search?.productLocation;
 				setProductsInquiry({ ...productsInquiry });
 			}
 		} catch (err: any) {

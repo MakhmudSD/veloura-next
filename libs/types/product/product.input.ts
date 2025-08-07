@@ -70,7 +70,7 @@ export interface StoreProductsInquiry {
 
 interface ALPISearch {
 	productStatus?: ProductStatus;
-	productLocationList?: ProductLocation[];
+	productLocation?: ProductLocation[];
 }
 
 export interface AllProductsInquiry {
