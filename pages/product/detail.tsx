@@ -40,6 +40,8 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
+console.log("hi! keldi!")
+
 const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
@@ -129,7 +131,6 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 	});
 
 	/** LIFECYCLES **/
-
 	useEffect(() => {
 		if (router.query.id) {
 			setproductId(router.query.id as string);
@@ -145,6 +146,7 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 			});
 		}
 	}, [router]);
+
 
 	useEffect(() => {
 		if (commentInquiry.search.commentRefId) {
@@ -162,6 +164,7 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		}
 	}, [product, slideImage]);
 
+
 	useEffect(() => {
 		if (product) {
 			const commentCount = product?.productComments || 0;
@@ -172,6 +175,7 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 			setStars(calculatedStars);
 		}
 	}, [product]);
+
 
 	/** HANDLERS **/
 	const changeImageHandler = (image: string) => {
@@ -239,29 +243,30 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		}
 	};
 
-	const handleAdd = (id: string, title: string, image: string, price: number, ringSize?: number, weight?: number) => {
-		const currentItems = basketItemsVar();
-		const index = currentItems.findIndex((item) => item.productId === id);
-		const updatedItems = [...currentItems];
-
-		if (index > -1) {
-			updatedItems[index].itemQuantity += 1;
-		} else {
-			updatedItems.push({
-				id,
-				_id: id,
-				productId: id,
-				productTitle: title,
-				productImages: image,
-				productPrice: price,
-				itemQuantity: 1,
-				ringSize: Number(ringSize), // store ringSize here
-				weight: Number(weight), // store weight here
-			});
-		}
-
-		basketItemsVar(updatedItems);
-	};
+ const handleAdd = (
+id: string, title: string, image: string, price: number, p0: number, p1: number  ) => {
+	const currentItems = basketItemsVar();
+	const index = currentItems.findIndex((item) => item.productId === id);
+	const updatedItems = [...currentItems];
+  
+	if (index > -1) {
+	  updatedItems[index].itemQuantity += 1;
+	} else {
+	  updatedItems.push({
+		id,
+		_id: id,
+		productId: id,
+		productTitle: title,
+		productImages: image,
+		productPrice: price, // ✅ FIXED
+		itemQuantity: 1,
+		ringSize: null,
+		weight: null,
+	  });
+	}
+  
+	basketItemsVar(updatedItems);
+  };
 
 		/** HANDLERS **/
 		const pushDetailHandler = async (storeId: string) => {

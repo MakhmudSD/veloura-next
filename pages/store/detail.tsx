@@ -33,6 +33,7 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
+
 	const [mbId, setMbId] = useState<string | null>(null);
 	const [store, setStore] = useState<Member | null>(null);
 	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(initialInput);
@@ -47,102 +48,118 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 		commentRefId: '',
 	});
 
-		/** APOLLO REQUESTS **/
-		const {
-			loading: getStoreLoading,
-			data: getStoreData,
-			error: getStoreError,
-			refetch: getStoreRefetch,
-		} = useQuery(GET_MEMBER, {
-			fetchPolicy: 'network-only',
-			variables: {
-				input: mbId,
-			},
-			skip: !mbId,
-			notifyOnNetworkStatusChange: true,
-			onCompleted: (data: T) => {
-				setStore(data?.getMember);
-				setSearchFilter({
-					...searchFilter,
-					search: {
-						memberId: data?.getMember?._id,
-					},
-				});
-	
-				setCommentInquiry({
-					...commentInquiry,
-					search: {
-						commentRefId: data?.getMember?._id,
-					},
-				});
-				setInsertCommentData({
-					...insertCommentData,
-					commentRefId: data?.getMember?._id,
-				});
-			},
-		});
-	
-		const {
-			loading: getProductsLoading,
-			data: getProductsData,
-			error: getProductsError,
-			refetch: getProductsRefetch,
-		} = useQuery(GET_PRODUCTS, {
-			fetchPolicy: 'network-only',
-			variables: {
-				input: searchFilter,
-			},
-			skip: !searchFilter.search.memberId,
-			notifyOnNetworkStatusChange: true,
-			onCompleted: (data: T) => {
-				setStoreProducts(data?.getProducts?.list);
-				setProductTotal(data?.getProducts?.metaCounter[0].total);
-			},
-		});
-		const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
-		const [createComment] = useMutation(CREATE_COMMENT);
-	
-		const {
-			loading: getCommentsLoading,
-			data: getCommentsData,
-			error: getCommentsError,
-			refetch: getCommentsRefetch,
-		} = useQuery(GET_COMMENTS, {
-			fetchPolicy: 'cache-and-network',
-			variables: {
-				input: initialComment,
-			},
-			skip: !commentInquiry.search?.commentRefId,
-			notifyOnNetworkStatusChange: true,
-			onCompleted: (data: T) => {
-				setStoreComments(data?.getComments?.list);
-				setCommentTotal(data?.getComments?.metaCounter[0]?.total);
-			},
-		});
-	
+	// Set memberId from router query
+	useEffect(() => {
+		if (!router.isReady) return;
+		const id = router.query.id;
+		console.log('router.query.id:', id);
+		if (id && typeof id === 'string') {
+		  setMbId(id);
+		}
+	  }, [router.isReady, router.query.id]);
 
+	/** APOLLO REQUESTS **/
+	const {
+		loading: getStoreLoading,
+		data: getStoreData,
+		error: getStoreError,
+		refetch: getStoreRefetch,
+	} = useQuery(GET_MEMBER, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: mbId,
+		},
+		skip: !mbId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setStore(data?.getMember);
+			setSearchFilter((prev) => ({
+				...prev,
+				search: {
+					...prev.search,
+					memberId: data?.getMember?._id,
+				},
+			}));
+			setCommentInquiry((prev) => ({
+				...prev,
+				search: {
+					...prev.search,
+					commentRefId: data?.getMember?._id,
+				},
+			}));
+			setInsertCommentData((prev) => ({
+				...prev,
+				commentRefId: data?.getMember?._id,
+			}));
+		},
+	});
+
+	const {
+		loading: getProductsLoading,
+		data: getProductsData,
+		error: getProductsError,
+		refetch: getProductsRefetch,
+	} = useQuery(GET_PRODUCTS, {
+		fetchPolicy: 'network-only',
+		variables: {
+			input: searchFilter,
+		},
+		skip: !searchFilter.search?.memberId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setStoreProducts(data?.getProducts?.list);
+			setProductTotal(data?.getProducts?.metaCounter[0]?.total || 0);
+		},
+	});
+
+	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+	const [createComment] = useMutation(CREATE_COMMENT);
+
+	const {
+		loading: getCommentsLoading,
+		data: getCommentsData,
+		error: getCommentsError,
+		refetch: getCommentsRefetch,
+	} = useQuery(GET_COMMENTS, {
+		fetchPolicy: 'cache-and-network',
+		variables: {
+			input: commentInquiry,
+		},
+		skip: !commentInquiry.search?.commentRefId,
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setStoreComments(data?.getComments?.list);
+			setCommentTotal(data?.getComments?.metaCounter[0]?.total || 0);
+		},
+	});
 
 	/** LIFECYCLES **/
 
+	// Refetch store data when user or mbId changes
 	useEffect(() => {
 		if (!user || !user._id || !mbId) return;
-	  
-		// safe to proceed
 		getStoreRefetch({ variables: { input: mbId } });
-	  }, [user, mbId]);
-	  
-	useEffect(() => {
-		const storeId = router?.query?.storeId;
-		if (storeId && typeof storeId === 'string') {
-			setMbId(storeId);
-		}
-	}, [router.isReady, router.query.storeId]);
+	}, [user, mbId]);
 
+	// Keep insertCommentData.commentRefId in sync with store/memberId
 	useEffect(() => {
-		if (searchFilter.search.memberId) {
+		if (store?._id) {
+			setInsertCommentData((prev) => ({
+				...prev,
+				commentGroup: CommentGroup.MEMBER,
+				commentRefId: store._id,
+			}));
+		}
+	}, [store?._id]);
+
+	// Refetch products when searchFilter changes
+	useEffect(() => {
+		if (searchFilter.search?.memberId) {
 			getProductsRefetch({ variables: { input: searchFilter } }).then();
 		}
 	}, [searchFilter]);
+
+	// Refetch comments when commentInquiry changes
 	useEffect(() => {
 		if (commentInquiry.search?.commentRefId) {
 			getCommentsRefetch({ variables: { input: commentInquiry } }).then();
@@ -160,24 +177,27 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	};
 
 	const productPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
-		searchFilter.page = value;
-		setSearchFilter({ ...searchFilter });
+		setSearchFilter((prev) => ({
+			...prev,
+			page: value,
+		}));
 	};
 
 	const commentPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
-		commentInquiry.page = value;
-		setCommentInquiry({ ...commentInquiry });
+		setCommentInquiry((prev) => ({
+			...prev,
+			page: value,
+		}));
 	};
 
 	const createCommentHandler = async () => {
 		try {
 			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
-			if (user._id === mbId) throw new Error('Cannot write to review to yourself');
+			if (user._id === mbId) throw new Error('Cannot write a review to yourself');
 			await createComment({ variables: { input: insertCommentData } });
-			setInsertCommentData({ ...insertCommentData, commentContent: '' });
-			getCommentsRefetch({ input: commentInquiry });
+			setInsertCommentData((prev) => ({ ...prev, commentContent: '' }));
+			getCommentsRefetch({ variables: { input: commentInquiry } });
 		} catch (err: any) {
-			sweetErrorHandling(err).then();
 			console.log('ERROR, createCommentHandler:', err.message);
 			await sweetMixinErrorAlert(err.message).then();
 		}
@@ -198,7 +218,6 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 			await sweetMixinErrorAlert(err.message).then();
 		}
 	};
-
 
 	if (device === 'mobile') {
 		return <div>STORE DETAIL PAGE MOBILE</div>;
@@ -221,13 +240,11 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 					</Stack>
 					<Stack className={'store-home-list'}>
 						<Stack className={'card-wrap'}>
-							{storeProducts.map((product: Product) => {
-								return (
-									<div className={'wrap-main'} key={product?._id}>
-										<ProductBigCard product={product} likeProductHandler={likeProductHandler} key={product?._id} />
-									</div>
-								);
-							})}
+							{storeProducts.map((product: Product) => (
+								<div className={'wrap-main'} key={product?._id}>
+									<ProductBigCard product={product} likeProductHandler={likeProductHandler} key={product?._id} />
+								</div>
+							))}
 						</Stack>
 						<Stack className={'pagination'}>
 							{productTotal ? (
@@ -266,9 +283,9 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 										{commentTotal} review{commentTotal > 1 ? 's' : ''}
 									</span>
 								</Box>
-								{storeComments?.map((comment: Comment) => {
-									return <ReviewCard comment={comment} key={comment?._id} />;
-								})}
+								{storeComments?.map((comment: Comment) => (
+									<ReviewCard comment={comment} key={comment?._id} />
+								))}
 								<Box component={'div'} className={'pagination-box'}>
 									<Pagination
 										page={commentInquiry.page}
@@ -286,7 +303,10 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 							<Typography className={'review-title'}>Review</Typography>
 							<textarea
 								onChange={({ target: { value } }: any) => {
-									setInsertCommentData({ ...insertCommentData, commentContent: value });
+									setInsertCommentData((prev) => ({
+										...prev,
+										commentContent: value,
+									}));
 								}}
 								value={insertCommentData.commentContent}
 							></textarea>
