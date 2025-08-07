@@ -221,31 +221,6 @@ export const GET_NOTICES = gql`
   }
 `;
 
-
-
-/**************************
- *         INQUIRIES        *
- *************************/
-
-export const GET_INQUIRIES = gql`
-  query GetInquiries {
-    getInquiries {
-      _id
-      inquiryType
-      content
-      reply
-      createdAt
-      updatedAt
-      memberId {
-        _id
-        memberNick
-        memberPhone
-        memberImage
-      }
-    }
-  }
-`;
-
 /**************************
  *         FAQ        *
  *************************/

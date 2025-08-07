@@ -725,20 +725,15 @@ export const GET_NOTICE = gql`
   }
 `;
 
-
-export const GET_MY_INQUIRIES = gql`
-  query GetMyInquiries($input: InquiryPaginationInput!) {
-    getMyInquiries(input: $input) {
-      list {
-        _id
-        inquiryType
-        content
-        reply
-        createdAt
-      }
-      metaCounter {
-        total
-      }
+export const GET_CONTACTS = gql`
+  query {
+    findAllContacts {
+      _id
+      name
+      email
+      subject
+      message
+      createdAt
     }
   }
 `;

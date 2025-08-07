@@ -1,6 +1,5 @@
 import React, { SyntheticEvent, useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
-
 import MuiAccordion, { AccordionProps } from '@mui/material/Accordion';
 import MuiAccordionSummary, { AccordionSummaryProps } from '@mui/material/AccordionSummary';
 import {

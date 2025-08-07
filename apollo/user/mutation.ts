@@ -399,30 +399,22 @@ export const UNSUBSCRIBE = gql`
 			followingId
 			followerId
 			createdAt
-			updatedAt
 		}
 	}
 `;
 
 /**************************
- *         INQUIRY        *
+ *         CONTACT        *
  *************************/
-export const CREATE_INQUIRY = gql`
-  mutation CreateInquiry($input: CreateInquiryInput!) {
-    createInquiry(input: $input) {
+export const CREATE_CONTACT = gql`
+  mutation CreateContact($createContactInput: CreateContactInput!) {
+    createContact(createContactInput: $createContactInput) {
       _id
-      inquiryType
-      content
-      reply
-      createdAt
-      updatedAt
+	  name
+	  email
+	  subject
+	  message
+	  createdAt
     }
   }
 `;
-
-export const DELETE_INQUIRY = gql`
-  mutation DeleteInquiry($inquiryId: String!) {
-    deleteInquiry(inquiryId: $inquiryId)
-  }
-`;
-

@@ -6,8 +6,9 @@ import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import Notice from '../../libs/components/cs/Notice';
 import Faq from '../../libs/components/cs/Faq';
-import Inquiry from '../../libs/components/cs/Inquiry';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import ContactPage from '../../libs/components/cs/Contact';
+import Contact from '../../libs/components/cs/Contact';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -60,9 +61,9 @@ const CS: NextPage = () => {
 						</div>
 						<div
 							className={tab === 'inquiry' ? 'active' : ''}
-							onClick={() => changeTabHandler('inquiry')}
+							onClick={() => changeTabHandler('contact')}
 						>
-							Inquiry
+							Contact Us
 						</div>
 					</Box>
 				</Box>
@@ -71,7 +72,7 @@ const CS: NextPage = () => {
 				<Box component={'div'} className={'cs-content'}>
 					{tab === 'notice' && <Notice />}
 					{tab === 'faq' && <Faq />}
-					{tab === 'inquiry' && <Inquiry />} {/* ✅ This was missing */}
+					{tab === 'contact' && <Contact  />}
 				</Box>
 			</Stack>
 		</Stack>
