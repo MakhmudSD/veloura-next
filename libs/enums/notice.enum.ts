@@ -7,5 +7,5 @@ export enum NoticeCategory {
 export enum NoticeStatus {
 	BLOCKED = 'BLOCKED',
 	ACTIVE = 'ACTIVE',
-	DELETE = 'DELETE',
+	DELETED = 'DELETED',
 }

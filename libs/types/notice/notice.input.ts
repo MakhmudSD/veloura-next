@@ -11,8 +11,9 @@ export interface NoticeInput {
 
 interface NISearch {
 	noticeCategory?: NoticeCategory;
+	noticeStatus?: NoticeStatus;	
 	noticeTitle?: string;
-	noticeContent?: string;
+    noticeContent?: string;
 	text?: string;
 	memberId?: string;
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import type { NextPage } from 'next';
 import {
   Box, Button, InputAdornment, Stack, Typography, Divider,
   List, ListItem, Select, MenuItem, OutlinedInput, TablePagination, TextField, FormControl
@@ -11,20 +10,31 @@ import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
 import { NoticeCategory, NoticeStatus } from '../../../libs/enums/notice.enum';
-import { GET_NOTICE } from '../../../apollo/user/query';
 import { GET_NOTICES } from '../../../apollo/admin/query';
 import { CREATE_NOTICE, UPDATE_NOTICE } from '../../../apollo/admin/mutation';
 import NoticeList from '../../../libs/components/admin/cs/NoticeList';
 import withAdminLayout from '../../../libs/components/layout/LayoutAdmin';
+import { NoticeInquiry } from '../../../libs/types/notice/notice.input';
+import { T } from '../../../libs/types/common';
+import { Direction } from '../../../libs/enums/common.enum';
 
-const AdminNotice: NextPage = () => {
-  const [tabValue, setTabValue] = useState<'all' | 'active' | 'blocked' | 'deleted'>('all');
-  const [searchInput, setSearchInput] = useState('');
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const user = useReactiveVar(userVar);
+const AdminNotice: React.FC = () => {
   const router = useRouter();
+  const user = useReactiveVar(userVar);
   const noticeId = router.query.id as string | undefined;
+
+  const defaultInquiry: NoticeInquiry = {
+    page: 1,
+    limit: 10,
+    sort: 'createdAt',
+    direction: Direction.DESC,
+    search: {},
+  };
+
+  const [noticeInquiry, setNoticeInquiry] = useState<NoticeInquiry>(defaultInquiry);
+  const [noticeTotal, setNoticeTotal] = useState<number>(0);
+  const [searchInput, setSearchInput] = useState('');
+  const [tabValue, setTabValue] = useState<'ALL' | NoticeStatus>('ALL');
   const [showForm, setShowForm] = useState(false);
   const [shouldOpenFormOnEdit, setShouldOpenFormOnEdit] = useState(false);
   const [formData, setFormData] = useState({
@@ -33,96 +43,108 @@ const AdminNotice: NextPage = () => {
     noticeContent: '',
   });
 
-  const getStatusFilter = () => {
-    switch (tabValue) {
-      case 'active': return NoticeStatus.ACTIVE;
-      case 'blocked': return NoticeStatus.BLOCKED;
-      case 'deleted': return NoticeStatus.DELETE;
-      default: return undefined;
-    }
-  };
-
-  const inputVars = {
-    page: page + 1,
-    limit: rowsPerPage,
-    search: { text: searchInput },
-    sort: 'createdAt',
-    direction: 'DESC',
-    ...(getStatusFilter() ? { noticeStatus: getStatusFilter() } : {}),
-  };
-
-  const { data: editData } = useQuery(GET_NOTICE, {
-    variables: { input: noticeId || '' },
-    skip: !noticeId,
-  });
-
-  const { data, loading, refetch } = useQuery(GET_NOTICES, {
-    variables: { input: inputVars },
-    fetchPolicy: 'cache-and-network',
-    notifyOnNetworkStatusChange: true,
-  });
-
   const [createNotice] = useMutation(CREATE_NOTICE);
   const [updateNotice] = useMutation(UPDATE_NOTICE);
 
-  useEffect(() => {
-    if (editData?.getNotice && shouldOpenFormOnEdit) {
-      const { noticeTitle, noticeContent, noticeCategory } = editData.getNotice;
-      setFormData({ noticeTitle, noticeContent, noticeCategory });
-      setShowForm(true);
-      setShouldOpenFormOnEdit(false);
-    }
-  }, [editData, shouldOpenFormOnEdit]);
+  const { loading, data, refetch } = useQuery(GET_NOTICES, {
+    fetchPolicy: 'network-only',
+    variables: { input: noticeInquiry },
+    notifyOnNetworkStatusChange: true,
+    onCompleted: (data: T) => {
+      setNoticeTotal(data?.getNotices?.metaCounter?.[0]?.total ?? 0);
+    },
+  });
 
-  const handleTabChange = (value: typeof tabValue) => {
+  useEffect(() => {
+    refetch({ input: noticeInquiry });
+  }, [noticeInquiry]);
+
+  useEffect(() => {
+    if (shouldOpenFormOnEdit && noticeId && data?.getNotices?.list) {
+      const found = data.getNotices.list.find((n: any) => n._id === noticeId);
+      if (found) {
+        setFormData({
+          noticeTitle: found.noticeTitle,
+          noticeContent: found.noticeContent,
+          noticeCategory: found.noticeCategory,
+        });
+        setShowForm(true);
+        setShouldOpenFormOnEdit(false);
+      }
+    }
+  }, [shouldOpenFormOnEdit, noticeId, data?.getNotices?.list]);
+
+  const tabChangeHandler = (_: any, value: 'ALL' | NoticeStatus) => {
     setTabValue(value);
-    setPage(0);
+    const updatedInquiry = { ...noticeInquiry, page: 1 };
+    if (value === 'ALL') {
+      delete updatedInquiry.search?.noticeStatus;
+    } else {
+      updatedInquiry.search = {
+        ...updatedInquiry.search,
+        noticeStatus: value,
+      };
+    }
+    setNoticeInquiry(updatedInquiry);
   };
 
   const handleSearchChange = (value: string) => {
     setSearchInput(value);
-    setPage(0);
+    const search = { ...noticeInquiry.search, noticeTitle: value };
+    const updatedInquiry = { ...noticeInquiry, search, page: 1 };
+    setNoticeInquiry(updatedInquiry);
   };
 
   const handleClearSearch = () => {
     setSearchInput('');
-    refetch();
-  };
-
-  const handlePageChange = (_event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-
-  const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
+    const updatedInquiry = { ...noticeInquiry, search: {}, page: 1 };
+    setNoticeInquiry(updatedInquiry);
   };
 
   const handleSubmitNotice = async () => {
-    if (!formData.noticeTitle || !formData.noticeContent || !user?._id) return;
-
-    if (noticeId) {
-      await updateNotice({ variables: { input: { _id: noticeId, ...formData } } });
-    } else {
-      await createNotice({
-        variables: {
-          input: {
-            ...formData,
-            memberId: user._id,
-            noticeStatus: NoticeStatus.ACTIVE,
-          },
-        },
-      });
+    const { noticeTitle, noticeContent, noticeCategory } = formData;
+    if (!noticeTitle.trim() || !noticeContent.trim() || !user?._id) {
+      alert('All fields are required.');
+      return;
     }
-
-    await refetch({ input: inputVars });
-    setFormData({ noticeTitle: '', noticeCategory: NoticeCategory.FAQ, noticeContent: '' });
-    setShowForm(false);
-    router.replace('/_admin/cs/notice');
+    try {
+      if (noticeId) {
+        await updateNotice({
+          variables: {
+            input: {
+              _id: noticeId,
+              noticeTitle,
+              noticeContent,
+              noticeCategory,
+              noticeStatus: NoticeStatus.ACTIVE,
+            },
+          },
+        });
+      } else {
+        await createNotice({
+          variables: {
+            input: {
+              noticeTitle,
+              noticeContent,
+              noticeCategory,
+              memberId: user._id,
+              noticeStatus: NoticeStatus.ACTIVE,
+            },
+          },
+        });
+      }
+      setFormData({ noticeTitle: '', noticeCategory: NoticeCategory.FAQ, noticeContent: '' });
+      setShowForm(false);
+      router.replace('/_admin/cs/notice');
+      await refetch({ input: noticeInquiry });
+    } catch (err) {
+      console.error('Submit failed:', err);
+      alert('Failed to submit notice.');
+    }
   };
 
   return (
-    <Box component="div" className="content">
+    <Box className="content">
       <Box className="title flex_space">
         <Typography variant="h2">Notice Management</Typography>
         <Button
@@ -168,7 +190,9 @@ const AdminNotice: NextPage = () => {
             <FormControl fullWidth>
               <Select
                 value={formData.noticeCategory}
-                onChange={(e) => setFormData({ ...formData, noticeCategory: e.target.value as NoticeCategory })}
+                onChange={(e) =>
+                  setFormData({ ...formData, noticeCategory: e.target.value as NoticeCategory })
+                }
               >
                 <MenuItem value={NoticeCategory.FAQ}>FAQ</MenuItem>
                 <MenuItem value={NoticeCategory.TERMS}>TERMS</MenuItem>
@@ -185,17 +209,11 @@ const AdminNotice: NextPage = () => {
       <Box className="table-wrap">
         <TabContext value={tabValue}>
           <Box>
-            <List className="tab-menu">
-              {(['all', 'active', 'blocked', 'deleted'] as const).map((key) => (
-                <ListItem
-                  key={key}
-                  value={key}
-                  className={tabValue === key ? 'li on' : 'li'}
-                  onClick={() => handleTabChange(key)}
-                >
-                  {key.charAt(0).toUpperCase() + key.slice(1)}
-                </ListItem>
-              ))}
+            <List className={'tab-menu'}>
+              <ListItem value="ALL" className={tabValue === 'ALL' ? 'li on' : 'li'} onClick={(e: any) => tabChangeHandler(e, 'ALL')}>All</ListItem>
+              <ListItem value="ACTIVE" className={tabValue === 'ACTIVE' ? 'li on' : 'li'} onClick={(e: any) => tabChangeHandler(e, NoticeStatus.ACTIVE)}>Active</ListItem>
+              <ListItem value="BLOCKED" className={tabValue === 'BLOCKED' ? 'li on' : 'li'} onClick={(e: any) => tabChangeHandler(e, NoticeStatus.BLOCKED)}>Blocked</ListItem>
+              <ListItem value="DELETED" className={tabValue === 'DELETED' ? 'li on' : 'li'} onClick={(e: any) => tabChangeHandler(e, NoticeStatus.DELETED)}>Deleted</ListItem>
             </List>
             <Divider />
             <Stack className="search-area" sx={{ m: '24px' }}>
@@ -205,8 +223,10 @@ const AdminNotice: NextPage = () => {
                 placeholder="Search notice"
                 endAdornment={
                   <>
-                    {searchInput && <CancelRoundedIcon sx={{ cursor: 'pointer', mr: 1 }} onClick={handleClearSearch} />}
-                    <InputAdornment position="end" onClick={() => refetch({ input: inputVars })}>
+                    {searchInput && (
+                      <CancelRoundedIcon sx={{ cursor: 'pointer', mr: 1 }} onClick={handleClearSearch} />
+                    )}
+                    <InputAdornment position="end" onClick={() => refetch({ input: noticeInquiry })}>
                       <img src="/img/icons/search_icon.png" alt="searchIcon" />
                     </InputAdornment>
                   </>
@@ -215,25 +235,37 @@ const AdminNotice: NextPage = () => {
             </Stack>
             <Divider />
           </Box>
+
           <NoticeList
             notices={data?.getNotices?.list || []}
             loading={loading}
-            page={page + 1}
-            limit={rowsPerPage}
-            refetch={() => refetch({ input: inputVars })}
+            page={noticeInquiry.page}
+            limit={noticeInquiry.limit}
+            refetch={() => refetch({ input: noticeInquiry })}
             onEditClick={(id) => {
               router.push({ pathname: '/_admin/cs/notice', query: { id } }, undefined, { shallow: true });
               setShouldOpenFormOnEdit(true);
+              setShowForm(true);
             }}
           />
+
           <TablePagination
             rowsPerPageOptions={[10, 20, 40]}
             component="div"
-            count={data?.getNotices?.metaCounter?.[0]?.total || 0}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            onPageChange={handlePageChange}
-            onRowsPerPageChange={handleRowsPerPageChange}
+            count={noticeTotal}
+            rowsPerPage={noticeInquiry.limit}
+            page={noticeInquiry.page - 1}
+            onPageChange={(_: any, newPage: any) => {
+              const updated = { ...noticeInquiry, page: newPage + 1 };
+              setNoticeInquiry(updated);
+              refetch({ input: updated });
+            }}
+            onRowsPerPageChange={(e: any) => {
+              const limit = parseInt(e.target.value, 10);
+              const updated = { ...noticeInquiry, page: 1, limit };
+              setNoticeInquiry(updated);
+              refetch({ input: updated });
+            }}
           />
         </TabContext>
       </Box>
