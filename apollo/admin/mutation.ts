@@ -243,3 +243,43 @@ mutation ReplyToInquiry($input: ReplyInquiryInput!) {
     }
 }
 `;
+
+
+/**************************
+ *         FAQ        *
+ *************************/
+
+export const CREATE_FAQ = gql`
+  mutation CreateFaq($input: FaqInput!) {
+    createFaq(input: $input) {
+      _id
+	  question
+	  answer
+	  status
+	  category
+	  createdAt
+	  updatedAt
+    }
+  }
+`;
+
+export const UPDATE_FAQ = gql`
+  mutation UpdateFaq($input: UpdateFaqInput!) {
+    updateFaq(input: $input) {
+      _id
+      question
+      answer
+      status
+      category
+      createdAt
+      updatedAt
+    }
+  }
+`;
+
+export const DELETE_FAQ = gql`
+  mutation DeleteFaq($id: String!) {
+    deleteFaq(id: $id)
+  }
+`;
+
