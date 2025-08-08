@@ -12,9 +12,10 @@ import { Member } from '../../libs/types/member/member';
 import { LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_STORES } from '../../apollo/user/query';
-import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
-import { Messages } from '../../libs/config';
+import { sweetErrorAlert, sweetLoginConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
 import { Message } from '../../libs/enums/common.enum';
+import { userVar } from '../../apollo/store';
+
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -118,19 +119,26 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 		setCurrentPage(value);
 	};
 
-	const likeMemberHandler = async (user: any, id: string) => {
+	const likeMemberHandler = async (store: Member, id: string) => {
 		try {
+			const user = userVar();
+			if (!user || !user._id) {
+				await sweetMixinErrorAlert(
+					'You need to login to like a store Please Login, or Register to continue',
+				);
+				return;
+			}
+	
 			if (!id) return;
-			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
-			await likeTargetMember({ variables: { input: id } }); // server update
-
-			await getStoresRefetch({ input: searchFilter }); // frontend update
-			await sweetTopSmallSuccessAlert('success', 800);
+	
+			await likeTargetMember({ variables: { input: id } }); // Server update
+			await getStoresRefetch({ input: searchFilter }); // Refetch updated list
 		} catch (err: any) {
 			console.error('ERROR on likeMemberHandler', err.message);
 			sweetMixinErrorAlert(err.message).then();
 		}
 	};
+	
 
 	if (device === 'mobile') {
 		return <h1>STORES PAGE MOBILE</h1>;
@@ -223,7 +231,8 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 							</Box>
 						) : (
 							stores.map((store: Member) => {
-								return <StoreCard store={store} likeMemberHandler={likeMemberHandler} key={store._id} />;
+								return <StoreCard store={store} likeMemberHandler={likeMemberHandler} user={userVar()} key={store._id} />
+								;
 							})
 						)}
 					</Stack>

@@ -10,35 +10,39 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { useRouter } from 'next/router';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
 
 interface StoreCardProps {
 	store: any;
-	likeMemberHandler: any
+	likeMemberHandler: any;
 	myFavorites?: boolean;
 	recentlyVisited?: boolean;
+	user?: any;
 }
-
 
 const StoreCard = (props: StoreCardProps) => {
 	const { store, likeMemberHandler, myFavorites, recentlyVisited } = props;
 	const device = useDeviceDetect();
-		const router = useRouter();
-
+	const router = useRouter();
 	const user = useReactiveVar(userVar);
-		const [liked, setLiked] = useState(store?.meLiked?.[0]?.myFavorite || false);
-		const [glow, setGlow] = useState(false);
-	const imagePath: string = store?.memberImage
-	? `${process.env.REACT_APP_API_URL}/${store?.memberImage}`
-	: '/img/profile/defaultStore.jpg';
 
-			const handleLikeClick = (e: React.MouseEvent) => {
-				e.preventDefault();
-				e.stopPropagation();
-				likeMemberHandler(user, store._id);
-				setLiked((prev: any) => !prev);
-				setGlow(true);
-				setTimeout(() => setGlow(false), 600);
-			};
+	const [liked, setLiked] = useState(store?.meLiked?.[0]?.myFavorite || false);
+	const [glow, setGlow] = useState(false);
+
+	const imagePath: string = store?.memberImage
+		? `${process.env.REACT_APP_API_URL}/${store?.memberImage}`
+		: '/img/profile/defaultStore.jpg';
+
+	const handleLikeClick = (data: { storeId: string; userId: string }) => {
+		if (!user || !user._id) {
+			sweetMixinErrorAlert('You must be logged in to like a store.');
+			return;
+		}
+		likeMemberHandler(user, data.storeId);
+		setLiked((prev: any) => !prev);
+		setGlow(true);
+		setTimeout(() => setGlow(false), 600);
+	};
 
 	if (device === 'mobile') {
 		return <div>STORE CARD</div>;
@@ -54,15 +58,14 @@ const StoreCard = (props: StoreCardProps) => {
 						<h1>
 							<img src="/img/stores/address.png" alt="phone" />
 							{store.memberAddress ?? 'Seoul'}
-						</h1>{' '}
-						{/* Re-added the address */}
+						</h1>
 						<strong>{store.memberNick}</strong>
 						<p>
-							{' '}
 							<img src="/img/stores/contact.png" alt="phone" />
 							{store.memberPhone}
 						</p>
 					</Stack>
+
 					<Stack className="top-store-card-middle">
 						<span>{store?.memberDesc ?? 'No Description'}</span>
 					</Stack>
@@ -84,7 +87,7 @@ const StoreCard = (props: StoreCardProps) => {
 							<span className="icon">
 								<img src="/img/icons/product.png" alt="products" />
 							</span>
-							<span> {store.memberProducts} Products</span>
+							<span>{store.memberProducts} Products</span>
 						</div>
 					</Stack>
 
@@ -104,11 +107,17 @@ const StoreCard = (props: StoreCardProps) => {
 								<RemoveRedEyeIcon />
 								<Typography>{store?.memberViews}</Typography>
 							</Box>
-							<IconButton className={`like-btn ${glow ? 'glow' : ''}`} onClick={handleLikeClick}>
+
+							<IconButton
+								className={`like-btn ${glow ? 'glow' : ''}`}
+								onClick={() => handleLikeClick({ storeId: store._id, userId: user?._id })}
+								disabled={!user?._id}
+								title={!user?._id ? 'Login required to like' : 'Like this store'}
+							>
 								{liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
 									<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
 								) : (
-									<FavoriteBorderIcon />
+									<FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
 								)}
 							</IconButton>
 						</div>
