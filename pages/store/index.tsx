@@ -12,8 +12,7 @@ import { Member } from '../../libs/types/member/member';
 import { LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_STORES } from '../../apollo/user/query';
-import { sweetErrorAlert, sweetLoginConfirmAlert, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
-import { Message } from '../../libs/enums/common.enum';
+import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
 import { userVar } from '../../apollo/store';
 
 

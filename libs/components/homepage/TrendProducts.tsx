@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
 import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import WestIcon from '@mui/icons-material/West';
-import EastIcon from '@mui/icons-material/East';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation, Pagination } from 'swiper';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_PRODUCTS } from '../../../apollo/user/query';
 import { LIKE_TARGET_PRODUCT } from '../../../apollo/user/mutation';
-import { sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../sweetAlert';
 import { T } from '../../types/common';
 import { Message } from '../../enums/common.enum';
 import { ProductsInquiry } from '../../types/product/product.input';
@@ -18,6 +15,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { useRouter } from 'next/router';
+import { userVar } from '../../../apollo/store';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
 
 interface TrendProductsProps {
 	initialInput: ProductsInquiry;
@@ -28,6 +27,9 @@ const TrendProducts = (props: TrendProductsProps) => {
 	const router = useRouter();
 	const device = useDeviceDetect();
 	const [trendProducts, setTrendProducts] = useState<Product[]>([]);
+		const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(
+			router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
+		);
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
@@ -47,15 +49,25 @@ const TrendProducts = (props: TrendProductsProps) => {
 
 	/** HANDLERS **/
 
-	const likeProductHandler = async (user: T, id: string) => {
-		try {
-			if (!id) return;
-			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
 
-			await likeTargetProduct({ variables: { input: id } }); // just server update, no refetch
-			await getProductsRefetch({ input: initialInput }); // frontend update
+	const likeProductHandler = async (user: T, id: string) => {
+			try {
+				const user = userVar();
+				if (!user || !user._id) {
+					await sweetMixinErrorAlert(
+						'You need to login to like a store Please Login, or Register to continue',
+					);
+					return;
+				}
+		
+				if (!id) return;
+				await likeTargetProduct({ variables: { input: id } }); // Server update
+				await getProductsRefetch({ input: searchFilter }); 
+		
 		} catch (err: any) {
 			console.error('ERROR on likeProductHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
+		
 		}
 	};
 
@@ -93,7 +105,7 @@ const TrendProducts = (props: TrendProductsProps) => {
 								{trendProducts.map((product: Product) => {
 									return (
 										<SwiperSlide key={product._id} className={'trend-product-slide'}>
-											<TrendProductCard product={product} likeProductHandler={likeProductHandler} />
+											<TrendProductCard product={product} user={userVar()} likeProductHandler={likeProductHandler} />
 										</SwiperSlide>
 									);
 								})}

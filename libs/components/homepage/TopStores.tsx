@@ -18,6 +18,8 @@ import { T } from '../../types/common';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
+import { userVar } from '../../../apollo/store';
 
 interface TopStoresProps {
 	initialInput: StoreInquiry;
@@ -28,6 +30,9 @@ const TopStores = (props: TopStoresProps) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const [topStores, setTopStores] = useState<Member[]>([]);
+	const [searchFilter, setSearchFilter] = useState<any>(
+		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
+	);
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
@@ -51,15 +56,21 @@ const TopStores = (props: TopStoresProps) => {
 	});
 
 	/** HANDLERS **/
-	const likeMemberHandler = async (user: T, id: string) => {
+	const likeMemberHandler = async (store: Member, id: string) => {
 		try {
-			if (!id) return;
-			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
+			const user = userVar();
+			if (!user || !user._id) {
+				await sweetMixinErrorAlert('You need to login to like a store Please Login, or Register to continue');
+				return;
+			}
 
-			await likeTargetMember({ variables: { input: id } });
-			await getStoresRefetch({ input: initialInput });
+			if (!id) return;
+
+			await likeTargetMember({ variables: { input: id } }); // Server update
+			await getStoresRefetch({ input: searchFilter }); // Refetch updated list
 		} catch (err: any) {
 			console.error('ERROR on likeMemberHandler', err.message);
+			sweetMixinErrorAlert(err.message).then();
 		}
 	};
 
@@ -142,7 +153,7 @@ const TopStores = (props: TopStoresProps) => {
 							>
 								{topStores.map((store: Member) => (
 									<SwiperSlide className="top-stores-slide" key={store._id}>
-										<TopStoreCard store={store} likeMemberHandler={likeMemberHandler} />
+										<TopStoreCard store={store} user={userVar()} likeMemberHandler={likeMemberHandler} />
 									</SwiperSlide>
 								))}
 							</Swiper>

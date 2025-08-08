@@ -33,15 +33,13 @@ const StoreCard = (props: StoreCardProps) => {
 		? `${process.env.REACT_APP_API_URL}/${store?.memberImage}`
 		: '/img/profile/defaultStore.jpg';
 
-	const handleLikeClick = (data: { storeId: string; userId: string }) => {
-		if (!user || !user._id) {
-			sweetMixinErrorAlert('You must be logged in to like a store.');
-			return;
-		}
-		likeMemberHandler(user, data.storeId);
-		setLiked((prev: any) => !prev);
-		setGlow(true);
-		setTimeout(() => setGlow(false), 600);
+  const handleLikeClick = (e: React.MouseEvent, productId: string) => {
+	  e.preventDefault();
+	  e.stopPropagation();
+	  likeMemberHandler(user, productId);
+	  setLiked((prev: any) => !prev);
+	  setGlow(true);
+	  setTimeout(() => setGlow(false), 600);
 	};
 
 	if (device === 'mobile') {
@@ -110,7 +108,7 @@ const StoreCard = (props: StoreCardProps) => {
 
 							<IconButton
 								className={`like-btn ${glow ? 'glow' : ''}`}
-								onClick={() => handleLikeClick({ storeId: store._id, userId: user?._id })}
+								onClick={(e: any) => handleLikeClick(e, store._id)}
 								disabled={!user?._id}
 								title={!user?._id ? 'Login required to like' : 'Like this store'}
 							>

@@ -401,7 +401,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 										/>
 										<Stack className="button-box">
 											<Typography>{wordsCnt}/100</Typography>
-											<Button onClick={createCommentHandler} style={{ backgroundColor: '#b8860b' }}>Comment</Button>
+											<Button onClick={createCommentHandler} style={{ bac: '#b8860b' }}>Comment</Button>
 										</Stack>
 									</Stack>
 								</Stack>

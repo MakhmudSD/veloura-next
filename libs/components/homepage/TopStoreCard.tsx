@@ -8,12 +8,14 @@ import { userVar } from '../../../apollo/store';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
 
 interface TopStoreProps {
 	store: Member;
 	likeMemberHandler: any;
 	myFavorites?: boolean;
 	recentlyVisited?: boolean;
+	user?: any;
 }
 
 const TopStoreCard = (props: TopStoreProps) => {
@@ -32,10 +34,10 @@ const TopStoreCard = (props: TopStoreProps) => {
 		router.push({ pathname: '/store/detail', query: { id: storeId } });
 	};
 
-	const handleLikeClick = (e: React.MouseEvent) => {
+	const handleLikeClick = (e: React.MouseEvent, productId: string) => {
 		e.preventDefault();
 		e.stopPropagation();
-		likeMemberHandler(user, store._id);
+		likeMemberHandler(user, productId);
 		setLiked((prev) => !prev);
 		setGlow(true);
 		setTimeout(() => setGlow(false), 600);
@@ -111,11 +113,22 @@ const TopStoreCard = (props: TopStoreProps) => {
 								<RemoveRedEyeIcon />
 								<Typography>{store?.memberViews}</Typography>
 							</Box>
-							<IconButton className={`like-btn ${glow ? 'glow' : ''}`} onClick={handleLikeClick}>
+							<IconButton
+								color="default"
+								onClick={(e: any) => {
+									e.stopPropagation();
+									if (!user || !user._id) {
+										sweetMixinErrorAlert('You must be logged in to like a product.');
+										return;
+									}
+									handleLikeClick(e, store._id);
+								}}
+								title={!user?._id ? 'Login required to like' : 'Like this product'}
+							>
 								{liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
 									<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
 								) : (
-									<FavoriteBorderIcon />
+									<FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
 								)}
 							</IconButton>
 						</div>
