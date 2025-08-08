@@ -253,7 +253,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
                   classes={{ ul: 'custom-pagination-ul' }}
                 />
                 <Typography className="total-result">
-                  Showing <strong>{products.length}</strong> of <strong>{total}</strong> products
+                  Showing {products.length} of {total} products
                 </Typography>
               </Stack>
             )}

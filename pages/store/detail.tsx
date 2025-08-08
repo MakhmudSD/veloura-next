@@ -36,6 +36,7 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 
 	const [mbId, setMbId] = useState<string | null>(null);
 	const [store, setStore] = useState<Member | null>(null);
+	const [total, setTotal] = useState<number>(0);
 	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(initialInput);
 	const [storeProducts, setStoreProducts] = useState<Product[]>([]);
 	const [productTotal, setProductTotal] = useState<number>(0);
@@ -54,9 +55,9 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 		const id = router.query.id;
 		console.log('router.query.id:', id);
 		if (id && typeof id === 'string') {
-		  setMbId(id);
+			setMbId(id);
 		}
-	  }, [router.isReady, router.query.id]);
+	}, [router.isReady, router.query.id]);
 
 	/** APOLLO REQUESTS **/
 	const {
@@ -226,16 +227,34 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 			<Stack className={'store-detail-page'}>
 				<Stack className={'container'}>
 					<Stack className={'store-info'}>
-						<img
-							src={store?.memberImage ? `${REACT_APP_API_URL}/${store?.memberImage}` : '/img/profile/defaultUser.svg'}
-							alt=""
-						/>
-						<Box component={'div'} className={'info'} onClick={() => redirectToMemberPageHandler(store?._id as string)}>
-							<strong>{store?.memberFullName ?? store?.memberNick}</strong>
-							<div>
-								<img src="/img/icons/call.svg" alt="" />
-								<span>{store?.memberPhone}</span>
-							</div>
+						<Box className={'left'}>
+							<img
+								src={
+									store?.memberImage ? `${REACT_APP_API_URL}/${store?.memberImage}` : '/img/profile/defaultStore.jpg'
+								}
+								alt=""
+							/>
+							<Box
+								component={'div'}
+								className={'info'}
+								onClick={() => redirectToMemberPageHandler(store?._id as string)}
+							>
+								<strong>{store?.memberFullName ?? store?.memberNick}</strong>
+								<div>
+									<img src="/img/icons/call.svg" alt="" />
+									<span>{store?.memberPhone}</span>
+								</div>
+								<div>
+									<img src="/img/stores/description.png" alt="Description" />
+									<p>
+										{store?.memberDesc ??
+											'Discover timeless luxury with our handcrafted jewelry collections. Each piece is a symbol of elegance and refined artistry.'}
+									</p>
+								</div>
+							</Box>
+						</Box>
+						<Box className="right">
+							<p>“Jewelry is not just an accessory — it’s a memory in gold.”</p>
 						</Box>
 					</Stack>
 					<Stack className={'store-home-list'}>
@@ -251,16 +270,19 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 								<>
 									<Stack className="pagination-box">
 										<Pagination
-											page={searchFilter.page}
-											count={Math.ceil(productTotal / searchFilter.limit) || 1}
 											onChange={productPaginationChangeHandler}
-											shape="circular"
-											color="primary"
+											variant="outlined"
+											shape="rounded"
+											siblingCount={1}
+											boundaryCount={1}
+											hidePrevButton={false}
+											hideNextButton={false}
+											classes={{ ul: 'custom-pagination-ul' }}
 										/>
+										<Typography className="total-result">
+											Showing {productTotal} of {productTotal} products
+										</Typography>
 									</Stack>
-									<span>
-										Total {productTotal} product{productTotal > 1 ? 's' : ''} available
-									</span>
 								</>
 							) : (
 								<div className={'no-data'}>
@@ -286,15 +308,34 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 								{storeComments?.map((comment: Comment) => (
 									<ReviewCard comment={comment} key={comment?._id} />
 								))}
-								<Box component={'div'} className={'pagination-box'}>
-									<Pagination
-										page={commentInquiry.page}
-										count={Math.ceil(commentTotal / commentInquiry.limit) || 1}
-										onChange={commentPaginationChangeHandler}
-										shape="circular"
-										color="primary"
-									/>
-								</Box>
+								<Stack className={'pagination'}>
+									{commentTotal ? (
+										<>
+											<Stack className="pagination-box">
+												<Pagination
+													page={commentInquiry.page}
+													count={Math.ceil(commentTotal / commentInquiry.limit)}
+													onChange={commentPaginationChangeHandler}
+													variant="outlined"
+													shape="rounded"
+													siblingCount={1}
+													boundaryCount={1}
+													hidePrevButton={false}
+													hideNextButton={false}
+													classes={{ ul: 'custom-pagination-ul' }}
+												/>
+												<Typography className="total-result">
+													Showing {commentTotal} of {commentTotal} products
+												</Typography>
+											</Stack>
+										</>
+									) : (
+										<div className={'no-data'}>
+											<img src="/img/icons/icoAlert.svg" alt="" />
+											<p>No products found!</p>
+										</div>
+									)}
+								</Stack>
 							</Stack>
 						)}
 

@@ -246,7 +246,7 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 
 					{stores.length !== 0 && (
 				 <Typography className="total-result">
-				 Showing <strong>{stores.length}</strong> of <strong>{total}</strong> stores
+				 Showing {stores.length}  of {total} stores
 			   </Typography>
 					)}
 					</Stack>
