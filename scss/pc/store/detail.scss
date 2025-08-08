@@ -553,43 +553,44 @@
 					border: 1px solid #d4af37; // gold accent border
 					border-radius: 12px;
 					padding: 30px 34px;
+					margin-top: 40px;
 					background: #fffaf3; // soft off-white with a hint of gold tone
 					box-shadow: 0px 4px 10px rgba(212, 175, 55, 0.15);
 					font-family: 'Judson', 'Inter', sans-serif;
-					width: 40%;
-					height: 100%;
-
+					width: 100%; // full width
+					height: auto;
+				
 					.main-title {
 						font-size: 20px;
 						font-weight: 600;
-						color: #b8860b; // gold text
+						color: #b8860b;
 						text-align: center;
 						margin-bottom: 12px;
-						border-bottom: 1px solid #e6d7a6; // subtle gold-tinted divider
+						border-bottom: 1px solid #e6d7a6;
 						padding-bottom: 10px;
 					}
-
+				
 					.review-title {
 						margin-top: 20px;
 						font-size: 15px;
 						font-weight: 600;
-						color: #7a5a16; // deeper gold/brown
+						color: #7a5a16;
 					}
-
+				
 					textarea {
 						width: 100%;
 						height: 120px;
 						border-radius: 10px;
-						border: 1px solid #e6d7a6; // soft gold border
+						border: 1px solid #e6d7a6;
 						padding: 15px;
 						margin-top: 8px;
 						font-size: 14px;
 						color: #3b3b3b;
 						font-family: 'Inter', sans-serif;
 						resize: none;
-						background: #fffdf8; // slightly warm background
+						background: #fffdf8;
 						transition: border-color 0.2s ease;
-
+				
 						&:focus {
 							outline: none;
 							border-color: #d4af37;
@@ -597,11 +598,11 @@
 							box-shadow: 0 0 6px rgba(212, 175, 55, 0.3);
 						}
 					}
-
+				
 					.submit-btn {
 						display: flex;
 						justify-content: flex-end;
-
+				
 						.submit-review {
 							display: flex;
 							align-items: center;
@@ -611,45 +612,43 @@
 							border-radius: 12px;
 							border: none;
 							cursor: pointer;
-							background: linear-gradient(135deg, #d4af37, #b8860b); // gold gradient
+							background: linear-gradient(135deg, #d4af37, #b8860b);
 							transition: all 0.3s ease;
 							box-shadow: 0px 3px 8px rgba(212, 175, 55, 0.35);
-
+				
 							&:hover:enabled {
 								background: linear-gradient(135deg, #b8860b, #a27409);
 								box-shadow: 0px 4px 10px rgba(212, 175, 55, 0.45);
 								transform: translateY(-2px);
 							}
-
+				
 							&:disabled {
 								background: #f3f3f3;
 								cursor: not-allowed;
 								box-shadow: none;
 								opacity: 0.8;
 							}
-
+				
 							.title {
 								font-size: 15px;
 								font-weight: 700;
-								color: #fff; // white text for contrast
+								color: #fff;
 								font-family: 'Judson', 'Inter', sans-serif;
 								letter-spacing: 0.5px;
 							}
-
+				
 							svg {
 								fill: #fff;
 								transition: transform 0.3s ease;
 							}
-
+				
 							&:hover svg {
 								transform: scale(1.1);
 							}
 						}
-
-						/* Pagination centered at the bottom */
-
 					}
 				}
+				
 
 			}
 

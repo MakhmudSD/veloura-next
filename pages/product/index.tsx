@@ -28,6 +28,9 @@ import { useMutation, useQuery } from '@apollo/client';
 import ProductCard from '../../libs/components/product/ProductCard';
 import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
 import { T } from '../../libs/types/common';
+import { userVar } from '../../apollo/store';
+import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
+
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -68,12 +71,19 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	});
 
 	const likeProductHandler = async (user: T, id: string) => {
-		try {
-			if (!id) return;
-			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
-
-			await likeTargetProduct({ variables: { input: id } });
-			await getProductsRefetch({ input: initialInput });
+			try {
+				const user = userVar();
+				if (!user || !user._id) {
+					await sweetMixinErrorAlert(
+						'You need to login to like a store Please Login, or Register to continue',
+					);
+					return;
+				}
+		
+				if (!id) return;
+				await likeTargetProduct({ variables: { input: id } }); // Server update
+				await getProductsRefetch({ input: searchFilter }); 
+		
 		} catch (err: any) {
 			console.error('ERROR on likeProductHandler', err.message);
 		}
@@ -215,7 +225,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 								<div className="no-data">No Products Found! ✨</div>
 							) : (
 								products.map((product: Product) => (
-									<ProductCard key={product._id} product={product} likeProductHandler={likeProductHandler} />
+									<ProductCard key={product._id} product={product} user={userVar()} likeProductHandler={likeProductHandler} />
 								))
 							)}
 						</Stack>

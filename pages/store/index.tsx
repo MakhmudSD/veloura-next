@@ -72,11 +72,6 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 	}, [searchFilter]);
 
 	/** HANDLERS **/
-	const handlePaginationChange = async (event: ChangeEvent<unknown>, value: number) => {
-		const updatedFilter = { ...searchFilter, page: value };
-		setSearchFilter(updatedFilter);
-		setCurrentPage(value);
-	};
 
 	const sortingClickHandler = (e: MouseEvent<HTMLElement>) => {
 		setAnchorEl(e.currentTarget);

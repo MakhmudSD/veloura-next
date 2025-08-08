@@ -4,20 +4,22 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
+import { useRouter } from 'next/router';
+import { useReactiveVar } from '@apollo/client';
 import Link from 'next/link';
 import { Product } from '../../types/product/product';
 import { REACT_APP_API_URL, topProductRank } from '../../config';
 import { formatterStr } from '../../utils';
-import { useReactiveVar } from '@apollo/client';
 import { basketItemsVar, userVar } from '../../../apollo/store';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { useRouter } from 'next/router';
+import { sweetMixinErrorAlert } from '../../sweetAlert';
 
 interface ProductCardType {
   product: Product;
   likeProductHandler?: any;
   myFavorites?: boolean;
   recentlyVisited?: boolean;
+  user?: any;
 }
 
 const ProductCard = ({
@@ -25,38 +27,34 @@ const ProductCard = ({
   likeProductHandler,
   myFavorites,
   recentlyVisited,
+  user = useReactiveVar(userVar),
 }: ProductCardType) => {
   const device = useDeviceDetect();
-  const user = useReactiveVar(userVar);
   const router = useRouter();
+
   const [liked, setLiked] = useState(product?.meLiked?.[0]?.myFavorite || false);
   const [glow, setGlow] = useState(false);
   const [stars, setStars] = useState<number>(0);
-  
 
-
-  const image1 = product?.productImages[0]
+  const image1 = product?.productImages?.[0]
     ? `${REACT_APP_API_URL}/${product?.productImages[0]}`
     : '/img/banner/header1.svg';
-  const image2 = product?.productImages[1]
+  const image2 = product?.productImages?.[1]
     ? `${REACT_APP_API_URL}/${product?.productImages[1]}`
     : image1;
 
-      useEffect(() => {
-        if (product) {
-          const commentCount = product?.productComments || 0;
-          const likeCount = product?.productLikes || 0;
-          const viewCount = product?.productViews || 0;
-      
-          const calculatedStars = Math.min(5, (commentCount + likeCount + viewCount) / 3);
-          setStars(calculatedStars);
-        }
-      }, [product]);
-      
-  const handleLikeClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    likeProductHandler(user, product._id);
+  useEffect(() => {
+    if (product) {
+      const commentCount = product?.productComments || 0;
+      const likeCount = product?.productLikes || 0;
+      const viewCount = product?.productViews || 0;
+      const calculatedStars = Math.min(5, (commentCount + likeCount + viewCount) / 3);
+      setStars(calculatedStars);
+    }
+  }, [product]);
+
+  const handleLikeClick = (productId: string) => {
+    likeProductHandler(user, productId);
     setLiked((prev) => !prev);
     setGlow(true);
     setTimeout(() => setGlow(false), 600);
@@ -79,7 +77,7 @@ const ProductCard = ({
         productPrice: price,
         itemQuantity: 1,
         ringSize: null,
-        weight: null
+        weight: null,
       });
     }
 
@@ -90,11 +88,10 @@ const ProductCard = ({
     router.push({ pathname: '/product/detail', query: { id: productId } });
   };
 
-    const handleAddClick = (e: React.MouseEvent) => {
-      e.stopPropagation();
-      handleAdd(product._id, product.productTitle, image1, product.productPrice);
-    };
-  
+  const handleAddClick = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    handleAdd(product._id, product.productTitle, image1, product.productPrice);
+  };
 
   const badgeList = [];
   if (product.productRank > topProductRank) badgeList.push({ label: 'TOP', color: 'black' });
@@ -110,56 +107,55 @@ const ProductCard = ({
   return (
     <div className={`card-config ${recentlyVisited ? 'recently-visited' : ''}`}>
       {/* IMAGE */}
-          <Box className="card-img" onClick={() => pushDetailHandler(product._id)}>
-            <img className="main-img" src={image1} alt={product.productTitle} />
-            {product?.productImages?.[1] && (
-              <img
-                className="hover-img"
-                src={`${REACT_APP_API_URL}/${product.productImages[1]}`}
-                alt={product.productTitle}
-              />
-            )}
-            {product?.productCategory && (
-              <Box className="badge">
-                <Typography className="badge-text">{product.productCategory}</Typography>
-              </Box>
-            )}
-            {!recentlyVisited && (
-              <div className="btn-group">
-                <Box className="views">
-                <span>{product?.productViews}</span>
-                  <RemoveRedEyeIcon style={{ fontSize: '26px', marginTop: "7px" }} />
-                </Box>
-                <button className="add-to-basket-btn" onClick={handleAddClick}>
-                  <span>Add to Cart</span>
-                </button>
-                <IconButton color="default" onClick={handleLikeClick}>
-                  {(liked || myFavorites || product?.meLiked?.[0]?.myFavorite) ? (
-                    <FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
-                  ) : (
-                    <FavoriteBorderIcon />
-                  )}
-                </IconButton>
-              </div>
-            )}
+      <Box className="card-img" onClick={() => pushDetailHandler(product._id)}>
+        <img className="main-img" src={image1} alt={product.productTitle} />
+        {product?.productImages?.[1] && (
+          <img className="hover-img" src={image2} alt={product.productTitle} />
+        )}
+        {product?.productCategory && (
+          <Box className="badge">
+            <Typography className="badge-text">{product.productCategory}</Typography>
           </Box>
+        )}
+        {!recentlyVisited && (
+          <div className="btn-group">
+            <Box className="views">
+              <span>{product?.productViews}</span>
+              <RemoveRedEyeIcon style={{ fontSize: '26px', marginTop: '7px' }} />
+            </Box>
+            <button className="add-to-basket-btn" onClick={handleAddClick}>
+              <span>Add to Cart</span>
+            </button>
+            <IconButton
+              color="default"
+              onClick={(e: any) => {
+                e.stopPropagation();
+                if (!user || !user._id) {
+                  sweetMixinErrorAlert('You must be logged in to like a product.');
+                  return;
+                }
+                handleLikeClick(product._id);
+              }}
+              title={!user?._id ? 'Login required to like' : 'Like this product'}
+            >
+              {(liked || myFavorites || product?.meLiked?.[0]?.myFavorite) ? (
+                <FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
+              ) : (
+                <FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
+              )}
+            </IconButton>
+          </div>
+        )}
+      </Box>
 
       {/* INFO */}
       <div className="info-bottom">
         <div className="info">
-          <Typography className="price">
-            ₩{formatterStr(product.productPrice)}
-          </Typography>
+          <Typography className="price">₩{formatterStr(product.productPrice)}</Typography>
           <Typography className="title">{product.productTitle}</Typography>
           <Box className="product-stars">
-          <Rating
-            name="read-only"
-            value={stars}
-            readOnly
-            precision={0.5}
-            size="small"
-          />
-        </Box>
+            <Rating name="read-only" value={stars} readOnly precision={0.5} size="small" />
+          </Box>
 
           <div className="meta">
             <div className="meta-item">
@@ -177,12 +173,8 @@ const ProductCard = ({
           </div>
 
           <div className="types">
-            <span className={product.productLimited ? '' : 'disabled-type'}>
-              Limited Edition
-            </span>
-            <span className={product.productBarter ? '' : 'disabled-type'}>
-              Barter
-            </span>
+            <span className={product.productLimited ? '' : 'disabled-type'}>Limited Edition</span>
+            <span className={product.productBarter ? '' : 'disabled-type'}>Barter</span>
           </div>
         </div>
       </div>
