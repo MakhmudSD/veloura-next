@@ -227,28 +227,32 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 							})
 						)}
 					</Stack>
-					<Stack className="pagination-box">
-					{stores.length !== 0 && Math.ceil(total / searchFilter.limit) > 1 && (
-					<Pagination
-						page={currentPage}
-						count={Math.ceil(total / searchFilter.limit)}
-						onChange={handlePaginationChange}
-						variant="outlined"
-						shape="rounded"
-						siblingCount={1}
-						boundaryCount={1}
-						hidePrevButton={false}
-						hideNextButton={false}
-						className="custom-pagination"
-					/>
-					)}
-
-
-					{stores.length !== 0 && (
-				 <Typography className="total-result">
-				 Showing {stores.length}  of {total} stores
-			   </Typography>
-					)}
+					<Stack className={'pagination'}>
+						{stores.length ? (
+							<>
+								<Stack className="pagination-box">
+									<Pagination
+										count={Math.ceil(stores.length / initialInput.limit)}
+										onChange={paginationChangeHandler}
+										variant="outlined"
+										shape="rounded"
+										siblingCount={1}
+										boundaryCount={1}
+										hidePrevButton={false}
+										hideNextButton={false}
+										classes={{ ul: 'custom-pagination-ul' }}
+									/>
+									<Typography className="total-result">
+										Showing {stores.length} of {stores.length} products
+									</Typography>
+								</Stack>
+							</>
+						) : (
+							<div className={'no-data'}>
+								<img src="/img/icons/icoAlert.svg" alt="" />
+								<p>No products found!</p>
+							</div>
+						)}
 					</Stack>
 				</Stack>
 			</Stack>

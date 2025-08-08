@@ -8,8 +8,6 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay, Navigation, Pagination } from 'swiper';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import WestIcon from '@mui/icons-material/West';
-import EastIcon from '@mui/icons-material/East';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { Product } from '../../libs/types/product/product';
@@ -40,7 +38,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
-console.log("hi! keldi!")
+console.log('hi! keldi!');
 
 const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
@@ -64,7 +62,6 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		commentContent: '',
 		commentRefId: '',
 	});
-	
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
@@ -147,7 +144,6 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		}
 	}, [router]);
 
-
 	useEffect(() => {
 		if (commentInquiry.search.commentRefId) {
 			getCommentsRefetch({
@@ -164,7 +160,6 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		}
 	}, [product, slideImage]);
 
-
 	useEffect(() => {
 		if (product) {
 			const commentCount = product?.productComments || 0;
@@ -175,7 +170,6 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 			setStars(calculatedStars);
 		}
 	}, [product]);
-
 
 	/** HANDLERS **/
 	const changeImageHandler = (image: string) => {
@@ -228,8 +222,6 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		}
 	};
 
-	
-
 	const selectedWeight = productWeight[ringSize.indexOf(selectedRingSize)];
 
 	const createCommentHandler = async () => {
@@ -243,35 +235,34 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		}
 	};
 
- const handleAdd = (
-id: string, title: string, image: string, price: number, p0: number, p1: number  ) => {
-	const currentItems = basketItemsVar();
-	const index = currentItems.findIndex((item) => item.productId === id);
-	const updatedItems = [...currentItems];
-  
-	if (index > -1) {
-	  updatedItems[index].itemQuantity += 1;
-	} else {
-	  updatedItems.push({
-		id,
-		_id: id,
-		productId: id,
-		productTitle: title,
-		productImages: image,
-		productPrice: price, // ✅ FIXED
-		itemQuantity: 1,
-		ringSize: null,
-		weight: null,
-	  });
-	}
-  
-	basketItemsVar(updatedItems);
-  };
+	const handleAdd = (id: string, title: string, image: string, price: number, p0: number, p1: number) => {
+		const currentItems = basketItemsVar();
+		const index = currentItems.findIndex((item) => item.productId === id);
+		const updatedItems = [...currentItems];
 
-		/** HANDLERS **/
-		const pushDetailHandler = async (storeId: string) => {
-			router.push({ pathname: '/store/detail', query: { id: storeId } });
-		};
+		if (index > -1) {
+			updatedItems[index].itemQuantity += 1;
+		} else {
+			updatedItems.push({
+				id,
+				_id: id,
+				productId: id,
+				productTitle: title,
+				productImages: image,
+				productPrice: price, // ✅ FIXED
+				itemQuantity: 1,
+				ringSize: null,
+				weight: null,
+			});
+		}
+
+		basketItemsVar(updatedItems);
+	};
+
+	/** HANDLERS **/
+	const pushDetailHandler = async (storeId: string) => {
+		router.push({ pathname: '/store/detail', query: { id: storeId } });
+	};
 
 	const handleAddClick = (e: React.MouseEvent) => {
 		e.stopPropagation();
@@ -373,22 +364,23 @@ id: string, title: string, image: string, price: number, p0: number, p1: number 
 							<Box className="detail-other-info">
 								<div className="info-item">
 									<img src="/img/icons/material-detail.png" alt="" />
-									 {product?.productMaterial || 'N/A'}
+									{product?.productMaterial || 'N/A'}
 								</div>
 								<div className="info-item">
-								<img src="/img/icons/origin.png" alt="" />
-								<strong>Origin:</strong>
-								{product?.productOrigin || 'N/A'}								</div>
+									<img src="/img/icons/origin.png" alt="" />
+									<strong>Origin:</strong>
+									{product?.productOrigin || 'N/A'}{' '}
+								</div>
 								<div className="info-item">
-								<img src="/img/icons/gender.png" alt="" />
-								{product?.productGender || 'N/A'}								</div>
+									<img src="/img/icons/gender.png" alt="" />
+									{product?.productGender || 'N/A'}{' '}
+								</div>
 								<div className="info-item-options">
-								<img src="/img/icons/options.png" alt="" />
-								<span className={!product?.productLimited ? 'disabled' : ''}>Limited Edition</span>
-								<span> / </span>
-								<span className={!product?.productBarter ? 'disabled' : ''}>Barter</span>
+									<img src="/img/icons/options.png" alt="" />
+									<span className={!product?.productLimited ? 'disabled' : ''}>Limited Edition</span>
+									<span> / </span>
+									<span className={!product?.productBarter ? 'disabled' : ''}>Barter</span>
 								</div>
-
 							</Box>
 
 							<Box className="detail-testimonial">
@@ -458,153 +450,131 @@ id: string, title: string, image: string, price: number, p0: number, p1: number 
 						</Stack>
 					</Stack>
 					<Stack className={'review-wrapper'}>
-  {/* Top review count */}
-  <Stack className={'review-cnt'}>
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="12"
-      viewBox="0 0 16 12"
-      fill="none"
-    >
-      <path
-        d="M15.7183 4.60288C15.6171 4.3599 15.3413 4.18787 15.0162 4.16489L10.5822 3.8504L8.82988 0.64527C8.7005 0.409792 8.40612 0.257812 8.07846 0.257812C7.7508 0.257812 7.4563 0.409792 7.32774 0.64527L5.57541 3.8504L1.14072 4.16489C0.815641 4.18832 0.540363 4.36035 0.438643 4.60288C0.337508 4.84586 0.430908 5.11238 0.676772 5.28084L4.02851 7.57692L3.04025 10.9774C2.96794 11.2275 3.09216 11.486 3.35771 11.636C3.50045 11.717 3.66815 11.7575 3.83643 11.7575C3.98105 11.7575 4.12577 11.7274 4.25503 11.667L8.07846 9.88098L11.9012 11.667C12.1816 11.7979 12.5342 11.7859 12.7992 11.636C13.0648 11.486 13.189 11.2275 13.1167 10.9774L12.1284 7.57692L15.4801 5.28084C15.7259 5.11238 15.8194 4.84641 15.7183 4.60288Z"
-        fill="#b8860b"
-      />
-    </svg>
-    <Typography className={'reviews'}>{commentTotal} reviews</Typography>
-  </Stack>
+						{/* Top review count */}
+						<Stack className={'review-cnt'}>
+							<svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
+								<path
+									d="M15.7183 4.60288C15.6171 4.3599 15.3413 4.18787 15.0162 4.16489L10.5822 3.8504L8.82988 0.64527C8.7005 0.409792 8.40612 0.257812 8.07846 0.257812C7.7508 0.257812 7.4563 0.409792 7.32774 0.64527L5.57541 3.8504L1.14072 4.16489C0.815641 4.18832 0.540363 4.36035 0.438643 4.60288C0.337508 4.84586 0.430908 5.11238 0.676772 5.28084L4.02851 7.57692L3.04025 10.9774C2.96794 11.2275 3.09216 11.486 3.35771 11.636C3.50045 11.717 3.66815 11.7575 3.83643 11.7575C3.98105 11.7575 4.12577 11.7274 4.25503 11.667L8.07846 9.88098L11.9012 11.667C12.1816 11.7979 12.5342 11.7859 12.7992 11.636C13.0648 11.486 13.189 11.2275 13.1167 10.9774L12.1284 7.57692L15.4801 5.28084C15.7259 5.11238 15.8194 4.84641 15.7183 4.60288Z"
+									fill="#b8860b"
+								/>
+							</svg>
+							<Typography className={'reviews'}>{commentTotal} reviews</Typography>
+						</Stack>
 
-  {/* Review list + leave review (side by side) */}
-  <Stack className={'review-section'}>
-    <Stack className={'review-list'}>
-      {/* Show reviews if available */}
-      {commentTotal > 0 ? (
-        productComments?.map((comment: Comment) => (
-          <Review
-            key={comment._id}
-            comment={comment}
-            userId={user?._id}
-            onEdit={async (id, content) => {
-              await updateComment({
-                variables: { input: { _id: id, commentContent: content } },
-              });
-              await getCommentsRefetch({ input: commentInquiry });
-            }}
-            onDelete={async (id) => {
-              await removeComment({
-                variables: { commentId: id },
-              });
-              await getCommentsRefetch({ input: commentInquiry });
-            }}
-          />
-        ))
-      ) : (
-        /* Show empty message if no reviews */
-        <Box className={'empty-review'}>
-          <img src="/img/icons/empty.png" alt="No Reviews" />
-          <span>Be the first!</span>
-          <strong>There are no reviews for this product yet.</strong>
-          <p>
-            Your feedback is valuable. Please leave a review to help others
-            know more about this product.
-          </p>
-        </Box>
-      )}
-    </Stack>
+						{/* Review list + leave review (side by side) */}
+						<Stack className={'review-section'}>
+							<Stack className={'review-list'}>
+								{/* Show reviews if available */}
+								{commentTotal > 0 ? (
+									productComments?.map((comment: Comment) => (
+										<Review
+											key={comment._id}
+											comment={comment}
+											userId={user?._id}
+											onEdit={async (id, content) => {
+												await updateComment({
+													variables: { input: { _id: id, commentContent: content } },
+												});
+												await getCommentsRefetch({ input: commentInquiry });
+											}}
+											onDelete={async (id) => {
+												await removeComment({
+													variables: { commentId: id },
+												});
+												await getCommentsRefetch({ input: commentInquiry });
+											}}
+										/>
+									))
+								) : (
+									/* Show empty message if no reviews */
+									<Box className={'empty-review'}>
+										<img src="/img/icons/empty.png" alt="No Reviews" />
+										<span>Be the first!</span>
+										<strong>There are no reviews for this product yet.</strong>
+										<p>Your feedback is valuable. Please leave a review to help others know more about this product.</p>
+									</Box>
+								)}
+							</Stack>
 
-    {/* Right side: Leave review form */}
-    <Stack className={'leave-review-config'}>
-      <Typography className={'main-title'}>Leave A Review</Typography>
-      <Typography className={'review-title'}>Review</Typography>
-      <textarea
-        onChange={({ target: { value } }: any) => {
-          setInsertCommentData({ ...insertCommentData, commentContent: value });
-        }}
-        value={insertCommentData.commentContent}
-      ></textarea>
-      <Box className={'submit-btn'} component={'div'}>
-        <Button
-          className={'submit-review'}
-          disabled={insertCommentData.commentContent === '' || user?._id === ''}
-          onClick={createCommentHandler}
-        >
-          <Typography className={'title'}>Submit Review</Typography>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="17"
-            height="17"
-            viewBox="0 0 17 17"
-            fill="none"
-          >
-            <g clipPath="url(#clip0_6975_3642)">
-              <path
-                d="M16.1571 0.5H6.37936C6.1337 0.5 5.93491 0.698792 5.93491 0.944458C5.93491 1.19012 6.1337 1.38892 6.37936 1.38892H15.0842L0.731781 15.7413C0.558156 15.915 0.558156 16.1962 0.731781 16.3698C0.818573 16.4566 0.932323 16.5 1.04603 16.5C1.15974 16.5 1.27345 16.4566 1.36028 16.3698L15.7127 2.01737V10.7222C15.7127 10.9679 15.9115 11.1667 16.1572 11.1667C16.4028 11.1667 16.6016 10.9679 16.6016 10.7222V0.944458C16.6016 0.698792 16.4028 0.5 16.1571 0.5Z"
-                fill="#181A20"
-              />
-            </g>
-          </svg>
-        </Button>
-      </Box>
-    </Stack>
-  </Stack>
+							{/* Right side: Leave review form */}
+							<Stack className={'leave-review-config'}>
+								<Typography className={'main-title'}>Leave A Review</Typography>
+								<Typography className={'review-title'}>Review</Typography>
+								<textarea
+									onChange={({ target: { value } }: any) => {
+										setInsertCommentData({ ...insertCommentData, commentContent: value });
+									}}
+									value={insertCommentData.commentContent}
+								></textarea>
+								<Box className={'submit-btn'} component={'div'}>
+									<Button
+										className={'submit-review'}
+										disabled={insertCommentData.commentContent === '' || user?._id === ''}
+										onClick={createCommentHandler}
+									>
+										<Typography className={'title'}>Submit Review</Typography>
+										<svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 17 17" fill="none">
+											<g clipPath="url(#clip0_6975_3642)">
+												<path
+													d="M16.1571 0.5H6.37936C6.1337 0.5 5.93491 0.698792 5.93491 0.944458C5.93491 1.19012 6.1337 1.38892 6.37936 1.38892H15.0842L0.731781 15.7413C0.558156 15.915 0.558156 16.1962 0.731781 16.3698C0.818573 16.4566 0.932323 16.5 1.04603 16.5C1.15974 16.5 1.27345 16.4566 1.36028 16.3698L15.7127 2.01737V10.7222C15.7127 10.9679 15.9115 11.1667 16.1572 11.1667C16.4028 11.1667 16.6016 10.9679 16.6016 10.7222V0.944458C16.6016 0.698792 16.4028 0.5 16.1571 0.5Z"
+													fill="#181A20"
+												/>
+											</g>
+										</svg>
+									</Button>
+								</Box>
+							</Stack>
+						</Stack>
 
-  {/* Pagination only when there are reviews */}
-  {commentTotal > 0 && (
-    <Box component={'div'} className={'pagination-box'}>
-      <MuiPagination
-        page={commentInquiry.page}
-        count={Math.ceil(commentTotal / commentInquiry.limit)}
-        onChange={commentPaginationChangeHandler}
-        shape="rounded"
-        siblingCount={1}
-        boundaryCount={1}
-      />
-    </Box>
-  )}
-</Stack>
+						{/* Pagination only when there are reviews */}
+						{commentTotal > 0 && (
+							<Box component={'div'} className={'pagination-box'}>
+								<MuiPagination
+									page={commentInquiry.page}
+									count={Math.ceil(commentTotal / commentInquiry.limit)}
+									onChange={commentPaginationChangeHandler}
+									shape="rounded"
+									siblingCount={1}
+									boundaryCount={1}
+								/>
+							</Box>
+						)}
+					</Stack>
 
 					{destinationProducts.length !== 0 && (
-			<Stack className="similar-products-config">
-			<Stack className="title-pagination-box">
-			  <Stack className="title-box">
-				<Typography className="main-title">Exquisite Selections</Typography>
-				<Typography className="sub-title">
-				  Curated treasures chosen to complement your refined taste
-				</Typography>
-			  </Stack>
-			</Stack>
-		  
-			<Stack className="cards-box">
-			  <Swiper
-				className="similar-products-config-swiper"
-				slidesPerView={2}
-				spaceBetween={20}
-				centeredSlides={false}
-				navigation={{
-				  nextEl: '.similar-products-config-next',
-				  prevEl: '.similar-products-config-prev',
-				}}
-				pagination={{
-				  el: '.similar-products-config-pagination',
-				  clickable: true,
-				}}
-			  >
-				{destinationProducts.map((product) => (
-				  <SwiperSlide
-					className="similar-products-config-slide"
-					key={product._id}
-				  >
-					<ProductBigCard
-					  product={product}
-					  likeProductHandler={likeProductHandler}
-					/>
-				  </SwiperSlide>
-				))}
-			  </Swiper>
-			</Stack>
-		  </Stack>
-										  
+						<Stack className="similar-products-config">
+							<Stack className="title-pagination-box">
+								<Stack className="title-box">
+									<Typography className="main-title">Exquisite Selections</Typography>
+									<Typography className="sub-title">
+										Curated treasures chosen to complement your refined taste
+									</Typography>
+								</Stack>
+							</Stack>
+
+							<Stack className="cards-box">
+								<Swiper
+									className="similar-products-config-swiper"
+									slidesPerView={2}
+									spaceBetween={20}
+									centeredSlides={false}
+									navigation={{
+										nextEl: '.similar-products-config-next',
+										prevEl: '.similar-products-config-prev',
+									}}
+									pagination={{
+										el: '.similar-products-config-pagination',
+										clickable: true,
+									}}
+								>
+									{destinationProducts.map((product) => (
+										<SwiperSlide className="similar-products-config-slide" key={product._id}>
+											<ProductBigCard product={product} likeProductHandler={likeProductHandler} />
+										</SwiperSlide>
+									))}
+								</Swiper>
+							</Stack>
+						</Stack>
 					)}
 				</div>
 			</div>
