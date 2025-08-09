@@ -29,19 +29,19 @@ const withLayoutBasic = (Component: any) => {
 
 			switch (router.pathname) {
 				case '/product':
-					title = 'Shop';
-					desc = 'Home / Shop';
+					title = 'Products';
+					desc = 'Home / Products';
 					bgImage = '/img/banner/banner-bg.png';
 					break;
 				case '/store':
 					title = 'Stores';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/agents.webp';
+					desc = 'Home / Stores';
+					bgImage = '/img/banner/store.png';
 					break;
 				case '/store/detail':
 					title = 'Store Page';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					desc = 'Home / Store Details';
+					bgImage = '/img/banner/store-detail.png';
 					break;
 				case '/mypage':
 					title = 'my page';
@@ -50,13 +50,13 @@ const withLayoutBasic = (Component: any) => {
 					break;
 				case '/community':
 					title = 'Community';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					desc = 'Home / Community';
+					bgImage = '/img/banner/community.png';
 					break;
 				case '/community/detail':
 					title = 'Community Detail';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header2.svg';
+					desc = 'Home / For Community Detail';
+					bgImage = '/img/banner/community-detail.png';
 					break;
 				case '/cs':
 					title = 'CS';

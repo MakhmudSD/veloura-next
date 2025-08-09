@@ -17,6 +17,7 @@ import { Logout } from '@mui/icons-material';
 import Drawer from '@mui/material/Drawer';
 import { CaretDown } from 'phosphor-react';
 import CartDrawer from './common/CartDrawer';
+import NotificationBell from './notification/Notification';
 
 const Top = () => {
 	const device = useDeviceDetect();
@@ -334,8 +335,7 @@ const Top = () => {
 									)}
 
 									<div className="lan-box">
-										{user?._id && <NotificationsOutlinedIcon className="notification-icon" />}
-										<Button
+									{user?._id && <NotificationBell />}										<Button
 											disableRipple
 											className="btn-lang"
 											onClick={langClick}

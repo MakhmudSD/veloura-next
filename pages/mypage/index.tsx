@@ -20,7 +20,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import AddNewProduct from '../../libs/components/mypage/AddNewProduct';
 import { SUBSCRIBE, UNSUBSCRIBE, LIKE_TARGET_MEMBER } from '../../apollo/user/mutation';
 import { Messages } from '../../libs/config';
-
+import { CREATE_NOTIFICATION } from '../../apollo/user/mutation';
+import { CreateNotificationInput } from '../../libs/types/notification/notification';
+import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
 		...(await serverSideTranslations(locale, ['common'])),
@@ -37,30 +39,63 @@ const MyPage: NextPage = () => {
 	const [subscribe] = useMutation(SUBSCRIBE);
 	const [unsubscribe] = useMutation(UNSUBSCRIBE);
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
+	const [createNotification] = useMutation(CREATE_NOTIFICATION);
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-        if (!user._id) {
-            console.log('User not logged in, redirecting to home page.');
-            router.push('/').then();
-        }
-    }, [user]);
+		if (!user._id) {
+			console.log('User not logged in, redirecting to home page.');
+			router.push('/').then();
+		}
+	}, [user]);
 
-	/** HANDLERS **/
-	const subscribeHandler = async (id: string, refetch: any, query: any) => {
+	const notifyMember = async (input: CreateNotificationInput) => {
 		try {
-			console.log('Subscribing to member with ID:', id); // Log the ID
-			if (!id) throw new Error(Messages.error1);
-			if (!user._id) throw new Error(Messages.error2);
-			await subscribe({ variables: { input: id } });
-			await sweetTopSmallSuccessAlert('Subscribed successfully', 800);
-			await refetch({ input: query });
-		} catch (err: any) {
-			console.error('Error subscribing to member:', err);
-			sweetErrorHandling(err).then();
+			await createNotification({ variables: { input } });
+		} catch (e) {
+			console.warn('notifyMember failed', e);
 		}
 	};
 
+	const [subscribeMutation, { loading: subscribing }] = useMutation(SUBSCRIBE);
+
+	const subscribeHandler = async (id: string, refetch: any, query: any) => {
+	  try {
+		if (subscribing) return; // prevent double click
+		if (!id) throw new Error(Messages.error1);
+		if (!user._id) throw new Error(Messages.error2);
+	
+		await subscribeMutation({
+		  variables: { input: id },
+		  // Optional: optimistic UI (if your GET_MEMBER_FOLLOWERS returns meFollowed.myFollowing)
+		  // optimisticResponse: { subscribe: true },
+		  // update: (cache) => {
+		  //   // update follower item in cache here if you want instant flip
+		  // },
+		});
+	
+		await sweetTopSmallSuccessAlert('Subscribed successfully', 800);
+	
+		// Send notification (non-blocking)
+		if (id !== user._id) {
+		  void notifyMember({
+			notificationType: NotificationType.FOLLOW,
+			notificationGroup: NotificationGroup.MEMBER,
+			notificationTitle: 'New follower',
+			notificationDesc: `${user.memberNick ?? 'Someone'} started following you.`,
+			receiverId: id,
+			authorId: user._id,
+		  });
+		}
+	
+		// Refetch the followers list with the same input
+		await refetch({ input: { ...query } });
+	  } catch (err: any) {
+		console.error('Error subscribing to member:', err);
+		sweetErrorHandling(err).then();
+	  }
+	};
+	
 	const unsubscribeHandler = async (id: string, refetch: any, query: any) => {
 		try {
 			console.log('Unsubscribing from member with ID:', id);
@@ -84,9 +119,9 @@ const MyPage: NextPage = () => {
 				console.warn('❌ Invalid memberId for redirect:', memberId);
 				return;
 			}
-	
+
 			console.log('✅ Redirecting to member page with ID:', memberId);
-	
+
 			if (memberId === user?._id) {
 				await router.push(`/mypage?memberId=${memberId}`);
 			} else {
@@ -97,7 +132,7 @@ const MyPage: NextPage = () => {
 			await sweetErrorHandling(error);
 		}
 	};
-	
+
 	const likeMemberHandler = async (id: string, refetch: any, query: any) => {
 		try {
 			console.log('Liking member with ID:', id);
@@ -106,6 +141,16 @@ const MyPage: NextPage = () => {
 			await likeTargetMember({ variables: { input: id } });
 			await sweetTopSmallSuccessAlert('Liked successfully', 800);
 			await refetch({ input: query });
+			if (id !== user._id) {
+				void notifyMember({
+				  notificationType: NotificationType.FOLLOW,
+				  notificationGroup: NotificationGroup.MEMBER,
+				  notificationTitle: 'New follower',
+				  notificationDesc: `${user.memberNick ?? 'Someone'} started following you.`,
+				  receiverId: id,
+				  authorId: user._id,
+				});
+			  }
 		} catch (err: any) {
 			console.error('Error liking target member:', err);
 			sweetErrorHandling(err).then();

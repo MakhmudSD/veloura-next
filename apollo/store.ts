@@ -1,4 +1,4 @@
-import { makeVar } from "@apollo/client";
+import { InMemoryCache, makeVar } from "@apollo/client";
 import { CustomJwtPayload } from "../libs/types/customJwtPayload";
 
 export const userVar = makeVar<CustomJwtPayload>({
@@ -81,6 +81,12 @@ export const userVar = makeVar<CustomJwtPayload>({
   
   // ===== Theme Var (unchanged) =====
 
+
+export const cache = new InMemoryCache({
+	typePolicies: {
+	  Notification: { keyFields: ['_id'] },
+	},
+  });
 
 //@ts-ignore
 export const socketVar = makeVar<WebSocket>();
