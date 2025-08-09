@@ -45,8 +45,8 @@ const withLayoutBasic = (Component: any) => {
 					break;
 				case '/mypage':
 					title = 'my page';
-					desc = 'Home / For Rent';
-					bgImage = '/img/banner/header1.svg';
+					desc = 'Home / My Page';
+					bgImage = '/img/banner/myPage.png';
 					break;
 				case '/community':
 					title = 'Community';
@@ -60,8 +60,8 @@ const withLayoutBasic = (Component: any) => {
 					break;
 				case '/cs':
 					title = 'CS';
-					desc = 'We are glad to see you again!';
-					bgImage = '/img/banner/header2.svg';
+					desc = 'Home / Customer Service';
+					bgImage = '/img/banner/cs.png';
 					break;
 				case '/account/join':
 					title = 'Login/Signup';
@@ -73,6 +73,12 @@ const withLayoutBasic = (Component: any) => {
 					title = 'Member Page';
 					desc = 'Home / For Rent';
 					bgImage = '/img/banner/header1.svg';
+					break;
+				case '/checkout':
+					title = 'Checkout';
+					desc = 'Home / Checkout';
+					bgImage = '/img/banner/checkout.png';
+					setAuthHeader(false);
 					break;
 				default:
 					break;
@@ -141,7 +147,7 @@ const withLayoutBasic = (Component: any) => {
 							<Component {...props} />
 						</Stack>
 
-				          <Chat />
+						<Chat />
 
 						<Stack id={'footer'}>
 							<Footer />
@@ -154,4 +160,3 @@ const withLayoutBasic = (Component: any) => {
 };
 
 export default withLayoutBasic;
-

@@ -27,10 +27,18 @@ import ProductBigCard from '../../libs/components/common/ProductBigCard';
 import { GET_COMMENTS, GET_PRODUCT, GET_PRODUCTS } from '../../apollo/user/query';
 import { Direction, Message } from '../../libs/enums/common.enum';
 import { T } from '../../libs/types/common';
-import { CREATE_COMMENT, LIKE_TARGET_PRODUCT, REMOVE_COMMENT, UPDATE_COMMENT } from '../../apollo/user/mutation';
-import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
+import {
+	CREATE_COMMENT,
+	CREATE_NOTIFICATION,
+	LIKE_TARGET_PRODUCT,
+	REMOVE_COMMENT,
+	UPDATE_COMMENT,
+} from '../../apollo/user/mutation';
+import { sweetErrorHandling, sweetMixinErrorAlert } from '../../libs/sweetAlert';
 import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { ProductCategory } from '../../libs/enums/product.enum';
+import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
+import { CreateNotificationInput } from '../../libs/types/notification/notification';
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -69,9 +77,11 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 	const [createComment] = useMutation(CREATE_COMMENT);
 	const [updateComment] = useMutation(UPDATE_COMMENT);
 	const [removeComment] = useMutation(REMOVE_COMMENT);
+	const [createNotification] = useMutation(CREATE_NOTIFICATION);
+
 	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(
-			router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
-		);
+		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
+	);
 
 	const {
 		loading: getProductLoading,
@@ -89,7 +99,6 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		},
 	});
 
-	// PropertyDetail.tsx - Adjust GET_PROPERTIES query's skip condition and onCompleted
 	const {
 		loading: getProductsLoading,
 		data: getProductsData,
@@ -159,7 +168,7 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 	useEffect(() => {
 		if (product?.productImages?.length && !slideImage) {
 			if (product?.productImages?.length) {
-				setSlideImage(product.productImages[0]); // set the first image by default
+				setSlideImage(product.productImages[0]);
 			}
 		}
 	}, [product, slideImage]);
@@ -177,7 +186,7 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 
 	/** HANDLERS **/
 	const changeImageHandler = (image: string) => {
-		setSlideImage(image); // set the selected image directly
+		setSlideImage(image);
 	};
 
 	const commentPaginationChangeHandler = async (event: ChangeEvent<unknown>, value: number) => {
@@ -198,36 +207,45 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		setTimeout(() => setGlow(false), 600);
 	};
 
+	const notifyMember = async (input: CreateNotificationInput) => {
+		try {
+			await createNotification({ variables: { input } });
+		} catch (e) {
+			console.warn('notifyMember failed', e);
+		}
+	};
+
 	const likeProductHandler = async (user: T, id: string) => {
-			try {
-				const user = userVar();
-				if (!user || !user._id) {
-					await sweetMixinErrorAlert(
-						'You need to login to like a product! Please Login, or Register to continue',
-					);
-					return;
-				}
-		
-				if (!id) return;
-				await likeTargetProduct({ variables: { input: id } }); // Server update
-				await getProductsRefetch({ input: searchFilter }); 
-		
+		try {
+			const user = userVar();
+			if (!user || !user._id) {
+				await sweetMixinErrorAlert('You need to login to like a store Please Login, or Register to continue');
+				return;
+			}
+
+			if (!id) return;
+			await likeTargetProduct({ variables: { input: id } }); // Server update
+			await getProductsRefetch({ input: searchFilter });
+			if (!user._id) {
+				void notifyMember({
+					notificationType: NotificationType.LIKE,
+					notificationGroup: NotificationGroup.PRODUCT,
+					notificationTitle: 'New like',
+					notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
+					authorId: user._id,
+				});
+			}
 		} catch (err: any) {
 			console.error('ERROR on likeProductHandler', err.message);
 		}
 	};
 
+	const isRingCategory =
+		product?.productCategory === ProductCategory.RING || product?.productCategory === ProductCategory.WEDDING_RING;
 
-	// near other state/constants
-const isRingCategory =
-product?.productCategory === ProductCategory.RING || product?.productCategory === ProductCategory.WEDDING_RING;
+	const selectedWeight = isRingCategory ? productWeight[ringSize.indexOf(selectedRingSize)] : undefined;
 
-// only compute a weight when ring category
-const selectedWeight = isRingCategory
-? productWeight[ringSize.indexOf(selectedRingSize)]
-: undefined;
-
-const selectedSize = isRingCategory ? selectedRingSize : null;
+	const selectedSize = isRingCategory ? selectedRingSize : null;
 
 	const createCommentHandler = async () => {
 		try {
@@ -235,60 +253,64 @@ const selectedSize = isRingCategory ? selectedRingSize : null;
 			await createComment({ variables: { input: insertCommentData } });
 			setInsertCommentData({ ...insertCommentData, commentContent: '' });
 			await getCommentsRefetch({ input: commentInquiry });
+			void notifyMember({
+				notificationType: NotificationType.COMMENT,
+				notificationGroup: NotificationGroup.COMMENT,
+				notificationTitle: 'New comment',
+				notificationDesc: `${user.memberNick ?? 'Someone'} commented on your product.`,
+				authorId: user._id,
+			});
 		} catch (err: any) {
 			await sweetErrorHandling(err);
 		}
 	};
 
-	const toFullImageUrl = (img: string) =>
-		img?.startsWith('http') ? img : `${REACT_APP_API_URL}/${img}`;
-	  
-	  const handleAdd = (
+	const toFullImageUrl = (img: string) => (img?.startsWith('http') ? img : `${REACT_APP_API_URL}/${img}`);
+
+	const handleAdd = (
 		id: string,
 		title: string,
 		image: string,
 		price: number,
 		chosenRingSize?: number | null,
 		chosenWeight?: number | null,
-		chosenQty: number = 1
-	  ) => {
+		chosenQty: number = 1,
+	) => {
 		const currentItems = basketItemsVar();
 		const index = currentItems.findIndex((item) => item.productId === id);
 		const updatedItems = [...currentItems];
-	  
+
 		if (index > -1) {
-		  updatedItems[index].itemQuantity = Math.max(
-			1,
-			(updatedItems[index].itemQuantity || 0) + (chosenQty || 1)
-		  );
-		  // keep latest options visible in checkout
-		  if (typeof chosenRingSize !== 'undefined') updatedItems[index].ringSize = chosenRingSize !== null ? String(chosenRingSize) : null;
-		  if (typeof chosenWeight !== 'undefined') updatedItems[index].weight = chosenWeight !== null ? String(chosenWeight) : null;
-	  
-		  // ensure image is a full URL even if item already existed
-		  if (updatedItems[index].productImages && !String(updatedItems[index].productImages).startsWith('http')) {
-			updatedItems[index].productImages = toFullImageUrl(updatedItems[index].productImages);
-		  }
+			updatedItems[index].itemQuantity = Math.max(1, (updatedItems[index].itemQuantity || 0) + (chosenQty || 1));
+			// keep latest options visible in checkout
+			if (typeof chosenRingSize !== 'undefined')
+				updatedItems[index].ringSize = chosenRingSize !== null ? String(chosenRingSize) : null;
+			if (typeof chosenWeight !== 'undefined')
+				updatedItems[index].weight = chosenWeight !== null ? String(chosenWeight) : null;
+
+			// ensure image is a full URL even if item already existed
+			if (updatedItems[index].productImages && !String(updatedItems[index].productImages).startsWith('http')) {
+				updatedItems[index].productImages = toFullImageUrl(updatedItems[index].productImages);
+			}
 		} else {
-		  updatedItems.push({
-			id,
-			_id: id,
-			productId: id,
-			productTitle: title,
-			productImages: toFullImageUrl(image), // ✅ store FULL URL
-			productPrice: price,
-			itemQuantity: chosenQty || 1,
-			ringSize: typeof chosenRingSize !== 'undefined' ? (chosenRingSize !== null ? String(chosenRingSize) : null) : null,
-			weight: typeof chosenWeight !== 'undefined' ? (chosenWeight !== null ? String(chosenWeight) : null) : null,
-			memberNick: product?.memberData?.memberNick || '', // Optional: store seller nickname
-			memberId: product?.memberData?._id || null,
-		  });
+			updatedItems.push({
+				id,
+				_id: id,
+				productId: id,
+				productTitle: title,
+				productImages: toFullImageUrl(image), // ✅ store FULL URL
+				productPrice: price,
+				itemQuantity: chosenQty || 1,
+				ringSize:
+					typeof chosenRingSize !== 'undefined' ? (chosenRingSize !== null ? String(chosenRingSize) : null) : null,
+				weight: typeof chosenWeight !== 'undefined' ? (chosenWeight !== null ? String(chosenWeight) : null) : null,
+				memberNick: product?.memberData?.memberNick || '', // Optional: store seller nickname
+				memberId: product?.memberData?._id || null,
+			});
 		}
-	  
+
 		basketItemsVar(updatedItems);
-	  };
-	  
-	  
+	};
 
 	/** HANDLERS **/
 	const pushDetailHandler = async (storeId: string) => {
@@ -301,21 +323,19 @@ const selectedSize = isRingCategory ? selectedRingSize : null;
 		setLiked((prev) => !prev);
 		setGlow(true);
 		setTimeout(() => setGlow(false), 600);
-	  
+
 		if (product) {
-		  handleAdd(
-			product._id,
-			product.productTitle,
-			slideImage,
-			product.productPrice,
-			isRingCategory ? selectedRingSize ?? null : null,
-			isRingCategory ? selectedWeight ?? null : null,     // ✅ chosen Weight
-			quantity                    // ✅ chosen Quantity
-		  );
+			handleAdd(
+				product._id,
+				product.productTitle,
+				slideImage,
+				product.productPrice,
+				isRingCategory ? selectedRingSize ?? null : null,
+				isRingCategory ? selectedWeight ?? null : null, // ✅ chosen Weight
+				quantity, // ✅ chosen Quantity
+			);
 		}
-	  };
-	  
-	
+	};
 
 	if (getProductLoading) {
 		return (
@@ -324,8 +344,6 @@ const selectedSize = isRingCategory ? selectedRingSize : null;
 			</Stack>
 		);
 	}
-
-	
 
 	if (device === 'mobile') {
 		return <div>PRODUCT DETAIL PAGE</div>;
@@ -382,22 +400,21 @@ const selectedSize = isRingCategory ? selectedRingSize : null;
 							</Box>
 
 							{isRingCategory && (
-							<Box className="size-section">
-								<label className="label">Size:</label>
-								<select
-								className="dropdown"
-								value={selectedRingSize}
-								onChange={(e) => setSelectedRingSize(Number(e.target.value))}
-								>
-								{ringSize.map((size) => (
-									<option key={size} value={size}>
-									{size}
-									</option>
-								))}
-								</select>
-							</Box>
+								<Box className="size-section">
+									<label className="label">Size:</label>
+									<select
+										className="dropdown"
+										value={selectedRingSize}
+										onChange={(e) => setSelectedRingSize(Number(e.target.value))}
+									>
+										{ringSize.map((size) => (
+											<option key={size} value={size}>
+												{size}
+											</option>
+										))}
+									</select>
+								</Box>
 							)}
-
 
 							<Box className="detail-weight">
 								<span>Weight: {product?.productWeightUnit || 'N/A'}</span>
@@ -441,25 +458,25 @@ const selectedSize = isRingCategory ? selectedRingSize : null;
 									<span>Add to Cart</span>
 								</Button>
 								<IconButton
-              color="default"
-              onClick={(e: any) => {
-                e.stopPropagation();
-                if (!user || !user._id) {
-                  sweetMixinErrorAlert('You must be logged in to like a product.');
-                  return;
-                }
-				if (product && product._id) {
-					handleLikeClick(e);
-				}
-              }}
-              title={!user?._id ? 'Login required to like' : 'Like this product'}
-            >
-			  {(liked || product?.meLiked?.[0]?.myFavorite) ? (
-                <FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
-              ) : (
-                <FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
-              )}
-            </IconButton>
+									color="default"
+									onClick={(e: any) => {
+										e.stopPropagation();
+										if (!user || !user._id) {
+											sweetMixinErrorAlert('You must be logged in to like a product.');
+											return;
+										}
+										if (product && product._id) {
+											handleLikeClick(e);
+										}
+									}}
+									title={!user?._id ? 'Login required to like' : 'Like this product'}
+								>
+									{liked || product?.meLiked?.[0]?.myFavorite ? (
+										<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
+									) : (
+										<FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
+									)}
+								</IconButton>
 							</Box>
 
 							<Box className="detail-shipping-info">

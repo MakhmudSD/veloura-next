@@ -26,10 +26,12 @@ import { Direction, Message } from '../../libs/enums/common.enum';
 import { GET_PRODUCTS } from '../../apollo/user/query';
 import { useMutation, useQuery } from '@apollo/client';
 import ProductCard from '../../libs/components/product/ProductCard';
-import { LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
+import { CREATE_NOTIFICATION, LIKE_TARGET_PRODUCT } from '../../apollo/user/mutation';
 import { T } from '../../libs/types/common';
 import { userVar } from '../../apollo/store';
 import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
+import { CreateNotificationInput } from '../../libs/types/notification/notification';
+import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
 
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -52,9 +54,12 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [sortingOpen, setSortingOpen] = useState(false);
 	const [filterSortName, setFilterSortName] = useState('Recommendations');
 	const [searchText, setSearchText] = useState<string>('');
+	
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
+	const [createNotification] = useMutation(CREATE_NOTIFICATION);
+
 	const {
 		loading: getProductsLoading,
 		data: getProductsData,
@@ -70,6 +75,14 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 		},
 	});
 
+		const notifyMember = async (input: CreateNotificationInput) => {
+			try {
+				await createNotification({ variables: { input } });
+			} catch (e) {
+				console.warn('notifyMember failed', e);
+			}
+		};
+
 	const likeProductHandler = async (user: T, id: string) => {
 			try {
 				const user = userVar();
@@ -83,6 +96,15 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 				if (!id) return;
 				await likeTargetProduct({ variables: { input: id } }); // Server update
 				await getProductsRefetch({ input: searchFilter }); 
+						if (id !== user._id) {
+						  void notifyMember({
+							notificationType: NotificationType.LIKE,
+							notificationGroup: NotificationGroup.PRODUCT,
+							notificationTitle: 'New like',
+							notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
+							authorId: user._id,
+						  });
+						}
 		
 		} catch (err: any) {
 			console.error('ERROR on likeProductHandler', err.message);

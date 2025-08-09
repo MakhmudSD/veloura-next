@@ -64,10 +64,10 @@ const withLayoutMain = (Component: any) => {
 								<h1>Welcome to Veloura</h1>
 								<p>Discover the best products for your lifestyle</p>
 								<Link href="/product" style={{ textDecoration: 'none' }}>
-					<Button variant="contained" className="shop-now-btn">
-						Shop Now
-					</Button>
-				</Link>
+									<Button variant="contained" className="shop-now-btn">
+										Shop Now
+									</Button>
+								</Link>
 							</div>
 						</Stack>
 

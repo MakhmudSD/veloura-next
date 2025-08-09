@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { ProductCategory, ProductGender, ProductLocation, ProductMaterial } from '../../enums/product.enum';
-import {  productWeight, REACT_APP_API_URL, ringSize } from '../../config';
+import {  REACT_APP_API_URL } from '../../config';
 import { ProductInput } from '../../types/product/product.input';
 import axios from 'axios';
 import { getJwtToken } from '../../auth';
@@ -24,19 +24,18 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 	const user = useReactiveVar(userVar);
 
 	/** APOLLO REQUESTS **/
-		const [createProduct] = useMutation(CREATE_PRODUCT);
-		const [updateProduct] = useMutation(UPDATE_PRODUCT);
+	const [createProduct] = useMutation(CREATE_PRODUCT);
+	const [updateProduct] = useMutation(UPDATE_PRODUCT);
 
-		const {
-			loading: getProductLoading,
-			data: getProductData,
-			error: getProductError,
-			refetch: getProductRefetch,
-		} = useQuery(GET_PRODUCT, {
-			fetchPolicy: 'network-only',
-			variables: { input: router.query.productId }
-		});
-	
+	const {
+		loading: getProductLoading,
+		data: getProductData,
+		error: getProductError,
+		refetch: getProductRefetch,
+	} = useQuery(GET_PRODUCT, {
+		fetchPolicy: 'network-only',
+		variables: { input: router.query.productId },
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -44,7 +43,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 			...insertProductData,
 			productTitle: getProductData?.getProduct ? getProductData?.getProduct?.productTitle : '',
 			productPrice: getProductData?.getProduct ? getProductData?.getProduct?.productPrice : 0,
-			productWeightUnit: getProductData?.getProduct ? getProductData?.getProduct?.productWeightUnit : 0, 
+			productWeightUnit: getProductData?.getProduct ? getProductData?.getProduct?.productWeightUnit : 0,
 			productCategory: getProductData?.getProduct ? getProductData?.getProduct?.productCategory : '',
 			productLocation: getProductData?.getProduct ? getProductData?.getProduct?.productLocation : '',
 			productOrigin: getProductData?.getProduct ? getProductData?.getProduct?.productOrigin : '',
@@ -108,11 +107,11 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 			const responseImages = response.data.data.imagesUploader;
 
 			console.log('+responseImages: ', responseImages);
-			setInsertProductData(prev => ({
+			setInsertProductData((prev) => ({
 				...prev,
 				productImages: [...(prev.productImages || []), ...responseImages],
 			}));
-				} catch (err: any) {
+		} catch (err: any) {
 			console.log('err: ', err.message);
 			await sweetMixinErrorAlert(err.message);
 		}
@@ -124,7 +123,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 			!insertProductData.productPrice ||
 			!insertProductData.productCategory ||
 			!insertProductData.productLocation ||
-			!insertProductData.productWeightUnit ||  // checking weight
+			!insertProductData.productWeightUnit || // checking weight
 			!insertProductData.productAddress || // corrected to use trim()
 			insertProductData.productBarter === null ||
 			insertProductData.productBarter === undefined ||
@@ -134,21 +133,20 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 			!insertProductData.productGender ||
 			!(insertProductData.productDesc ?? '').trim() ||
 			!insertProductData.productImages?.length;
-	
+
 		return isInvalid; // ✅ return `true` or `false`, not `undefined`
 	};
-	
 
 	const insertProductHandler = useCallback(async () => {
 		try {
 			const { _id, ...inputWithoutId } = insertProductData;
-	
+
 			const result = await createProduct({
 				variables: {
-					input: inputWithoutId
-				}
+					input: inputWithoutId,
+				},
 			});
-	
+
 			await sweetMixinSuccessAlert('Product added successfully!');
 			await router.push({
 				pathname: '/mypage',
@@ -159,24 +157,23 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 			await sweetMixinErrorAlert(err);
 		}
 	}, [insertProductData]);
-	
 
 	const updateProductHandler = useCallback(async () => {
 		try {
-			const result = await updateProduct({ // corrected function name
-				variables: { 
-					input: insertProductData // corrected variable name
-				}
+			const result = await updateProduct({
+				variables: {
+					input: insertProductData,
+				},
 			});
-			await sweetMixinSuccessAlert('Product updated successfully!'); // corrected alert message
+			await sweetMixinSuccessAlert('Product updated successfully!');
 			await router.push({
 				pathname: '/mypage',
 				query: { category: 'myProducts' },
-			}); 
-		} catch(err: any) {
-			console.error('Error updating product:', err.message); // corrected error message
-			await sweetMixinErrorAlert(err).then()
-		} 
+			});
+		} catch (err: any) {
+			console.error('Error updating product:', err.message);
+			await sweetMixinErrorAlert(err).then();
+		}
 	}, [insertProductData]);
 	if (user?.memberType !== 'STORE') {
 		router.back();

@@ -23,6 +23,7 @@ import { Messages } from '../../libs/config';
 import { CREATE_NOTIFICATION } from '../../apollo/user/mutation';
 import { CreateNotificationInput } from '../../libs/types/notification/notification';
 import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
+import MyOrders from '../../libs/components/mypage/MyOrders';
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
 		...(await serverSideTranslations(locale, ['common'])),
@@ -36,7 +37,7 @@ const MyPage: NextPage = () => {
 	const category: any = router.query?.category ?? 'myProfile';
 
 	/** APOLLO REQUESTS **/
-	const [subscribe] = useMutation(SUBSCRIBE);
+	const [subscribe, { loading: subscribing }] = useMutation(SUBSCRIBE);
 	const [unsubscribe] = useMutation(UNSUBSCRIBE);
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 	const [createNotification] = useMutation(CREATE_NOTIFICATION);
@@ -57,7 +58,6 @@ const MyPage: NextPage = () => {
 		}
 	};
 
-	const [subscribeMutation, { loading: subscribing }] = useMutation(SUBSCRIBE);
 
 	const subscribeHandler = async (id: string, refetch: any, query: any) => {
 	  try {
@@ -65,25 +65,19 @@ const MyPage: NextPage = () => {
 		if (!id) throw new Error(Messages.error1);
 		if (!user._id) throw new Error(Messages.error2);
 	
-		await subscribeMutation({
+		await subscribe({
 		  variables: { input: id },
-		  // Optional: optimistic UI (if your GET_MEMBER_FOLLOWERS returns meFollowed.myFollowing)
-		  // optimisticResponse: { subscribe: true },
-		  // update: (cache) => {
-		  //   // update follower item in cache here if you want instant flip
-		  // },
+
 		});
 	
 		await sweetTopSmallSuccessAlert('Subscribed successfully', 800);
-	
-		// Send notification (non-blocking)
+
 		if (id !== user._id) {
 		  void notifyMember({
 			notificationType: NotificationType.FOLLOW,
 			notificationGroup: NotificationGroup.MEMBER,
 			notificationTitle: 'New follower',
 			notificationDesc: `${user.memberNick ?? 'Someone'} started following you.`,
-			receiverId: id,
 			authorId: user._id,
 		  });
 		}
@@ -147,7 +141,6 @@ const MyPage: NextPage = () => {
 				  notificationGroup: NotificationGroup.MEMBER,
 				  notificationTitle: 'New follower',
 				  notificationDesc: `${user.memberNick ?? 'Someone'} started following you.`,
-				  receiverId: id,
 				  authorId: user._id,
 				});
 			  }
@@ -172,6 +165,7 @@ const MyPage: NextPage = () => {
 								<Stack className={'list-config'}>
 									{category === 'addProduct' && <AddNewProduct />}
 									{category === 'myProducts' && <MyProducts />}
+									{category === 'myOrders' && <MyOrders />}
 									{category === 'myFavorites' && <MyFavorites />}
 									{category === 'recentlyVisited' && <RecentlyVisited />}
 									{category === 'myArticles' && <MyArticles />}

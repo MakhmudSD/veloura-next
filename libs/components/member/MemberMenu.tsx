@@ -38,7 +38,7 @@ const MemberMenu = (props: MemberMenuProps) => {
 			setMember(data?.getMember);
 		},
 	});
-	
+
 	if (device === 'mobile') {
 		return <div>MEMBER MENU MOBILE</div>;
 	} else {
@@ -67,7 +67,6 @@ const MemberMenu = (props: MemberMenuProps) => {
 								variant="outlined"
 								sx={{ background: '#b9b9b9' }}
 								onClick={() => unsubscribeHandler(member?._id, getMemberRefetch, memberId)}
-
 							>
 								Unfollow
 							</Button>
@@ -78,7 +77,6 @@ const MemberMenu = (props: MemberMenuProps) => {
 							variant="contained"
 							sx={{ background: '#ff5d18', ':hover': { background: '#ff5d18' } }}
 							onClick={() => subscribeHandler(member?._id, getMemberRefetch, memberId)}
-
 						>
 							Follow
 						</Button>

@@ -19,4 +19,5 @@ export enum NotificationGroup {
 	ARTICLE = 'ARTICLE',
 	PRODUCT = 'PRODUCT',
 	COMMENT = 'COMMENT',
+	NOTICE = 'NOTICE',         // ✅ add (admin site notice)
 }

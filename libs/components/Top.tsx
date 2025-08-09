@@ -1,20 +1,18 @@
-import React, { useCallback, useEffect, useRef } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useState } from 'react';
 import { useRouter, withRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 import { getJwtToken, logOut, updateUserInfo } from '../auth';
-import { Badge, Box, Button, IconButton, Stack, Typography } from '@mui/material';
+import { Badge, Box, Button, IconButton, Stack } from '@mui/material';
 import MenuItem from '@mui/material/MenuItem';
 import { alpha, styled } from '@mui/material/styles';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import useDeviceDetect from '../hooks/useDeviceDetect';
 import Link from 'next/link';
-import NotificationsOutlinedIcon from '@mui/icons-material/NotificationsOutlined';
 import { useReactiveVar } from '@apollo/client';
 import { basketItemsVar, userVar } from '../../apollo/store';
 import { REACT_APP_API_URL } from '../config';
 import { Logout } from '@mui/icons-material';
-import Drawer from '@mui/material/Drawer';
 import { CaretDown } from 'phosphor-react';
 import CartDrawer from './common/CartDrawer';
 import NotificationBell from './notification/Notification';
@@ -22,23 +20,22 @@ import NotificationBell from './notification/Notification';
 const Top = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
-	const basketItems = useReactiveVar(basketItemsVar); // <-- useReactiveVar to get basket items
+	const basketItems = useReactiveVar(basketItemsVar);
 	const { t, i18n } = useTranslation('common');
 	const router = useRouter();
 	const [anchorEl2, setAnchorEl2] = useState<null | HTMLElement>(null);
 	const [lang, setLang] = useState<string | null>('en');
 	const drop = Boolean(anchorEl2);
 	const [colorChange, setColorChange] = useState(false);
-	const [bgColor, setBgColor] = useState<boolean>(false); // Still not directly used for a class change in the main div
+	const [bgColor, setBgColor] = useState<boolean>(false);
 	const [logoutAnchor, setLogoutAnchor] = React.useState<null | HTMLElement>(null);
 	const logoutOpen = Boolean(logoutAnchor);
 	const totalQuantity = basketItems.reduce((sum, item) => sum + item.itemQuantity, 0);
-	const [cartAnchor, setCartAnchor] = React.useState<null | HTMLElement>(null);
 	const [cartOpen, setCartOpen] = useState(false);
 	const [cartItems, setCartItems] = useState(basketItems);
 
 	/** LIFECYCLES **/
-	
+
 	useEffect(() => {
 		if (localStorage.getItem('locale') === null) {
 			localStorage.setItem('locale', 'en');
@@ -68,7 +65,6 @@ const Top = () => {
 	useEffect(() => {
 		const marquee = document.querySelector('.marquee');
 		if (marquee) {
-			// Get the current content and store it as a data attribute
 			const content = marquee.innerHTML;
 			marquee.innerHTML = content + content;
 		}
@@ -77,9 +73,9 @@ const Top = () => {
 	/** HANDLERS **/
 
 	const removeItem = (productId: string) => {
-		const updated = basketItemsVar().filter(item => item.productId !== productId);
+		const updated = basketItemsVar().filter((item) => item.productId !== productId);
 		basketItemsVar(updated);
-	  };
+	};
 	const langClick = (e: any) => {
 		setAnchorEl2(e.currentTarget);
 	};
@@ -100,19 +96,18 @@ const Top = () => {
 
 	const changeNavbarColor = () => {
 		if (window.scrollY > 180) {
-			setColorChange(false);  // Apply 'colored' class
-		  } else {
-			setColorChange(true); // Apply 'transparent' class
-		  }
+			setColorChange(false);
+		} else {
+			setColorChange(true);
+		}
 	};
-
 
 	const handleCartClick = () => {
-	  setCartOpen(true);
+		setCartOpen(true);
 	};
-	
+
 	const handleCartClose = () => {
-	  setCartOpen(false);
+		setCartOpen(false);
 	};
 
 	const StyledMenu = styled((props: MenuProps) => (
@@ -204,7 +199,6 @@ const Top = () => {
 			</Stack>
 		);
 	} else {
-
 		return (
 			<div className="navbar">
 				{/* Top Navbar */}
@@ -288,17 +282,12 @@ const Top = () => {
 								<Box component={'div'} className={'user-box'}>
 									{user?._id ? (
 										<>
-											<IconButton
-												aria-label="cart"
-												onClick={handleCartClick} // ✅ Redirect to cart page												size="large"
-											>
+											<IconButton aria-label="cart" onClick={handleCartClick} size="large">
 												<Badge badgeContent={totalQuantity} color="secondary">
 													<img src="/img/icons/shop-bag.svg" alt="Shopping Cart" />
 												</Badge>
 											</IconButton>
 											<CartDrawer open={cartOpen} onClose={handleCartClose} />
-
-
 
 											<div className={'login-user'} onClick={(event: any) => setLogoutAnchor(event.currentTarget)}>
 												<img
@@ -335,7 +324,8 @@ const Top = () => {
 									)}
 
 									<div className="lan-box">
-									{user?._id && <NotificationBell />}										<Button
+										{user?._id && <NotificationBell />}{' '}
+										<Button
 											disableRipple
 											className="btn-lang"
 											onClick={langClick}
@@ -349,7 +339,6 @@ const Top = () => {
 												)}
 											</Box>
 										</Button>
-
 										<StyledMenu anchorEl={anchorEl2} open={drop} onClose={langClose}>
 											<MenuItem disableRipple onClick={langChoice} id="en">
 												<Box

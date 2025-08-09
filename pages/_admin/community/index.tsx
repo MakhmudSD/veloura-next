@@ -18,6 +18,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { UPDATE_BOARD_ARTICLE_BY_ADMIN, REMOVE_BOARD_ARTICLE_BY_ADMIN } from '../../../apollo/admin/mutation';
 import { GET_ALL_BOARD_ARTICLES_BY_ADMIN } from '../../../apollo/admin/query';
 import { T } from '../../../libs/types/common';
+import { CREATE_NOTIFICATION } from '../../../apollo/user/mutation';
 
 const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 	const [anchorEl, setAnchorEl] = useState<any>([]);
@@ -32,6 +33,7 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 	/** APOLLO REQUESTS **/
 	const [updateBoardArticleByAdmin] = useMutation(UPDATE_BOARD_ARTICLE_BY_ADMIN);
 	const [removeBoardArticleByAdmin] = useMutation(REMOVE_BOARD_ARTICLE_BY_ADMIN);
+	
 
 	const {
 		loading: getAllBoardArticlesByAdminLoading,
@@ -52,7 +54,9 @@ const AdminCommunity: NextPage = ({ initialInquiry, ...props }: any) => {
 	useEffect(() => {
 		getAllBoardArticlesByAdminRefetch({ input: communityInquiry }).then();
 	}, [communityInquiry]);
+
 	/** HANDLERS **/
+	
 	const changePageHandler = async (event: unknown, newPage: number) => {
 		communityInquiry.page = newPage + 1;
 		await getAllBoardArticlesByAdminRefetch({ input: communityInquiry });

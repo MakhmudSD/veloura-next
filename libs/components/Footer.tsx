@@ -12,15 +12,14 @@ const Footer = () => {
 	const device = useDeviceDetect();
 	const [email, setEmail] = useState('');
 
-  const handleSend = () => {
-    if (!email) {
-      alert('Please enter your email');
-      return;
-    }
-    // Replace this with actual API request
-    console.log('Sending email:', email);
-    alert(`Subscription request sent for: ${email}`);
-  };
+	const handleSend = () => {
+		if (!email) {
+			alert('Please enter your email');
+			return;
+		}
+		console.log('Sending email:', email);
+		alert(`Subscription request sent for: ${email}`);
+	};
 
 	if (device == 'mobile') {
 		return (
@@ -99,21 +98,21 @@ const Footer = () => {
 							<h1>Subscribe Our Newsletter</h1>
 							<p>Joining hands, building a stronger nation through immigration.</p>
 							<div className="subscribe-row">
-							<input
-								type="email"
-								placeholder="Your Email"
-								value={email}
-								onChange={(e) => setEmail(e.target.value)}
-								onKeyDown={(e) => {
-								if (e.key === 'Enter') handleSend(); // also send when pressing Enter
-								}}
-							/>
-							<img
-								src="/img/icons/footer-arrow.svg"
-								alt="footer-arrow"
-								onClick={handleSend}
-								style={{ cursor: 'pointer' }} // make it clickable
-							/>
+								<input
+									type="email"
+									placeholder="Your Email"
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
+									onKeyDown={(e) => {
+										if (e.key === 'Enter') handleSend(); // also send when pressing Enter
+									}}
+								/>
+								<img
+									src="/img/icons/footer-arrow.svg"
+									alt="footer-arrow"
+									onClick={handleSend}
+									style={{ cursor: 'pointer' }} // make it clickable
+								/>
 							</div>
 						</Box>
 					</Stack>

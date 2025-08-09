@@ -7,12 +7,14 @@ import CommunityCard from '../common/CommunityCard';
 import { T } from '../../types/common';
 import { BoardArticle } from '../../types/board-article/board-article';
 import { BoardArticlesInquiry } from '../../types/board-article/board-article.input';
-import { LIKE_TARGET_BOARD_ARTICLE } from '../../../apollo/user/mutation';
+import { CREATE_NOTIFICATION, LIKE_TARGET_BOARD_ARTICLE } from '../../../apollo/user/mutation';
 import { DocumentNode } from 'graphql';
 import { GET_BOARD_ARTICLES } from '../../../apollo/user/query';
 import { useMutation, useQuery } from '@apollo/client';
 import { Messages } from '../../config';
 import { sweetErrorHandling, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { CreateNotificationInput } from '../../types/notification/notification';
+import { NotificationGroup, NotificationType } from '../../enums/notification.enum';
 
 const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
@@ -23,22 +25,23 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 	const [memberBoArticles, setMemberBoArticles] = useState<BoardArticle[]>([]);
 
 	/** APOLLO REQUESTS **/
-	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE)
-	
-		const {
-			loading: boardArticlesLoading,
-			data: boardArticlesData,
-			error: boardArticlesError,
-			refetch: boardArticlesRefetch,
-		} = useQuery(GET_BOARD_ARTICLES, {
-			fetchPolicy: 'network-only',
-			variables: { input: searchFilter },
-			notifyOnNetworkStatusChange: true,
-			onCompleted: (data: T) => {
-				setMemberBoArticles(data?.getBoardArticles?.list);
-				setTotal(data?.getBoardArticles?.metaCounter?.[0]?.total || 0);
-			}
-		});
+	const [likeTargetBoardArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
+	const [createNotification] = useMutation(CREATE_NOTIFICATION);
+
+	const {
+		loading: boardArticlesLoading,
+		data: boardArticlesData,
+		error: boardArticlesError,
+		refetch: boardArticlesRefetch,
+	} = useQuery(GET_BOARD_ARTICLES, {
+		fetchPolicy: 'network-only',
+		variables: { input: searchFilter },
+		notifyOnNetworkStatusChange: true,
+		onCompleted: (data: T) => {
+			setMemberBoArticles(data?.getBoardArticles?.list);
+			setTotal(data?.getBoardArticles?.metaCounter?.[0]?.total || 0);
+		},
+	});
 
 	/** LIFECYCLES **/
 	useEffect(() => {
@@ -50,7 +53,14 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 		setSearchFilter({ ...searchFilter, page: value });
 	};
 
-
+	const notifyMember = async (input: CreateNotificationInput) => {
+		try {
+			await createNotification({ variables: { input } });
+		} catch (e) {
+			console.warn('notifyMember failed', e);
+		}
+	};
+	``;
 	const likeArticleHandler = async (e: T, user: any, id: string) => {
 		try {
 			e.stopPropagation();
@@ -59,7 +69,7 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 				return;
 			}
 			if (!user?._id) throw new Error(Messages.error2);
-	
+
 			await likeTargetBoardArticle({
 				variables: {
 					input: id,
@@ -67,6 +77,13 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 			});
 			await boardArticlesRefetch({ input: searchFilter });
 			await sweetTopSmallSuccessAlert('Success! Article liked successfully!', 700);
+			void notifyMember({
+				notificationType: NotificationType.LIKE,
+				notificationGroup: NotificationGroup.ARTICLE,
+				notificationTitle: 'New like',
+				notificationDesc: `${user.memberNick ?? 'Someone'} liked your article.`,
+				authorId: user._id,
+			});
 		} catch (err: any) {
 			console.error('Error liking article:', err);
 			sweetErrorHandling(err).then();
@@ -91,8 +108,14 @@ const MemberArticles: NextPage = ({ initialInput, ...props }: any) => {
 						</div>
 					)}
 					{memberBoArticles?.map((boardArticle: BoardArticle) => {
-						return <CommunityCard boardArticle={boardArticle} likeArticleHandler={likeArticleHandler} key={boardArticle?._id} size={'small'} />;
-
+						return (
+							<CommunityCard
+								boardArticle={boardArticle}
+								likeArticleHandler={likeArticleHandler}
+								key={boardArticle?._id}
+								size={'small'}
+							/>
+						);
 					})}
 				</Stack>
 				{memberBoArticles?.length !== 0 && (
@@ -127,4 +150,3 @@ MemberArticles.defaultProps = {
 };
 
 export default MemberArticles;
-

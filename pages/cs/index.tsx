@@ -47,22 +47,13 @@ const CS: NextPage = () => {
 						<p>Your inquiries deserve nothing less than excellence</p>
 					</Box>
 					<Box component={'div'} className={'btns'}>
-						<div
-							className={tab === 'notice' ? 'active' : ''}
-							onClick={() => changeTabHandler('notice')}
-						>
+						<div className={tab === 'notice' ? 'active' : ''} onClick={() => changeTabHandler('notice')}>
 							Notice
 						</div>
-						<div
-							className={tab === 'faq' ? 'active' : ''}
-							onClick={() => changeTabHandler('faq')}
-						>
+						<div className={tab === 'faq' ? 'active' : ''} onClick={() => changeTabHandler('faq')}>
 							FAQ
 						</div>
-						<div
-							className={tab === 'inquiry' ? 'active' : ''}
-							onClick={() => changeTabHandler('contact')}
-						>
+						<div className={tab === 'inquiry' ? 'active' : ''} onClick={() => changeTabHandler('contact')}>
 							Contact Us
 						</div>
 					</Box>
@@ -72,7 +63,7 @@ const CS: NextPage = () => {
 				<Box component={'div'} className={'cs-content'}>
 					{tab === 'notice' && <Notice />}
 					{tab === 'faq' && <Faq />}
-					{tab === 'contact' && <Contact  />}
+					{tab === 'contact' && <Contact />}
 				</Box>
 			</Stack>
 		</Stack>

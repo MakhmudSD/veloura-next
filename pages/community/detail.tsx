@@ -21,29 +21,23 @@ import { T } from '../../libs/types/common';
 import EditIcon from '@mui/icons-material/Edit';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { BoardArticle } from '../../libs/types/board-article/board-article';
-import {
-	GET_STORE_PRODUCTS,
-	GET_BOARD_ARTICLE,
-	GET_COMMENTS,
-	GET_MEMBER,
-	GET_PRODUCTS,
-} from '../../apollo/user/query';
+import { GET_BOARD_ARTICLE, GET_COMMENTS } from '../../apollo/user/query';
 import {
 	CREATE_COMMENT,
+	CREATE_NOTIFICATION,
 	LIKE_TARGET_BOARD_ARTICLE,
-	LIKE_TARGET_PRODUCT,
 	UPDATE_COMMENT,
 } from '../../apollo/user/mutation';
 import { Message } from '../../libs/enums/common.enum';
 import {
 	sweetConfirmAlert,
-	sweetErrorHandling,
 	sweetMixinErrorAlert,
 	sweetMixinSuccessAlert,
 	sweetTopSmallSuccessAlert,
 } from '../../libs/sweetAlert';
 import { Messages } from '../../libs/config';
-import { CommentUpdate } from '../../libs/types/comment/comment.update';
+import { CreateNotificationInput } from '../../libs/types/notification/notification';
+import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
 
 const ToastViewerComponent = dynamic(() => import('../../libs/components/community/TViewer'), { ssr: false });
 
@@ -84,6 +78,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 	const [likeTargetArticle] = useMutation(LIKE_TARGET_BOARD_ARTICLE);
 	const [createComment] = useMutation(CREATE_COMMENT);
 	const [updateComment] = useMutation(UPDATE_COMMENT);
+	const [createNotification] = useMutation(CREATE_NOTIFICATION);
 
 	const {
 		loading: getArticleLoading,
@@ -140,6 +135,14 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 		);
 	};
 
+	const notifyMember = async (input: CreateNotificationInput) => {
+		try {
+			await createNotification({ variables: { input } });
+		} catch (e) {
+			console.warn('notifyMember failed', e);
+		}
+	};
+
 	const createCommentHandler = async () => {
 		try {
 			if (!user?._id) throw new Error(Messages.error2);
@@ -159,6 +162,15 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 			await getCommentsRefetch({ input: searchFilter });
 			await getArticleRefetch({ input: articleId });
 			setComment('');
+			if (id !== user._id) {
+				void notifyMember({
+					notificationType: NotificationType.COMMENT,
+					notificationGroup: NotificationGroup.COMMENT,
+					notificationTitle: 'New comment',
+					notificationDesc: `${user.memberNick ?? 'Someone'} commented on your product.`,
+					authorId: user._id,
+				});
+			}
 		} catch (error: any) {
 			await sweetMixinErrorAlert(error.message);
 		}
@@ -192,7 +204,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 			} else {
 				await updateComment({
 					variables: {
-						input: updateData
+						input: updateData,
 					},
 				});
 				await sweetMixinSuccessAlert('Successfully updated!');
@@ -244,6 +256,15 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 			await likeTargetArticle({ variables: { input: id } });
 			await getArticleRefetch({ input: articleId });
 			await sweetTopSmallSuccessAlert('Success', 700);
+			if (id !== user._id) {
+				void notifyMember({
+					notificationType: NotificationType.LIKE,
+					notificationGroup: NotificationGroup.PRODUCT,
+					notificationTitle: 'New like',
+					notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
+					authorId: user._id,
+				});
+			}
 		} catch (err: any) {
 			console.log('ERROR, likeArticleHandler:', err.message);
 			await sweetMixinErrorAlert(err.message).then();
@@ -368,7 +389,9 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 										</Stack>
 									</Stack>
 									<Stack>
-										<ToastViewerComponent markdown={boardArticle?.articleContent} className={'ytb_play'} />
+										<div className={'ytb_play'}>
+											<ToastViewerComponent markdown={boardArticle?.articleContent ?? ''} />
+										</div>
 									</Stack>
 									<Stack className="like-and-dislike">
 										<Stack className="top">
@@ -401,7 +424,9 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 										/>
 										<Stack className="button-box">
 											<Typography>{wordsCnt}/100</Typography>
-											<Button onClick={createCommentHandler} style={{ bac: '#b8860b' }}>Comment</Button>
+											<Button onClick={createCommentHandler} style={{ bac: '#b8860b' }}>
+												Comment
+											</Button>
 										</Stack>
 									</Stack>
 								</Stack>
@@ -538,7 +563,7 @@ const CommunityDetail: NextPage = ({ initialInput, ...props }: T) => {
 								)}
 							</div>
 						</div>
-						</Stack>
+					</Stack>
 				</div>
 			</div>
 		);

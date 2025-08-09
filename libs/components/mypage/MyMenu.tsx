@@ -9,7 +9,7 @@ import PortraitIcon from '@mui/icons-material/Portrait';
 import IconButton from '@mui/material/IconButton';
 import { REACT_APP_API_URL } from '../../config';
 import { logOut } from '../../auth';
-import { sweetConfirmAlert, sweetMixinErrorAlert } from '../../sweetAlert';
+import { sweetConfirmAlert } from '../../sweetAlert';
 
 const MyMenu = () => {
 	const device = useDeviceDetect();
@@ -131,6 +131,29 @@ const MyMenu = () => {
 									</div>
 								</Link>
 							</ListItem>
+							<ListItem className={pathname === 'myOrders' ? 'focus' : ''}>
+										<Link
+											href={{
+												pathname: '/mypage',
+												query: { category: 'myOrders' },
+											}}
+											scroll={false}
+										>
+											<div className={'flex-box'}>
+												{category === 'myOrders' ? (
+													<img className={'com-icon'} src={'/img/icons/homeWhite.svg'} alt={'com-icon'} />
+												) : (
+													<img className={'com-icon'} src={'/img/icons/home.svg'} alt={'com-icon'} />
+												)}
+												<Typography className={'sub-title'} variant={'subtitle1'} component={'p'}>
+													My Orders
+												</Typography>
+												<IconButton aria-label="delete" sx={{ ml: '36px' }}>
+													<PortraitIcon style={{ color: 'red' }} />
+												</IconButton>
+											</div>
+										</Link>
+									</ListItem>
 							<ListItem className={pathname === 'recentlyVisited' ? 'focus' : ''}>
 								<Link
 									href={{
@@ -249,7 +272,7 @@ const MyMenu = () => {
 							</ListItem>
 						</List>
 					</Stack>
-					<Stack className={'section'} sx={{ marginTop: '10px' }}>
+					<Stack className={'section'} sx={{ marginTop: '35px' }}>
 						<div>
 							<Typography className="title" variant={'h5'}>
 								Community

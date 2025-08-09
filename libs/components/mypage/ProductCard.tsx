@@ -15,8 +15,7 @@ interface ProductCardProps {
 	deleteProductHandler?: any;
 	memberPage?: boolean;
 	updateProductHandler?: any;
-	likeProductHandler?: any
-	
+	likeProductHandler?: any;
 }
 
 export const ProductCard = (props: ProductCardProps) => {
@@ -131,4 +130,4 @@ export const ProductCard = (props: ProductCardProps) => {
 				)}
 			</Stack>
 		);
-	}
+};

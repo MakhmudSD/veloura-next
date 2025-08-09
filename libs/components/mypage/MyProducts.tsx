@@ -53,7 +53,7 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 	const deleteProductHandler = async (id: string) => {
 		try {
 			if (sweetConfirmAlert('Are you sure you want to delete this product?')) {
-				await updateProduct({ variables: { input: {_id: id, productStatus: 'DELETE' }} });
+				await updateProduct({ variables: { input: { _id: id, productStatus: 'DELETE' } } });
 				console.log('Refetching data...');
 				await sweetTopSmallSuccessAlert('Product deleted successfully!');
 				await getStoreProductsRefetch({ input: searchFilter });
@@ -65,11 +65,11 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 	const updateProductHandler = async (status: string, id: string) => {
 		try {
 			if (sweetConfirmAlert(`Are you sure you want to update this product status to ${status}?`)) {
-				await updateProduct({ variables: { input: { _id: id, productStatus: status }} });
+				await updateProduct({ variables: { input: { _id: id, productStatus: status } } });
 			}
 			console.log('Refetching data...');
 			await getStoreProductsRefetch({ input: searchFilter });
-		} catch (err: any) { 
+		} catch (err: any) {
 			console.error('Mutation failed:', err);
 			await sweetErrorHandling(err);
 		}
@@ -168,4 +168,3 @@ export default MyProducts;
 function sweetConfirmAlert(message: string): boolean {
 	return window.confirm(message); // Use browser's confirm dialog for simplicity
 }
-

@@ -430,7 +430,6 @@ export const NOTIFICATION_FIELDS = gql`
     notificationStatus
     notificationTitle
     notificationDesc
-    receiverId
     authorId
     productId
     articleId

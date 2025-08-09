@@ -1,4 +1,3 @@
-// pages/checkout/index.tsx
 import React, { useState } from 'react';
 import {
 	Box,
@@ -32,7 +31,6 @@ const Checkout = () => {
 	const [shippingFee, setShippingFee] = useState<number | null>(null);
 	const [loading, setLoading] = useState(false);
 
-	// Card payment state
 	const [cardName, setCardName] = useState('');
 	const [cardNumber, setCardNumber] = useState('');
 	const [cardCvv, setCardCvv] = useState('');
