@@ -212,7 +212,6 @@ export const REMOVE_NOTICE_PERMANENTLY = gql`
   }
 `;
 
-
 /**************************
  *         FAQ        *
  *************************/
