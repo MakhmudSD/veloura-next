@@ -1,57 +1,204 @@
 #pc-wrap {
 	#member-articles-page {
+	  width: 100%;
+	  display: flex;
+	  flex-direction: column;
+	  align-items: center;
+  
+	  .main-title-box {
+		width: auto;
+		height: auto;
+		flex-direction: row;
+		justify-content: space-between;
+		align-self: flex-start;
+  
+		.right-box {
+		  width: 315px;
+  
+		  .main-title {
+			color: #3a2c21;
+			font-family: 'Playfair Display', serif;
+			font-size: 30px;
+			font-style: normal;
+			font-weight: 600;
+			line-height: normal;
+			letter-spacing: 0.6px;
+			text-transform: capitalize;
+		  }
+		}
+	  }
+  
+	  .articles-list-box {
 		width: 100%;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		.main-title-box {
-			width: auto;
-			height: auto;
-			flex-direction: row;
-			justify-content: space-between;
-			align-self: flex-start;
-			.right-box {
-				width: 315px;
-				.main-title {
-					color: #181a20;
-					font-family: $font;
-					font-size: 30px;
-					font-style: normal;
-					font-weight: 600;
-					line-height: normal;
-					letter-spacing: 0.6px;
-					text-transform: capitalize;
-				}
-			}
+		height: auto;
+		flex-direction: row;
+		flex-wrap: wrap;
+		gap: 35px;
+		margin-top: 85px;
+		
+  
+		.no-data {
+		  width: 100%;
+		  color: #9d8b73;
+		  font-family: 'Judson', serif;
+		  font-size: 16px;
+		  text-align: center;
+		  padding: 40px 0;
 		}
-		.articles-list-box {
-			width: 100%;
-			height: auto;
-			flex-direction: row;
-			flex-wrap: wrap;
-			gap: 35px;
-			margin-top: 85px;
-			.no-data {
+
+		.community-general-card-config {
+			width: calc(33.333% - 24px); // 3 cards per row with 36px gap
+			min-height: 380px;
+			position: relative;
+			cursor: pointer;
+			border-radius: 14px;
+			background: #ffffff;
+			box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
+			transition: all 0.3s ease;
+			display: flex;
+			flex-direction: column;
+		
+			&:hover {
+				box-shadow: 0 10px 24px rgba(201, 145, 41, 0.53); // subtle gold glow
+				transform: translateY(-4px);
+			}
+		
+			.image-box {
 				width: 100%;
+				height: 260px;
+				border-top-left-radius: 14px;
+				border-top-right-radius: 14px;
+				overflow: hidden;
+		
+				.card-img {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+					transition: transform 0.4s ease;
+					border-top-left-radius: 14px;
+					border-top-right-radius: 14px;
+		
+					.community-general-card-config:hover & {
+						transform: scale(1.05);
+					}
+				}
 			}
-		}
-		.pagination-config {
-			width: 100%;
-			height: auto;
-			justify-content: center;
-			align-items: center;
-			margin-top: 30px;
-			.total-result {
-				p {
-					color: #181a20;
-					text-align: center;
+		
+			.desc-box {
+				padding: 18px 20px;
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 8px;
+			
+				.desc {
+					color: #b79b6c;
 					font-family: $font;
-					font-size: 14px;
-					font-style: normal;
-					font-weight: 400;
-					line-height: 26px;
+					font-size: 16px;
+					font-weight: 600;
+					letter-spacing: 0.3px;
+					cursor: pointer;
+					transition: color 0.3s;
+			
+					// Restrict height and enable scroll
+					max-height: 40px;
+					overflow-y: auto;
+					width: 100%;
+					padding-right: 4px;
+			
+					&:hover {
+						color: #a07f4f;
+					}
+			
+					// Optional: Elegant scrollbar
+					&::-webkit-scrollbar {
+						width: 4px;
+					}
+					&::-webkit-scrollbar-track {
+						background: transparent;
+					}
+					&::-webkit-scrollbar-thumb {
+						background-color: #d4af7f;
+						border-radius: 4px;
+					}
+				}
+			}
+			
+		
+			.date-box {
+				position: absolute;
+				top: 12px;
+				right: 12px;
+				width: 46px;
+				height: 46px;
+				border-radius: 50%;
+				background: #fffaf3;
+				border: 1px solid #e7d6ba;
+				box-shadow: 0 2px 4px rgba(0, 0, 0, 0.06);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				font-family: $font;
+		
+				.month {
+					font-size: 12px;
+					color: #c2a86e;
+					font-weight: 600;
+					text-transform: uppercase;
+					letter-spacing: 0.5px;
+				}
+		
+				.day {
+					font-size: 16px;
+					font-weight: 700;
+					color: #000;
+					line-height: 1;
+					margin-top: 2px;
 				}
 			}
 		}
+
+		
+	  }
+		.pagination-config {
+			margin-top: 30px;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			gap: 12px;
+		  
+			.MuiPagination-root {
+			  .MuiPagination-ul {
+				gap: 8px;
+		  
+				li {
+				  button {
+					border-radius: 50%;
+					border: 1px solid #d4af37;
+					color: #333;
+					font-weight: 600;
+					transition: all 0.3s ease;
+		  
+					&:hover {
+					  background: #d4af37;
+					  color: #fff;
+					}
+		  
+					&.Mui-selected {
+					  background: #d4af37;
+					  color: #fff;
+					}
+				  }
+				}
+			  }
+			}
+		  
+			.total-result {
+			  font-size: 14px;
+			  color: #444;
+			  font-family: 'Inter', sans-serif;
+			}
+		  }
 	}
 }

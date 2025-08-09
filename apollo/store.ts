@@ -1,8 +1,5 @@
-import { ringSize } from './../libs/config';
-import { makeVar } from '@apollo/client';
-
-import { CustomJwtPayload } from '../libs/types/customJwtPayload';
-export const themeVar = makeVar({});
+import { makeVar } from "@apollo/client";
+import { CustomJwtPayload } from "../libs/types/customJwtPayload";
 
 export const userVar = makeVar<CustomJwtPayload>({
 	_id: '',
@@ -23,26 +20,67 @@ export const userVar = makeVar<CustomJwtPayload>({
 	memberViews: 0,
 	memberWarnings: 0,
 	memberBlocks: 0,
-});
-
-export interface ProductInBasket {
-	id: any;
+  });
+  
+  // ===== Product In Basket Type =====
+  export interface ProductInBasket {
+	id: string;
 	_id: string;
 	productId: string;
 	productTitle: string;
-	productImages: string;
+	productImages: string; // full image URL
 	productPrice: number;
 	itemQuantity: number;
-	orderId?: string; // set after order created/fetched
-	ringSize: number | null; // added for ring size
-	weight: number | null; // added for weight
+	ringSize?: string | null;
+	weight?: string | null;
+	memberNick?: string;
+	memberId?: string | null;
   }
   
-  export const basketItemsVar = makeVar<ProductInBasket[]>([]);
+  // ===== LocalStorage Key =====
+  const CART_KEY = 'velouraCart';
+  
+  // ===== Load Initial Cart =====
+  function loadCart(): ProductInBasket[] {
+	if (typeof window === 'undefined') return [];
+	try {
+	  const raw = localStorage.getItem(CART_KEY);
+	  return raw ? JSON.parse(raw) : [];
+	} catch {
+	  return [];
+	}
+  }
+  
+  // ===== Reactive Var =====
+  export const basketItemsVar = makeVar<ProductInBasket[]>(loadCart());
+  
+  // ===== Cart Helpers =====
+  export function setBasketItems(next: ProductInBasket[]) {
+	basketItemsVar(next);
+	if (typeof window !== 'undefined') {
+	  localStorage.setItem(CART_KEY, JSON.stringify(next));
+	}
+  }
+  
+  export function updateBasket(updater: (curr: ProductInBasket[]) => ProductInBasket[]) {
+	const next = updater(basketItemsVar());
+	setBasketItems(next);
+  }
+  
+  export function clearBasket() {
+	basketItemsVar([]);
+	if (typeof window !== 'undefined') {
+	  localStorage.removeItem(CART_KEY);
+	}
+  }
+  
+  // ===== Optional: call after login/logout =====
+  export function rehydrateBasketForCurrentUser() {
+	setBasketItems(loadCart());
+  }
+  
+  // ===== Theme Var (unchanged) =====
 
-export const wishlistItemsVar = makeVar<
-	Array<{ productId: string; name: string; image: string; price: number; quantity: number }>
->([]);
 
 //@ts-ignore
 export const socketVar = makeVar<WebSocket>();

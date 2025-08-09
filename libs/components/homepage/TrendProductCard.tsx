@@ -9,7 +9,7 @@ import { basketItemsVar, userVar } from '../../../apollo/store';
 import { Product } from '../../types/product/product';
 import router from 'next/router';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { sweetMixinErrorAlert } from '../../sweetAlert';
+import { sweetBasicAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 
 interface TrendProductCardProps {
 	product: Product;
@@ -18,34 +18,6 @@ interface TrendProductCardProps {
 	recentlyVisited?: boolean;
 	user?: any;
 }
-
-const pushDetailHandler = async (productId: string) => {
-	router.push({ pathname: '/product/detail', query: { id: productId } });
-};
-
-const handleAdd = (id: string, title: string, image: string, price: number) => {
-	const currentItems = basketItemsVar();
-	const index = currentItems.findIndex((item) => item.productId === id);
-	const updatedItems = [...currentItems];
-
-	if (index > -1) {
-		updatedItems[index].itemQuantity += 1;
-	} else {
-		updatedItems.push({
-			id,
-			_id: id,
-			productId: id,
-			productTitle: title,
-			productImages: image,
-			productPrice: price,
-			itemQuantity: 1,
-			ringSize: null,
-			weight: null,
-		});
-	}
-
-	basketItemsVar(updatedItems);
-};
 
 const TrendProductCard = (props: TrendProductCardProps) => {
 	const { product, likeProductHandler, myFavorites, recentlyVisited } = props;
@@ -58,6 +30,34 @@ const TrendProductCard = (props: TrendProductCardProps) => {
 		? `${REACT_APP_API_URL}/${product.productImages[0]}`
 		: '/img/banner/header1.svg';
 
+		const pushDetailHandler = async (productId: string) => {
+			router.push({ pathname: '/product/detail', query: { id: productId } });
+		};
+		
+		const handleAdd = (id: string, title: string, image: string, price: number) => {
+			const currentItems = basketItemsVar();
+			const index = currentItems.findIndex((item) => item.productId === id);
+			const updatedItems = [...currentItems];
+		
+			if (index > -1) {
+				updatedItems[index].itemQuantity += 1;
+			} else {
+				updatedItems.push({
+					id,
+					_id: id,
+					productId: id,
+					productTitle: title,
+					productImages: image,
+					productPrice: price,
+					itemQuantity: 1,
+					ringSize: null,
+					weight: null,
+				});
+			}
+		
+			basketItemsVar(updatedItems);
+		};
+
 	const handleLikeClick = (e: React.MouseEvent, productId: string) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -69,6 +69,10 @@ const TrendProductCard = (props: TrendProductCardProps) => {
 
 	const handleAddClick = (e: React.MouseEvent) => {
 		e.stopPropagation();
+		if (!user?._id) {
+			sweetBasicAlert('You need to be logged in to add items to your cart!');
+			return;
+		  }
 		handleAdd(product._id, product.productTitle, imagePath, product.productPrice);
 	};
 

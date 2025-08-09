@@ -33,13 +33,13 @@ const StoreCard = (props: StoreCardProps) => {
 		? `${process.env.REACT_APP_API_URL}/${store?.memberImage}`
 		: '/img/profile/defaultStore.jpg';
 
-  const handleLikeClick = (e: React.MouseEvent, productId: string) => {
-	  e.preventDefault();
-	  e.stopPropagation();
-	  likeMemberHandler(user, productId);
-	  setLiked((prev: any) => !prev);
-	  setGlow(true);
-	  setTimeout(() => setGlow(false), 600);
+	const handleLikeClick = (e: React.MouseEvent, productId: string) => {
+		e.preventDefault();
+		e.stopPropagation();
+		likeMemberHandler(user, productId);
+		setLiked((prev: any) => !prev);
+		setGlow(true);
+		setTimeout(() => setGlow(false), 600);
 	};
 
 	if (device === 'mobile') {
@@ -107,17 +107,23 @@ const StoreCard = (props: StoreCardProps) => {
 							</Box>
 
 							<IconButton
-								className={`like-btn ${glow ? 'glow' : ''}`}
-								onClick={(e: any) => handleLikeClick(e, store._id)}
-								disabled={!user?._id}
-								title={!user?._id ? 'Login required to like' : 'Like this store'}
-							>
-								{liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
-									<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
-								) : (
-									<FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
-								)}
-							</IconButton>
+									color="default"
+									onClick={(e: any) => {
+										e.stopPropagation();
+										if (!user || !user._id) {
+											sweetMixinErrorAlert('You must be logged in to like a product.');
+											return;
+										}
+										handleLikeClick(e, store._id);
+									}}
+									title={!user?._id ? 'Login required to like' : 'Like this product'}
+								>
+									{liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
+										<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
+									) : (
+										<FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
+									)}
+								</IconButton>
 						</div>
 					)}
 				</Stack>

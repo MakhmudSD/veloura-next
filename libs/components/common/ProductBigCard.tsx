@@ -10,12 +10,14 @@ import { Product } from '../../types/product/product';
 import { REACT_APP_API_URL, topProductRank } from '../../config';
 import { formatterStr } from '../../utils';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { sweetBasicAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 
 interface ProductCardType {
   product: Product;
-  likeProductHandler?: (user: any, productId: string) => void;
+  likeProductHandler?: any;
   myFavorites?: boolean;
   recentlyVisited?: boolean;
+  user?: any;
 }
 
 const ProductBigCard = ({
@@ -50,10 +52,10 @@ const ProductBigCard = ({
     }
   }, [product]);
 
-  const handleLikeClick = (e: React.MouseEvent) => {
+  const handleLikeClick = (e: React.MouseEvent, productId: string) => {
     e.preventDefault();
     e.stopPropagation();
-    likeProductHandler?.(user, product._id);
+    likeProductHandler(user, productId);
     setLiked((prev) => !prev);
     setGlow(true);
     setTimeout(() => setGlow(false), 600);
@@ -90,7 +92,11 @@ const ProductBigCard = ({
   
 
   const handleAddClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+      e.stopPropagation();
+        if (!user?._id) {
+          sweetBasicAlert('You need to be logged in to add items to your cart!');
+          return;
+          }
     handleAdd(product._id, product.productTitle, image1, product.productPrice);
   };
 
@@ -131,13 +137,24 @@ const ProductBigCard = ({
             <button className="add-to-basket-btn" onClick={handleAddClick}>
               <span>Add to Cart</span>
             </button>
-            <IconButton color="default" onClick={handleLikeClick}>
-              {(liked || myFavorites || product?.meLiked?.[0]?.myFavorite) ? (
-                <FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
-              ) : (
-                <FavoriteBorderIcon />
-              )}
-            </IconButton>
+            <IconButton
+									color="default"
+									onClick={(e: any) => {
+										e.stopPropagation();
+										if (!user || !user._id) {
+											sweetMixinErrorAlert('You must be logged in to like a product.');
+											return;
+										}
+										handleLikeClick(e, product._id);
+									}}
+									title={!user?._id ? 'Login required to like' : 'Like this product'}
+								>
+									{liked || myFavorites || product?.meLiked?.[0]?.myFavorite ? (
+										<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
+									) : (
+										<FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
+									)}
+								</IconButton>
           </div>
         )}
       </Box>

@@ -12,7 +12,7 @@ import { REACT_APP_API_URL, topProductRank } from '../../config';
 import { formatterStr } from '../../utils';
 import { basketItemsVar, userVar } from '../../../apollo/store';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { sweetMixinErrorAlert } from '../../sweetAlert';
+import { sweetBasicAlert, sweetMixinErrorAlert } from '../../sweetAlert';
 
 interface ProductCardType {
   product: Product;
@@ -89,7 +89,11 @@ const ProductCard = ({
   };
 
   const handleAddClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
+     e.stopPropagation();
+      if (!user?._id) {
+        sweetBasicAlert('You need to be logged in to add items to your cart!');
+        return;
+        }
     handleAdd(product._id, product.productTitle, image1, product.productPrice);
   };
 

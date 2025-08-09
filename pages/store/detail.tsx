@@ -205,18 +205,21 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	};
 
 	const likeProductHandler = async (user: T, id: string) => {
-		try {
-			if (!id) return;
-			if (!user._id) throw new Error(Message.NOT_AUTHENTICATED);
-
-			await likeTargetProduct({ variables: { input: id } });
-			await getProductsRefetch({
-				input: searchFilter,
-			});
-			await sweetTopSmallSuccessAlert('Success', 700);
+			try {
+				const user = userVar();
+				if (!user || !user._id) {
+					await sweetMixinErrorAlert(
+						'You need to login to like a store Please Login, or Register to continue',
+					);
+					return;
+				}
+		
+				if (!id) return;
+				await likeTargetProduct({ variables: { input: id } }); // Server update
+				await getProductsRefetch({ input: searchFilter }); 
+		
 		} catch (err: any) {
-			console.log('ERROR, likeProductHandler:', err.message);
-			await sweetMixinErrorAlert(err.message).then();
+			console.error('ERROR on likeProductHandler', err.message);
 		}
 	};
 
@@ -261,7 +264,7 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 						<Stack className={'card-wrap'}>
 							{storeProducts.map((product: Product) => (
 								<div className={'wrap-main'} key={product?._id}>
-									<ProductBigCard product={product} likeProductHandler={likeProductHandler} key={product?._id} />
+									<ProductBigCard product={product} user={userVar()} likeProductHandler={likeProductHandler} key={product?._id} />
 								</div>
 							))}
 						</Stack>

@@ -225,7 +225,7 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 							</Box>
 						) : (
 							stores.map((store: Member) => {
-								return <StoreCard store={store} likeMemberHandler={likeMemberHandler} user={userVar()} key={store._id} />
+								return <StoreCard store={store} user={userVar()} likeMemberHandler={likeMemberHandler} key={store._id} />
 								;
 							})
 						)}

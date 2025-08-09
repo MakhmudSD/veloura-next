@@ -14,8 +14,9 @@ import { useReactiveVar } from '@apollo/client';
 import { basketItemsVar, userVar } from '../../apollo/store';
 import { REACT_APP_API_URL } from '../config';
 import { Logout } from '@mui/icons-material';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import Drawer from '@mui/material/Drawer';
 import { CaretDown } from 'phosphor-react';
+import CartDrawer from './common/CartDrawer';
 
 const Top = () => {
 	const device = useDeviceDetect();
@@ -32,26 +33,8 @@ const Top = () => {
 	const logoutOpen = Boolean(logoutAnchor);
 	const totalQuantity = basketItems.reduce((sum, item) => sum + item.itemQuantity, 0);
 	const [cartAnchor, setCartAnchor] = React.useState<null | HTMLElement>(null);
-	const cartOpen = Boolean(cartAnchor);
-	const increaseQuantity = (itemId: string) => {
-		const updated = basketItems.map((item) =>
-			item._id === itemId ? { ...item, itemQuantity: item.itemQuantity + 1 } : item
-		);
-		basketItemsVar(updated);
-	};
-	const decreaseQuantity = (itemId: string) => {
-		const updated = basketItems
-			.map((item) =>
-				item._id === itemId ? { ...item, itemQuantity: item.itemQuantity - 1 } : item
-			)
-			.filter((item) => item.itemQuantity > 0);
-		basketItemsVar(updated);
-	};
-
-	const removeItem = (itemId: string) => {
-		const updated = basketItems.filter((item) => item._id !== itemId);
-		basketItemsVar(updated);
-	};
+	const [cartOpen, setCartOpen] = useState(false);
+	const [cartItems, setCartItems] = useState(basketItems);
 
 	/** LIFECYCLES **/
 	
@@ -91,6 +74,11 @@ const Top = () => {
 	}, []);
 
 	/** HANDLERS **/
+
+	const removeItem = (productId: string) => {
+		const updated = basketItemsVar().filter(item => item.productId !== productId);
+		basketItemsVar(updated);
+	  };
 	const langClick = (e: any) => {
 		setAnchorEl2(e.currentTarget);
 	};
@@ -117,12 +105,13 @@ const Top = () => {
 		  }
 	};
 
-	const handleCartClick = (event: React.MouseEvent<HTMLElement>) => {
-		setCartAnchor(event.currentTarget);
-	};
 
+	const handleCartClick = () => {
+	  setCartOpen(true);
+	};
+	
 	const handleCartClose = () => {
-		setCartAnchor(null);
+	  setCartOpen(false);
 	};
 
 	const StyledMenu = styled((props: MenuProps) => (
@@ -214,6 +203,7 @@ const Top = () => {
 			</Stack>
 		);
 	} else {
+
 		return (
 			<div className="navbar">
 				{/* Top Navbar */}
@@ -299,139 +289,15 @@ const Top = () => {
 										<>
 											<IconButton
 												aria-label="cart"
-												onClick={handleCartClick} // open the menu on click
-												size="large"
+												onClick={handleCartClick} // ✅ Redirect to cart page												size="large"
 											>
-												<Badge badgeContent={totalQuantity} color="secondary" showZero>
+												<Badge badgeContent={totalQuantity} color="secondary">
 													<img src="/img/icons/shop-bag.svg" alt="Shopping Cart" />
 												</Badge>
 											</IconButton>
+											<CartDrawer open={cartOpen} onClose={handleCartClose} />
 
-											<Menu
-    anchorEl={cartAnchor}
-    open={cartOpen}
-    onClose={handleCartClose}
-    PaperProps={{
-        style: {
-            maxHeight: '1000px',
-            width: '800px',
-            padding: '20px',
-            borderRadius: '12px',
-            boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-            backgroundColor: '#fefefe',
-            position: 'fixed',
-            right: 0,
-            top: 0,
-            height: '100%',
-            overflowY: 'auto',
-        },
-    }}
->
-    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-        <Typography variant="h6">Your Cart</Typography>
-        <Button
-            variant="text"
-            size="small"
-            sx={{ color: 'red', fontSize: '0.85rem' }}
-            onClick={() => basketItemsVar([])} // Clear all items
-        >
-            Clear All
-        </Button>
-    </Box>
 
-    {basketItems.length === 0 ? (
-        <MenuItem disabled>
-            <Typography variant="body2" color="textSecondary" align="center" width="100%">
-                Your basket is empty
-            </Typography>
-        </MenuItem>
-    ) : (
-        <>
-            {basketItems.map((item, idx) => (
-                <MenuItem key={idx} divider sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                    <img
-                        src={item.productImages}
-                        alt={item.productTitle}
-                        style={{
-                            width: 80,
-                            height: 80,
-                            borderRadius: 8,
-                            objectFit: 'cover',
-                            border: '1px solid #ddd',
-                        }}
-                    />
-                    <Box sx={{ flexGrow: 1 }}>
-                        <Typography variant="subtitle1">{item.productTitle}</Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            {item.productTitle}
-                        </Typography>
-                        <Typography variant="body2" color="textSecondary">
-                            Price: ${item.productPrice.toFixed(2)}
-                        </Typography>
-                        <Typography variant="caption" color="textSecondary">
-                            Qty: {item.itemQuantity}
-                        </Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, alignItems: 'center' }}>
-                        <Button
-                            variant="outlined"
-                            size="medium"
-                            onClick={() => increaseQuantity(item._id)}
-                            sx={{ fontSize: '1rem', minWidth: '40px', minHeight: '40px' }}
-                        >
-                            +
-                        </Button>
-                        <Button
-                            variant="outlined"
-                            size="medium"
-                            onClick={() => decreaseQuantity(item._id)}
-                            sx={{ fontSize: '1rem', minWidth: '40px', minHeight: '40px' }}
-                        >
-                            −
-                        </Button>
-                        <Button
-                            variant="text"
-                            size="small"
-                            sx={{ color: 'red', fontSize: '0.85rem' }}
-                            onClick={() => removeItem(item._id)}
-                        >
-                            Remove
-                        </Button>
-                    </Box>
-                </MenuItem>
-            ))}
-
-            {/* Total Calculation */}
-            <Box sx={{ mt: 3, p: 2, borderTop: '1px solid #ddd' }}>
-                <Typography variant="body1" sx={{ mb: 1 }}>
-                    Subtotal: $
-                    {basketItems.reduce((sum, item) => sum + item.productPrice * item.itemQuantity, 0).toFixed(2)}
-                </Typography>
-                <Typography variant="body1" sx={{ mb: 1 }}>
-                    Delivery Fee: $5.00
-                </Typography>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-                    Total: $
-                    {(
-                        basketItems.reduce((sum, item) => sum + item.productPrice * item.itemQuantity, 0) + 5
-                    ).toFixed(2)}
-                </Typography>
-                <Button
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    sx={{ mt: 2 }}
-                    onClick={() => {
-                        router.push('/checkout');
-                        handleCartClose();
-                    }}
-                >
-                    Proceed to Checkout
-                </Button>
-            </Box>
-        </>
-    )}
-</Menu>
 
 											<div className={'login-user'} onClick={(event: any) => setLogoutAnchor(event.currentTarget)}>
 												<img

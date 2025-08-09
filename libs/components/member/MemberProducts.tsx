@@ -91,7 +91,7 @@ const MyProducts: NextPage = ({ initialInput, ...props }: any) => {
 									/>
 								</Stack>
 								<Stack className="total-result">
-									<Typography>{total} product available</Typography>
+									<Typography>{total} products available</Typography>
 								</Stack>
 							</Stack>
 						)}

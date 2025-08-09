@@ -150,13 +150,19 @@
 				.card-wrap {
 					margin-top: 35px;
 					display: flex;
+					flex-direction: row;
+					justify-content: space-between;
+					align-items: center;
 					flex-wrap: wrap;
 					margin-bottom: 40px;
+					gap: 20px;
 
 					.wrap-main {
 						margin-left: 5px;
 						display: flex;
 						flex-wrap: wrap;
+						justify-content: space-between;
+
 					}
 
 					/* Card styling (kept same as before) */

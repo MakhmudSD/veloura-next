@@ -29,7 +29,8 @@ import { Direction, Message } from '../../libs/enums/common.enum';
 import { T } from '../../libs/types/common';
 import { CREATE_COMMENT, LIKE_TARGET_PRODUCT, REMOVE_COMMENT, UPDATE_COMMENT } from '../../apollo/user/mutation';
 import { sweetErrorHandling, sweetMixinErrorAlert, sweetTopSmallSuccessAlert } from '../../libs/sweetAlert';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { ProductsInquiry } from '../../libs/types/product/product.input';
+import { ProductCategory } from '../../libs/enums/product.enum';
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -68,6 +69,9 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 	const [createComment] = useMutation(CREATE_COMMENT);
 	const [updateComment] = useMutation(UPDATE_COMMENT);
 	const [removeComment] = useMutation(REMOVE_COMMENT);
+	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(
+			router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
+		);
 
 	const {
 		loading: getProductLoading,
@@ -185,7 +189,9 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		e.preventDefault();
 		e.stopPropagation();
 		if (productId) {
-			likeProductHandler(user, productId);
+			if (productId) {
+				likeProductHandler(user, productId);
+			}
 		}
 		setLiked((prev) => !prev);
 		setGlow(true);
@@ -193,36 +199,35 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 	};
 
 	const likeProductHandler = async (user: T, id: string) => {
-		try {
-			if (!id) return;
-			if (!user._id) throw new Error(Message.SOMETHING_WENT_WRONG);
-
-			// Send request to server
-			await likeTargetProduct({ variables: { input: id } });
-
-			// Update product locally
-			setProduct((prev: any) => {
-				if (!prev) return prev;
-
-				const isCurrentlyLiked = prev.meLiked?.[0]?.myFavorite || false;
-
-				return {
-					...prev,
-					meLiked: [{ myFavorite: !isCurrentlyLiked }],
-					// If you also track like count, adjust it here
-					productLikes: isCurrentlyLiked ? (prev.productLikes || 1) - 1 : (prev.productLikes || 0) + 1,
-				};
-			});
-
-			// Update liked state for the button (if you're using it)
-			setLiked((prev) => !prev);
+			try {
+				const user = userVar();
+				if (!user || !user._id) {
+					await sweetMixinErrorAlert(
+						'You need to login to like a product! Please Login, or Register to continue',
+					);
+					return;
+				}
+		
+				if (!id) return;
+				await likeTargetProduct({ variables: { input: id } }); // Server update
+				await getProductsRefetch({ input: searchFilter }); 
+		
 		} catch (err: any) {
-			console.log('ERROR on likeProductHandler', err.message);
-			sweetMixinErrorAlert(err.message).then();
+			console.error('ERROR on likeProductHandler', err.message);
 		}
 	};
 
-	const selectedWeight = productWeight[ringSize.indexOf(selectedRingSize)];
+
+	// near other state/constants
+const isRingCategory =
+product?.productCategory === ProductCategory.RING || product?.productCategory === ProductCategory.WEDDING_RING;
+
+// only compute a weight when ring category
+const selectedWeight = isRingCategory
+? productWeight[ringSize.indexOf(selectedRingSize)]
+: undefined;
+
+const selectedSize = isRingCategory ? selectedRingSize : null;
 
 	const createCommentHandler = async () => {
 		try {
@@ -235,29 +240,55 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		}
 	};
 
-	const handleAdd = (id: string, title: string, image: string, price: number, p0: number, p1: number) => {
+	const toFullImageUrl = (img: string) =>
+		img?.startsWith('http') ? img : `${REACT_APP_API_URL}/${img}`;
+	  
+	  const handleAdd = (
+		id: string,
+		title: string,
+		image: string,
+		price: number,
+		chosenRingSize?: number | null,
+		chosenWeight?: number | null,
+		chosenQty: number = 1
+	  ) => {
 		const currentItems = basketItemsVar();
 		const index = currentItems.findIndex((item) => item.productId === id);
 		const updatedItems = [...currentItems];
-
+	  
 		if (index > -1) {
-			updatedItems[index].itemQuantity += 1;
+		  updatedItems[index].itemQuantity = Math.max(
+			1,
+			(updatedItems[index].itemQuantity || 0) + (chosenQty || 1)
+		  );
+		  // keep latest options visible in checkout
+		  if (typeof chosenRingSize !== 'undefined') updatedItems[index].ringSize = chosenRingSize !== null ? String(chosenRingSize) : null;
+		  if (typeof chosenWeight !== 'undefined') updatedItems[index].weight = chosenWeight !== null ? String(chosenWeight) : null;
+	  
+		  // ensure image is a full URL even if item already existed
+		  if (updatedItems[index].productImages && !String(updatedItems[index].productImages).startsWith('http')) {
+			updatedItems[index].productImages = toFullImageUrl(updatedItems[index].productImages);
+		  }
 		} else {
-			updatedItems.push({
-				id,
-				_id: id,
-				productId: id,
-				productTitle: title,
-				productImages: image,
-				productPrice: price, // ✅ FIXED
-				itemQuantity: 1,
-				ringSize: null,
-				weight: null,
-			});
+		  updatedItems.push({
+			id,
+			_id: id,
+			productId: id,
+			productTitle: title,
+			productImages: toFullImageUrl(image), // ✅ store FULL URL
+			productPrice: price,
+			itemQuantity: chosenQty || 1,
+			ringSize: typeof chosenRingSize !== 'undefined' ? (chosenRingSize !== null ? String(chosenRingSize) : null) : null,
+			weight: typeof chosenWeight !== 'undefined' ? (chosenWeight !== null ? String(chosenWeight) : null) : null,
+			memberNick: product?.memberData?.memberNick || '', // Optional: store seller nickname
+			memberId: product?.memberData?._id || null,
+		  });
 		}
-
+	  
 		basketItemsVar(updatedItems);
-	};
+	  };
+	  
+	  
 
 	/** HANDLERS **/
 	const pushDetailHandler = async (storeId: string) => {
@@ -266,17 +297,25 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 
 	const handleAddClick = (e: React.MouseEvent) => {
 		e.stopPropagation();
+		likeProductHandler(user, productId || '');
+		setLiked((prev) => !prev);
+		setGlow(true);
+		setTimeout(() => setGlow(false), 600);
+	  
 		if (product) {
-			handleAdd(
-				product._id,
-				product.productTitle,
-				slideImage,
-				product.productPrice,
-				selectedRingSize ?? undefined, // pass selected ring size
-				selectedWeight ?? undefined, // pass selected weight
-			);
+		  handleAdd(
+			product._id,
+			product.productTitle,
+			slideImage,
+			product.productPrice,
+			isRingCategory ? selectedRingSize ?? null : null,
+			isRingCategory ? selectedWeight ?? null : null,     // ✅ chosen Weight
+			quantity                    // ✅ chosen Quantity
+		  );
 		}
-	};
+	  };
+	  
+	
 
 	if (getProductLoading) {
 		return (
@@ -285,6 +324,8 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 			</Stack>
 		);
 	}
+
+	
 
 	if (device === 'mobile') {
 		return <div>PRODUCT DETAIL PAGE</div>;
@@ -340,22 +381,23 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 								<span>{product?.productDesc}</span>
 							</Box>
 
-							{product?.productCategory === 'RING' && (
-								<Box className="size-section">
-									<label className="label">Size:</label>
-									<select
-										className="dropdown"
-										value={selectedRingSize}
-										onChange={(e) => setSelectedRingSize(Number(e.target.value))}
-									>
-										{ringSize.map((size) => (
-											<option key={size} value={size}>
-												{size}
-											</option>
-										))}
-									</select>
-								</Box>
+							{isRingCategory && (
+							<Box className="size-section">
+								<label className="label">Size:</label>
+								<select
+								className="dropdown"
+								value={selectedRingSize}
+								onChange={(e) => setSelectedRingSize(Number(e.target.value))}
+								>
+								{ringSize.map((size) => (
+									<option key={size} value={size}>
+									{size}
+									</option>
+								))}
+								</select>
+							</Box>
 							)}
+
 
 							<Box className="detail-weight">
 								<span>Weight: {product?.productWeightUnit || 'N/A'}</span>
@@ -398,13 +440,26 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 								<Button variant="contained" color="success" onClick={handleAddClick}>
 									<span>Add to Cart</span>
 								</Button>
-								<IconButton color="default" onClick={handleLikeClick}>
-									{liked || product?.meLiked?.[0]?.myFavorite ? (
-										<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
-									) : (
-										<FavoriteBorderIcon />
-									)}
-								</IconButton>
+								<IconButton
+              color="default"
+              onClick={(e: any) => {
+                e.stopPropagation();
+                if (!user || !user._id) {
+                  sweetMixinErrorAlert('You must be logged in to like a product.');
+                  return;
+                }
+				if (product && product._id) {
+					handleLikeClick(e);
+				}
+              }}
+              title={!user?._id ? 'Login required to like' : 'Like this product'}
+            >
+			  {(liked || product?.meLiked?.[0]?.myFavorite) ? (
+                <FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
+              ) : (
+                <FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
+              )}
+            </IconButton>
 							</Box>
 
 							<Box className="detail-shipping-info">
