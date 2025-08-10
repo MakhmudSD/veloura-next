@@ -29,6 +29,7 @@ const Home: NextPage = () => {
 				<CategoryProducts />
 				<IconWall  />
 				<TopStores />
+				<Shipping  />
 			</Stack>
 		);
 	} else {
