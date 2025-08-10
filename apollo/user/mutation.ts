@@ -149,15 +149,16 @@ export const CREATE_ORDER = gql`
 }`;
   
 // --- Update Order ---
+
 export const UPDATE_ORDER = gql`
   mutation UpdateOrder($input: OrderUpdateInput!) {
     updateOrder(input: $input) {
       _id
       orderStatus
+      updatedAt
     }
   }
 `;
-
 
 /**************************
  *        PRODUCT        *

@@ -1,305 +1,348 @@
-// pages/mypage/myOrders.tsx
 import React, { useState } from 'react';
-import type { NextPage } from 'next';
-import {
-  Avatar,
-  Box,
-  Button,
-  Chip,
-  CircularProgress,
-  Divider,
-  Pagination,
-  Stack,
-  Tooltip,
-  Typography,
-  Collapse,
-  IconButton,
-} from '@mui/material';
-import { useQuery, useReactiveVar } from '@apollo/client';
-import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import ExpandLessRoundedIcon from '@mui/icons-material/ExpandLessRounded';
-import moment from 'moment';
-
+import { NextPage } from 'next';
+import { Pagination, Stack, Typography, Button, LinearProgress, Box } from '@mui/material';
+import useDeviceDetect from '../../hooks/useDeviceDetect';
+import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
+import { T } from '../../types/common';
 import { userVar } from '../../../apollo/store';
+import { useRouter } from 'next/router';
+import { UPDATE_ORDER } from '../../../apollo/user/mutation';
 import { GET_MY_ORDERS } from '../../../apollo/user/query';
+import { sweetConfirmAlert, sweetErrorHandling, sweetTopSmallSuccessAlert } from '../../sweetAlert';
+import { OrderInquiry } from '../../types/order/order.input';
+import { Order } from '../../types/order/order';
+import { OrderStatus } from '../../enums/order.enum';
+import moment from 'moment';
+import { REACT_APP_API_URL } from '../../config';
+import {useEffect} from 'react';
 
-type OrderItem = {
-  _id: string;
-  productId?: string;
-  productName?: string;
-  productImage?: string;
-  price?: number;
-  quantity?: number;
+const money = (n?: number, currency?: string) =>
+  typeof n === 'number' ? `${currency ? currency + ' ' : ''}${n.toLocaleString()}` : '';
+
+const getItems = (order: any) => (order?.orderItems || order?.items || []) as any[];
+
+const titleFromOrder = (order: any) => {
+  const items = getItems(order);
+  const firstName =
+    items?.[0]?.productData?.productTitle ||
+    items?.[0]?.productName ||
+    order?._id ||
+    '—';
+  const extra = Math.max(0, (items?.length || 0) - 1);
+  return extra > 0 ? `${firstName} +${extra}` : firstName;
 };
 
-type Order = {
-  _id: string;
-  orderNo?: string;
-  status?: string;
-  currency?: string;
-  totalAmount?: number;
-  createdAt?: string;
-  paymentMethod?: string;
-  items?: OrderItem[];
+const deriveDisplayStatus = (createdAt?: string | Date) => {
+  if (!createdAt) return { label: 'Preparing', effective: OrderStatus.PAUSE, progress: 25 };
+  const days = Math.max(0, moment().diff(moment(createdAt).startOf('day'), 'days'));
+  if (days === 0) return { label: 'Preparing', effective: OrderStatus.PAUSE, progress: 30 };
+  if (days === 1) return { label: 'On the way', effective: OrderStatus.PROCESS, progress: 70 };
+  return { label: 'Arrived', effective: OrderStatus.FINISH, progress: 100 };
 };
 
-// Match the actual root field of your query:
-type OrdersResponse = {
-  getMyOrders?: {
-    list: Order[];
-    total?: number;
-    metaCounter?: Array<{ total: number }>;
-  };
-};
+const MyOrders: NextPage = ({ initialInput }: any) => {
+  const device = useDeviceDetect();
+  const [searchFilter, setSearchFilter] = useState<OrderInquiry>(initialInput);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const user = useReactiveVar(userVar);
+  const router = useRouter();
 
-const formatMoney = (amount?: number, currency = 'KRW') => {
-  if (typeof amount !== 'number' || Number.isNaN(amount)) return '-';
-  try {
-    return new Intl.NumberFormat(undefined, { style: 'currency', currency }).format(amount);
-  } catch {
-    return new Intl.NumberFormat().format(amount);
+  if (!user?._id || user?.memberType !== 'USER') {
+    if (typeof window !== 'undefined') router.replace('/');
+    return null;
   }
-};
 
-const deriveTotal = (items?: OrderItem[]) =>
-  (items ?? []).reduce((sum, it) => sum + (it.price ?? 0) * (it.quantity ?? 0), 0);
-
-const statusToClass = (status?: string) => {
-  if (!status) return 'status-default';
-  const s = status.toLowerCase();
-  if (s.includes('paid') || s.includes('confirmed') || s.includes('processing')) return 'status-processing';
-  if (s.includes('shipped') || s.includes('delivered') || s.includes('completed')) return 'status-success';
-  if (s.includes('cancel')) return 'status-cancel';
-  if (s.includes('refunded') || s.includes('return')) return 'status-refund';
-  return 'status-default';
-};
-
-const MyOrders: NextPage = () => {
-  const me = useReactiveVar(userVar);
-  const [page, setPage] = useState<number>(1);
-  const [limit] = useState<number>(8);
-  const [openMap, setOpenMap] = useState<Record<string, boolean>>({});
+  /** APOLLO REQUESTS **/
+  const [updateOrder] = useMutation(UPDATE_ORDER);
 
   const {
-    data,
-    loading,
-    error,
-    refetch,
-  } = useQuery<OrdersResponse>(GET_MY_ORDERS, {
-    // Most projects in your repo use an input object; use this by default:
-    variables: { input: { page, limit } },
-    // If your resolver actually expects page/limit at top level, use:
-    // variables: { page, limit },
-    fetchPolicy: 'cache-and-network',
+    loading: getOrdersLoading,
+    data: getOrdersData,
+    error: getOrdersError,
+    refetch: getOrdersRefetch,
+  } = useQuery(GET_MY_ORDERS, {
+    fetchPolicy: 'network-only',
+    variables: { input: searchFilter },
     notifyOnNetworkStatusChange: true,
-    skip: !me?._id,
-    onCompleted: (d) => {
-      // quick visibility while debugging
-      console.log('getMyOrders data:', d);
+    onCompleted: (data: T) => {
+      setOrders(data?.getMyOrders ?? []);
     },
   });
 
-  const orders = data?.getMyOrders?.list ?? [];
-  const total =
-    data?.getMyOrders?.total ??
-    data?.getMyOrders?.metaCounter?.[0]?.total ??
-    0;
-
-  const pageCount = Math.max(1, Math.ceil(total / limit));
-
-  const handlePageChange = (_: React.ChangeEvent<unknown>, newPage: number) => {
-    setPage(newPage);
-    // Keep the same variables shape you used above
-    refetch({ input: { page: newPage, limit } });
-    // If using top-level variables instead: refetch({ page: newPage, limit });
+  /** HANDLERS **/
+  const paginationHandler = (e: T, value: number) => {
+    setSearchFilter({ ...searchFilter, page: value });
   };
 
-  const toggleOpen = (id: string) =>
-    setOpenMap((prev) => ({ ...prev, [id]: !prev[id] }));
+  const changeStatusHandler = (value: OrderStatus) => {
+    setSearchFilter({ ...searchFilter, orderStatus: value, page: 1 });
+  };
 
-  const emptyState = !loading && !error && orders.length === 0;
+  const optimisticRemove = (id: string) => {
+    const snapshot = orders;
+    setOrders(prev => (prev || []).filter((o: any) => String(o?._id) !== String(id)));
+    return snapshot;
+  };
+
+  const deleteOrderHandler = async (id: string) => {
+    try {
+      if (await sweetConfirmAlert('Are you sure you want to delete this order?')) {
+        const snapshot = optimisticRemove(id);
+        try {
+          await updateOrder({ variables: { input: { orderId: id, orderStatus: OrderStatus.DELETE } } });
+          await sweetTopSmallSuccessAlert('Order deleted successfully!');
+          await getOrdersRefetch({ input: searchFilter }); 
+        } catch (err: any) {
+          setOrders(snapshot); 
+          throw err;
+        }
+      }
+    } catch (err: any) {
+      await sweetErrorHandling(err);
+    }
+  };
+
+  const cancelOrderHandler = async (id: string) => {
+    try {
+      if (await sweetConfirmAlert('Cancel this order?')) {
+        const snapshot = optimisticRemove(id);
+        try {
+          await updateOrder({ variables: { input: { orderId: id, orderStatus: OrderStatus.CANCEL } } });
+          await sweetTopSmallSuccessAlert('Order cancelled.');
+          await getOrdersRefetch({ input: searchFilter }); 
+        } catch (err: any) {
+          setOrders(snapshot); 
+          throw err;
+        }
+      }
+    } catch (err: any) {
+      await sweetErrorHandling(err);
+    }
+  };
+
+
+useEffect(() => {
+  if (!user) return; // wait until loaded
+  if (!user._id || user.memberType !== 'USER') {
+    router.replace('/');
+  }
+}, [user, router]);
+
+// and in render:
+if (!user || (!user._id && typeof window !== 'undefined')) return null;
+
+  const EXCLUDED = new Set([OrderStatus.CANCEL, OrderStatus.DELETE]);
+
+  const matchesActiveTab = (o: any) => {
+    if (!o) return false;
+    if (EXCLUDED.has(o?.orderStatus)) return false;
+
+    const tab = searchFilter?.orderStatus;
+    if (!tab) return true;
+
+    const eff = deriveDisplayStatus(o?.createdAt).effective;
+
+    if (tab === OrderStatus.PROCESS) {
+      return (
+        o?.orderStatus === OrderStatus.PROCESS ||
+        o?.orderStatus === OrderStatus.PAUSE ||
+        eff === OrderStatus.PROCESS ||
+        eff === OrderStatus.PAUSE
+      );
+    }
+    if (tab === OrderStatus.FINISH) {
+      return o?.orderStatus === OrderStatus.FINISH || eff === OrderStatus.FINISH;
+    }
+    return o?.orderStatus === tab || eff === tab;
+  };
+
+  const filteredOrders = (orders || []).filter(matchesActiveTab);
+
+  const pageCount = Math.max(1, Math.ceil(filteredOrders.length / (searchFilter.limit || 1)));
+
+  if (device === 'mobile') {
+    return <div>VELOURA PRODUCTS MOBILE</div>;
+  }
 
   return (
-    <Box id="pc-wrap">
-      <Box id="my-orders-page">
-        <div className="container">
-          {/* Head */}
-          <Stack className="my-orders-head">
-            <Typography className="title">My Orders</Typography>
-            <Typography className="subtitle">Track, review, and reorder your purchases.</Typography>
+    <div id="my-order-page">
+      <Stack className="main-title-box">
+        <Stack className="right-box">
+          <Typography className="main-title">My Orders</Typography>
+          <Typography className="sub-title">We are glad to see you again!</Typography>
+        </Stack>
+      </Stack>
+
+      <Stack className="order-list-box">
+        {/* Tabs */}
+        <Stack className="tab-name-box">
+          <Typography
+            onClick={() => changeStatusHandler(OrderStatus.PROCESS)}
+            className={searchFilter.orderStatus === OrderStatus.PROCESS ? 'active-tab-name' : 'tab-name'}
+          >
+            On the way
+          </Typography>
+          <Typography
+            onClick={() => changeStatusHandler(OrderStatus.FINISH)}
+            className={searchFilter.orderStatus === OrderStatus.FINISH ? 'active-tab-name' : 'tab-name'}
+          >
+            Arrived
+          </Typography>
+        </Stack>
+
+        <Stack className="list-box">
+          {/* Headers: Order | Total | Status | Executed */}
+          <Stack className="listing-title-box">
+            <Typography className="title-text">Order</Typography>
+            <Typography className="title-text">Total</Typography>
+            <Typography className="title-text">Status</Typography>
+            <Typography className="title-text">Order Executed</Typography>
           </Stack>
 
-          {/* Auth guard */}
-          {!me?._id && (
-            <Stack className="auth-guard">
-              <Typography className="guard-text">Please sign in to view your orders.</Typography>
-              <Button className="guard-button" href="/auth/login">Sign In</Button>
+          {/* Rows */}
+          {filteredOrders?.length === 0 ? (
+            <div className={'no-data'}>
+              <img src="/img/icons/icoAlert.svg" alt="" />
+              <p>No order found!</p>
+            </div>
+          ) : (
+            filteredOrders.map((order: any) => {
+              const items = getItems(order);
+              const executed = order?.createdAt ? moment(order.createdAt).format('YYYY-MM-DD HH:mm') : '—';
+              const { label, effective, progress } = deriveDisplayStatus(order?.createdAt);
+
+              const itemsTotal = items.reduce((sum: number, it: any) => {
+                const price = typeof it?.itemPrice === 'number' ? it.itemPrice : 0;
+                const qty = typeof it?.itemQuantity === 'number' ? it.itemQuantity : 0;
+                return sum + price * qty;
+              }, 0);
+              const delivery = typeof order?.orderDelivery === 'number' ? order.orderDelivery : 0;
+              const computedTotal = itemsTotal + delivery;
+              const shownTotal = typeof order?.orderTotal === 'number' ? order.orderTotal : computedTotal;
+              const totalLine = `Total: ${money(shownTotal, order?.currency)} (${money(itemsTotal, order?.currency)} + ${money(delivery, order?.currency)})`;
+
+              return (
+                <Stack key={order?._id} className="order-row">
+                  {/* Column 1: Items */}
+                  <Stack className="row-text">
+                    <Typography>{titleFromOrder(order)}</Typography>
+
+                    <Stack className="order-items-inline" sx={{ gap: 12, mt: 1 }}>
+                      {items.map((it: any, idx: number) => {
+                        const thumb = it?.productData?.productImages?.[0] || '/img/product/no-image.png';
+                        const src = thumb?.startsWith('http')
+                          ? thumb
+                          : `${REACT_APP_API_URL}/${thumb}`.replace(/\/+$/, '').replace(/([^:]\/)\/+/g, '$1');
+                        const title = it?.productData?.productTitle || '—';
+                        const qty = it?.itemQuantity ?? 0;
+                        const price = it?.itemPrice;
+
+                        const goDetail = () =>
+                          router.push({ pathname: '/product/detail', query: { id: it?.productId } });
+
+                        return (
+                          <Stack key={it?._id ?? `${order?._id}-${idx}`} direction="row" alignItems="center" className="order-item-row">
+                            <Box
+                              component="img"
+                              src={src}
+                              alt={title}
+                              className="item-thumb"
+                              onClick={goDetail}
+                            />
+                            <Stack className="item-info" onClick={goDetail}>
+                              <Typography className="item-title" title={title}>
+                                {title}
+                              </Typography>
+                              <Stack direction="row" className="item-meta">
+                                <Typography className="item-qty">x{qty}</Typography>
+                                <Typography className="item-price">{money(price, order?.currency)} =</Typography>
+                                <Typography className="item-subtotal">
+                                  {typeof price === 'number' ? money(price * qty, order?.currency) : ''}
+                                </Typography>
+                              </Stack>
+                            </Stack>
+                          </Stack>
+                        );
+                      })}
+                    </Stack>
+                  </Stack>
+
+                  {/* Column 2: Total + actions */}
+                  <Stack className="row-text total-actions" sx={{ gap: 8 }}>
+                    <Typography className="total-line">{totalLine}</Typography>
+
+                    <Stack direction="row" className="row-actions" spacing={1}>
+                    {(effective === OrderStatus.PROCESS || effective === OrderStatus.PAUSE) && (
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => cancelOrderHandler(order?._id as string)}
+                      >
+                        Cancel
+                      </Button>
+                    )}
+
+                      {/* Delete only in FINISH */}
+                      {effective === OrderStatus.FINISH && (
+                        <>
+                          <Typography className="arrived-msg">Your order arrived</Typography>
+                          <Button
+                            variant="outlined"
+                            color="error"
+                            size="small"
+                            onClick={() => deleteOrderHandler(order?._id as string)}
+                          >
+                            Delete
+                          </Button>
+                        </>
+                      )}
+                    </Stack>
+                  </Stack>
+
+                  {/* Column 3: Status + progress */}
+                  <Stack className="row-text status" sx={{ minWidth: 160 }}>
+                    <Typography>{label}</Typography>
+                    <LinearProgress variant="determinate" value={progress} sx={{ mt: 1 }} />
+                  </Stack>
+
+                  {/* Column 4: Executed (small) */}
+                  <Typography className="row-text order-executed">
+                    <span>{executed}</span>
+                  </Typography>
+                </Stack>
+              );
+            })
+          )}
+
+          {/* Pagination (centered) */}
+          {filteredOrders.length !== 0 && (
+            <Stack className="pagination-config">
+              <Stack className="pagination-box">
+                <Pagination
+                  count={pageCount}
+                  page={searchFilter.page}
+                  shape="circular"
+                  color="primary"
+                  onChange={paginationHandler}
+                />
+              </Stack>
+              <Stack className="total-result">
+                <Typography>Showing {filteredOrders.length} orders</Typography>
+              </Stack>
             </Stack>
           )}
-
-          {me?._id && (
-            <>
-              {/* Loading */}
-              {loading && (
-                <Stack className="state state-loading" alignItems="center" gap={1.5}>
-                  <CircularProgress size={28} />
-                  <Typography>Loading your orders…</Typography>
-                </Stack>
-              )}
-
-              {/* Error */}
-              {error && (
-                <Stack className="state state-error" alignItems="center" gap={1}>
-                  <Typography>Couldn’t load orders. Please try again.</Typography>
-                  <Button onClick={() => refetch({ input: { page, limit } })} variant="outlined">
-                    Retry
-                  </Button>
-                </Stack>
-              )}
-
-              {/* Empty */}
-              {emptyState && (
-                <Stack className="state state-empty" alignItems="center" gap={1}>
-                  <Typography className="empty-title">No orders yet</Typography>
-                  <Typography className="empty-desc">Your purchases will appear here.</Typography>
-                  <Button className="empty-button" href="/store" variant="contained">Shop Now</Button>
-                </Stack>
-              )}
-
-              {/* Orders */}
-              {!loading && !error && orders.length > 0 && (
-                <>
-                  <div className="orders-grid">
-                    {orders.map((order) => {
-                      const currency = order.currency || 'KRW';
-                      const shownTotal =
-                        typeof order.totalAmount === 'number'
-                          ? order.totalAmount
-                          : deriveTotal(order.items);
-
-                      const isOpen = !!openMap[order._id];
-
-                      return (
-                        <div className="order-card" key={order._id}>
-                          {/* Header */}
-                          <div className="order-card__head">
-                            <Stack className="left">
-                              <Typography className="order-no">
-                                {order.orderNo ? `Order #${order.orderNo}` : `Order ${order._id.slice(-6)}`}
-                              </Typography>
-                              <Typography className="date">
-                                {order.createdAt ? moment(order.createdAt).format('MMM D, YYYY HH:mm') : '-'}
-                              </Typography>
-                            </Stack>
-                            <Stack className="right" direction="row" alignItems="center" gap={1}>
-                              <Chip
-                                label={order.status ?? '—'}
-                                className={`order-status ${statusToClass(order.status)}`}
-                                size="small"
-                              />
-                              <IconButton
-                                className="toggle-items"
-                                onClick={() => toggleOpen(order._id)}
-                                size="small"
-                              >
-                                {isOpen ? <ExpandLessRoundedIcon /> : <ExpandMoreRoundedIcon />}
-                              </IconButton>
-                            </Stack>
-                          </div>
-
-                          <Divider className="divider" />
-
-                          {/* Items (collapsible) */}
-                          <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                            <div className="order-card__items">
-                              {(order.items ?? []).map((it) => (
-                                <div className="order-item" key={it._id}>
-                                  <Avatar
-                                    variant="rounded"
-                                    className="thumb"
-                                    src={
-                                      it.productImage
-                                        ? `${process.env.NEXT_PUBLIC_FILE_URL ?? ''}${it.productImage}`
-                                        : '/img/product/no-image.png'
-                                    }
-                                    imgProps={{ loading: 'lazy' }}
-                                  />
-                                  <div className="meta">
-                                    <Tooltip title={it.productName ?? ''}>
-                                      <Typography className="name" noWrap>
-                                        {it.productName ?? 'Unnamed product'}
-                                      </Typography>
-                                    </Tooltip>
-                                    <Typography className="qty">Qty: {it.quantity ?? 0}</Typography>
-                                  </div>
-                                  <div className="price">
-                                    {formatMoney(it.price, currency)}
-                                  </div>
-                                  <div className="subtotal">
-                                    {formatMoney((it.price ?? 0) * (it.quantity ?? 0), currency)}
-                                  </div>
-                                </div>
-                              ))}
-                            </div>
-
-                            <Divider className="divider" />
-                          </Collapse>
-
-                          {/* Footer */}
-                          <div className="order-card__foot">
-                            <Stack className="summary">
-                              <Typography className="label">Total</Typography>
-                              <Typography className="value">
-                                {formatMoney(shownTotal, currency)}
-                              </Typography>
-                            </Stack>
-                            <Stack className="actions">
-                              <Button
-                                className="btn-outlined"
-                                href={`/orders/${order._id}`}
-                                variant="outlined"
-                                size="small"
-                              >
-                                View details
-                              </Button>
-                              <Button
-                                className="btn-primary"
-                                href={`/checkout/reorder?orderId=${order._id}`}
-                                variant="contained"
-                                size="small"
-                              >
-                                Reorder
-                              </Button>
-                            </Stack>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* Pagination */}
-                  <Stack className="pagination-box">
-                    <Pagination
-                      page={page}
-                      count={pageCount}
-                      onChange={handlePageChange}
-                      variant="outlined"
-                      shape="rounded"
-                      siblingCount={1}
-                      boundaryCount={1}
-                    />
-                    <Typography className="total-result">
-                      Showing {orders.length} of {total} orders
-                    </Typography>
-                  </Stack>
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </Box>
-    </Box>
+        </Stack>
+      </Stack>
+    </div>
   );
+};
+
+MyOrders.defaultProps = {
+  initialInput: {
+    page: 1,
+    limit: 5,
+    orderStatus: 'PROCESS',
+  },
 };
 
 export default MyOrders;

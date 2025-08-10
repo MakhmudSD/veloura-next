@@ -1,4 +1,3 @@
-// pages/checkout/success.tsx
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Typography, Button, Stack, Divider, Chip, CircularProgress } from '@mui/material';
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
