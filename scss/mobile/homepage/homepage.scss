@@ -1,287 +1,738 @@
 #mobile-wrap {
     .home-page {
         .brands-section {
-            display: flex;
             width: 100%;
-            height: 429px;
-            flex-shrink: 0;
-            flex-direction: row;
+            /* let content define height; avoids iOS clipping */
+            height: auto;
+            display: flex;
             justify-content: center;
-            align-items: flex-start;
-            background: url('/img/fiber/naqsh.png') no-repeat center center / cover, hsl(0, 0%, 100%);
-          
+            background:
+                url('/img/fiber/naqsh.png') no-repeat center center / cover,
+                #ffffff;
+
             .container {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: space-between;
-          
-              .brands-top {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                padding-bottom: 50px;
-                margin-top: 50px;
-          
-                span {
-                  color: #4B3D39;
-                  font-family: "Judson";
-                  font-size: 18px;
-                  font-weight: 400;
-                  letter-spacing: 2.7px;
-                  text-transform: uppercase;
-                  animation: fadeIn 0.5s ease;
-                }
-          
-                p {
-                  margin-top: 6px;
-                  color: #000;
-                  text-align: center;
-                  font-family: "Judson";
-                  font-size: 50px;
-                  font-weight: 400;
-                  text-transform: capitalize;
-          
-                  &.white { color: #ffffff; }
-                }
-          
-                @keyframes fadeUp {
-                  0% { transform: translateY(20px); opacity: 0; }
-                  100% { transform: translateY(0px); opacity: 1; }
-                }
-              }
-          
-              /* ===== Desktop brand cards (unchanged) ===== */
-              .card-box {
                 width: 100%;
-                display: flex;
-                flex-wrap: wrap;
-                justify-content: center;
-                flex-direction: row;
-                max-width: 1300px;
-                gap: 20px;
-                padding: 20px;
-          
-                .brand-item {
-                  width: 209px;
-                  display: flex;
-                  flex-direction: column;
-                  align-items: center;
-                  gap: 12px;
-                  cursor: pointer;
-                  opacity: 0;
-                  transform: translateY(20px);
-                  animation: fadeUp 0.8s ease forwards;
-          
-                  &:nth-child(2) { animation-delay: 0.7s; }
-                  &:nth-child(3) { animation-delay: 0.9s; }
-          
-                  .brand-card {
-                    width: 160px;
-                    height: 175px;
-                    border-radius: 20%;
-                    overflow: hidden;
-                    border: 2px solid #e0e0e0;
-                    background: #d19b7d;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    transition: transform 0.4s ease, box-shadow 0.4s ease;
-          
-                    img {
-                      width: 100%;
-                      height: 100%;
-                      object-fit: cover;
-                      transform: scale(1);
-                      transition: transform 0.4s ease;
-                    }
-                  }
-          
-                  .brand-heading {
-                    font-size: 26px;
-                    font-family: "Judson";
-                    font-weight: 400;
-                    text-align: center;
-                    color: #000;
-                    text-transform: capitalize;
-                  }
-                }
-          
-                /* enable hover effects only on hover-capable devices */
-                @media (hover: hover) {
-                  .brand-item .brand-card:hover {
-                    transform: scale(1.1);
-                    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-                  }
-                  .brand-item .brand-card:hover img { transform: scale(1.05); }
-                }
-          
-                .empty-list {
-                  width: 100%;
-                  height: 280px;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-                }
-              }
-          
-              /* ===================== MOBILE ===================== */
-              @media (max-width: 900px) {
-                /* section sizing */
+
                 .brands-top {
-                  padding-bottom: 24px;
-                  margin-top: 28px;
-          
-                  span {
-                    font-size: 13.5px;
-                    letter-spacing: 2px;
-                  }
-                  p {
-                    font-size: 30px;
-                    line-height: 1.12;
-                    margin-top: 4px;
-                  }
-                }
-          
-                /* make section auto-height and comfy padding */
-                :where(.brands-section) {
-                  height: auto;
-                }
-              }
-          
-              @media (max-width: 900px) {
-                /* mobile 3-up grid (the first three brands) */
-                .brand-grid {
-                  width: 100%;
-                  display: grid;
-                  grid-template-columns: repeat(3, 1fr);
-                  gap: 12px;
-                  padding: 0 16px;
-                  margin-top: 4px;
-          
-                  .brand-item {
                     display: flex;
                     flex-direction: column;
                     align-items: center;
-                    gap: 8px;
-                    cursor: pointer;
-          
-                    .brand-card {
-                      width: 92px;
-                      height: 100px;
-                      border-radius: 18%;
-                      border: 1px solid #e6e6e6;
-                      background: #e2c3ae; /* softer, lighter brown for mobile */
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      overflow: hidden;
-          
-                      /* logos usually look better contained on mobile */
-                      img {
-                        width: 88%;
-                        height: 88%;
-                        object-fit: contain;
-                      }
+                    padding-bottom: 24px;
+                    margin-top: 28px;
+
+                    span {
+                        color: #4B3D39;
+                        font-family: "Judson", serif;
+                        font-size: 14px;
+                        /* mobile bump */
+                        font-weight: 400;
+                        letter-spacing: 2px;
+                        text-transform: uppercase;
                     }
-          
-                    .brand-heading {
-                      font-size: 12.5px;
-                      font-family: "Judson";
-                      font-weight: 400;
-                      color: #000;
-                      text-align: center;
-                      line-height: 1.15;
-                      min-height: 18px;
-                      max-width: 100%;
-                      white-space: nowrap;
-                      overflow: hidden;
-                      text-overflow: ellipsis;
+
+                    p {
+                        margin-top: 6px;
+                        color: #000;
+                        text-align: center;
+                        font-family: "Judson", serif;
+                        font-size: 30px;
+                        /* mobile */
+                        font-weight: 400;
+                        text-transform: capitalize;
                     }
-                  }
                 }
-          
-                /* horizontal, swipeable list for the rest */
-                .brand-scroll {
-                  width: 100%;
-                  margin-top: 16px;
-                  padding-left: 8px;
-          
-                  .brand-scroll-title {
-                    display: inline-flex;
-                    align-items: center;
-                    gap: 6px;
-                    padding: 0 16px;
-                    font-family: "Judson";
-                    font-size: 14px;
-                    color: #4B3D39;
-                    margin-bottom: 8px;
-                  }
-          
-                  .scroll-area {
-                    display: flex;
-                    gap: 12px;
-                    padding: 0 12px 8px 12px;
-                    overflow-x: auto;
-                    scroll-snap-type: x mandatory;
-                    -webkit-overflow-scrolling: touch;
-          
-                    /* hide scrollbar (keeps scroll) */
-                    scrollbar-width: none; /* Firefox */
-                    &::-webkit-scrollbar { display: none; }
-          
-                    .scroll-item {
-                      scroll-snap-align: start;
-                      flex: 0 0 auto;
-                      display: flex;
-                      flex-direction: column;
-                      align-items: center;
-                      gap: 8px;
-          
-                      .brand-card {
+
+                .card-box {
+                    width: 100%;
+                    max-width: 1300px;
+                    padding: 0 12px;
+
+                    .brands-swiper {
+                        width: 100%;
+                        overflow: visible;
+                        /* allow lift shadow */
+                        padding-bottom: 8px;
+                    }
+
+                    .brand-slide {
+                        display: flex !important;
+                        flex-direction: column;
+                        align-items: center;
+                        gap: 10px;
+                    }
+
+                    .brand-card {
                         width: 92px;
                         height: 100px;
                         border-radius: 18%;
                         border: 1px solid #e6e6e6;
                         background: #e2c3ae;
+                        /* soft Veloura beige */
                         display: flex;
                         align-items: center;
                         justify-content: center;
                         overflow: hidden;
-          
+                        transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+
                         img {
-                          width: 88%;
-                          height: 88%;
-                          object-fit: contain;
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            /* fully visible */
+                            transition: transform .25s ease, object-fit 0s;
+                            user-select: none;
+                            pointer-events: none;
                         }
-                      }
-          
-                      .brand-heading {
-                        font-size: 12.5px;
-                        font-family: "Judson";
+                    }
+
+                    .brand-heading {
+                        font-size: 13px;
+                        font-family: "Judson", serif;
                         font-weight: 400;
                         color: #000;
                         text-align: center;
                         line-height: 1.15;
-                        max-width: 100px;
                         white-space: nowrap;
                         overflow: hidden;
                         text-overflow: ellipsis;
-                      }
+                        max-width: 110px;
                     }
-                  }
+
+                    /* Hover/press: lift and “cover” feel */
+                    @media (hover: hover) {
+                        .interactive:hover {
+                            transform: translateY(-2px);
+                            box-shadow: 0 10px 26px rgba(0, 0, 0, 0.12);
+                        }
+
+                        .interactive:hover img {
+                            transform: scale(1.08);
+                            object-fit: cover;
+                        }
+                    }
+
+                    @media (hover: none) {
+                        .interactive:active {
+                            transform: translateY(-2px);
+                            box-shadow: 0 8px 22px rgba(0, 0, 0, 0.10);
+                        }
+
+                        .interactive:active img {
+                            transform: scale(1.06);
+                        }
+                    }
                 }
-          
-                /* disable heavy hover animations on touch to keep things snappy */
-                @media (hover: none) {
-                  .brand-grid .brand-card,
-                  .brand-scroll .brand-card {
-                    transition: none;
-                  }
+
+                .brand-more-hint {
+                    margin-top: 10px;
+                    font-size: 12px;
+                    color: #4b3d39;
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    opacity: 0.8;
                 }
-              }
             }
-          }
-          
+        }
+
+        .trend-products {
+            margin-bottom: 0;
+            /* remove negative margin on mobile */
+            background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
+
+            .container {
+                margin-bottom: 12px;
+
+                .info-box {
+                    margin-top: 18px;
+                    gap: 6px;
+                    text-align: center;
+
+                    span {
+                        font-family: 'Judson';
+                        font-size: 20px;
+                        /* +mobile bump */
+                        font-weight: 500;
+                        color: #222;
+                        text-transform: capitalize;
+                    }
+
+                    p {
+                        font-family: 'Inter';
+                        font-size: 14px;
+                        color: rgba(46, 46, 46, 0.8);
+                        line-height: 22px;
+                    }
+                }
+
+                .card-box {
+                    max-width: 100%;
+                    height: auto;
+                    /* override desktop 750px */
+                    align-items: stretch;
+                    overflow: visible;
+                    margin-top: 12px;
+
+                    .empty-list {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+
+                        .empty-list-content {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 20px;
+                            text-align: center; // ensure inner text is centered
+                            margin: 0 auto;
+
+                            img {
+                                width: 375px;
+                                height: 284px;
+                                object-fit: contain;
+                            }
+
+                            span {
+                                margin-right: 30px;
+                                color: #000;
+                                font-family: "Judson";
+                                font-size: 45px;
+                                font-weight: 900;
+                            }
+
+                            strong {
+                                margin-top: 30px;
+                                color: #000;
+                                font-family: "Judson";
+                                font-size: 22px;
+                                font-weight: 400;
+                                text-transform: capitalize;
+                            }
+
+                            p {
+                                width: 827px;
+                                color: #000;
+                                font-family: "Inter";
+                                font-size: 14px;
+                                font-weight: 400;
+                                line-height: 30px;
+                            }
+
+                            div {
+                                margin-top: 20px;
+                                width: 160px;
+                                height: 35px;
+                                background: #000;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                border-radius: 6px;
+                                transition: background 0.3s ease, transform 0.2s ease;
+                                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+                                &:hover {
+                                    background: #d4af37;
+                                    transform: translateY(-2px);
+                                }
+
+                                h2 {
+                                    color: #fff;
+                                    font-family: "Judson";
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    letter-spacing: 2.1px;
+                                    text-transform: uppercase;
+                                }
+                            }
+                        }
+
+                    }
+
+
+                    /* hide desktop arrows/pagination visuals on mobile, Swiper breakpoints handle slides */
+                    .swiper-button-prev,
+                    .swiper-button-next {
+                        display: none !important;
+                    }
+
+                    .swiper-pagination {
+                        position: static;
+                        margin-top: 8px;
+                    }
+
+                    .trend-product-swiper {
+                        width: 100%;
+                        height: auto;
+                        /* let cards define height */
+                        overflow: visible;
+                        /* allow lifted shadows */
+                        padding: 4px 0 10px;
+                    }
+
+                    /* Let Swiper compute widths from slidesPerView; keep slides flexible */
+                    .trend-product-slide {
+                        width: auto !important;
+                        height: auto;
+                        display: flex !important;
+                        justify-content: center;
+                    }
+
+                    /* === Mobile card uses same structure as desktop === */
+                    .trend-card-box {
+                        width: 100%;
+                        max-width: 240px;
+                        /* nice mobile width inside each slide */
+                        height: auto;
+                        margin: 0;
+                        /* remove desktop margins */
+                        border: 1px solid #cfc9c6;
+                        /* softer border on mobile */
+                        background: #f1efe9;
+                        /* lighter version of #e4e3da */
+                        border-radius: 12px;
+                        overflow: hidden;
+                        transform: translateZ(0);
+                        transition: transform .2s ease, box-shadow .2s ease;
+
+                        /* lift interactions */
+                        @media (hover: hover) {
+                            &:hover {
+                                transform: translateY(-3px);
+                                box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+                            }
+                        }
+
+                        @media (hover: none) {
+                            &:active {
+                                transform: translateY(-2px);
+                                box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
+                            }
+                        }
+
+                        .card-img {
+                            width: 100%;
+                            aspect-ratio: 4 / 5;
+                            /* consistent tall ratio */
+                            border-radius: 12px;
+                            overflow: hidden;
+                            position: relative;
+                            cursor: pointer;
+
+                            .main-img,
+                            .hover-img,
+                            img {
+                                position: absolute;
+                                inset: 0;
+                                width: 100%;
+                                height: 100%;
+                                object-fit: cover;
+                                transition: opacity .35s ease, transform .25s ease;
+                                display: block;
+                            }
+
+                            /* keep your hover effect logic; on mobile use :active */
+                            @media (hover: hover) {
+                                &:hover .main-img {
+                                    opacity: .15;
+                                }
+
+                                &:hover .hover-img {
+                                    opacity: 1;
+                                }
+                            }
+
+                            @media (hover: none) {
+                                &:active .main-img {
+                                    opacity: .15;
+                                }
+
+                                &:active .hover-img {
+                                    opacity: 1;
+                                }
+                            }
+                        }
+
+                        .badge {
+                            top: 10px;
+                            left: 10px;
+                            background: rgba(255, 255, 255, .6);
+                            color: #000;
+                            padding: 4px 10px;
+                            font-size: 11px;
+                            border-radius: 16px;
+                            backdrop-filter: blur(4px);
+                        }
+
+                        .btn-group {
+                            bottom: 16px;
+                            gap: 16px;
+                            transform: translateX(-50%) translateY(16px);
+                            opacity: 0;
+                            visibility: hidden;
+                            transition: all .25s ease;
+
+                            .view-box,
+                            .like-btn,
+                            .add-to-basket-btn {
+                                height: 32px;
+                                /* touch target */
+                                border-radius: 18px;
+                            }
+
+                            .view-box,
+                            .like-btn {
+                                padding: 4px 10px;
+                                font-size: 12px;
+                                border: 1px solid #000;
+                                background: #fff;
+                            }
+
+                            .add-to-basket-btn {
+                                width: 124px;
+                                padding: 6px 10px;
+                                font-size: 12px;
+                                letter-spacing: 1px;
+                                background: #000;
+                                color: #fff;
+                                border: none;
+
+                                span {
+                                    font-family: 'Judson';
+                                    font-size: 12px;
+                                    font-weight: 800;
+                                    letter-spacing: 1.6px;
+                                }
+                            }
+                        }
+
+                        /* show actions when card hovered/pressed */
+                        @media (hover: hover) {
+                            &:hover .btn-group {
+                                opacity: 1;
+                                visibility: visible;
+                                transform: translateX(-50%) translateY(0);
+                            }
+                        }
+
+                        @media (hover: none) {
+                            &:active .btn-group {
+                                opacity: 1;
+                                visibility: visible;
+                                transform: translateX(-50%) translateY(0);
+                            }
+                        }
+                    }
+
+                    /* /.trend-card-box */
+
+                    /* Empty state image/text tighter on mobile */
+                    .empty-list .empty-list-content {
+                        gap: 14px;
+
+                        img {
+                            width: 220px;
+                            height: auto;
+                        }
+
+                        span {
+                            font-size: 34px;
+                            margin-right: 0;
+                        }
+
+                        strong {
+                            font-size: 18px;
+                            margin-top: 8px;
+                        }
+
+                        p {
+                            width: auto;
+                            padding: 0 16px;
+                            line-height: 22px;
+                        }
+
+                        div {
+                            width: 150px;
+                            height: 36px;
+                        }
+                    }
+                }
+
+                /* /.card-box */
+            }
+
+            /* /.container */
+        }
+
+        .icon-wall {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 125px;
+            flex-shrink: 0;
+            background: #EDDDCE;
+
+
+            /* ===== MOBILE OVERRIDES ===== */
+            &.mobile {
+                height: auto;
+                padding: 12px 10px;
+                flex-direction: column;
+
+                .container {
+                    flex-direction: column;
+                    align-items: center;
+                    gap: 12px;
+
+                    .icon-wrapper {
+                        flex-direction: column;
+                        justify-content: center;
+                        align-items: center;
+                        gap: 6px;
+
+                        img {
+                            width: 45px;
+                            height: 45px;
+                            transform: none;
+                        }
+
+                        .img-rotate {
+                            width: 50px;
+                            height: 40px;
+                            transform: none;
+                        }
+
+                        span {
+                            font-size: 14px;
+                            text-align: center;
+                        }
+                    }
+
+                    .MuiDivider-root {
+                        width: 80%;
+                        background-color: rgba(0, 0, 0, 0.1);
+                    }
+                }
+            }
+        }
+
+        .top-stores {
+            padding: 16px 10px;
+            background:
+                url('/img/fiber/naqsh.png') no-repeat center center / cover,
+                #ffffff;
+
+            .container {
+                .info-box {
+                    flex-direction: column;
+                    gap: 6px;
+                    text-align: center;
+
+                    span {
+                        display: block;
+                        color: #181a20;
+                        font-family: 'Judson';
+                        font-size: 24px;
+                        font-weight: 600;
+                        text-transform: capitalize;
+                    }
+
+                    p {
+                        display: block;
+                        color: #717171;
+                        font-family: 'Inter';
+                        font-size: 14px;
+                        line-height: 22px;
+                    }
+
+                    .left,
+                    .right {
+                        display: none;
+                    }
+                }
+
+                .wrapper {
+                    margin-top: 16px;
+
+                    .switch-btn {
+                        display: none !important;
+                    }
+
+                    .top-stores-swiper {
+                        width: 100%;
+                        height: auto;
+                        overflow: visible;
+                        padding: 2px 0 8px;
+                    }
+
+                    .top-stores-slide {
+                        width: auto !important;
+                        display: flex !important;
+                        justify-content: center;
+                    }
+
+                    .empty-list {
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+
+                        .empty-list-content {
+                            display: flex;
+                            flex-direction: column;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 12px;
+                            text-align: center;
+                            margin: 0 auto;
+
+                            img {
+                                width: 275px;
+                                height: 184px;
+                                object-fit: contain;
+                            }
+
+                            span {
+                                color: #000;
+                                font-family: "Judson";
+                                font-size: 35px;
+                                font-weight: 900;
+                            }
+
+                            strong {
+                                color: #000;
+                                font-family: "Judson";
+                                font-size: 18px;
+                                font-weight: 400;
+                                text-transform: capitalize;
+                            }
+
+                            p {
+                                width: 827px;
+                                color: #000;
+                                font-family: "Inter";
+                                font-size: 14px;
+                                font-weight: 400;
+                                line-height: 30px;
+                            }
+
+                            div {
+                                margin-top: 20px;
+                                width: 160px;
+                                height: 35px;
+                                background: #000;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                cursor: pointer;
+                                border-radius: 6px;
+                                transition: background 0.3s ease, transform 0.2s ease;
+                                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+                                &:hover {
+                                    background: #d4af37;
+                                    transform: translateY(-2px);
+                                }
+
+                                h2 {
+                                    color: #fff;
+                                    font-family: "Judson";
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    letter-spacing: 2.1px;
+                                    text-transform: uppercase;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
+
+        .shipping.mobile {
+            width: 100%;
+            min-height: auto;
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            background: #EDDDCE;
+
+            .container {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: stretch;
+                width: 100%;
+                max-width: 600px;
+                padding: 14px 16px;
+                gap: 12px;
+                height: auto;
+            }
+
+            .shipping-content {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                gap: 12px;
+                width: 100%;
+                min-height: 64px;
+
+                .shipping-icon {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    flex: 0 0 auto;
+
+                    img {
+                        width: 40px;
+                        height: 40px;
+                        object-fit: contain;
+                    }
+                }
+
+                .shipping-info {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: flex-start;
+                    gap: 4px;
+                    flex: 1 1 auto;
+                    max-width: 100%;
+
+                    h1 {
+                        color: rgba(46, 46, 46, 0.9);
+                        font-family: "Judson";
+                        font-size: 15px;
+                        font-weight: 400;
+                        line-height: 1.35;
+                        margin: 0;
+                        white-space: normal;
+                        word-break: break-word;
+                    }
+
+                    p {
+                        color: rgba(46, 46, 46, 0.8);
+                        font-family: "Inter";
+                        font-size: 12px;
+                        font-weight: 400;
+                        line-height: 18px;
+                        margin: 0;
+                        white-space: normal;
+                        word-wrap: break-word;
+                    }
+                }
+            }
+        }
     }
 }

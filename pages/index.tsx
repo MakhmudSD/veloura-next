@@ -26,7 +26,6 @@ const Home: NextPage = () => {
 			<Stack className={'home-page'}>
 				<BrandsSection />
 				<TrendProducts />
-				<CategoryProducts />
 				<IconWall  />
 				<TopStores />
 				<Shipping  />

@@ -43,15 +43,45 @@ const TopStoreCard = (props: TopStoreProps) => {
 		setTimeout(() => setGlow(false), 600);
 	};
 
+
 	if (device === 'mobile') {
 		return (
-			<Stack className="top-store-card" onClick={() => pushDetailHandler(store._id)}>
-				<img src={storeImage} alt="" />
-				<strong>{store?.memberNick}</strong>
-				<span>{store?.memberType}</span>
-			</Stack>
-		);
-	} else {
+		  <Stack className="top-store-card mobile" onClick={() => pushDetailHandler(store._id)}>
+			<Box className="mobile-image-box">
+			  <img src={storeImage} alt={store.memberNick} />
+			  <Box className="mobile-like">
+				<IconButton
+				  size="small"
+				  onClick={(e: any) => handleLikeClick(e, store._id)}
+				  title={!user?._id ? 'Login required to like' : 'Like this store'}
+				>
+				  {liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
+					<FavoriteIcon className={glow ? 'glow' : ''} fontSize="small" />
+				  ) : (
+					<FavoriteBorderIcon fontSize="small" />
+				  )}
+				</IconButton>
+			  </Box>
+			  <Box className="mobile-overlay">
+				<strong className="name">{store?.memberNick}</strong>
+				<span className="type">{store?.memberType}</span>
+			  </Box>
+			</Box>
+	
+			{/* Optional: quick stats row on mobile */}
+			{!recentlyVisited && (
+			  <Box className="mobile-stats">
+				<Box className="view-box">
+				  <RemoveRedEyeIcon fontSize="small" />
+				  <Typography component="span">{store?.memberViews}</Typography>
+				</Box>
+				<Box className="count-box">
+				  <Typography component="span">{store?.memberProducts} Products</Typography>
+				</Box>
+			  </Box>
+			)}
+		  </Stack>
+		); } else {
 		return (
 			<Stack className="top-store-card">
 				<Stack className="store-image-container">

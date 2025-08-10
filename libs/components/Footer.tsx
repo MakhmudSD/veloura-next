@@ -23,62 +23,103 @@ const Footer = () => {
 
 	if (device == 'mobile') {
 		return (
+			<Stack id="footer">
 			<Stack className={'footer-container'}>
-				<Stack className={'main'}>
-					<Stack className={'left'}>
-						<Box component={'div'} className={'footer-box'}>
-							<img src="/img/logo/logoWhite.svg" alt="" className={'logo'} />
-						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<span>total free customer care</span>
-							<p>+82 10 4867 2909</p>
-						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<span>nee live</span>
-							<p>+82 10 4867 2909</p>
-							<span>Support?</span>
-						</Box>
-						<Box component={'div'} className={'footer-box'}>
-							<p>follow us on social media</p>
-							<div className={'media-box'}>
-								<FacebookOutlinedIcon />
-								<TelegramIcon />
-								<InstagramIcon />
-								<TwitterIcon />
-							</div>
-						</Box>
-					</Stack>
-					<Stack className={'right'}>
-						<Box component={'div'} className={'bottom'}>
-							<div>
-								<strong>Popular Search</strong>
-								<span>product for Rent</span>
-								<span>product Low to hide</span>
-							</div>
-							<div>
-								<strong>Quick Links</strong>
-								<span>Terms of Use</span>
-								<span>Privacy Policy</span>
-								<span>Pricing Plans</span>
-								<span>Our Services</span>
-								<span>Contact Support</span>
-								<span>FAQs</span>
-							</div>
-							<div>
-								<strong>Discover</strong>
-								<span>Seoul</span>
-								<span>Gyeongido</span>
-								<span>Busan</span>
-								<span>Jejudo</span>
-							</div>
-						</Box>
-					</Stack>
+			  <Stack className={'main'}>
+				<Stack className="left">
+				  <Box className="footer-left-top">
+					<div className="brand-info">
+					  <img src="/img/logo/white_on_black2.png" alt="Veloura Logo" className="logo" />
+					  <p>
+						Veloura is a destination for those who believe fragrance is more than a scent—it's an expression of
+						identity, mood, and memory.
+					  </p>
+					</div>
+				  </Box>
+	  
+				  <Box className="footer-left-bottom">
+					<h1>Subscribe Our Newsletter</h1>
+					<p>Joining hands, building a stronger nation through immigration.</p>
+					<div className="subscribe-row">
+					  <input
+						type="email"
+						placeholder="Your Email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						onKeyDown={(e) => {
+						  if (e.key === 'Enter') handleSend();
+						}}
+					  />
+					  <img
+						src="/img/icons/footer-arrow.svg"
+						alt="footer-arrow"
+						onClick={handleSend}
+						style={{ cursor: 'pointer' }}
+					  />
+					</div>
+				  </Box>
 				</Stack>
-				<Stack className={'second'}>
-					<span>© Veloura - All rights reserved. Nestar {moment().year()}</span>
+	  
+				<Stack className={'right'}>
+				  <Box className={'categories'}>
+					<h1>Categories</h1>
+					<Stack className="categories-list">
+					  <span>Ring</span>
+					  <span>Necklace</span>
+					  <span>Earrings</span>
+					  <span>Bracelet</span>
+					  <span>Diamond</span>
+					</Stack>
+				  </Box>
+				  <Box className="useful-links">
+					<Stack className="useful-list">
+					  <h1>Useful Links</h1>
+					  <span>About Veloura</span>
+					  <span>Jewelry Guide</span>
+					  <span>Customer Support</span>
+					  <span>Shipping & Returns</span>
+					  <span>Terms & Privacy</span>
+					</Stack>
+				  </Box>
 				</Stack>
+			  </Stack>
+	  
+			  <Stack className={'second'}>	  
+			
+				<Box className="divider"></Box>
+	  
+				<Stack className="row2">
+				  <Box className="divider" />
+	  
+				  <Stack className="social">
+					<FacebookOutlinedIcon />
+					<TelegramIcon />
+					<InstagramIcon />
+					<TwitterIcon />
+					<YouTubeIcon />
+				  </Stack>
+	  
+				  <Box className="divider" />
+				</Stack>
+	  
+				<Stack className="row3">
+				  <Stack className="bottom">
+					<p>©Makhmud Kudratov All Rights Reserved • {moment().year()}</p>
+				  </Stack>
+				  <Stack className="payment-cards">
+					<img src="/img/footer/Layer_1.svg" alt="Visa" />
+					<img src="/img/footer/Layer_2.svg" alt="MasterCard" />
+					<img src="/img/footer/Layer_3.svg" alt="PayPal" />
+					<img src="/img/footer/Group41.svg" alt="American Express" />
+					<img src="/img/footer/Group43.svg" alt="Discover" />
+					<img src="/img/footer/Group44.svg" alt="Bitcoin" />
+				  </Stack>
+				</Stack>
+			  </Stack>
 			</Stack>
+		  </Stack>
 		);
+
 	} else {
 		return (
 			<Stack className={'footer-container'}>

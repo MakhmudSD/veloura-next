@@ -3,11 +3,15 @@ import { Stack, Box, Typography, useMediaQuery, useTheme } from '@mui/material';
 import { useRouter } from 'next/router';
 import EastIcon from '@mui/icons-material/East';
 import AnimatedSnackbar from '../common/Animations';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper';
 
 const BRANDS = [
   { name: 'Cartier', logoUrl: '/img/icons/brands/cariter.png' },
+  { name: 'Bvlgari', logoUrl: '/img/icons/brands/bulgari2.png' },
   { name: 'Tiffany', logoUrl: '/img/icons/brands/tiffany3.png' },
   { name: 'Van Cleef & Arpels', logoUrl: '/img/icons/brands/vanCleef.png' },
+  { name: 'YSL', logoUrl: '/img/icons/brands/tsl.png' },
 ];
 
 const BrandsSection = () => {
@@ -41,6 +45,7 @@ const BrandsSection = () => {
     const firstThree = BRANDS.slice(0, 3);
     const rest = BRANDS.slice(3);
 
+
     return (
       <>
         <Stack className="brands-section">
@@ -49,57 +54,47 @@ const BrandsSection = () => {
               <Typography component="span">Attractive Jewelry</Typography>
               <Typography component="p">Gorgeous Brands</Typography>
             </Box>
-
-            {/* 3-up grid on mobile */}
-            <Stack className="brand-grid">
-              {firstThree.map((brand) => (
-                <Box key={brand.name} className="brand-item">
-                  <Box
-                    className="brand-card interactive"
-                    onClick={() => handleClick(brand.name)}
-                    role="button"
-                    tabIndex={0}
-                    onKeyDown={(e: any) => {
-                      if (e.key === 'Enter' || e.key === ' ') handleClick(brand.name);
-                    }}
-                  >
-                    <img src={brand.logoUrl} alt={brand.name} draggable="false" />
-                  </Box>
-                  <Typography className="brand-heading">{brand.name}</Typography>
-                </Box>
-              ))}
-            </Stack>
-
-            {/* The rest in a single-row, swipeable (horizontal scroll) list */}
-            {rest.length > 0 && (
-              <Stack className="brand-scroll">
-                <Typography className="brand-scroll-title">
-                  More brands <EastIcon fontSize="small" />
-                </Typography>
-
-                <Box className="scroll-area" role="list" aria-label="More brands">
-                  {rest.map((brand) => (
-                    <Box key={brand.name} className="brand-item scroll-item" role="listitem">
-                      <Box
-                        className="brand-card interactive"
-                        onClick={() => handleClick(brand.name)}
-                        role="button"
-                        tabIndex={0}
-                        onKeyDown={(e: any) => {
-                          if (e.key === 'Enter' || e.key === ' ') handleClick(brand.name);
-                        }}
-                      >
-                        <img src={brand.logoUrl} alt={brand.name} draggable="false" />
-                      </Box>
-                      <Typography className="brand-heading">{brand.name}</Typography>
+  
+            <div className="card-box">
+              <Swiper
+                className="brands-swiper"
+                slidesPerView={3}           // mobile default
+                spaceBetween={12}
+                centeredSlides={false}
+                autoplay={{ delay: 3500, disableOnInteraction: false }}
+                breakpoints={{
+                  0:   { slidesPerView: 3, spaceBetween: 10 },
+                  600: { slidesPerView: 3, spaceBetween: 12 },
+                  900: { slidesPerView: 5, spaceBetween: 16 }, // desktop
+                }}
+                modules={[Autoplay]}
+              >
+                {BRANDS.map((brand) => (
+                  <SwiperSlide key={brand.name} className="brand-slide">
+                    <Box
+                      className="brand-card interactive"
+                      onClick={() => handleClick(brand.name)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e: React.KeyboardEvent) => {
+                        if (e.key === 'Enter' || e.key === ' ') handleClick(brand.name);
+                      }}
+                      aria-label={`View ${brand.name} products`}
+                    >
+                      <img src={brand.logoUrl} alt={brand.name} draggable="false" />
                     </Box>
-                  ))}
-                </Box>
-              </Stack>
-            )}
+                    <Typography className="brand-heading">{brand.name}</Typography>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            </div>
+  
+            <Typography className="brand-more-hint">
+              Swipe to explore more <EastIcon fontSize="inherit" />
+            </Typography>
           </Stack>
         </Stack>
-
+  
         <AnimatedSnackbar
           open={openSnackbar}
           onClose={handleCloseSnackbar}
@@ -108,6 +103,7 @@ const BrandsSection = () => {
         />
       </>
     );
+  
   }
 
   /* ---------------- DESKTOP (unchanged) ---------------- */
