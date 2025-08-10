@@ -6,11 +6,11 @@ import MarkChatUnreadIcon from '@mui/icons-material/MarkChatUnread';
 import { useRouter } from 'next/router';
 import ScrollableFeed from 'react-scrollable-feed';
 import { RippleBadge } from '../../scss/MaterialTheme/styled';
-import { Member } from '../types/member/member';
 import { useReactiveVar } from '@apollo/client';
 import { socketVar, userVar } from '../../apollo/store';
-import { sweetErrorAlert } from '../sweetAlert';
+import { Member } from '../types/member/member';
 import { Messages, REACT_APP_API_URL } from '../config';
+import { sweetErrorAlert } from '../sweetAlert';
 
 interface MessagePayload {
 	event: string;
@@ -105,6 +105,7 @@ const Chat = () => {
 		setMessageInput('');
 	};
 
+	/** RENDER **/
 	return (
 		<Stack className="chatting">
 			{openButton ? (
@@ -121,13 +122,11 @@ const Chat = () => {
 					<ScrollableFeed>
 						<Stack className={'chat-main'}>
 							<Box flexDirection={'row'} style={{ display: 'flex' }} sx={{ m: '10px 0px' }} component={'div'}>
-								<div className={'msg-left'}>Welcome to Live chat!</div>
+								<div className={'welcome'}>Welcome to Live chat!</div>
 							</Box>
 							{messagesList?.map((ele: MessagePayload, index) => {
 								const { text, memberData } = ele;
-								const memberImage = memberData?.memberImage
-									? `${REACT_APP_API_URL}/${memberData.memberImage}`
-									: '/img/profile/defaultUser.svg';
+								const memberImage = memberData?.memberImage ? `${REACT_APP_API_URL}/${memberData.memberImage}` : '/img/profile/defaultUser.svg';
 
 								return memberData?._id === user?._id ? (
 									<Box

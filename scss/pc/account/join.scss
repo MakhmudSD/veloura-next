@@ -1,194 +1,269 @@
 #pc-wrap {
   .join-page {
-    position: relative;
-    padding: 90px 0px;
-    width: 100%;
-    height: auto;
-   .container {
-     align-items: center;
-     .main {
-       width: 1200px;
-       height: 900px;
-       display: flex;
-       flex-direction: row;
-       border-radius: 12px 0px 0px 12px;
-       background: #FFF;
-       box-shadow: 0px 1px 4px 0px rgba(24, 26, 32, 0.07);
-       .left {
-         width: 50%;
-         height: 100%;
-         display: flex;
-         flex-direction: column;
-         align-items: center;
-         justify-content: center;
-         .logo {
-           display: flex;
-           flex-direction: row;
-           align-items: center;
-           img {
-             width: 40px;
-             height: 40px;
-           }
-           span {
-             margin-left: 10px;
-             font-family: $font ;
-             font-size: 22px;
-             font-style: normal;
-             font-weight: 600;
-             line-height: normal;
-             letter-spacing: 0.44px;
-             color:#181A20;
-           }
-         }
-         .info {
-           margin-top: 30px;
-           display: flex;
-           flex-direction: column;
-           align-items: center;
-           span {
-             font-family: $font;
-             font-size: 20px;
-             font-style: normal;
-             font-weight: 600;
-             line-height: normal;
-             text-transform: uppercase;
-             color:  #181A20;
-           }
-           p {
-             margin-top: 5px;
-             font-family: $font;
-             font-size: 14px;
-             font-style: normal;
-             font-weight: 400;
-             line-height: 26px;
-             color: #181A20;
+    .container {
+      width: 100%;
+      margin: 0 auto;
+      padding: 60px 20px;
+      background:
+        url('/img/fiber/naqsh.png') no-repeat center center / cover,
+        #ffffff;
+    }
 
-           }
-         }
-         .input-wrap {
-           margin-top: 45px;
-           width: 470px;
-           display: flex;
-           flex-direction: column;
+    .main {
+      min-height: 72vh;
+      display: flex;
+      align-items: center;
 
-          .input-box {
-            margin-top: 20px;
-            display: flex;
-            flex-direction: column;
-            &:first-child {
-              margin-top: 0px;
-            }
-            span {
-              margin-bottom: 8px;
-              font-family: $font;
-              font-size: 14px;
-              font-style: normal;
-              font-weight: 600;
-              line-height: normal;
-              color:  #181A20;
-            }
-            input {
-              padding: 0px 15px;
-              width: 100%;
-              height: 55px;
-              border-radius: 8px;
-              border: 1px solid #DDD;
-              background:  #FFF;
-              font-family: $font;
-              font-size: 14px;
-              font-style: normal;
-              font-weight: 400;
-              line-height: 26px;
-              color: #717171;
-            }
+      &.centered {
+        justify-content: center;
+      }
+    }
+
+    /* Elevated, elegant card */
+    .form-card {
+      position: relative;
+      width: 100%;
+      max-width: 590px;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid rgba(196, 196, 196, 0.45);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+      /* luxe gradient border halo */
+      &::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: inherit;
+        padding: 1px;
+        background: linear-gradient(135deg, rgba(201,176,138,0.65), rgba(0,0,0,0));
+        -webkit-mask:
+          linear-gradient(#000 0 0) content-box,
+          linear-gradient(#000 0 0);
+        -webkit-mask-composite: xor;
+                mask-composite: exclude;
+        pointer-events: none;
+      }
+
+      &:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 22px 60px rgba(0, 0, 0, 0.12);
+      }
+    }
+
+    /* Header/info – refined to look cohesive */
+    .info {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 10px;
+      margin-top: 4px;
+      margin-bottom: 6px;
+
+      /* chip */
+      span {
+        padding: 4px 12px;
+        border-radius: 999px;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 2px;
+        font-size: 22px;
+        color: #8a6f4e;
+        background: rgba(201, 176, 138, 0.12);
+      }
+
+      /* optional subtitle if present in your JSX */
+      p {
+        margin: 0;
+        color: #3a3a3a;
+        font-size: 14.5px;
+        line-height: 1.65;
+        max-width: 480px;
+      }
+    }
+
+    .input-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 12px;
+
+      .input-box {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        span {
+          font-size: 13px;
+          color: #5b5b5b;
+          font-weight: 700;
+          letter-spacing: 0.3px;
+        }
+
+        input {
+          width: 100%;
+          height: 48px;
+          border-radius: 12px;
+          border: 1px solid #e6e2dc;
+          background: #fff;
+          padding: 0 16px;
+          font-size: 15px;
+          color: #222;
+          outline: none;
+          transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+          box-shadow:
+            inset 0 1px 0 rgba(0,0,0,0.02),
+            0 0 0 rgba(0,0,0,0); /* reset */
+
+          &:hover {
+            border-color: #d9c8aa;
+            background: #fefcf9;
           }
-         }
-         .register {
-           margin-top: 45px;
-           width: 470px;
-           display: flex;
-           flex-direction: column;
-           align-items: center;
-           .type-option {
-             display: flex;
-             flex-direction: row;
-             align-items: center;
-             span.text {
-               font-family: $font;
-               font-size: 14px;
-               font-style: normal;
-               font-weight: 600;
-               line-height: normal;
-               color:  #181A20;
-             }
-             div {
-               margin-left: 20px;
-               display: flex;
-               flex-direction: row;
-               &:nth-child(1){
-                 margin-right: 25px;
-               }
-             }
-           }
-           .remember-info {
-             width: 100%;
-             display: flex;
-             flex-direction: row;
-             justify-content: space-between;
-             align-items: center;
-             a {
-               font-family: $font;
-               font-size: 14px;
-               font-style: normal;
-               font-weight: 400;
-               line-height: 26px;
-               cursor: pointer;
-               color:  #181A20;
-             }
-           }
-           button {
-             margin-top: 25px;
-             width: 100%;
-             height: 55px;
-             border-radius: 12px;
-             background:  #EB6753;
-             font-family: $font;
-             font-size: 15px;
-             font-style: normal;
-             font-weight: 600;
-             line-height: normal;
-             color:  #FFF;
-             img {
-               filter: brightness(0) invert(1);
-             }
-           }
-         }
-         .ask-info {
-           margin-top: 90px;
-           p {
-             font-family: $font;
-             font-size: 20px;
-             font-style: normal;
-             line-height: normal;
-             font-weight: 400;
-             color:  #181A20;
-             b {
-               margin-left: 10px;
-               font-weight: 600;
-               font-size: 32px;
-               cursor: pointer;
-               text-decoration: underline;
-             }
-           }
-         }
-       }
-       .right {
-         width: 50%;
-         height: 100%;
-         background-image: url("/img/banner/joinBg.svg");
-         background-size: cover;
-       }
-     }
-   }
+
+          &:focus {
+            border-color: #c9b08a;
+            box-shadow: 0 0 0 3px rgba(201, 176, 138, 0.18);
+            background: #fff;
+          }
+
+          &::placeholder {
+            color: #b6b0a8;
+          }
+        }
+      }
+    }
+
+    .register {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .type-option {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        .text {
+          font-size: 13px;
+          color: #6a6a6a;
+          font-weight: 700;
+        }
+
+        > div {
+          display: flex;
+          gap: 18px;
+        }
+      }
+
+      .remember-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        a {
+          font-size: 12.5px;
+          color: #8a6f4e;
+          cursor: pointer;
+          text-decoration: none;
+          border-bottom: 1px dashed transparent;
+          transition: border-color 0.2s ease;
+
+          &:hover {
+            border-color: #c9b08a;
+          }
+        }
+      }
+
+      /* Luxury jewelry button */
+      button.MuiButton-contained {
+        height: 48px;
+        border-radius: 14px;
+        text-transform: uppercase;
+        font-weight: 900;
+        letter-spacing: 1.1px;
+        background: #000;
+        color: #fff;
+        border: 1px solid #c9b08a;
+        box-shadow: 0 6px 18px rgba(201, 176, 138, 0.28);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.3s ease;
+
+        &:hover {
+          background: linear-gradient(135deg, #dac39c, #c9b08a);
+          color: #000;
+          box-shadow: 0 10px 22px rgba(201, 176, 138, 0.45);
+          transform: translateY(-1px);
+        }
+
+        &:active {
+          transform: translateY(1px);
+          box-shadow: 0 4px 12px rgba(201, 176, 138, 0.35);
+        }
+
+        img {
+          filter: invert(1);
+          transition: filter 0.3s ease;
+        }
+        &:hover img { filter: invert(0); }
+      }
+    }
+
+    .ask-info {
+      p {
+        margin: 0;
+        font-size: 13.5px;
+        color: #5b5b5b;
+
+        b {
+          color: #8a6f4e;
+          cursor: pointer;
+          margin-left: 6px;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
+    /* Ensure any logo you place is nicely sized inside the card */
+    .form-card .logo {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        height: 200px;     /* fixed elegant height */
+        width: auto;       /* preserve aspect ratio */
+        max-width: 100%;   /* never overflow the card */
+        object-fit: contain;
+        display: block;
+      }
+    }
+  }
+
+  .join-page .right { display: none !important; }
+
+  /* Optional subtle responsive polish */
+  @media (max-width: 640px) {
+    .join-page {
+      .form-card {
+        padding: 28px 22px;
+        border-radius: 14px;
+      }
+      .input-wrap .input-box input {
+        height: 46px;
+      }
+      .register button.MuiButton-contained {
+        height: 46px;
+      }
+    }
   }
 }

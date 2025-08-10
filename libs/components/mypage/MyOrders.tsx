@@ -121,16 +121,6 @@ const MyOrders: NextPage = ({ initialInput }: any) => {
   };
 
 
-useEffect(() => {
-  if (!user) return; // wait until loaded
-  if (!user._id || user.memberType !== 'USER') {
-    router.replace('/');
-  }
-}, [user, router]);
-
-// and in render:
-if (!user || (!user._id && typeof window !== 'undefined')) return null;
-
   const EXCLUDED = new Set([OrderStatus.CANCEL, OrderStatus.DELETE]);
 
   const matchesActiveTab = (o: any) => {

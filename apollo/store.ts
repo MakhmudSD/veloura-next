@@ -1,5 +1,6 @@
 import { InMemoryCache, makeVar } from "@apollo/client";
 import { CustomJwtPayload } from "../libs/types/customJwtPayload";
+export const themeVar = makeVar({});
 
 export const userVar = makeVar<CustomJwtPayload>({
 	_id: '',
@@ -78,9 +79,6 @@ export const userVar = makeVar<CustomJwtPayload>({
   export function rehydrateBasketForCurrentUser() {
 	setBasketItems(loadCart());
   }
-  
-  // ===== Theme Var (unchanged) =====
-
 
 export const cache = new InMemoryCache({
 	typePolicies: {
@@ -88,5 +86,5 @@ export const cache = new InMemoryCache({
 	},
   });
 
-//@ts-ignore
+///@ts-ignore 
 export const socketVar = makeVar<WebSocket>();

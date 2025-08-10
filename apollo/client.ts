@@ -29,37 +29,36 @@ const tokenRefreshLink = new TokenRefreshLink({
 	},
 });
 
-// create custom WebSocket Client
-
-class LoggingWebSocket{
+// Custom WebSoket client
+class LoggingWebSocket {
 	private socket: WebSocket;
 
 	constructor(url: string) {
-		this.socket = new WebSocket(url);
 		this.socket = new WebSocket(`${url}?token=${getJwtToken()}`);
-	socketVar(this.socket)
+		socketVar(this.socket);
 
 		this.socket.onopen = () => {
-			console.log('WebSocket connection opened:', url);
+			console.log('WebSocket connection ')
+		};
+		this.socket.onmessage = (msg) => {
+			console.log('WebSocket message received: ', msg.data);
 		};
 
 		this.socket.onerror = (error) => {
-			console.error('WebSocket error:', error);
-		};
-
-		this.socket.onmessage = (msg) => {
-			console.log('WebSocket message received:', msg.data);
+			console.error('WebSocket error: ', error);
 		};
 	}
 
-	send(data: string | ArrayBufferLike | SharedArrayBuffer | Blob | ArrayBufferView) {
+	send(data: string | ArrayBuffer | SharedArrayBuffer | Blob | ArrayBufferView){
 		this.socket.send(data);
+
 	}
 
 	close() {
 		this.socket.close();
 	}
-}
+};
+
 
 function createIsomorphicLink() {
 	if (typeof window !== 'undefined') {
@@ -81,7 +80,7 @@ function createIsomorphicLink() {
 
 		/* WEBSOCKET SUBSCRIPTION LINK */
 		const wsLink = new WebSocketLink({
-			uri: process.env.REACT_APP_API_WS ?? 'ws://127.0.0.1:3007',
+			uri: process.env.REACT_APP_API_WS ?? 'ws://127.0.0.1:3004',
 			options: {
 				reconnect: false,
 				timeout: 30000,
@@ -95,8 +94,9 @@ function createIsomorphicLink() {
 		const errorLink = onError(({ graphQLErrors, networkError, response }) => {
 			if (graphQLErrors) {
 				graphQLErrors.map(({ message, locations, path, extensions }) => {
-					console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`);
-					if (!message.includes('input')) sweetErrorAlert(message);
+					if (!message.includes("input")) {
+						sweetErrorAlert(message);
+					}
 				});
 			}
 			if (networkError) console.log(`[Network error]: ${networkError}`);
@@ -146,7 +146,7 @@ import { ApolloClient, InMemoryCache, createHttpLink } from "@apollo/client";
 // No Subscription required for develop process
 
 const httpLink = createHttpLink({
-  uri: "http://localhost:3007/graphql",
+  uri: "http://localhost:3004/graphql",
 });
 
 const client = new ApolloClient({
