@@ -69,7 +69,6 @@ const MemberPage: NextPage = () => {
 			if (!user._id) throw new Error(Messages.error2);
 			await subscribe({ variables: { input: id } });
 			await sweetTopSmallSuccessAlert('Followed', 800);
-			await refetch({ input: query });
 			if (id !== user._id) {
 									  void notifyMember({
 										notificationType: NotificationType.FOLLOW,
@@ -79,6 +78,8 @@ const MemberPage: NextPage = () => {
 										authorId: user._id,
 									  });
 									}
+									await refetch({ input: query });
+
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
 		}
