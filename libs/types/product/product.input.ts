@@ -9,7 +9,6 @@ import {
 } from '../../enums/product.enum';
 
 export interface ProductInput {
-	_id: any;
 	productCategory: ProductCategory;
 	productLocation: ProductLocation;
 	productOrigin: string;
@@ -37,7 +36,6 @@ interface PISearch {
 	memberId?: string;
 	locationList?: ProductLocation[];
 	categoryList?: ProductCategory[];
-	productStatus?: ProductStatus;
 	materialList?: ProductMaterial[];
 	genderList?: ProductGender[];
 	colorList?: string[];              // ✅ Optional, if you use it

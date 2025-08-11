@@ -167,11 +167,9 @@ export const UPDATE_ORDER = gql`
 export const CREATE_PRODUCT = gql`
 	mutation CreateProduct($input: ProductInput!) {
 		createProduct(input: $input) {
-			_id
 			productCategory
 			productBrand
 			productLocation
-			productStatus
 			productAddress 
 			productMaterial
 			productGender

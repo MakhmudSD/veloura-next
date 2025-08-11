@@ -285,7 +285,7 @@ ProductList.defaultProps = {
 		limit: 9,
 		sort: 'createdAt',
 		direction: 'DESC',
-		search: { productStatus: "AVAILABLE" },
+		search: { },
 	},
 };
 
