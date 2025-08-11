@@ -37,6 +37,7 @@ interface PISearch {
 	memberId?: string;
 	locationList?: ProductLocation[];
 	categoryList?: ProductCategory[];
+	productStatus?: ProductStatus;
 	materialList?: ProductMaterial[];
 	genderList?: ProductGender[];
 	colorList?: string[];              // ✅ Optional, if you use it

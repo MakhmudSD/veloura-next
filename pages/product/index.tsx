@@ -71,7 +71,7 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 		notifyOnNetworkStatusChange: true,
 		onCompleted: (data) => {
 			setProducts(data?.getProducts?.list || []);
-			setTotal(data?.getProducts?.metaCounter?.[0]?.total || 0); // ✅ Correct path
+			setTotal(data?.getProducts?.metaCounter?.[0]?.total || 0);
 		},
 	});
 
@@ -285,7 +285,7 @@ ProductList.defaultProps = {
 		limit: 9,
 		sort: 'createdAt',
 		direction: 'DESC',
-		search: { pricesRange: { start: 0, end: 2000000 } },
+		search: { productStatus: "AVAILABLE" },
 	},
 };
 

@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Button, Stack, Typography } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
-import { ProductCategory, ProductGender, ProductLocation, ProductMaterial } from '../../enums/product.enum';
+import { ProductCategory, ProductGender, ProductLocation, ProductMaterial, ProductStatus } from '../../enums/product.enum';
 import {  REACT_APP_API_URL } from '../../config';
 import { ProductInput } from '../../types/product/product.input';
 import axios from 'axios';
@@ -139,24 +139,26 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
 
 	const insertProductHandler = useCallback(async () => {
 		try {
-			const { _id, ...inputWithoutId } = insertProductData;
-
-			const result = await createProduct({
-				variables: {
-					input: inputWithoutId,
-				},
-			});
-
-			await sweetMixinSuccessAlert('Product added successfully!');
-			await router.push({
-				pathname: '/mypage',
-				query: { category: 'myProducts' },
-			});
+		  const { _id, ...inputWithoutId } = insertProductData;
+	  
+		  const payload = {
+			...inputWithoutId,
+			productStatus: ProductStatus.AVAILABLE,                             // ⬅️ show on public list
+			productStock: inputWithoutId.productStock > 0 ? inputWithoutId.productStock : 1, // ⬅️ visible if stock-filtered
+		  };
+	  
+		  const { data } = await createProduct({ variables: { input: payload } });
+		  console.log('Created product status:', data?.createProduct?.productStatus);
+	  
+		  await sweetMixinSuccessAlert('Product added successfully!');
+		  await router.push({ pathname: '/mypage', query: { category: 'myProducts' } });
+		  // (Optional) Jump straight to public list:
+		  // await router.push(`/product?input=${encodeURIComponent(JSON.stringify(defaultListingInput))}`);
 		} catch (err: any) {
-			console.error('Error inserting product:', err.message);
-			await sweetMixinErrorAlert(err);
+		  console.error('Error inserting product:', err.message);
+		  await sweetMixinErrorAlert(err);
 		}
-	}, [insertProductData]);
+	  }, [insertProductData]);
 
 	const updateProductHandler = useCallback(async () => {
 		try {
