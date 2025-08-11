@@ -1,4 +1,27 @@
-export const REACT_APP_API_URL = `${process.env.REACT_APP_API_URL}`;
+// libs/config.ts (or wherever you import REACT_APP_API_URL from)
+const isBrowser = typeof window !== 'undefined';
+
+export const REACT_APP_API_URL =
+  (isBrowser ? process.env.NEXT_PUBLIC_API_URL : process.env.REACT_APP_API_URL) ||
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.REACT_APP_API_URL ||
+  'http://localhost:3004';
+
+export const REACT_APP_API_GRAPHQL_URL =
+  (isBrowser ? process.env.NEXT_PUBLIC_API_GRAPHQL_URL : process.env.REACT_APP_API_GRAPHQL_URL) ||
+  process.env.NEXT_PUBLIC_API_GRAPHQL_URL ||
+  process.env.REACT_APP_API_GRAPHQL_URL ||
+  `${REACT_APP_API_URL.replace(/\/+$/, '')}/graphql`;
+
+export const REACT_APP_API_WS =
+  (isBrowser ? process.env.NEXT_PUBLIC_API_WS : process.env.REACT_APP_API_WS) ||
+  process.env.NEXT_PUBLIC_API_WS ||
+  process.env.REACT_APP_API_WS ||
+  `ws://localhost:3004/ws`;
+
+// Optionally export site origin too
+export const NEXT_PUBLIC_SITE_ORIGIN =
+  process.env.NEXT_PUBLIC_SITE_ORIGIN || 'http://localhost:3000';
 
 export const availableProductOptions = ['productBarter', 'productLimited'];
 

@@ -71,7 +71,7 @@ const withLayoutBasic = (Component: any) => {
 				case '/member':
 					title = 'Member Page';
 					desc = 'Home / Member Page';
-					bgImage = '/img/banner/header1.svg';
+					bgImage = '/img/banner/member-page.png';
 					break;
 				case '/checkout':
 					title = 'Checkout';

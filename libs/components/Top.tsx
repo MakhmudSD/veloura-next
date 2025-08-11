@@ -287,7 +287,7 @@ const Top = () => {
 
   /* ===================== DESKTOP (unchanged) ===================== */
   return (
-    <div className="navbar">
+    <><div className="page-loader"></div><div className="navbar">
       {/* Top Navbar */}
       <div className={`navbar-main`}>
         <div className="container">
@@ -297,7 +297,18 @@ const Top = () => {
                 <span>✨ Elevate Every Moment with Veloura</span>
                 <span>🎁 Best Offers</span>
                 <span>🏬 100+ Stores</span>
+                <span>💎 Top-notch Brands</span>
                 <span>👥 Thousands of Happy Users</span>
+                <span>🎁 Aesthetic Gift Sets</span>
+                <span>🌿 Curated Scents for Every Mood</span>
+                <span>💎 Premium Ingredients</span>
+
+                <span>✨ Elevate Every Moment with Veloura</span>
+                <span>🎁 Best Offers</span>
+                <span>🏬 100+ Stores</span>
+                <span>💎 Top-notch Brands</span>
+                <span>👥 Thousands of Happy Users</span>
+                <span>🎁 Aesthetic Gift Sets</span>
                 <span>🌿 Curated Scents for Every Mood</span>
                 <span>💎 Premium Ingredients</span>
               </div>
@@ -378,13 +389,10 @@ const Top = () => {
 
                     <div className={'login-user'} onClick={(event: any) => setLogoutAnchor(event.currentTarget)}>
                       <img
-                        src={
-                          user?.memberImage
-                            ? `${REACT_APP_API_URL}/${user?.memberImage}`
-                            : '/img/profile/defaultUser3.svg'
-                        }
-                        alt=""
-                      />
+                        src={user?.memberImage
+                          ? `${REACT_APP_API_URL}/${user?.memberImage}`
+                          : '/img/profile/defaultUser3.svg'}
+                        alt="" />
                     </div>
 
                     <Menu
@@ -393,7 +401,7 @@ const Top = () => {
                       open={logoutOpen}
                       onClose={() => {
                         setLogoutAnchor(null);
-                      }}
+                      } }
                       sx={{ mt: '5px' }}
                     >
                       <MenuItem onClick={() => logOut()}>
@@ -454,7 +462,7 @@ const Top = () => {
           </div>
         </div>
       </div>
-    </div>
+    </div></>
   );
 };
 
