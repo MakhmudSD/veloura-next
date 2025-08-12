@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -16,6 +16,9 @@ import 'swiper/css/pagination';
 import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
 import { sweetMixinErrorAlert } from '../../sweetAlert';
+import { useTranslation } from 'react-i18next';
+import { i18n } from 'next-i18next';
+
 
 interface TrendProductsProps {
   initialInput: ProductsInquiry;
@@ -25,6 +28,8 @@ const TrendProducts = (props: TrendProductsProps) => {
   const { initialInput } = props;
   const router = useRouter();
   const device = useDeviceDetect();
+  const { t } = useTranslation('common');
+  const [lang, setLang] = useState<string | null>('en'); // <-- ensure "Designed for Everyday Glamour" etc. are in locales/*/common.json
 
   const [trendProducts, setTrendProducts] = useState<Product[]>([]);
   const [searchFilter] = useState<ProductsInquiry>(
@@ -42,17 +47,26 @@ const TrendProducts = (props: TrendProductsProps) => {
     variables: { input: initialInput },
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
-      // Safe fallback to [] so we never get stuck showing "empty"
       setTrendProducts(data?.getProducts?.list ?? []);
     },
   });
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (getProductsData?.getProducts?.list) {
       setTrendProducts(getProductsData.getProducts.list);
     }
   }, [getProductsData]);
 
+  useEffect(() => {
+    if (localStorage.getItem('locale') === null) {
+      localStorage.setItem('locale', 'en');
+      setLang('en');
+    } else {
+      setLang(localStorage.getItem('locale'));
+    }
+  }, [router]);
+
+  
   /** HANDLERS **/
   const likeProductHandler = async (user: T, id: string) => {
     try {
@@ -69,19 +83,23 @@ const TrendProducts = (props: TrendProductsProps) => {
       sweetMixinErrorAlert(err.message).then();
     }
   };
+  if (i18n) {
+    console.log('i18n language:', i18n.language);
+  } else {
+    console.log('i18n is null');
+  }
 
   /* ================= MOBILE ================= */
-
   if (device === 'mobile') {
     const isLoading = getProductsLoading && trendProducts.length === 0;
-    const hasData  = trendProducts.length > 0;
+    const hasData = trendProducts.length > 0;
 
     return (
       <Stack className={'trend-products'}>
         <Stack className={'container'}>
           <Stack className={'info-box'}>
-            <span>Designed for Everyday Glamour</span>
-            <p>Soon-to-be staples in your rotation</p>
+            <span>{t('Designed for Everyday Glamour') as string}</span>
+            <p>{t('Soon-to-be staples in your rotation') as string}</p>
           </Stack>
 
           <Stack className={'card-box'}>
@@ -89,21 +107,23 @@ const TrendProducts = (props: TrendProductsProps) => {
               <Box className="empty-list">
                 <Box className="empty-list-content">
                   <img src="/img/icons/empty.png" alt="" />
-                  <strong>Loading products…</strong>
+                  <strong>{t('Loading products…') as string}</strong>
                 </Box>
               </Box>
             ) : !hasData ? (
               <Box component={'div'} className={'empty-list'}>
                 <Box className={'empty-list-content'}>
                   <img src="/img/icons/empty.png" alt="" />
-                  <span>OOPS</span>
-                  <strong>There are no products available at the moment</strong>
+                  <span>{t('OOPS') as string}</span>
+                  <strong>{t('There are no products available at the moment') as string}</strong>
+                  <p>{t('It is a long established fact that a reader will be distracted by the readable content of a page') as string}</p>
+                  <p>{t('when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.') as string}</p>
                 </Box>
               </Box>
             ) : (
               <Swiper
                 className="trend-product-swiper"
-                key={trendProducts.length}          // force re-measure on data change
+                key={trendProducts.length}
                 observer
                 observeParents
                 resizeObserver
@@ -113,7 +133,7 @@ const TrendProducts = (props: TrendProductsProps) => {
                 centeredSlides={false}
                 watchOverflow
                 breakpoints={{
-                  0:   { slidesPerView: 2, spaceBetween: 12 },
+                  0: { slidesPerView: 2, spaceBetween: 12 },
                   480: { slidesPerView: 3, spaceBetween: 12 },
                 }}
                 modules={[Autoplay]}
@@ -135,30 +155,29 @@ const TrendProducts = (props: TrendProductsProps) => {
     );
   }
 
-
-  /* ================= DESKTOP (layout untouched) ================= */
+  /* ================= DESKTOP ================= */
   return (
     <Stack className={'trend-products'}>
       <Stack className={'container'}>
         <Stack className={'info-box'}>
           <Box component={'div'} className={'trends-top'}>
-            <span>Designed for Everyday Glamour</span>
-            <p>Soon-to-be staples in your rotation</p>
+            <span>{t('Designed for Everyday Glamour') as string}</span>
+            <p>{t('Soon-to-be staples in your rotation') as string}</p>
           </Box>
         </Stack>
+
         <Stack className={'card-box'}>
           <div className="swiper-button-prev"></div>
 
-          {/* 2) Corrected: show EMPTY only when length === 0 */}
           {trendProducts.length === 0 ? (
             <Box component={'div'} className={'empty-list'}>
               <Box className={'empty-list-content'}>
                 <img src="/img/icons/empty.png" alt="" />
-                <span>OOPS</span>
-                <strong>There are no products available at the moment</strong>
+                <span>{t('OOPS') as string}</span>
+                <strong>{t('There are no products available at the moment') as string}</strong>
                 <p>
-                  It is a long established fact that a reader will be distracted by the readable content of a page
-                  when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.
+                  {t('It is a long established fact that a reader will be distracted by the readable content of a page') as string}
+                  {t('when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.') as string}
                 </p>
               </Box>
             </Box>
@@ -175,7 +194,10 @@ const TrendProducts = (props: TrendProductsProps) => {
             >
               {trendProducts.map((product: Product) => (
                 <SwiperSlide key={product._id} style={{ width: 'auto' }}>
-                  <TrendProductCard product={product} likeProductHandler={likeProductHandler} />
+                  <TrendProductCard
+                    product={product}
+                    likeProductHandler={likeProductHandler}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -187,6 +209,7 @@ const TrendProducts = (props: TrendProductsProps) => {
     </Stack>
   );
 };
+
 TrendProducts.defaultProps = {
   initialInput: {
     page: 1,

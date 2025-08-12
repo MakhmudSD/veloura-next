@@ -183,7 +183,6 @@ const Chat = () => {
           {open ? (
             <CloseFullscreenIcon />
           ) : (
-            // Your PNG icon when closed
             <img src="/img/icons/chat-icon.png" alt="Chat" className="chat-icon-img" style={{ width: '82px', height: '102px' }} />	
           )}
         </button>

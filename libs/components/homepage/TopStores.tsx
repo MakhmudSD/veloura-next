@@ -106,7 +106,6 @@ const TopStores = (props: TopStoresProps) => {
               <Swiper
                 className={'top-stores-swiper'}
                 key={topStores.length}        // re-measure when data arrives
-                observer
                 observeParents
                 resizeObserver
                 updateOnWindowResize
@@ -157,7 +156,7 @@ const TopStores = (props: TopStoresProps) => {
 
         <Stack className={'wrapper'}>
           <Box className={'switch-btn swiper-stores-prev'}>
-            <div className="swiper-button-prev"><ArrowBackIosNewIcon fontSize="small" /></div>
+            <div className="swiper-button-prev"></div>
           </Box>
 
           <Box className={'card-wrapper'}>
@@ -195,7 +194,7 @@ const TopStores = (props: TopStoresProps) => {
           </Box>
 
           <Box className={'switch-btn swiper-stores-next'}>
-            <div className="swiper-button-next"><ArrowForwardIosIcon fontSize="small" /></div>
+            <div className="swiper-button-next"></div>
           </Box>
         </Stack>
       </Stack>

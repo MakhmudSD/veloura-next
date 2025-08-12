@@ -5,11 +5,12 @@ import EastIcon from '@mui/icons-material/East';
 import AnimatedSnackbar from '../common/Animations';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper';
+import { t } from 'i18next';
 
 const BRANDS = [
   { name: 'Cartier', logoUrl: '/img/icons/brands/cariter.png' },
   { name: 'Bvlgari', logoUrl: '/img/icons/brands/bulgari2.png' },
-  { name: 'Tiffany', logoUrl: '/img/icons/brands/tiffany3.png' },
+  { name: 'Tiffany & Co.', logoUrl: '/img/icons/brands/tiffany3.png' },
   { name: 'Van Cleef & Arpels', logoUrl: '/img/icons/brands/vanCleef.png' },
   { name: 'YSL', logoUrl: '/img/icons/brands/tsl.png' },
 ];
@@ -51,8 +52,8 @@ const BrandsSection = () => {
         <Stack className="brands-section">
           <Stack className="container">
             <Box className="brands-top">
-              <Typography component="span">Attractive Jewelry</Typography>
-              <Typography component="p">Gorgeous Brands</Typography>
+              <Typography component="span">{t('Attractive Jewelry')}</Typography>
+              <Typography component="p">{t('Gorgeous Brands')}</Typography>
             </Box>
   
             <div className="card-box">
@@ -112,8 +113,8 @@ const BrandsSection = () => {
       <Stack className="brands-section">
         <Stack className="container">
           <Box className="brands-top">
-            <Typography component="span">Attractive Jewelry</Typography>
-            <Typography component="p">Gorgeous Brands</Typography>
+            <Typography component="span">{t('Attractive Jewelry')}</Typography>
+            <Typography component="p">{t('Gorgeous Brands')}</Typography>
           </Box>
           <Stack className="card-box">
             {BRANDS.map((brand) => (

@@ -1,4 +1,3 @@
-// libs/config.ts (or wherever you import REACT_APP_API_URL from)
 const isBrowser = typeof window !== 'undefined';
 
 export const REACT_APP_API_URL =

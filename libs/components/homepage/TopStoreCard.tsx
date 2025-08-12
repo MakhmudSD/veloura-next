@@ -111,19 +111,19 @@ const TopStoreCard = (props: TopStoreProps) => {
 							<span className="icon">
 								<img src="/img/icons/followers.png" alt="follower" />
 							</span>
-							<span>{store.memberFollowers} Followers</span>
+							{store.memberFollowers} Followers
 						</div>
 						<div className="stat-item">
 							<span className="icon">
 								<img src="/img/icons/followers.png" alt="following" />
 							</span>
-							<span>{store.memberFollowings} Followings</span>
+							{store.memberFollowings} Followings
 						</div>
 						<div className="stat-item">
 							<span className="icon">
 								<img src="/img/icons/product.png" alt="products" />
 							</span>
-							<span> {store.memberProducts} Products</span>
+							{store.memberProducts} Products
 						</div>
 					</Stack>
 
