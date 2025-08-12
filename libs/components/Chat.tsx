@@ -203,9 +203,7 @@ const Chat = () => {
 
               {messagesList?.map((ele: MessagePayload, index) => {
                 const { text, memberData } = ele;
-                const memberImage = memberData?.memberImage
-                  ? (memberData.memberImage.startsWith?.('http') ? memberData.memberImage : `${REACT_APP_API_URL}/${memberData.memberImage}`)
-                  : '/img/profile/defaultUser.svg';
+                const memberImage = "/img/icons/ai.png"; // Default AI image
 
                 const isMe = memberData?._id === user?._id;
                 const isAI = memberData?._id === AI_MEMBER._id;

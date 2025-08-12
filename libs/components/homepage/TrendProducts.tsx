@@ -161,8 +161,8 @@ const TrendProducts = (props: TrendProductsProps) => {
       <Stack className={'container'}>
         <Stack className={'info-box'}>
           <Box component={'div'} className={'trends-top'}>
-            <span>{t('Designed for Everyday Glamour') as string}</span>
-            <p>{t('Soon-to-be staples in your rotation') as string}</p>
+          <span>{t('Designed For Everyday Glamour') as string}</span>
+          <p>{t('Soon-to-be staples in your rotation') as string}</p>
           </Box>
         </Stack>
 
