@@ -69,16 +69,16 @@ const MemberPage: NextPage = () => {
 			if (!user._id) throw new Error(Messages.error2);
 			await subscribe({ variables: { input: id } });
 			await sweetTopSmallSuccessAlert('Followed', 800);
-			if (id !== user._id) {
-									  void notifyMember({
-										notificationType: NotificationType.FOLLOW,
-										notificationGroup: NotificationGroup.MEMBER,
-										notificationTitle: 'New follow',
-										notificationDesc: `${user.memberNick ?? 'Someone'} followed you.`,
-										authorId: user._id,
-									  });
-									}
 									await refetch({ input: query });
+									if (id !== user._id) {
+										void notifyMember({
+										  notificationType: NotificationType.FOLLOW,
+										  notificationGroup: NotificationGroup.MEMBER,
+										  notificationTitle: 'New follow',
+										  notificationDesc: `${user.memberNick ?? 'Someone'} followed you.`,
+										  authorId: user._id,
+										});
+									  }
 
 		} catch (err: any) {
 			sweetErrorHandling(err).then();
