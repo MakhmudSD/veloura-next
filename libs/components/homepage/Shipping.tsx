@@ -1,8 +1,10 @@
 import { Stack } from "@mui/system";
 import useDeviceDetect from "../../hooks/useDeviceDetect";
+import { useTranslation } from "next-i18next";
 
 const Shipping = () => {
         const device = useDeviceDetect();
+      const { t } = useTranslation('common');
 
     if(device === 'mobile') {
         return (
@@ -13,9 +15,9 @@ const Shipping = () => {
                             <img src="/img/shipping/delivery.svg" alt="Shipping Icon" />
                         </Stack>
                         <Stack className="shipping-info">
-                            <h1>FREE SHIPPING</h1>
+                            <h1>{t('FREE SHIPPING')}</h1>
                             <p>
-                                Happy to offer international shipping for a flat rate of $40
+                                {t('Happy to offer international shipping for a flat rate of $40')}
                             </p>
                         </Stack>                                
                     </Stack>
@@ -24,10 +26,9 @@ const Shipping = () => {
                             <img src="/img/shipping/customer-servic.svg" alt="CS Icon" />
                         </Stack>
                         <Stack className="shipping-info">
-                            <h1>Support 24/7</h1>
+                            <h1>{t('Support 24/7')}</h1>
                             <p>
-                                Contact Us 24 Hours A Day, 
-                                7 Days A Week
+                                {t('Contact Us 24 Hours A Day, 7 Days A Week')}
                             </p>
                         </Stack>                                
                     </Stack>
@@ -36,9 +37,9 @@ const Shipping = () => {
                             <img src="/img/shipping/return.svg" alt="Return Icon" />
                         </Stack>
                         <Stack className="shipping-info">
-                            <h1>EASY RETURNS</h1>
+                            <h1>{t('EASY RETURNS')}</h1>
                             <p>
-                                Return  within 30 days for a full refund or exchange.
+                                {t('Return  within 30 days for a full refund or exchange.')}
                             </p>
                         </Stack>                                
                     </Stack>
@@ -47,9 +48,9 @@ const Shipping = () => {
                             <img src="/img/shipping/payment.svg" alt="Payment Icon" />
                         </Stack>
                         <Stack className="shipping-info">
-                            <h1>100% Secure</h1>
+                            <h1>{t('100% Secure')}</h1>
                             <p>
-                                Shop with confidence knowing your data is protected.
+                                {t('Shop with confidence knowing your data is protected.')}
                             </p>
                         </Stack>                                
                     </Stack>
@@ -65,9 +66,9 @@ const Shipping = () => {
                         <img src="/img/shipping/delivery.svg" alt="Shipping Icon" />
                     </Stack>
                     <Stack className="shipping-info">
-                        <h1>FREE SHIPPING</h1>
+                        <h1>{t('FREE SHIPPING')}</h1>
                         <p>
-                        Happy to offer international shipping for a flat rate of $40
+                        {t('Happy to offer international shipping for a flat rate of $40')}
                         </p>
                     </Stack>                                
                 </Stack>
@@ -76,10 +77,9 @@ const Shipping = () => {
                         <img src="/img/shipping/customer-servic.svg" alt="CS Icon" />
                     </Stack>
                     <Stack className="shipping-info">
-                        <h1>Support 24/7</h1>
+                        <h1>{t('Support 24/7')}</h1>
                         <p>
-                            Contact Us 24 Hours A Day, 
-                            7 Days A Week
+                            {t('Contact Us 24 Hours A Day, 7 Days A Week')}
                         </p>
                     </Stack>                                
                 </Stack>
@@ -88,9 +88,9 @@ const Shipping = () => {
                         <img src="/img/shipping/return.svg" alt="Return Icon" />
                     </Stack>
                     <Stack className="shipping-info">
-                        <h1>EASY RETURNS</h1>
+                        <h1>{t('EASY RETURNS')}</h1>
                         <p>
-                            Return  within 30 days for a full refund or exchange.
+                            {t('Return  within 30 days for a full refund or exchange.')}
                         </p>
                     </Stack>                                
                 </Stack>
@@ -99,9 +99,9 @@ const Shipping = () => {
                         <img src="/img/shipping/payment.svg" alt="Payment Icon" />
                     </Stack>
                     <Stack className="shipping-info">
-                        <h1>100% Secure</h1>
+                        <h1>{t('100% Secure')}</h1>
                         <p>
-                            Shop with confidence knowing your data is protected.
+                            {t('Shop with confidence knowing your data is protected.')}
                         </p>
                     </Stack>                                
                 </Stack>

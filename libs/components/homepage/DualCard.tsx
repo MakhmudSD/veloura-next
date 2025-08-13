@@ -4,10 +4,13 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
+import { useTranslation } from 'next-i18next';
 
 const DualNavigationCards = () => {
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
+	const { t } = useTranslation('common');
+	
 
 	const handleClick = () => {
 		if (user && user._id) {
@@ -22,13 +25,12 @@ const DualNavigationCards = () => {
 			<Stack className="container">
 				{/* First Card - User */}
 				<div className="nav-card user-card" onClick={() => router.push('/store')}>
-					<h3>Are You Looking For Jewelry?</h3>
+					<h3>{t('Are You Looking For Jewelry?')}</h3>
 					<p>
-						Find your matching jewelry from our extensive collection. We offer the best deals and exceptional service
-						for every customer.
+						{t('Find your matching jewelry from our extensive collection. We offer the best deals and exceptional service for every customer.')}
 					</p>
 					<button>
-						Browse Store
+						{t('Browse Store')}
 						<img src="/img/icons/arrow.png" alt="Arrow" className="arrow-icon" />
 					</button>
 					<Box>
@@ -38,13 +40,12 @@ const DualNavigationCards = () => {
 
 				{/* Second Card - Seller */}
 				<div className="nav-card seller-card" onClick={handleClick}>
-					<h3>Do You Want To Sell Jewelry?</h3>
+					<h3>{t('Do You Want To Sell Jewelry?')}</h3>
 					<p>
-						Join our platform to showcase your jewelry and reach more customers. Get the best value from our top-tier
-						jewelry collection.
+						{t('Join our platform to showcase your jewelry and reach more customers. Get the best value from our top-tier jewelry collection.')}
 					</p>
 					<button>
-						List Your Products
+						{t('List Your Products')}
 						<img src="/img/icons/arrow.png" alt="Arrow" className="arrow-icon" />
 					</button>
 					<Box>

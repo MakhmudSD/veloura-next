@@ -82,12 +82,12 @@ const Top = () => {
 		if (jwt) updateUserInfo(jwt);
 	}, []);
 
-	useEffect(() => {
-		const marquee = document.querySelector('.marquee');
-		if (marquee) {
-			marquee.innerHTML += marquee.innerHTML; // clone items for seamless scroll
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const marquee = document.querySelector('.marquee');
+	// 	if (marquee) {
+	// 		marquee.innerHTML += marquee.innerHTML; // clone items for seamless scroll
+	// 	}
+	// }, []);
 
 	const changeNavbarColor = () => {
 		if (window.scrollY > 180) setColorChange(false);
@@ -323,24 +323,23 @@ const Top = () => {
 						<div className="top-navbar">
 							<div className="top-left">
 								<div className="marquee">
-									<span>✨ Elevate Every Moment with Veloura</span>
-									<span>🎁 Best Offers</span>
-									<span>🏬 100+ Stores</span>
-									<span>💎 Top-notch Brands</span>
-									<span>👥 Thousands of Happy Users</span>
-									<span>🎁 Aesthetic Gift Sets</span>
-									<span>🌿 Curated Scents for Every Mood</span>
-									<span>💎 Premium Ingredients</span>
+									<span>✨ {t('Elevate Every Moment with Veloura')}</span>
+									<span>🎁 {t('Best Offers')}</span>
+									<span>🏬 {t('100+ Stores')}</span>
+									<span>💎 {t('Top-notch Brands')}</span>
+									<span>👥 {t('Thousands of Happy Users')}</span>
+									<span>🎁 {t('Aesthetic Gift Sets')}</span>
+									<span>🌿 {t('Curated Scents for Every Mood')}</span>
+									<span>💎 {t('Premium Ingredients')}</span>
 
-									{/* Duplicate for seamless effect */}
-									<span>✨ Elevate Every Moment with Veloura</span>
-									<span>🎁 Best Offers</span>
-									<span>🏬 100+ Stores</span>
-									<span>💎 Top-notch Brands</span>
-									<span>👥 Thousands of Happy Users</span>
-									<span>🎁 Aesthetic Gift Sets</span>
-									<span>🌿 Curated Scents for Every Mood</span>
-									<span>💎 Premium Ingredients</span>
+									<span>✨ {t('Elevate Every Moment with Veloura')}</span>
+									<span>🎁 {t('Best Offers')}</span>
+									<span>🏬 {t('100+ Stores')}</span>
+									<span>💎 {t('Top-notch Brands')}</span>
+									<span>👥 {t('Thousands of Happy Users')}</span>
+									<span>🎁 {t('Aesthetic Gift Sets')}</span>
+									<span>🌿 {t('Curated Scents for Every Mood')}</span>
+									<span>💎 {t('Premium Ingredients')}</span>
 								</div>
 							</div>
 						</div>
@@ -439,8 +438,8 @@ const Top = () => {
 											>
 												<MenuItem onClick={() => logOut()}>
 													<Logout fontSize="small" style={{ color: 'blue', marginRight: '10px' }} />
-													Logout
-												</MenuItem>
+													<span>{t('Logout')}</span>
+													</MenuItem>
 											</Menu>
 										</>
 									) : (

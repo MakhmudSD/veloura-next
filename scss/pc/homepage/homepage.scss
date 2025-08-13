@@ -313,13 +313,14 @@
 					.trends-top {
 						width: 673px;
 						height: 58px;
-						margin-left: 80px;
+						margin-left: 20px;
 
 						span {
+							margin-left: 80px;
 							color: #222;
 							text-align: center;
 							font-family: 'Judson';
-							font-size: 45px;
+							font-size: 40px;
 							font-weight: 500;
 							text-transform: capitalize;
 						}
@@ -771,7 +772,7 @@
 			  justify-content: center;
 			  .info-box {
 				margin-top: 10px;
-				width:38%; // reduced slightly
+				width:40%; // reduced slightly
 				display: flex;
 				flex-direction: column;
 				justify-content: center;
@@ -895,7 +896,7 @@
 				  width: 70%;
 				  height: 500px;
 				  margin-top: 200px; 
-				  margin-left: 85px;         // down from 400px, give more vertical space
+				  margin-left: 105px;         // down from 400px, give more vertical space
 				  display: flex;
 				  flex-direction: row;
 				  align-items: flex-end;
@@ -1590,7 +1591,6 @@
 							font-family: 'Judson';
 							font-size: 18px;
 							font-weight: 400;
-							letter-spacing: 2.7px;
 							text-transform: uppercase;
 							text-align: center;
 						}
@@ -1769,7 +1769,7 @@
 									  margin-right: 30px;
 									  color: #000;
 									  font-family: "Judson";
-									  font-size: 45px;
+									  font-size: 35px;
 									  font-weight: 900;
 									}
 								  

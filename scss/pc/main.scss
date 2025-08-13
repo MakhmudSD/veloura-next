@@ -979,7 +979,7 @@ body::-webkit-scrollbar {
 		align-items: flex-start;
 		flex-wrap: wrap;
 		gap: 30px; // slightly reduced
-		padding: 70px 20px; // reduced vertical padding
+		padding: 60px 20px; // reduced vertical padding
   
 		.left {
 		  flex: 1;
@@ -987,7 +987,7 @@ body::-webkit-scrollbar {
 		  flex-direction: column;
 		  justify-content: space-between;
 		  align-items: flex-start;
-		  margin-left: 70px; // reduced from 100px
+		  margin-left: -30px; // reduced from 100px
 		  gap: 15px;
   
 		  .footer-left-top {
@@ -1087,7 +1087,6 @@ body::-webkit-scrollbar {
 		  width: auto;
 		  margin-top: 45px;
 		  gap: 90px; // reduced from 114px
-		  margin-right: 120px;
   
 		  .categories,
 		  .resources,

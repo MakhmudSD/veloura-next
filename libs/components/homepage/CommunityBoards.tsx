@@ -10,11 +10,14 @@ import { Autoplay, Navigation } from 'swiper';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
+import { useTranslation } from 'next-i18next';
 
 const CommunityBoards = () => {
   const router = useRouter();
   const [articles, setArticles] = useState<BoardArticle[]>([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
+  const { t } = useTranslation('common');
+  
 
   const {
     loading: getArticlesLoading,
@@ -52,12 +55,12 @@ const CommunityBoards = () => {
       <Stack className={'container'}>
         <Stack className={'info-box'}>
           <Box className={'left'}>
-            <h3>POPULAR POST</h3>
-            <span>Featured Stories About Jewellery</span>
+            <h3>{t('POPULAR POST')}</h3>
+            <span>{t('Featured Stories About Jewellery')}</span>
           </Box>
           <Box className={'right'}>
             <div className={'more-box'} onClick={() => router.push('/article')}>
-              <span>View All Articles</span>
+              <span>{t('View All Articles')}</span>
               <img src="/img/icons/rightup.svg" alt="" />
             </div>
           </Box>
@@ -77,25 +80,22 @@ const CommunityBoards = () => {
           {loading ? (
             <Box component="div" className="empty-list">
               <Box className="empty-list-content">
-                <span>Loading Articles...</span>
+                <span>{t('Loading Articles...')}</span>
               </Box>
             </Box>
           ) : articles.length === 0 ? (
             <Box component="div" className="empty-list">
               <Box className="empty-list-content">
                 <img src="/img/icons/empty.png" alt="" />
-                <span>OOPS</span>
+                <span>{t('OOPS')}</span>
                 <strong>
-                  There are no articles available at the moment
+                  {t('There are no articles available at the moment')}
                 </strong>
                 <p>
-                  It is a long established fact that a reader will be
-                  distracted by the readable content of a page when looking at
-                  its layout. The point of using Lorem Ipsum is that it has a
-                  more-or-less normal.
+                  {t('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.')}
                 </p>
                 <div onClick={() => router.push("/")}>
-                  <h2>Back to Home</h2>
+                  <h2>{t('Back to Home')}</h2>
                 </div>
               </Box>
             </Box>

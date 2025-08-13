@@ -17,6 +17,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { userVar } from '../../../apollo/store';
+import { useTranslation } from 'next-i18next';
 
 interface TopStoresProps {
   initialInput: StoreInquiry;
@@ -26,6 +27,7 @@ const TopStores = (props: TopStoresProps) => {
   const { initialInput } = props;
   const device = useDeviceDetect();
   const router = useRouter();
+  const { t } = useTranslation('common');
   const [topStores, setTopStores] = useState<Member[]>([]);
   const [searchFilter, setSearchFilter] = useState<any>(
     router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
@@ -57,7 +59,7 @@ const TopStores = (props: TopStoresProps) => {
     try {
       const user = userVar();
       if (!user || !user._id) {
-        await sweetMixinErrorAlert('You need to login to like a store Please Login, or Register to continue');
+        await sweetMixinErrorAlert(t('You need to login to like a store. Please Login, or Register to continue'));
         return;
       }
       if (!id) return;
@@ -82,8 +84,8 @@ const TopStores = (props: TopStoresProps) => {
       <Stack className={`top-stores mobile`}>
         <Stack className={'container'}>
           <Stack className={'info-box'}>
-            <span>Top Stores</span>
-            <p>Our Top Stores always ready to serve you</p>
+            <span>{t('Top Stores')}</span>
+            <p>{t('Our Top Stores always ready to serve you')}</p>
           </Stack>
 
           <Stack className={'wrapper'}>
@@ -91,15 +93,15 @@ const TopStores = (props: TopStoresProps) => {
               <Box className="empty-list">
                 <Box className="empty-list-content">
                   <img src="/img/icons/empty.png" alt="" />
-                  <strong>Loading stores…</strong>
+                  <strong>{t('Loading stores…')}</strong>
                 </Box>
               </Box>
             ) : !hasData ? (
               <Box className="empty-list">
                 <Box className="empty-list-content">
                   <img src="/img/icons/empty.png" alt="" />
-                  <span>OOPS</span>
-                  <strong>There are no stores available at the moment</strong>
+                  <span>{t('OOPS')}</span>
+                  <strong>{t('There are no stores available at the moment')}</strong>
                 </Box>
               </Box>
             ) : (
@@ -144,11 +146,11 @@ const TopStores = (props: TopStoresProps) => {
       <Stack className={'container'}>
         <Stack className={'info-box'}>
           <Box className={'left'}>
-            <span>Top Stores</span>
+            <span>{t('Top Stores')}</span>
           </Box>
           <Box className={'right'}>
             <div className={'more-box'}>
-              <span onClick={() => router.push('/store')}>See All Stores</span>
+              <span onClick={() => router.push('/store')}>{t('See All Stores')}</span>
               <img src="/img/icons/rightup.svg" alt="" />
             </div>
           </Box>
@@ -164,14 +166,13 @@ const TopStores = (props: TopStoresProps) => {
               <Box className={'empty-list'}>
                 <Box className={'empty-list-content'}>
                   <img src="/img/icons/empty.png" alt="" />
-                  <span>OOPS</span>
-                  <strong>There are no stores available at the moment</strong>
+                  <span>{t('OOPS')}</span>
+                  <strong>{t('There are no stores available at the moment')}</strong>
                   <p>
-                    It is a long established fact that a reader will be distracted by the readable content of a page
-                    when looking at its layout.
+                    {t('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.')}
                   </p>
                   <div onClick={() => router.push('/')}>
-                    <h2>Back to Home</h2>
+                    <h2>{t('Back to Home')}</h2>
                   </div>
                 </Box>
               </Box>

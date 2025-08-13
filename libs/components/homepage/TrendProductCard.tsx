@@ -10,20 +10,22 @@ import { Product } from '../../types/product/product';
 import router from 'next/router';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetBasicAlert, sweetMixinErrorAlert } from '../../sweetAlert';
+import { useTranslation } from 'next-i18next';
 
 interface TrendProductCardProps {
   product: Product;
   likeProductHandler: (user: any, id: string) => Promise<void> | void;
   myFavorites?: boolean;
   recentlyVisited?: boolean;
-  user?: any; // optional (you pass it on mobile; desktop can omit)
+  user?: any;
 }
 
 const TrendProductCard = (props: TrendProductCardProps) => {
   const { product, likeProductHandler, myFavorites, recentlyVisited } = props;
 
-  // accept optional user prop, fallback to reactive var so both calls work
   const reactiveUser = useReactiveVar(userVar);
+  const { t } = useTranslation('common');
+
   const user = props.user ?? reactiveUser;
 
   const device = useDeviceDetect();
@@ -74,7 +76,7 @@ const TrendProductCard = (props: TrendProductCardProps) => {
   const handleAddClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!user?._id) {
-      sweetBasicAlert('You need to be logged in to add items to your cart!');
+      sweetBasicAlert(t('You need to be logged in to add items to your cart!'));
       return;
     }
     handleAdd(product._id, product.productTitle, imagePath, product.productPrice);
@@ -106,7 +108,7 @@ const TrendProductCard = (props: TrendProductCardProps) => {
 
             {product?.productCategory && (
               <Box className="badge">
-                <Typography className="badge-text">{product.productCategory}</Typography>
+                <Typography className="badge-text">{t(product.productCategory)}</Typography>
               </Box>
             )}
 
@@ -118,7 +120,7 @@ const TrendProductCard = (props: TrendProductCardProps) => {
                 </Box>
 
                 <button className="add-to-basket-btn" type="button" onClick={handleAddClick} aria-label="Add to cart">
-                  <span>Add to Cart</span>
+                  <span>{t('Add to Cart')}</span>
                 </button>
 
                 <IconButton
@@ -127,7 +129,7 @@ const TrendProductCard = (props: TrendProductCardProps) => {
                   onClick={(e: any) => {
                     e.stopPropagation();
                     if (!user || !user._id) {
-                      sweetMixinErrorAlert('You must be logged in to like a product.');
+                      sweetMixinErrorAlert(t('You must be logged in to like a product.'));
                       return;
                     }
                     handleLikeClick(e, product._id);

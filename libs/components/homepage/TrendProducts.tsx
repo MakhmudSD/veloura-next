@@ -161,8 +161,8 @@ const TrendProducts = (props: TrendProductsProps) => {
       <Stack className={'container'}>
         <Stack className={'info-box'}>
           <Box component={'div'} className={'trends-top'}>
-          <span>{t('Designed For Everyday Glamour') as string}</span>
-          <p>{t('Soon-to-be staples in your rotation') as string}</p>
+          <span>{t('Designed For Everyday Glamour')}</span>
+          <p>{t('Soon-to-be staples in your rotation')}</p>
           </Box>
         </Stack>
 
@@ -176,8 +176,7 @@ const TrendProducts = (props: TrendProductsProps) => {
                 <span>{t('OOPS') as string}</span>
                 <strong>{t('There are no products available at the moment') as string}</strong>
                 <p>
-                  {t('It is a long established fact that a reader will be distracted by the readable content of a page') as string}
-                  {t('when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.') as string}
+                  {t('It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.')}
                 </p>
               </Box>
             </Box>

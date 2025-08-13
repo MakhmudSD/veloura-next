@@ -11,11 +11,14 @@ import Chat from '../Chat';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import { useTranslation } from 'next-i18next';
 
 const withLayoutMain = (Component: any) => {
 	return (props: any) => {
 		const device = useDeviceDetect();
 		const user = useReactiveVar(userVar);
+		const { t } = useTranslation('common');
+		
 
 		/** LIFECYCLES **/
 		useEffect(() => {
@@ -61,11 +64,11 @@ const withLayoutMain = (Component: any) => {
 							<div className="img-wrapper"></div>
 
 							<div className="overlay-content">
-								<h1>Welcome to Veloura</h1>
-								<p>Discover the best products for your lifestyle</p>
+								<h1>{t('Welcome to Veloura')}</h1>
+								<p>{t('Discover the best products for your lifestyle') as string}</p>
 								<Link href="/product" style={{ textDecoration: 'none' }}>
 									<Button variant="contained" className="shop-now-btn">
-										Shop Now
+										{t('SHOP NOW')}
 									</Button>
 								</Link>
 							</div>

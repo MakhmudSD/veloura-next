@@ -9,6 +9,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import { sweetMixinErrorAlert } from '../../sweetAlert';
+import { useTranslation } from 'next-i18next';
 
 interface TopStoreProps {
 	store: Member;
@@ -25,6 +26,8 @@ const TopStoreCard = (props: TopStoreProps) => {
 	const user = useReactiveVar(userVar);
 	const [liked, setLiked] = useState(store?.meLiked?.[0]?.myFavorite || false);
 	const [glow, setGlow] = useState(false);
+	const { t } = useTranslation('common');
+
 	const storeImage = store?.memberImage
 		? `${process.env.REACT_APP_API_URL}/${store?.memberImage}`
 		: '/img/profile/defaultStore.jpg';
@@ -43,45 +46,45 @@ const TopStoreCard = (props: TopStoreProps) => {
 		setTimeout(() => setGlow(false), 600);
 	};
 
-
 	if (device === 'mobile') {
 		return (
-		  <Stack className="top-store-card mobile" onClick={() => pushDetailHandler(store._id)}>
-			<Box className="mobile-image-box">
-			  <img src={storeImage} alt={store.memberNick} />
-			  <Box className="mobile-like">
-				<IconButton
-				  size="small"
-				  onClick={(e: any) => handleLikeClick(e, store._id)}
-				  title={!user?._id ? 'Login required to like' : 'Like this store'}
-				>
-				  {liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
-					<FavoriteIcon className={glow ? 'glow' : ''} fontSize="small" />
-				  ) : (
-					<FavoriteBorderIcon fontSize="small" />
-				  )}
-				</IconButton>
-			  </Box>
-			  <Box className="mobile-overlay">
-				<strong className="name">{store?.memberNick}</strong>
-				<span className="type">{store?.memberType}</span>
-			  </Box>
-			</Box>
-	
-			{/* Optional: quick stats row on mobile */}
-			{!recentlyVisited && (
-			  <Box className="mobile-stats">
-				<Box className="view-box">
-				  <RemoveRedEyeIcon fontSize="small" />
-				  <Typography component="span">{store?.memberViews}</Typography>
+			<Stack className="top-store-card mobile" onClick={() => pushDetailHandler(store._id)}>
+				<Box className="mobile-image-box">
+					<img src={storeImage} alt={store.memberNick} />
+					<Box className="mobile-like">
+						<IconButton
+							size="small"
+							onClick={(e: any) => handleLikeClick(e, store._id)}
+							title={!user?._id ? 'Login required to like' : 'Like this store'}
+						>
+							{liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
+								<FavoriteIcon className={glow ? 'glow' : ''} fontSize="small" />
+							) : (
+								<FavoriteBorderIcon fontSize="small" />
+							)}
+						</IconButton>
+					</Box>
+					<Box className="mobile-overlay">
+						<strong className="name">{store?.memberNick}</strong>
+						<span className="type">{store?.memberType}</span>
+					</Box>
 				</Box>
-				<Box className="count-box">
-				  <Typography component="span">{store?.memberProducts} Products</Typography>
-				</Box>
-			  </Box>
-			)}
-		  </Stack>
-		); } else {
+
+				{/* Optional: quick stats row on mobile */}
+				{!recentlyVisited && (
+					<Box className="mobile-stats">
+						<Box className="view-box">
+							<RemoveRedEyeIcon fontSize="small" />
+							<Typography component="span">{store?.memberViews}</Typography>
+						</Box>
+						<Box className="count-box">
+							<Typography component="span">{store?.memberProducts} Products</Typography>
+						</Box>
+					</Box>
+				)}
+			</Stack>
+		);
+	} else {
 		return (
 			<Stack className="top-store-card">
 				<Stack className="store-image-container">
@@ -91,11 +94,11 @@ const TopStoreCard = (props: TopStoreProps) => {
 				<Stack className="top-store-card-down">
 					<Stack className="top-store-card-info">
 						<h1>
-							<img src="/img/stores/address.png" alt="phone" />
-							{store.memberAddress ?? 'Seoul'}
+							<img src="/img/stores/address.png" alt="address" />
+							{t(store.memberAddress ?? 'Seoul')}
 						</h1>{' '}
 						{/* Re-added the address */}
-						<strong>{store.memberNick}</strong>
+						<strong>{t(store.memberNick)}</strong>
 						<p>
 							{' '}
 							<img src="/img/stores/contact.png" alt="phone" />
@@ -103,7 +106,7 @@ const TopStoreCard = (props: TopStoreProps) => {
 						</p>
 					</Stack>
 					<Stack className="top-store-card-middle">
-						<span>{store?.memberDesc ?? 'No Description'}</span>
+						<span>{t(store?.memberDesc ?? 'No Description')}</span>
 					</Stack>
 
 					<Stack className="stats-row">
@@ -111,19 +114,19 @@ const TopStoreCard = (props: TopStoreProps) => {
 							<span className="icon">
 								<img src="/img/icons/followers.png" alt="follower" />
 							</span>
-							{store.memberFollowers} Followers
+							{store.memberFollowers} {t('Followers')}
 						</div>
 						<div className="stat-item">
 							<span className="icon">
 								<img src="/img/icons/followers.png" alt="following" />
 							</span>
-							{store.memberFollowings} Followings
+							{store.memberFollowings} {t('Followings')}
 						</div>
 						<div className="stat-item">
 							<span className="icon">
 								<img src="/img/icons/product.png" alt="products" />
 							</span>
-							{store.memberProducts} Products
+							{store.memberProducts} {t('Products')}
 						</div>
 					</Stack>
 
@@ -134,7 +137,7 @@ const TopStoreCard = (props: TopStoreProps) => {
 							router.push(`/store/detail?id=${store._id}`);
 						}}
 					>
-						<span>View Store Info</span>
+						<span>{t('View Store Info')}</span>
 					</button>
 
 					{!recentlyVisited && (
@@ -148,12 +151,12 @@ const TopStoreCard = (props: TopStoreProps) => {
 								onClick={(e: any) => {
 									e.stopPropagation();
 									if (!user || !user._id) {
-										sweetMixinErrorAlert('You must be logged in to like a product.');
+										sweetMixinErrorAlert(t('You must be logged in to like a product.'));
 										return;
 									}
 									handleLikeClick(e, store._id);
 								}}
-								title={!user?._id ? 'Login required to like' : 'Like this product'}
+								title={!user?._id ? t('Login required to like') : t('Like this product')}
 							>
 								{liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
 									<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />

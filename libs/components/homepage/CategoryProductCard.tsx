@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { Product } from '../../types/product/product';
+import { t } from 'i18next';
+import { useTranslation } from 'next-i18next';
 
 interface CategoryProductCardProps {
 	product: Product;
@@ -16,6 +18,9 @@ const CategoryProductCard = (props: CategoryProductCardProps) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
+	const { t } = useTranslation('common');
+	
+	
 
 	/** HANDLERS **/
 	const pushCategoryFilter = (category: string) => {
@@ -55,7 +60,7 @@ const CategoryProductCard = (props: CategoryProductCardProps) => {
 							pushCategoryFilter(product.productCategory);
 						}}
 					>
-						<span>{categoryList[0]}</span>
+						<span>{t(categoryList[0])}</span>
 					</button>
 				</Box>  
 			</Stack>
@@ -75,7 +80,7 @@ const CategoryProductCard = (props: CategoryProductCardProps) => {
 							pushCategoryFilter(product.productCategory);
 						}}
 					>
-						<span>{categoryList[0]}</span>
+						<span>{t(categoryList[0])}</span>
 					</button>
 				</Box>
 			</Stack>

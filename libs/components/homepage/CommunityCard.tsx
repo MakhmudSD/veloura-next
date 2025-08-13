@@ -6,6 +6,7 @@ import Moment from 'react-moment';
 import { BoardArticle } from '../../types/board-article/board-article';
 import { useRouter } from 'next/router';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import { useTranslation } from 'next-i18next';
 
 
 interface CommunityCardProps {
@@ -18,6 +19,7 @@ interface CommunityCardProps {
 
 const CommunityCard = (props: CommunityCardProps) => {
 	const router = useRouter();
+	const { t } = useTranslation('common')
 	const { vertical, article, index, recentlyVisited } = props;
 	const device = useDeviceDetect();
 	const articleImage = article?.articleImage
@@ -27,7 +29,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 		router.push({ pathname: '/community/detail', query: { id: storeId } });
 	};
 	if (device === 'mobile') {
-		return <div>COMMUNITY CARD (MOBILE)</div>;
+		return <div>{t('COMMUNITY CARD (MOBILE)')}</div>;
 	} else {
 		return (
 			<Box component={'div'} className={'vertical-card'}>
@@ -35,7 +37,7 @@ const CommunityCard = (props: CommunityCardProps) => {
 					<Box component={'div'} className={'community-img'} style={{ backgroundImage: `url(${articleImage})` }}>
 						{/* <div>{index + 1}</div> */}
 						<Typography variant="body2" className="badge">
-							{article?.articleCategory}
+							{t(article?.articleCategory)}
 						</Typography>
 					</Box>
 				</Link>
@@ -43,15 +45,15 @@ const CommunityCard = (props: CommunityCardProps) => {
 					<p className="date">
 						<Moment format="DD.MM.YY">{article?.createdAt}</Moment>
 					</p>
-					<strong>{article?.articleTitle}</strong>
-					<span className="article-content">{article?.articleContent}</span>
+					<strong>{t(article?.articleTitle)}</strong>
+					<span className="article-content">{t(article?.articleContent)}</span>
 					<div
 						onClick={() => {
 							router.push(`/community/detail?id=${article?._id}`);
 							pushArticleHandler(article._id);
 						}}
 					>
-						<h2 className="btn">More Detail</h2>
+						<h2 className="btn">{t('More Detail')}</h2>
 					</div>
 					{!recentlyVisited && (
               <div className="btn-group">
