@@ -13,8 +13,6 @@ import { formatterStr } from '../../utils';
 import { basketItemsVar, userVar } from '../../../apollo/store';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { sweetBasicAlert, sweetMixinErrorAlert } from '../../sweetAlert';
-import { useTranslation } from 'next-i18next';
-
 interface ProductCardType {
 	product: Product;
 	likeProductHandler?: any;

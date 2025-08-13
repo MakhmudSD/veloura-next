@@ -696,7 +696,6 @@ export const GET_NOTICES = gql`
     getNotices(input: $input) {
       list {
         _id
-        noticeCategory
         noticeStatus
         noticeTitle
         noticeContent
@@ -715,7 +714,6 @@ export const GET_NOTICE = gql`
   query GetNotice($input: String!) {
     getNotice(input: $input) {
       _id
-      noticeCategory
       noticeStatus
       noticeTitle
       noticeContent

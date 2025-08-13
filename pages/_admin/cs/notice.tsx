@@ -9,7 +9,7 @@ import { TabContext } from '@mui/lab';
 import { useMutation, useQuery, useReactiveVar } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
-import { NoticeCategory, NoticeStatus } from '../../../libs/enums/notice.enum';
+import {  NoticeStatus } from '../../../libs/enums/notice.enum';
 import { GET_NOTICES } from '../../../apollo/admin/query';
 import { CREATE_NOTICE, UPDATE_NOTICE } from '../../../apollo/admin/mutation';
 import NoticeList from '../../../libs/components/admin/cs/NoticeList';
@@ -42,7 +42,6 @@ const AdminNotice: React.FC = () => {
   const [shouldOpenFormOnEdit, setShouldOpenFormOnEdit] = useState(false);
   const [formData, setFormData] = useState({
     noticeTitle: '',
-    noticeCategory: NoticeCategory.FAQ,
     noticeContent: '',
   });
 
@@ -72,7 +71,6 @@ const AdminNotice: React.FC = () => {
         setFormData({
           noticeTitle: found.noticeTitle,
           noticeContent: found.noticeContent,
-          noticeCategory: found.noticeCategory,
         });
         setShowForm(true);
         setShouldOpenFormOnEdit(false);
@@ -116,7 +114,7 @@ const AdminNotice: React.FC = () => {
     };
 
   const handleSubmitNotice = async () => {
-    const { noticeTitle, noticeContent, noticeCategory } = formData;
+    const { noticeTitle, noticeContent } = formData;
     if (!noticeTitle.trim() || !noticeContent.trim() || !user?._id) {
       alert('All fields are required.');
       return;
@@ -129,7 +127,6 @@ const AdminNotice: React.FC = () => {
               _id: noticeId,
               noticeTitle,
               noticeContent,
-              noticeCategory,
               noticeStatus: NoticeStatus.ACTIVE,
             },
           },
@@ -140,14 +137,13 @@ const AdminNotice: React.FC = () => {
             input: {
               noticeTitle,
               noticeContent,
-              noticeCategory,
               memberId: user._id,
               noticeStatus: NoticeStatus.ACTIVE,
             },
           },
         });
       }
-      setFormData({ noticeTitle: '', noticeCategory: NoticeCategory.FAQ, noticeContent: '' });
+      setFormData({ noticeTitle: '', noticeContent: '' });
       setShowForm(false);
       router.replace('/_admin/cs/notice');
       await refetch({ input: noticeInquiry });
@@ -174,7 +170,7 @@ const AdminNotice: React.FC = () => {
           size="medium"
           onClick={() => {
             router.replace('/_admin/cs/notice');
-            setFormData({ noticeTitle: '', noticeCategory: NoticeCategory.FAQ, noticeContent: '' });
+            setFormData({ noticeTitle: '', noticeContent: '' });
             setShowForm(!showForm);
           }}
           style={{ color: '#fff', backgroundColor: '#b97b2a', marginTop: '15px' }}
@@ -207,18 +203,6 @@ const AdminNotice: React.FC = () => {
                 value={formData.noticeContent}
                 onChange={(e) => setFormData({ ...formData, noticeContent: e.target.value })}
               />
-            </FormControl>
-            <FormControl fullWidth>
-              <Select
-                value={formData.noticeCategory}
-                onChange={(e) =>
-                  setFormData({ ...formData, noticeCategory: e.target.value as NoticeCategory })
-                }
-              >
-                <MenuItem value={NoticeCategory.FAQ}>FAQ</MenuItem>
-                <MenuItem value={NoticeCategory.TERMS}>TERMS</MenuItem>
-                <MenuItem value={NoticeCategory.INQUIRY}>INQUIRY</MenuItem>
-              </Select>
             </FormControl>
             <Button variant="contained" onClick={handleSubmitNotice}>
               {noticeId ? 'Update Notice' : 'Submit Notice'}

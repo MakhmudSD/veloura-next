@@ -98,18 +98,17 @@
           display: flex;
           justify-content: center;
         }
-
         .notice-content {
           .main {
             border: 1px solid #ddd2c4;
             border-radius: 8px;
             background: #fbf8f3;
-
+        
             .top {
               padding: 25px 33px;
               display: flex;
               justify-content: space-between;
-
+        
               span {
                 color: #3e2d20;
                 font-family: $font;
@@ -118,57 +117,98 @@
                 text-transform: capitalize;
               }
             }
-
+        
             .bottom {
               display: flex;
               flex-direction: column;
-
-              .notice-card {
+        
+              .notice-item {
                 display: flex;
-                justify-content: space-between;
-                padding: 10px 0;
-                border-bottom: 1px solid #eee;
-              
-                &.event {
-                  color: #b4863b;
-                  font-weight: 700;
+                flex-direction: column;
+        
+                .notice-card {
+                  display: flex;
+                  align-items: center;
+                  justify-content: space-between;
+                  padding: 14px 0;
+                  border-bottom: 1px solid #eee;
+                  cursor: pointer;
+                  transition: background 0.2s ease;
+        
+                  &:hover {
+                    background: rgba(#b38c63, 0.05);
+                  }
+        
+                  &.open {
+                    background: rgba(#b38c63, 0.08);
+                  }
+        
+                  .notice-number {
+                    margin-left: 18px;
+                    width: 39px;
+                    color: #a18d7b;
+                    font-family: $font;
+                    font-size: 14px;
+                    flex-shrink: 0;
+                  }
+        
+                  .notice-title {
+                    flex: 1;
+                    padding: 0 16px;
+                    color: #3b2c20;
+                    font-family: $font;
+                    font-size: 16px;
+                    font-weight: 500;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    white-space: nowrap;
+                  }
+        
+                  .notice-date {
+                    color: #a18d7b;
+                    font-family: $font;
+                    font-size: 14px;
+                    flex-shrink: 0;
+                  }
+        
+                  .expand-icon {
+                    margin-right: 12px;
+                    color: #b38c63;
+                    transition: transform 0.2s ease;
+        
+                    svg {
+                      font-size: 20px;
+                    }
+                  }
                 }
-
-                div {
-                  padding: 6px 9px;
-                  border-radius: 12px;
-                  border: 1px solid #b38c63;
-                  color: #b38c63;
-                  font-family: $font;
-                  font-size: 12px;
-                  font-weight: 500;
-                }
-
-                .notice-number {
-                  margin-left: 18px;
-                  width: 39px;
-                  color: #a18d7b;
-                  font-family: $font;
-                  font-size: 14px;
-                }
-
-                .notice-title {
-                  width: 1060px;
-                  color: #3b2c20;
-                  font-family: $font;
-                  font-size: 16px;
-                  font-weight: 500;
-                }
-
-                .notice-date {
-                  color: #a18d7b;
-                  font-family: $font;
-                  font-size: 14px;
+        
+                .notice-panel {
+                  background: #fffdf9;
+                  padding: 20px 33px;
+                  border-bottom: 1px solid #eee;
+        
+                  .notice-content-html {
+                    color: #3b2c20;
+                    font-family: $font;
+                    font-size: 15px;
+                    line-height: 1.6;
+        
+                    p {
+                      margin-bottom: 1em;
+                    }
+        
+                    img {
+                      max-width: 100%;
+                      border-radius: 6px;
+                      margin: 10px 0;
+                    }
+                  }
                 }
               }
             }
           }
         }
+        
 
         .faq-content {
           margin-top: 25px;

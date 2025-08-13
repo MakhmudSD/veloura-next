@@ -1,8 +1,7 @@
-import { NoticeCategory, NoticeStatus } from '../../enums/notice.enum';
+import {  NoticeStatus } from '../../enums/notice.enum';
 import { Direction } from '../../enums/common.enum';
 
 export interface NoticeInput {
-	noticeCategory: NoticeCategory;
 	noticeStatus?: NoticeStatus;
 	noticeTitle: string;
 	noticeContent: string;
@@ -10,7 +9,6 @@ export interface NoticeInput {
 }
 
 interface NISearch {
-	noticeCategory?: NoticeCategory;
 	noticeStatus?: NoticeStatus;	
 	noticeTitle?: string;
     noticeContent?: string;

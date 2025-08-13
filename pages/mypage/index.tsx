@@ -34,7 +34,7 @@ const MyPage: NextPage = () => {
 	const device = useDeviceDetect();
 	const user = useReactiveVar(userVar);
 	const router = useRouter();
-	const category: any = router.query?.category ?? 'myProfile';
+	const { category } = router.query;
 
 	/** APOLLO REQUESTS **/
 	const [subscribe, { loading: subscribing }] = useMutation(SUBSCRIBE);
@@ -44,11 +44,26 @@ const MyPage: NextPage = () => {
 
 	/** LIFECYCLES **/
 	useEffect(() => {
-		if (!user._id) {
-			console.log('User not logged in, redirecting to home page.');
-			router.push('/').then();
+		console.log('router.isReady:', router.isReady);
+		console.log('category:', category);
+	  
+		if (!router.isReady) return;
+	  
+		if (!category) {
+		  console.log('Category missing — replacing URL');
+		  router.replace(
+			{
+			  pathname: router.pathname,
+			  query: { ...router.query, category: 'myProfile' },
+			},
+			undefined,
+			{ shallow: true }
+		  );
+		} else {
+		  console.log('Category present, no action');
 		}
-	}, [user]);
+	  }, [category, router]);
+	/** HANDLERS **/
 
 	const notifyMember = async (input: CreateNotificationInput) => {
 		try {

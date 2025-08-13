@@ -33,7 +33,6 @@ interface HeadCell {
 }
 
 const headCells: readonly HeadCell[] = [
-  { id: 'noticeCategory', label: 'Category', disablePadding: false, numeric: false },
   { id: 'noticeTitle', label: 'Title', disablePadding: false, numeric: false },
   { id: '_id', label: 'ID', disablePadding: false, numeric: false },
   { id: 'memberId', label: 'Writer', disablePadding: false, numeric: false },
@@ -185,7 +184,6 @@ export const NoticeList = ({
                         onChange={() => handleRowCheckboxClick(notice._id as string)}
                       />
                     </TableCell>
-                    <TableCell>{notice.noticeCategory}</TableCell>
                     <TableCell>{notice.noticeTitle}</TableCell>
                     <TableCell>{notice._id}</TableCell>
                     <TableCell>{notice.memberId || 'Admin'}</TableCell>

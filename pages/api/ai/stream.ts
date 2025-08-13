@@ -139,7 +139,6 @@ async function retrieveSiteContext(
       getNotices(input: $input) {
         list {
           _id
-          noticeCategory
           noticeTitle
           noticeContent
           createdAt
@@ -203,7 +202,7 @@ ${text.slice(0, 300)}`);
       for (const n of notices) {
         const url = `${siteOrigin}/notice/${n._id}`;
         const text = String(n.noticeContent || '').replace(/<[^>]+>/g, ' ');
-        pieces.push(`- ${n.noticeTitle} [${n.noticeCategory}] · ${url}
+        pieces.push(`- ${n.noticeTitle} · ${url}
 ${text.slice(0, 240)}`);
       }
     }

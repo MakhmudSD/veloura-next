@@ -160,7 +160,6 @@ export const CREATE_NOTICE = gql`
       _id
       noticeTitle
       noticeContent
-      noticeCategory
       noticeStatus
       memberId
     }
@@ -173,7 +172,6 @@ export const UPDATE_NOTICE = gql`
       _id
       noticeTitle
       noticeContent
-      noticeCategory
       noticeStatus
       memberId
       createdAt
@@ -186,7 +184,6 @@ export const DELETE_NOTICE = gql`
   mutation DeleteNotice($input: String!) {
     deleteNotice(input: $input) {
       _id
-      noticeCategory
       noticeStatus
       noticeTitle
       noticeContent
@@ -201,7 +198,6 @@ export const REMOVE_NOTICE_PERMANENTLY = gql`
   mutation RemoveNoticePermanently($input: String!) {
     removeNoticePermanently(input: $input) {
       _id
-      noticeCategory
       noticeStatus
       noticeTitle
       noticeContent

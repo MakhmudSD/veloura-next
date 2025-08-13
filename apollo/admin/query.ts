@@ -205,7 +205,6 @@ export const GET_NOTICES = gql`
     getNotices(input: $input) {
       list {
         _id
-        noticeCategory
         noticeStatus
         noticeTitle
         noticeContent
