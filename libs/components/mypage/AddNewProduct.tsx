@@ -259,18 +259,32 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
             </Stack>
 
             <Stack className="config-row">
-              <Stack className="price-year-after-price">
-                <Typography className="title">Price</Typography>
-                <input
-                  type="number"
-                  className="description-input"
-                  placeholder={'Price'}
-                  value={insertProductData.productPrice}
-                  onChange={({ target: { value } }) =>
-                    setInsertProductData((p) => ({ ...p, productPrice: Number(value) || 0 }))
-                  }
-                />
-              </Stack>
+            <Stack className="price-year-after-price">
+  <Typography className="title">Price (KRW)</Typography>
+  <input
+    type="text"
+    className="description-input"
+    placeholder="Price"
+    value={insertProductData.productPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}
+    onChange={({ target: { value } }) => {
+      // Remove spaces and any non-digit characters
+      const numericValue = value.replace(/\D/g, '');
+      // Update numeric state only
+      setInsertProductData((p) => ({
+        ...p,
+        productPrice: Number(numericValue) || 0,
+      }));
+    }}
+  />
+</Stack>
+
+
+
+
+
+
+
+
               <Stack className="price-year-after-price">
                 <Typography className="title">Select Type</Typography>
                 <select
@@ -425,20 +439,26 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
                 <img src={'/img/icons/Vector.svg'} className={'arrow-down'} />
               </Stack>
               <Stack className="price-year-after-price">
-                <Typography className="title">Weight (g)</Typography>
-                <input
-                  type="number"
-                  className="description-input"
-                  placeholder={'Enter weight'}
-                  value={insertProductData.productWeightUnit ?? 0}
-                  onChange={({ target: { value } }) =>
-                    setInsertProductData((p) => ({
-                      ...p,
-                      productWeightUnit: Number(value),
-                    }))
-                  }
-                />
-              </Stack>
+  <Typography className="title">Weight (g)</Typography>
+  <input
+    type="text"
+    className="description-input"
+    placeholder="Enter weight"
+    value={(insertProductData.productWeightUnit ?? 0)
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}
+    onChange={({ target: { value } }) => {
+      // Remove all non-digit characters
+      const numericValue = value.replace(/\D/g, '');
+      // Update numeric state only
+      setInsertProductData((p) => ({
+        ...p,
+        productWeightUnit: Number(numericValue) || 0,
+      }));
+    }}
+  />
+</Stack>
+
             </Stack>
 
             <Stack className="config-column">
