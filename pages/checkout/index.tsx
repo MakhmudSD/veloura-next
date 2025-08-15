@@ -168,11 +168,12 @@ const Checkout = () => {
 										<Typography variant="body2" sx={{ color: '#7a6a58' }}>
 											• Seller:{' '}
 											<Link
-												href={{ pathname: '/store/detail', query: { id: item.memberId } }}
+												href={`/store/detail?id=${item.memberId}`}
 												style={{ color: '#b8860b', textDecoration: 'none', fontWeight: 500 }}
-											>
+												>
 												{item.memberNick}
-											</Link>
+												</Link>
+
 										</Typography>
 									)}
 								</Stack>
