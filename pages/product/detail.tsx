@@ -47,8 +47,6 @@ export const getStaticProps = async ({ locale }: any) => ({
 	},
 });
 
-console.log('hi! keldi!');
-
 const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();

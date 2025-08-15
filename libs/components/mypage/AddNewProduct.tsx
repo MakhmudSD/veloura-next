@@ -277,14 +277,6 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
     }}
   />
 </Stack>
-
-
-
-
-
-
-
-
               <Stack className="price-year-after-price">
                 <Typography className="title">Select Type</Typography>
                 <select
@@ -405,7 +397,7 @@ const AddNewProduct = ({ initialValues, ...props }: any) => {
                   <option disabled value={'select'}>
                     Select
                   </option>
-                  {(['GOLD', 'SILVER', 'DIAMOND', 'PLATINIUM'] as const).map((m) => (
+                  {(['GOLD', 'SILVER', 'DIAMOND', 'PLATINUM'] as const).map((m) => (
                     <option key={m} value={m}>
                       {m}
                     </option>
