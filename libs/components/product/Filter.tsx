@@ -36,10 +36,13 @@ const Filter = (props: FilterType) => {
 		const handler = setTimeout(() => {
 			const cleanedSearch = { ...searchFilter.search };
 			(Object.keys(cleanedSearch) as (keyof typeof cleanedSearch)[]).forEach((key) => {
-				if (Array.isArray(cleanedSearch[key]) && cleanedSearch[key]!.length === 0) {
-					delete cleanedSearch[key];
+				const value = cleanedSearch[key];
+				
+				if (Array.isArray(value) && value.length === 0) {
+				  delete cleanedSearch[key];
 				}
-			});
+			  });
+			  
 
 			router.replace(
 				{
@@ -339,41 +342,43 @@ const Filter = (props: FilterType) => {
 						<div className="filter-content" style={{ width: '100%' }}>
 							{/* SLIDER */}
 							<Slider
-								value={[
-									searchFilter?.search?.pricesRange?.start || 0,
-									searchFilter?.search?.pricesRange?.end || 20000000,
-								]}
-								min={0}
-								max={20000000}
-								step={null}
-								marks={[
-									{ value: 0, label: '₩0' },
-									{ value: 5000000, label: '₩5M' },
-									{ value: 10000000, label: '₩10M' },
-									{ value: 20000000, label: '₩20M' },
-								]}
-								onChange={(e: any, newValue: number[]) => {
-									const [start, end] = newValue;
-									productPriceHandler(start, end);
-								}}
-								valueLabelDisplay="auto"
-								sx={{
-									width: '90%',
-									margin: '0 auto',
-									color: '#d4b483',
-									'& .MuiSlider-thumb': {
-										borderRadius: '50%',
-										width: 20,
-										height: 20,
-										backgroundColor: '#fff',
-										border: '2px solid #d4b483',
-									},
-									'& .MuiSlider-valueLabel': {
-										backgroundColor: '#2e2424',
-										borderRadius: '6px',
-									},
-								}}
-							/>
+  value={[
+    searchFilter?.search?.pricesRange?.start || 0,
+    searchFilter?.search?.pricesRange?.end || 20000000,
+  ]}
+  min={0}
+  max={20000000}
+  step={null}
+  marks={[
+    { value: 0, label: '₩0' },
+    { value: 5000000, label: '₩5M' },
+    { value: 10000000, label: '₩10M' },
+    { value: 20000000, label: '₩20M' },
+  ]}
+  onChange={(e: any, newValue: any) => {
+    if (Array.isArray(newValue)) {
+      const [start, end] = newValue;
+      productPriceHandler(start, end);
+    }
+  }}
+  valueLabelDisplay="auto"
+  sx={{
+    width: '90%',
+    margin: '0 auto',
+    color: '#d4b483',
+    '& .MuiSlider-thumb': {
+      borderRadius: '50%',
+      width: 20,
+      height: 20,
+      backgroundColor: '#fff',
+      border: '2px solid #d4b483',
+    },
+    '& .MuiSlider-valueLabel': {
+      backgroundColor: '#2e2424',
+      borderRadius: '6px',
+    },
+  }}
+/>
 
 							{/* INPUT FIELDS */}
 							<div

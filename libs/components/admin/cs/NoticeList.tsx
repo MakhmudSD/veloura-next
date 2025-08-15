@@ -176,7 +176,7 @@ export const NoticeList = ({
                 const selected = isSelected(notice._id as string);
                 const isDeleted = notice.noticeStatus === NoticeStatus.DELETED;
                 return (
-                  <TableRow hover key={notice._id} selected={selected}>
+                    <TableRow hover key={notice._id ? notice._id.toString() : undefined} selected={selected}>
                     <TableCell padding="checkbox">
                       <Checkbox
                         color="primary"

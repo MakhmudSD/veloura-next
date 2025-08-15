@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Box, Stack, CircularProgress } from '@mui/material';
-
-// Optional: dynamically import Viewer only if needed
 import dynamic from 'next/dynamic';
-const Viewer = dynamic(() => import('@toast-ui/react-editor').then((mod) => mod.Viewer), {
-  ssr: false,
-  loading: () => <CircularProgress />,
-});
+import type { ViewerProps } from '@toast-ui/react-editor';
+
+const Viewer = dynamic<ViewerProps>(
+  () =>
+    import('@toast-ui/react-editor').then((mod) => mod.Viewer as React.ComponentType<ViewerProps>),
+  {
+    ssr: false,
+    loading: () => <CircularProgress />,
+  }
+);
+
 
 const isHTML = (content: string): boolean => {
   const pattern = /<\/?[a-z][\s\S]*>/i;

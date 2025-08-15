@@ -52,8 +52,9 @@ const BrandsSection = () => {
         <Stack className="brands-section">
           <Stack className="container">
             <Box className="brands-top">
-              <Typography component="span">{t('Attractive Jewelry')}</Typography>
-              <Typography component="p">{t('Gorgeous Brands')}</Typography>
+            <Typography component="span">{t('Attractive Jewelry') as string}</Typography>
+<Typography component="p">{t('Gorgeous Brands') as string}</Typography>
+
             </Box>
   
             <div className="card-box">
@@ -113,8 +114,9 @@ const BrandsSection = () => {
       <Stack className="brands-section">
         <Stack className="container">
           <Box className="brands-top">
-            <Typography component="span">{t('Attractive Jewelry')}</Typography>
-            <Typography component="p">{t('Gorgeous Brands')}</Typography>
+          <Typography component="span">{t('Attractive Jewelry') as string}</Typography>
+<Typography component="p">{t('Gorgeous Brands') as string}</Typography>
+
           </Box>
           <Stack className="card-box">
             {BRANDS.map((brand) => (
