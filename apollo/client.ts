@@ -28,12 +28,12 @@ function getBrowserWsBase(): string {
   return (
     (process.env.NEXT_PUBLIC_API_WS as string | undefined) ||
     (process.env.REACT_APP_API_WS as string | undefined) ||
-    'ws://localhost:3004'
+    'ws://http://193.168.195.228/:4001'
   );
 }
 
 function parseWsBase(raw?: string): { origin: string; basePath: string } {
-  const rawClean = (raw || 'ws://localhost:3004').trim().replace(/\/+$/, '');
+  const rawClean = (raw || 'ws://http://193.168.195.228/:4001').trim().replace(/\/+$/, '');
   try {
     const ensured = /^wss?:\/\//i.test(rawClean) ? rawClean : `ws://${rawClean}`;
     const u = new URL(ensured);
@@ -42,7 +42,7 @@ function parseWsBase(raw?: string): { origin: string; basePath: string } {
     const origin = `${u.protocol}//${u.host}`;
     return { origin, basePath };
   } catch {
-    return { origin: 'ws://localhost:3004', basePath: '' };
+    return { origin: 'ws://http://193.168.195.228:4001', basePath: '' };
   }
 }
 
@@ -182,7 +182,7 @@ const httpLink = createUploadLink({
   uri:
     process.env.NEXT_PUBLIC_API_GRAPHQL_URL ||
     process.env.REACT_APP_API_GRAPHQL_URL ||
-    'http://localhost:3004/graphql',
+    'http://193.168.195.228:4001/graphql',
 }) as unknown as ApolloLink;
 
 const errorLink = onError(({ graphQLErrors, networkError }) => {
