@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Stack, Box } from '@mui/material';
 import useDeviceDetect from '../../hooks/useDeviceDetect';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -10,14 +10,14 @@ import { T } from '../../types/common';
 import { ProductsInquiry } from '../../types/product/product.input';
 import { Product } from '../../types/product/product';
 import TrendProductCard from './TrendProductCard';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
 import { useRouter } from 'next/router';
 import { userVar } from '../../../apollo/store';
 import { sweetMixinErrorAlert } from '../../sweetAlert';
 import { useTranslation } from 'react-i18next';
 import { i18n } from 'next-i18next';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
 
 
 interface TrendProductsProps {
@@ -28,6 +28,8 @@ const TrendProducts = (props: TrendProductsProps) => {
   const { initialInput } = props;
   const router = useRouter();
   const device = useDeviceDetect();
+  const prevRef = useRef<HTMLDivElement>(null);
+const nextRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation('common');
   const [lang, setLang] = useState<string | null>('en'); // <-- ensure "Designed for Everyday Glamour" etc. are in locales/*/common.json
 
@@ -190,6 +192,10 @@ const TrendProducts = (props: TrendProductsProps) => {
               loop={true}
               pagination={{ clickable: true }}
               modules={[Navigation, Pagination]}
+              navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              }}
             >
               {trendProducts.map((product: Product) => (
                 <SwiperSlide key={product._id} style={{ width: 'auto' }}>

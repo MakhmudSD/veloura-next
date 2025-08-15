@@ -59,7 +59,7 @@ const CommunityBoards = () => {
             <span>{t('Featured Stories About Jewellery')}</span>
           </Box>
           <Box className={'right'}>
-            <div className={'more-box'} onClick={() => router.push('/article')}>
+            <div className={'more-box'} onClick={() => router.push('/community')}>
               <span>{t('View All Articles')}</span>
               <img src="/img/icons/rightup.svg" alt="" />
             </div>
