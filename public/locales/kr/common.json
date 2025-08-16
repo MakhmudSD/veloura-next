@@ -153,6 +153,10 @@
 	"WOMEN": "여성",
 	"LIMITED EDITION": "한정판",
 	"BARTER": "교환",
-	"products": "제품들"
+	"products": "제품들",
+	"You must be logged in to like": "좋아요를 누르려면 로그인해야 합니다.",
+	"Login required to like": "좋아요를 누르려면 로그인해야 합니다",
+	"Like this product": "이 제품을 좋아요",
+	"Liked": "좋아요"
 
 }

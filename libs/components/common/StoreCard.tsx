@@ -11,6 +11,7 @@ import { useReactiveVar } from '@apollo/client';
 import { userVar } from '../../../apollo/store';
 import { useRouter } from 'next/router';
 import { sweetMixinErrorAlert } from '../../sweetAlert';
+import { i18n, useTranslation } from 'next-i18next';
 
 interface StoreCardProps {
 	store: any;
@@ -25,7 +26,7 @@ const StoreCard = (props: StoreCardProps) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
 	const user = useReactiveVar(userVar);
-
+	const { t } = useTranslation('common');
 	const [liked, setLiked] = useState(store?.meLiked?.[0]?.myFavorite || false);
 	const [glow, setGlow] = useState(false);
 
@@ -107,23 +108,35 @@ const StoreCard = (props: StoreCardProps) => {
 							</Box>
 
 							<IconButton
-									color="default"
-									onClick={(e: any) => {
-										e.stopPropagation();
-										if (!user || !user._id) {
-											sweetMixinErrorAlert('You must be logged in to like a product.');
-											return;
+								color="default"
+								onClick={async (e: any) => {
+									e.stopPropagation();
+									if (!user || !user._id) {
+										let message = '';
+										if (i18n?.language === 'kr') {
+											message = '좋아요를 누르려면 로그인해야 합니다.';
+										} else if (i18n?.language === 'uz') {
+											message = 'Tizimga login boling';
+										} else {
+											message = 'You must be logged in to like';
 										}
-										handleLikeClick(e, store._id);
-									}}
-									title={!user?._id ? 'Login required to like' : 'Like this product'}
-								>
-									{liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
-										<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
-									) : (
-										<FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
-									)}
-								</IconButton>
+
+										await sweetMixinErrorAlert(message, 2000, () => {
+											router.push('/account/join'); // navigate AFTER alert closes
+										});
+
+										return;
+									}
+									handleLikeClick(e, store._id);
+								}}
+								title={!user?._id ? 'Login required to like' : 'Like this product'}
+							>
+								{liked || myFavorites || store?.meLiked?.[0]?.myFavorite ? (
+									<FavoriteIcon color="primary" className={glow ? 'glow' : ''} />
+								) : (
+									<FavoriteBorderIcon color={!user?._id ? 'disabled' : 'inherit'} />
+								)}
+							</IconButton>
 						</div>
 					)}
 				</Stack>

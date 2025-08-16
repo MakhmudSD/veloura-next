@@ -28,9 +28,9 @@ const TrendProducts = (props: TrendProductsProps) => {
   const { initialInput } = props;
   const router = useRouter();
   const device = useDeviceDetect();
-  const prevRef = useRef<HTMLDivElement>(null);
-const nextRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation('common');
+  const prevRef = useRef<HTMLDivElement>(null);
+  const nextRef = useRef<HTMLDivElement>(null);
   const [lang, setLang] = useState<string | null>('en');
 
   const [trendProducts, setTrendProducts] = useState<Product[]>([]);
@@ -74,7 +74,8 @@ const nextRef = useRef<HTMLDivElement>(null);
     try {
       const u = userVar();
       if (!u || !u._id) {
-        await sweetMixinErrorAlert('You need to login to like a store Please Login, or Register to continue');
+        await sweetMixinErrorAlert(t('You need to login to like a store. Please Login, or Register to continue'));
+        router.push('/login');
         return;
       }
       if (!id) return;

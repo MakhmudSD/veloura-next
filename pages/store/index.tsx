@@ -16,7 +16,7 @@ import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
 import { userVar } from '../../apollo/store';
 import { CreateNotificationInput } from '../../libs/types/notification/notification';
 import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
-
+import { i18n, useTranslation } from 'next-i18next';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -35,6 +35,7 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
 	);
 	const [stores, setStores] = useState<Member[]>([]);
+	const { t } = useTranslation('common');
 	const [total, setTotal] = useState<number>(0);
 	const [currentPage, setCurrentPage] = useState<number>(1);
 	const [searchText, setSearchText] = useState<string>('');
@@ -42,7 +43,6 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 	/** APOLLO REQUESTS **/
 	const [likeTargetMember] = useMutation(LIKE_TARGET_MEMBER);
 	const [createNotification] = useMutation(CREATE_NOTIFICATION);
-
 
 	const {
 		loading: getStoresLoading,
@@ -117,43 +117,52 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 		setCurrentPage(value);
 	};
 
-				const notifyMember = async (input: CreateNotificationInput) => {
-					try {
-						await createNotification({ variables: { input } });
-					} catch (e) {
-						console.warn('notifyMember failed', e);
-					}
-				};
+	const notifyMember = async (input: CreateNotificationInput) => {
+		try {
+			await createNotification({ variables: { input } });
+		} catch (e) {
+			console.warn('notifyMember failed', e);
+		}
+	};
 
 	const likeMemberHandler = async (store: Member, id: string) => {
 		try {
 			const user = userVar();
 			if (!user || !user._id) {
-				await sweetMixinErrorAlert(
-					'You need to login to like a store Please Login, or Register to continue',
-				);
+				let message = '';
+				if (i18n?.language === 'kr') {
+					message = '좋아요를 누르려면 로그인해야 합니다.';
+				} else if (i18n?.language === 'uz') {
+					message = 'Tizimga login boling';
+				} else {
+					message = 'You must be logged in to like';
+				}
+
+				await sweetMixinErrorAlert(message, 2000, () => {
+					router.push('/account/join'); // navigate AFTER alert closes
+				});
+
 				return;
 			}
-	
+
 			if (!id) return;
-	
+
 			await likeTargetMember({ variables: { input: id } }); // Server update
 			await getStoresRefetch({ input: searchFilter }); // Refetch updated list
 			if (id !== user._id) {
-									  void notifyMember({
-										notificationType: NotificationType.LIKE,
-										notificationGroup: NotificationGroup.MEMBER,
-										notificationTitle: 'New like',
-										notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
-										authorId: user._id,
-									  });
-									}
+				void notifyMember({
+					notificationType: NotificationType.LIKE,
+					notificationGroup: NotificationGroup.MEMBER,
+					notificationTitle: 'New like',
+					notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
+					authorId: user._id,
+				});
+			}
 		} catch (err: any) {
 			console.error('ERROR on likeMemberHandler', err.message);
 			sweetMixinErrorAlert(err.message).then();
 		}
 	};
-	
 
 	if (device === 'mobile') {
 		return <h1>STORES PAGE MOBILE</h1>;
@@ -246,8 +255,9 @@ const StoreList: NextPage = ({ initialInput, ...props }: any) => {
 							</Box>
 						) : (
 							stores.map((store: Member) => {
-								return <StoreCard store={store} user={userVar()} likeMemberHandler={likeMemberHandler} key={store._id} />
-								;
+								return (
+									<StoreCard store={store} user={userVar()} likeMemberHandler={likeMemberHandler} key={store._id} />
+								);
 							})
 						)}
 					</Stack>

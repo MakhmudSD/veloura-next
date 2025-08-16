@@ -153,6 +153,10 @@
 	"WOMEN": "Ayollar",
   "LIMITED EDITION": "Cheklangan",
   "BARTER": "Almashuv",
-  "products": "mahsulotlar"
+  "products": "mahsulotlar",
+  "You must be logged in to like": "Do‘konni yoqtirish uchun tizimga kirishingiz kerak. Davom etish uchun tizimga kiring yoki ro‘yxatdan o‘ting",
+	"Login required to like": "Do‘konni yoqtirish uchun tizimga kirishingiz kerak. Davom etish uchun tizimga kiring yoki ro‘yxatdan o‘ting",
+	"Like this product": "Ushbu mahsulotni yoqtirish",
+	"Liked": "Yoqtirildi"
   
 }

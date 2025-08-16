@@ -94,15 +94,21 @@ export const sweetErrorAlert = async (msg: string, duration: number = 3000) => {
 	});
 };
 
-export const sweetMixinErrorAlert = async (msg: string, duration: number = 3000) => {
+export const sweetMixinErrorAlert = async (
+	msg: string,
+	duration: number = 3000,
+	onClose?: () => void
+  ) => {
 	await Swal.fire({
-		icon: 'error',
-		title: msg,
-		showConfirmButton: false,
-		timer: duration,
-		...commonCustomStyle,
+	  icon: 'error',
+	  title: msg,
+	  showConfirmButton: false,
+	  timer: duration,
+	  ...commonCustomStyle,
+	  didClose: onClose, // callback after alert closes
 	});
-};
+  };
+  
 
 export const sweetMixinSuccessAlert = async (msg: string, duration: number = 2000) => {
 	await Swal.fire({

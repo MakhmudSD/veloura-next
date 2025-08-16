@@ -32,7 +32,7 @@ import { userVar } from '../../apollo/store';
 import { sweetMixinErrorAlert } from '../../libs/sweetAlert';
 import { CreateNotificationInput } from '../../libs/types/notification/notification';
 import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
-
+import { i18n, useTranslation } from 'next-i18next';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -43,7 +43,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
-
+	const { t } = useTranslation('common');
 	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(
 		router?.query?.input ? JSON.parse(router?.query?.input as string) : initialInput,
 	);
@@ -54,7 +54,6 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 	const [sortingOpen, setSortingOpen] = useState(false);
 	const [filterSortName, setFilterSortName] = useState('Recommendations');
 	const [searchText, setSearchText] = useState<string>('');
-	
 
 	/** APOLLO REQUESTS **/
 	const [likeTargetProduct] = useMutation(LIKE_TARGET_PRODUCT);
@@ -75,37 +74,46 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 		},
 	});
 
-		const notifyMember = async (input: CreateNotificationInput) => {
-			try {
-				await createNotification({ variables: { input } });
-			} catch (e) {
-				console.warn('notifyMember failed', e);
-			}
-		};
+	const notifyMember = async (input: CreateNotificationInput) => {
+		try {
+			await createNotification({ variables: { input } });
+		} catch (e) {
+			console.warn('notifyMember failed', e);
+		}
+	};
 
 	const likeProductHandler = async (user: T, id: string) => {
-			try {
-				const user = userVar();
-				if (!user || !user._id) {
-					await sweetMixinErrorAlert(
-						'You need to login to like a store Please Login, or Register to continue',
-					);
-					return;
+		try {
+			const user = userVar();
+			if (!user || !user._id) {
+				let message = '';
+				if (i18n?.language === 'kr') {
+					message = '좋아요를 누르려면 로그인해야 합니다.';
+				} else if (i18n?.language === 'uz') {
+					message = 'Tizimga login boling';
+				} else {
+					message = 'You must be logged in to like';
 				}
-		
-				if (!id) return;
-				await likeTargetProduct({ variables: { input: id } }); // Server update
-				await getProductsRefetch({ input: searchFilter }); 
-						if (id !== user._id) {
-						  void notifyMember({
-							notificationType: NotificationType.LIKE,
-							notificationGroup: NotificationGroup.PRODUCT,
-							notificationTitle: 'New like',
-							notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
-							authorId: user._id,
-						  });
-						}
-		
+
+				await sweetMixinErrorAlert(message, 2000, () => {
+					router.push('/account/join'); // navigate AFTER alert closes
+				});
+
+				return;
+			}
+
+			if (!id) return;
+			await likeTargetProduct({ variables: { input: id } }); // Server update
+			await getProductsRefetch({ input: searchFilter });
+			if (id !== user._id) {
+				void notifyMember({
+					notificationType: NotificationType.LIKE,
+					notificationGroup: NotificationGroup.PRODUCT,
+					notificationTitle: 'New like',
+					notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
+					authorId: user._id,
+				});
+			}
 		} catch (err: any) {
 			console.error('ERROR on likeProductHandler', err.message);
 		}
@@ -247,7 +255,12 @@ const ProductList: NextPage = ({ initialInput, ...props }: any) => {
 								<div className="no-data">No Products Found! ✨</div>
 							) : (
 								products.map((product: Product) => (
-									<ProductCard key={product._id} product={product} user={userVar()} likeProductHandler={likeProductHandler} />
+									<ProductCard
+										key={product._id}
+										product={product}
+										user={userVar()}
+										likeProductHandler={likeProductHandler}
+									/>
 								))
 							)}
 						</Stack>
@@ -285,7 +298,7 @@ ProductList.defaultProps = {
 		limit: 9,
 		sort: 'createdAt',
 		direction: 'DESC',
-		search: { },
+		search: {},
 	},
 };
 

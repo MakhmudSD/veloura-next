@@ -39,6 +39,7 @@ import { ProductsInquiry } from '../../libs/types/product/product.input';
 import { ProductCategory } from '../../libs/enums/product.enum';
 import { NotificationGroup, NotificationType } from '../../libs/enums/notification.enum';
 import { CreateNotificationInput } from '../../libs/types/notification/notification';
+import { i18n, useTranslation } from 'next-i18next';
 SwiperCore.use([Autoplay, Navigation, Pagination]);
 
 export const getStaticProps = async ({ locale }: any) => ({
@@ -50,6 +51,7 @@ export const getStaticProps = async ({ locale }: any) => ({
 const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
+	const { t } = useTranslation('common');
 	const user = useReactiveVar(userVar);
 	const [productId, setproductId] = useState<string | null>(null);
 	const [product, setProduct] = useState<Product | null>(null);
@@ -217,7 +219,19 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 		try {
 			const user = userVar();
 			if (!user || !user._id) {
-				await sweetMixinErrorAlert('You need to login to like a store Please Login, or Register to continue');
+				let message = '';
+				if (i18n?.language === 'kr') {
+					message = '좋아요를 누르려면 로그인해야 합니다.';
+				} else if (i18n?.language === 'uz') {
+					message = 'Tizimga login boling';
+				} else {
+					message = 'You must be logged in to like';
+				}
+
+				await sweetMixinErrorAlert(message, 2000, () => {
+					router.push('/account/join'); // navigate AFTER alert closes
+				});
+
 				return;
 			}
 

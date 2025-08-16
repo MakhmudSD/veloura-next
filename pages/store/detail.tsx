@@ -24,6 +24,7 @@ import { CREATE_COMMENT, CREATE_NOTIFICATION, LIKE_TARGET_PRODUCT } from '../../
 import { Message } from '../../libs/enums/common.enum';
 import { CreateNotificationInput } from '../../libs/types/notification/notification';
 import { NotificationType, NotificationGroup } from '../../libs/enums/notification.enum';
+import { i18n, useTranslation } from 'next-i18next';
 
 export const getStaticProps = async ({ locale }: any) => ({
 	props: {
@@ -34,9 +35,11 @@ export const getStaticProps = async ({ locale }: any) => ({
 const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) => {
 	const device = useDeviceDetect();
 	const router = useRouter();
+	const { t } = useTranslation('common');
 	const user = useReactiveVar(userVar);
 	const [mbId, setMbId] = useState<string | null>(null);
-	const [store, setStore] = useState<Member | null>(null);	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(initialInput);
+	const [store, setStore] = useState<Member | null>(null);
+	const [searchFilter, setSearchFilter] = useState<ProductsInquiry>(initialInput);
 	const [storeProducts, setStoreProducts] = useState<Product[]>([]);
 	const [productTotal, setProductTotal] = useState<number>(0);
 	const [commentInquiry, setCommentInquiry] = useState<CommentsInquiry>(initialComment);
@@ -202,12 +205,12 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 			setInsertCommentData((prev) => ({ ...prev, commentContent: '' }));
 			getCommentsRefetch({ variables: { input: commentInquiry } });
 			void notifyMember({
-							notificationType: NotificationType.COMMENT,
-							notificationGroup: NotificationGroup.COMMENT,
-							notificationTitle: 'New comment',
-							notificationDesc: `${user.memberNick ?? 'Someone'} commented on your product.`,
-							authorId: user._id,
-						});
+				notificationType: NotificationType.COMMENT,
+				notificationGroup: NotificationGroup.COMMENT,
+				notificationTitle: 'New comment',
+				notificationDesc: `${user.memberNick ?? 'Someone'} commented on your product.`,
+				authorId: user._id,
+			});
 		} catch (err: any) {
 			console.log('ERROR, createCommentHandler:', err.message);
 			await sweetMixinErrorAlert(err.message).then();
@@ -215,27 +218,37 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 	};
 
 	const likeProductHandler = async (user: T, id: string) => {
-			try {
-				const user = userVar();
-				if (!user || !user._id) {
-					await sweetMixinErrorAlert(
-						'You need to login to like a store Please Login, or Register to continue',
-					);
-					return;
+		try {
+			const user = userVar();
+			if (!user || !user._id) {
+				let message = '';
+				if (i18n?.language === 'kr') {
+					message = '좋아요를 누르려면 로그인해야 합니다.';
+				} else if (i18n?.language === 'uz') {
+					message = 'Tizimga login boling';
+				} else {
+					message = 'You must be logged in to like';
 				}
-		
-				if (!id) return;
-				await likeTargetProduct({ variables: { input: id } }); // Server update
-				await getProductsRefetch({ input: searchFilter }); 
-							if (!user._id) {
-								void notifyMember({
-									notificationType: NotificationType.LIKE,
-									notificationGroup: NotificationGroup.PRODUCT,
-									notificationTitle: 'New like',
-									notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
-									authorId: user._id,
-								});
-							}
+
+				await sweetMixinErrorAlert(message, 2000, () => {
+					router.push('/account/join'); // navigate AFTER alert closes
+				});
+
+				return;
+			}
+
+			if (!id) return;
+			await likeTargetProduct({ variables: { input: id } }); // Server update
+			await getProductsRefetch({ input: searchFilter });
+			if (!user._id) {
+				void notifyMember({
+					notificationType: NotificationType.LIKE,
+					notificationGroup: NotificationGroup.PRODUCT,
+					notificationTitle: 'New like',
+					notificationDesc: `${user.memberNick ?? 'Someone'} liked your product.`,
+					authorId: user._id,
+				});
+			}
 		} catch (err: any) {
 			console.error('ERROR on likeProductHandler', err.message);
 		}
@@ -282,7 +295,12 @@ const StoreDetail: NextPage = ({ initialInput, initialComment, ...props }: any) 
 						<Stack className={'card-wrap'}>
 							{storeProducts.map((product: Product) => (
 								<div className={'wrap-main'} key={product?._id}>
-									<ProductBigCard product={product} user={userVar()} likeProductHandler={likeProductHandler} key={product?._id} />
+									<ProductBigCard
+										product={product}
+										user={userVar()}
+										likeProductHandler={likeProductHandler}
+										key={product?._id}
+									/>
 								</div>
 							))}
 						</Stack>
