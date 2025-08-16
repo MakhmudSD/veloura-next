@@ -97,7 +97,6 @@ const TopStoreCard = (props: TopStoreProps) => {
 							<img src="/img/stores/address.png" alt="address" />
 							{t(store.memberAddress ?? 'Seoul')}
 						</h1>{' '}
-						{/* Re-added the address */}
 						<strong>{t(store.memberNick)}</strong>
 						<p>
 							{' '}

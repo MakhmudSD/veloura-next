@@ -140,336 +140,311 @@
 
         .trend-products {
             margin-bottom: 0;
-            /* remove negative margin on mobile */
             background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
-
+          
             .container {
-                margin-bottom: 12px;
-
-                .info-box {
-                    margin-top: 18px;
-                    gap: 6px;
-                    text-align: center;
-
-                    span {
+              margin-bottom: 12px;
+          
+              .info-box {
+                margin-top: 18px;
+                gap: 6px;
+                text-align: center;
+          
+                span {
+                  font-family: 'Judson';
+                  font-size: 20px;
+                  font-weight: 500;
+                  color: #222;
+                  text-transform: capitalize;
+                }
+          
+                p {
+                  font-family: 'Inter';
+                  font-size: 14px;
+                  color: rgba(46, 46, 46, 0.8);
+                  line-height: 22px;
+                }
+              }
+          
+              .card-box {
+                max-width: 100%;
+                height: auto;
+                align-items: stretch;
+                overflow: visible;
+                margin-top: 12px;
+          
+                .swiper-button-prev,
+                .swiper-button-next { display: none !important; }
+          
+                .swiper-pagination {
+                  position: static;
+                  margin-top: 8px;
+                }
+          
+                .trend-product-swiper {
+                  width: 100%;
+                  height: auto;
+                  overflow: visible;
+                  padding: 4px 0 10px;
+                }
+          
+                .trend-product-slide {
+                  width: auto !important;
+                  height: auto;
+                  display: flex !important;
+                  align-items: stretch; /* equal heights across row */
+                  justify-content: center;
+                }
+          
+                /* ===== Card ===== */
+                .trend-card-box {
+                  /* control body height without markup changes */
+                  --card-body-height: 118px;
+                  --card-padding: 10px 12px;
+          
+                  width: 100%;
+                  max-width: 240px;
+                  height: 100%;
+                  margin: 0;
+                  border: 1px solid #cfc9c6;
+                  background: #f1efe9;
+                  border-radius: 12px;
+                  overflow: hidden;
+                  transform: translateZ(0);
+                  transition: transform .2s ease, box-shadow .2s ease;
+          
+                  display: flex;
+                  flex-direction: column;
+                  position: relative; /* for bottom-centered btn-group */
+          
+                  @media (hover: hover) {
+                    &:hover {
+                      transform: translateY(-3px);
+                      box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+                    }
+                  }
+                  @media (hover: none) {
+                    &:active {
+                      transform: translateY(-2px);
+                      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
+                    }
+                  }
+          
+                  /* Image */
+                  .card-img {
+                    width: 100%;
+                    aspect-ratio: 4 / 5;
+                    border-radius: 12px;
+                    overflow: hidden;
+                    position: relative;
+                    cursor: pointer;
+                    flex: 0 0 auto;
+          
+                    .main-img,
+                    .hover-img,
+                    img {
+                      position: absolute;
+                      inset: 0;
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                      transition: opacity .35s ease, transform .25s ease;
+                      display: block;
+                    }
+          
+                    @media (hover: hover) {
+                      &:hover .main-img { opacity: .15; }
+                      &:hover .hover-img { opacity: 1; }
+                    }
+                    @media (hover: none) {
+                      &:active .main-img { opacity: .15; }
+                      &:active .hover-img { opacity: 1; }
+                    }
+                  }
+          
+                  /* Badge: prevent overstretching */
+                  .badge {
+                    top: 10px;
+                    left: 10px;
+                    background: rgba(255, 255, 255, .6);
+                    color: #000;
+                    padding: 4px 10px;
+                    font-size: 11px;
+                    border-radius: 16px;
+                    backdrop-filter: blur(4px);
+          
+                    max-width: 65%;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+          
+                  /* Body area (fixed height -> consistent cards) */
+                  .card-body,
+                  .bottom,
+                  .content {
+                    padding: var(--card-padding);
+                    display: flex;
+                    flex-direction: column;
+                    gap: 8px;
+                    min-height: var(--card-body-height);
+                    max-height: var(--card-body-height);
+                    overflow: hidden;
+                    flex: 0 0 auto;
+                  }
+          
+                  /* Title with ellipsis */
+                  .card-title,
+                  .title,
+                  h3 {
+                    font-family: 'Judson';
+                    font-size: 15px;
+                    font-weight: 700;
+                    line-height: 1.25;
+                    color: #221e1a;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+          
+                  /* Optional subtitle */
+                  .card-subtitle,
+                  .subtitle,
+                  .meta {
+                    font-family: 'Inter';
+                    font-size: 12px;
+                    color: rgba(34, 30, 26, .7);
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                  }
+          
+                  /* Price & footer row sits at bottom of body */
+                  .price-row,
+                  .row,
+                  .footer {
+                    margin-top: auto;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: 8px;
+          
+                    .price,
+                    .amount {
+                      font-family: 'Judson';
+                      font-size: 15px;
+                      font-weight: 800;
+                      letter-spacing: .4px;
+                      color: #2a211a;
+                      white-space: nowrap;
+                      overflow: hidden;
+                      text-overflow: ellipsis;
+                    }
+                  }
+          
+                  /* ===== Bottom-centered Actions (view/like/add-to-cart) ===== */
+                  .btn-group {
+                    position: absolute;
+                    bottom: 12px;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(20px);
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+          
+                    opacity: 0;
+                    visibility: hidden;
+                    transition: all 0.25s ease;
+                    z-index: 5;
+          
+                    /* uniform sizes */
+                    .view-box,
+                    .like-btn,
+                    .add-to-basket-btn {
+                      height: 36px;
+                      min-width: 36px;
+                      border-radius: 18px;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      font-size: 12px;
+                      cursor: pointer;
+                      transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+                      white-space: nowrap;
+                    }
+          
+                    .view-box,
+                    .like-btn {
+                      padding: 0 12px;
+                      border: 1px solid #000;
+                      background: #fff;
+                      color: #000;
+                    }
+          
+                    .add-to-basket-btn {
+                      padding: 0 16px;
+                      background: #000;
+                      color: #fff;
+                      border: none;
+          
+                      span {
                         font-family: 'Judson';
-                        font-size: 20px;
-                        /* +mobile bump */
-                        font-weight: 500;
-                        color: #222;
-                        text-transform: capitalize;
+                        font-size: 12px;
+                        font-weight: 700;
+                        letter-spacing: 1.2px;
+                      }
                     }
-
-                    p {
-                        font-family: 'Inter';
-                        font-size: 14px;
-                        color: rgba(46, 46, 46, 0.8);
-                        line-height: 22px;
+                  }
+          
+                  @media (hover: hover) {
+                    &:hover .btn-group {
+                      opacity: 1;
+                      visibility: visible;
+                      transform: translateX(-50%) translateY(0);
                     }
+                  }
+                  @media (hover: none) {
+                    &:active .btn-group {
+                      opacity: 1;
+                      visibility: visible;
+                      transform: translateX(-50%) translateY(0);
+                    }
+                  }
                 }
-
-                .card-box {
-                    max-width: 100%;
-                    height: auto;
-                    /* override desktop 750px */
-                    align-items: stretch;
-                    overflow: visible;
-                    margin-top: 12px;
-
-                    .empty-list {
-                        width: 100%;
-                        height: 100%;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-
-                        .empty-list-content {
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            gap: 20px;
-                            text-align: center; // ensure inner text is centered
-                            margin: 0 auto;
-
-                            img {
-                                width: 375px;
-                                height: 284px;
-                                object-fit: contain;
-                            }
-
-                            span {
-                                margin-right: 30px;
-                                color: #000;
-                                font-family: "Judson";
-                                font-size: 45px;
-                                font-weight: 900;
-                            }
-
-                            strong {
-                                margin-top: 30px;
-                                color: #000;
-                                font-family: "Judson";
-                                font-size: 22px;
-                                font-weight: 400;
-                                text-transform: capitalize;
-                            }
-
-                            p {
-                                width: 827px;
-                                color: #000;
-                                font-family: "Inter";
-                                font-size: 14px;
-                                font-weight: 400;
-                                line-height: 30px;
-                            }
-
-                            div {
-                                margin-top: 20px;
-                                width: 160px;
-                                height: 35px;
-                                background: #000;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                cursor: pointer;
-                                border-radius: 6px;
-                                transition: background 0.3s ease, transform 0.2s ease;
-                                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-
-                                &:hover {
-                                    background: #d4af37;
-                                    transform: translateY(-2px);
-                                }
-
-                                h2 {
-                                    color: #fff;
-                                    font-family: "Judson";
-                                    font-size: 14px;
-                                    font-weight: 500;
-                                    letter-spacing: 2.1px;
-                                    text-transform: uppercase;
-                                }
-                            }
-                        }
-
-                    }
-
-
-                    /* hide desktop arrows/pagination visuals on mobile, Swiper breakpoints handle slides */
-                    .swiper-button-prev,
-                    .swiper-button-next {
-                        display: none !important;
-                    }
-
-                    .swiper-pagination {
-                        position: static;
-                        margin-top: 8px;
-                    }
-
-                    .trend-product-swiper {
-                        width: 100%;
-                        height: auto;
-                        /* let cards define height */
-                        overflow: visible;
-                        /* allow lifted shadows */
-                        padding: 4px 0 10px;
-                    }
-
-                    /* Let Swiper compute widths from slidesPerView; keep slides flexible */
-                    .trend-product-slide {
-                        width: auto !important;
-                        height: auto;
-                        display: flex !important;
-                        justify-content: center;
-                    }
-
-                    /* === Mobile card uses same structure as desktop === */
-                    .trend-card-box {
-                        width: 100%;
-                        max-width: 240px;
-                        /* nice mobile width inside each slide */
-                        height: auto;
-                        margin: 0;
-                        /* remove desktop margins */
-                        border: 1px solid #cfc9c6;
-                        /* softer border on mobile */
-                        background: #f1efe9;
-                        /* lighter version of #e4e3da */
-                        border-radius: 12px;
-                        overflow: hidden;
-                        transform: translateZ(0);
-                        transition: transform .2s ease, box-shadow .2s ease;
-
-                        /* lift interactions */
-                        @media (hover: hover) {
-                            &:hover {
-                                transform: translateY(-3px);
-                                box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
-                            }
-                        }
-
-                        @media (hover: none) {
-                            &:active {
-                                transform: translateY(-2px);
-                                box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
-                            }
-                        }
-
-                        .card-img {
-                            width: 100%;
-                            aspect-ratio: 4 / 5;
-                            /* consistent tall ratio */
-                            border-radius: 12px;
-                            overflow: hidden;
-                            position: relative;
-                            cursor: pointer;
-
-                            .main-img,
-                            .hover-img,
-                            img {
-                                position: absolute;
-                                inset: 0;
-                                width: 100%;
-                                height: 100%;
-                                object-fit: cover;
-                                transition: opacity .35s ease, transform .25s ease;
-                                display: block;
-                            }
-
-                            /* keep your hover effect logic; on mobile use :active */
-                            @media (hover: hover) {
-                                &:hover .main-img {
-                                    opacity: .15;
-                                }
-
-                                &:hover .hover-img {
-                                    opacity: 1;
-                                }
-                            }
-
-                            @media (hover: none) {
-                                &:active .main-img {
-                                    opacity: .15;
-                                }
-
-                                &:active .hover-img {
-                                    opacity: 1;
-                                }
-                            }
-                        }
-
-                        .badge {
-                            top: 10px;
-                            left: 10px;
-                            background: rgba(255, 255, 255, .6);
-                            color: #000;
-                            padding: 4px 10px;
-                            font-size: 11px;
-                            border-radius: 16px;
-                            backdrop-filter: blur(4px);
-                        }
-
-                        .btn-group {
-                            bottom: 16px;
-                            gap: 16px;
-                            transform: translateX(-50%) translateY(16px);
-                            opacity: 0;
-                            visibility: hidden;
-                            transition: all .25s ease;
-
-                            .view-box,
-                            .like-btn,
-                            .add-to-basket-btn {
-                                height: 32px;
-                                /* touch target */
-                                border-radius: 18px;
-                            }
-
-                            .view-box,
-                            .like-btn {
-                                padding: 4px 10px;
-                                font-size: 12px;
-                                border: 1px solid #000;
-                                background: #fff;
-                            }
-
-                            .add-to-basket-btn {
-                                width: 124px;
-                                padding: 6px 10px;
-                                font-size: 12px;
-                                letter-spacing: 1px;
-                                background: #000;
-                                color: #fff;
-                                border: none;
-
-                                span {
-                                    font-family: 'Judson';
-                                    font-size: 12px;
-                                    font-weight: 800;
-                                    letter-spacing: 1.6px;
-                                }
-                            }
-                        }
-
-                        /* show actions when card hovered/pressed */
-                        @media (hover: hover) {
-                            &:hover .btn-group {
-                                opacity: 1;
-                                visibility: visible;
-                                transform: translateX(-50%) translateY(0);
-                            }
-                        }
-
-                        @media (hover: none) {
-                            &:active .btn-group {
-                                opacity: 1;
-                                visibility: visible;
-                                transform: translateX(-50%) translateY(0);
-                            }
-                        }
-                    }
-
-                    /* /.trend-card-box */
-
-                    /* Empty state image/text tighter on mobile */
-                    .empty-list .empty-list-content {
-                        gap: 14px;
-
-                        img {
-                            width: 220px;
-                            height: auto;
-                        }
-
-                        span {
-                            font-size: 34px;
-                            margin-right: 0;
-                        }
-
-                        strong {
-                            font-size: 18px;
-                            margin-top: 8px;
-                        }
-
-                        p {
-                            width: auto;
-                            padding: 0 16px;
-                            line-height: 22px;
-                        }
-
-                        div {
-                            width: 150px;
-                            height: 36px;
-                        }
-                    }
+                /* /.trend-card-box */
+          
+                /* Empty state (compact) */
+                .empty-list {
+                  width: 100%;
+                  height: 100%;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+          
+                  .empty-list-content {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+                    gap: 14px;
+                    text-align: center;
+                    margin: 0 auto;
+          
+                    img { width: 220px; height: auto; }
+                    span { font-size: 34px; margin-right: 0; }
+                    strong { font-size: 18px; margin-top: 8px; }
+                    p { width: auto; padding: 0 16px; line-height: 22px; }
+                    div { width: 150px; height: 36px; }
+                  }
                 }
-
-                /* /.card-box */
+              }
+              /* /.card-box */
             }
-
             /* /.container */
-        }
+          }
+          
 
         .icon-wall {
             display: flex;
@@ -526,140 +501,195 @@
         }
 
         .top-stores {
-            padding: 16px 10px;
-            background:
-                url('/img/fiber/naqsh.png') no-repeat center center / cover,
-                #ffffff;
-
+            padding: 20px 10px; // smaller padding on mobile
+            background: url('/img/fiber/naqsh.png') no-repeat center center / cover, #fff;
+          
             .container {
-                .info-box {
+              .info-box {
+                flex-direction: column;
+                gap: 6px;
+                text-align: center;
+                margin-bottom: 10px;
+          
+                span {
+                  display: block;
+                  color: #181a20;
+                  font-family: 'Judson';
+                  font-size: 20px; // reduced from 24px
+                  font-weight: 600;
+                  text-transform: capitalize;
+                }
+          
+                p {
+                  display: block;
+                  color: #717171;
+                  font-family: 'Inter';
+                  font-size: 13px;
+                  line-height: 20px;
+                  padding: 0 12px;
+                }
+          
+                .left,
+                .right {
+                  display: none; // hide desktop extras
+                }
+              }
+          
+              .wrapper {
+                margin-top: 12px;
+          
+                .switch-btn {
+                  display: none !important; // no arrows on mobile
+                }
+          
+                .top-stores-swiper {
+                  width: 100%;
+                  height: auto;
+                  overflow: visible;
+                  padding: 2px 0 8px;
+                }
+          
+                .top-stores-slide {
+                  width: auto !important;
+                  display: flex !important;
+                  justify-content: center;
+                  align-items: stretch;
+                }
+          
+                /* === Compact Store Card === */
+                .top-store-card {
+                  width: 180px;   /* much slimmer */
+                  height: 280px;  /* compact height */
+                  margin: 0 6px;
+                  display: flex;
+                  flex-direction: column;
+                  justify-content: flex-start;
+                  align-items: center;
+                  border: 1px solid #d6d6d6;
+                  border-radius: 10px;
+                  overflow: hidden;
+                  background: #fff;
+                  transition: transform 0.2s ease, box-shadow 0.2s ease;
+          
+                  &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+                  }
+          
+                  .store-image-container {
+                    width: 100%;
+                    height: 140px; // smaller image
+                    overflow: hidden;
+          
+                    img {
+                      width: 100%;
+                      height: 100%;
+                      object-fit: cover;
+                    }
+                  }
+          
+                  .top-store-card-down {
+                    width: 100%;
+                    flex: 1;
+                    padding: 10px;
+                    display: flex;
                     flex-direction: column;
+                    justify-content: space-between;
                     gap: 6px;
-                    text-align: center;
-
-                    span {
-                        display: block;
-                        color: #181a20;
-                        font-family: 'Judson';
-                        font-size: 24px;
-                        font-weight: 600;
-                        text-transform: capitalize;
+          
+                    .top-store-card-info {
+                      display: flex;
+                      flex-direction: column;
+                      align-items: center;
+                      gap: 2px;
+                      text-align: center;
+          
+                      strong {
+                        font-family: "Playfair Display", serif;
+                        font-size: 14px; // smaller
+                        font-weight: 700;
+                        color: #222;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 150px; // prevent overflow
+                      }
+          
+                      p {
+                        font-family: "Inter", sans-serif;
+                        font-size: 12px;
+                        font-weight: 400;
+                        color: #666;
+                        line-height: 1.3;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        max-width: 150px;
+                      }
                     }
-
-                    p {
-                        display: block;
-                        color: #717171;
-                        font-family: 'Inter';
-                        font-size: 14px;
-                        line-height: 22px;
-                    }
-
-                    .left,
-                    .right {
-                        display: none;
-                    }
-                }
-
-                .wrapper {
-                    margin-top: 16px;
-
-                    .switch-btn {
-                        display: none !important;
-                    }
-
-                    .top-stores-swiper {
-                        width: 100%;
-                        height: auto;
-                        overflow: visible;
-                        padding: 2px 0 8px;
-                    }
-
-                    .top-stores-slide {
-                        width: auto !important;
-                        display: flex !important;
-                        justify-content: center;
-                    }
-
-                    .empty-list {
-                        width: 100%;
-                        height: 100%;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        justify-content: center;
-
-                        .empty-list-content {
-                            display: flex;
-                            flex-direction: column;
-                            justify-content: center;
-                            align-items: center;
-                            gap: 12px;
-                            text-align: center;
-                            margin: 0 auto;
-
-                            img {
-                                width: 275px;
-                                height: 184px;
-                                object-fit: contain;
-                            }
-
-                            span {
-                                color: #000;
-                                font-family: "Judson";
-                                font-size: 35px;
-                                font-weight: 900;
-                            }
-
-                            strong {
-                                color: #000;
-                                font-family: "Judson";
-                                font-size: 18px;
-                                font-weight: 400;
-                                text-transform: capitalize;
-                            }
-
-                            p {
-                                width: 827px;
-                                color: #000;
-                                font-family: "Inter";
-                                font-size: 14px;
-                                font-weight: 400;
-                                line-height: 30px;
-                            }
-
-                            div {
-                                margin-top: 20px;
-                                width: 160px;
-                                height: 35px;
-                                background: #000;
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                cursor: pointer;
-                                border-radius: 6px;
-                                transition: background 0.3s ease, transform 0.2s ease;
-                                box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-
-                                &:hover {
-                                    background: #d4af37;
-                                    transform: translateY(-2px);
-                                }
-
-                                h2 {
-                                    color: #fff;
-                                    font-family: "Judson";
-                                    font-size: 14px;
-                                    font-weight: 500;
-                                    letter-spacing: 2.1px;
-                                    text-transform: uppercase;
-                                }
-                            }
+          
+                    .stats-row {
+                      display: flex;
+                      justify-content: center;
+                      gap: 12px;
+          
+                      .stat-item {
+                        font-size: 11px;
+                        font-family: "Judson", serif;
+                        color: #444;
+          
+                        .icon img {
+                          width: 14px;
+                          height: 14px;
                         }
-
+                      }
                     }
+          
+                    .view-store-btn {
+                      margin: 0 auto;
+                      padding: 4px 12px;
+                      font-size: 11px;
+                      border: 1px solid #444;
+                      border-radius: 16px;
+                      text-transform: uppercase;
+                      font-family: "Inter", sans-serif;
+                      background: transparent;
+                      transition: all 0.2s ease;
+          
+                      &:hover {
+                        background: #d4af37;
+                        color: #fff;
+                        border-color: #d4af37;
+                      }
+                    }
+                  }
                 }
+          
+                /* Empty state compact */
+                .empty-list {
+                  .empty-list-content {
+                    img {
+                      width: 180px;
+                      height: auto;
+                    }
+                    span { font-size: 28px; }
+                    strong { font-size: 14px; }
+                    p {
+                      width: auto;
+                      font-size: 12px;
+                      line-height: 20px;
+                      padding: 0 10px;
+                    }
+                    div {
+                      width: 120px;
+                      height: 30px;
+                    }
+                  }
+                }
+              }
             }
-        }
+          }
+          
 
         .shipping.mobile {
             width: 100%;

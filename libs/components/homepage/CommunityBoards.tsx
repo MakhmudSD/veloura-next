@@ -32,17 +32,17 @@ const CommunityBoards = () => {
         limit: 10,
         sort: 'articleViews',
         direction: 'DESC',
-        search: {}, // Remove specific category filter
+        search: {},
       },
     },
     notifyOnNetworkStatusChange: true,
     onCompleted: (data) => {
       setArticles(data?.getBoardArticles?.list || []);
-      setLoading(false); // Set loading to false on completion
+      setLoading(false); 
     },
     onError: (error) => {
       console.error('Error fetching articles:', error);
-      setLoading(false); // Ensure loading is set to false on error
+      setLoading(false); 
     },
   });
 

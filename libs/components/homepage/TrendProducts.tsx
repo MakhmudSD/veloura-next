@@ -31,7 +31,7 @@ const TrendProducts = (props: TrendProductsProps) => {
   const prevRef = useRef<HTMLDivElement>(null);
 const nextRef = useRef<HTMLDivElement>(null);
   const { t } = useTranslation('common');
-  const [lang, setLang] = useState<string | null>('en'); // <-- ensure "Designed for Everyday Glamour" etc. are in locales/*/common.json
+  const [lang, setLang] = useState<string | null>('en');
 
   const [trendProducts, setTrendProducts] = useState<Product[]>([]);
   const [searchFilter] = useState<ProductsInquiry>(
@@ -118,8 +118,6 @@ const nextRef = useRef<HTMLDivElement>(null);
                   <img src="/img/icons/empty.png" alt="" />
                   <span>{t('OOPS') as string}</span>
                   <strong>{t('There are no products available at the moment') as string}</strong>
-                  <p>{t('It is a long established fact that a reader will be distracted by the readable content of a page') as string}</p>
-                  <p>{t('when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal.') as string}</p>
                 </Box>
               </Box>
             ) : (
