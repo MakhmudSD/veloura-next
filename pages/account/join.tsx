@@ -26,7 +26,7 @@ const COUNTRIES: Country[] = [
 	{ code: 'UZ', name: 'Uzbekistan', dial: '998' },
 ];
 
-const MIN_LEN = 6;
+const MIN_LEN = 2;
 
 const Join: NextPage = () => {
 	const router = useRouter();
@@ -155,7 +155,7 @@ const Join: NextPage = () => {
 											onBlur={() => setLoginTouched((t) => ({ ...t, nick: true }))}
 										/>
 										{loginTouched.nick && !validLen(loginInput.nick) && (
-											<em className="field-error">{t('Please enter at least 6 characters')}</em>
+											<em className="field-error">{t('Please enter at least 2 characters')}</em>
 										)}
 									</div>
 
