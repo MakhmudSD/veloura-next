@@ -592,7 +592,143 @@
       }
     }
     
-
+    .top-stores.mobile {
+      padding: 20px 10px;
+      background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
+    
+      .container {
+        /* header */
+        .info-box {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          text-align: center;
+          margin-bottom: 10px;
+    
+          span {
+            color: #181a20;
+            font-family: 'Judson';
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: capitalize;
+          }
+          p {
+            color: #717171;
+            font-family: 'Inter';
+            font-size: 13px;
+            line-height: 20px;
+            padding: 0 12px;
+          }
+        }
+    
+        .wrapper {
+          margin-top: 12px;
+    
+          /* arrows hidden on mobile by design */
+          .switch-btn { display: none !important; }
+    
+          /* swiper sizing so all slides stretch same height */
+          .top-stores-swiper {
+            width: 100%;
+            height: auto;
+            overflow: visible;
+            padding: 2px 0 8px;
+    
+            .swiper-wrapper { align-items: stretch; }
+          }
+    
+          .top-stores-slide {
+            width: auto !important;
+            display: flex !important;
+            justify-content: center;
+            align-items: stretch;
+          }
+    
+   
+          --m-card-w: 210px;   /* card width */
+          --m-card-h: 300px;   /* IMAGE box height (upper) */
+          --m-info-h: 82px;    /* INFO area height (lower) */
+    
+          /* Store Card matches .trend-card-box + .info-bottom sizing */
+          .store-card {
+            width: var(--m-card-w);
+            height: calc(var(--m-card-h) + var(--m-info-h));
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #dcdcdc;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #fff;
+          }
+    
+          /* Image area: fixed height (like .trend-card-box image block) */
+          .store-card .card-img {
+            width: 100%;
+            height: var(--m-card-h);
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px; /* mirrors trend-products */
+          }
+    
+          .store-card .card-img img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity .35s ease, transform .25s ease;
+          }
+    
+          /* Info area: fixed height (like .info-bottom) */
+          .store-card .card-info {
+            width: 100%;
+            height: var(--m-info-h);
+            min-height: var(--m-info-h);
+            max-height: var(--m-info-h);
+            padding: 10px 12px; /* mirrors --card-padding feel */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+            background: none;
+            border: none;
+          }
+    
+          /* Title clamp to 2 lines, same typography spirit as trend-products */
+          .store-card .card-info span {
+            color: #2e2e2e;
+            font-family: 'Judson';
+            font-size: 16px;
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 1.2px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            min-height: calc(1.3em * 2);
+          }
+    
+          /* Optional meta/desc clamp (keep short like trend) */
+          .store-card .card-info p {
+            margin-top: 6px;
+            font-family: 'Inter';
+            font-size: 12px;
+            line-height: 18px;
+            color: #717171;
+            display: -webkit-box;
+            -webkit-line-clamp: 1;
+            line-clamp: 1;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+          }
+        }
+      }
+    }
+    
 
     .icon-wall {
       display: flex;
@@ -647,144 +783,6 @@
         }
       }
     }
-
-    .top-stores.mobile {
-      padding: 20px 10px;
-      background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
-    
-      .container {
-        /* header */
-        .info-box {
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          text-align: center;
-          margin-bottom: 10px;
-    
-          span {
-            color: #181a20;
-            font-family: 'Judson';
-            font-size: 20px;
-            font-weight: 600;
-            text-transform: capitalize;
-          }
-          p {
-            color: #717171;
-            font-family: 'Inter';
-            font-size: 13px;
-            line-height: 20px;
-            padding: 0 12px;
-          }
-        }
-    
-        .wrapper {
-          margin-top: 12px;
-    
-          /* arrows hidden on mobile by design */
-          .switch-btn { display: none !important; }
-    
-          /* swiper sizing so all slides stretch same height */
-          .top-stores-swiper {
-            width: 100%;
-            height: auto;
-            overflow: visible;
-            padding: 2px 0 8px;
-    
-            .swiper-wrapper { align-items: stretch; }
-          }
-    
-          .top-stores-slide {
-            width: auto !important;
-            display: flex !important;
-            justify-content: center;
-            align-items: stretch;
-          }
-    
-          /* === Store Card (70/30 split) === */
-          .store-card {
-            display: flex;
-            flex-direction: column;
-            width: 100%;
-            max-width: 220px;
-            border: 1px solid #dcdcdc;
-            border-radius: 12px;
-            background: #fff;
-            overflow: hidden;
-    
-            .card-img {
-              flex: 7; /* taller image section */
-              position: relative;
-              width: 100%;
-    
-              img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                display: block;
-              }
-            }
-    
-            .card-info {
-              flex: 3; /* shorter info section */
-              padding: 8px 10px;
-              text-align: center;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-    
-              span {
-                font-family: 'Judson';
-                font-size: 15px;
-                font-weight: 600;
-                color: #181a20;
-                margin-bottom: 4px;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-              }
-    
-              p {
-                font-family: 'Inter';
-                font-size: 12px;
-                line-height: 18px;
-                color: #717171;
-                overflow: hidden;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                line-clamp: 2;
-                -webkit-box-orient: vertical;
-              }
-            }
-          }
-        }
-      }
-    }
-    
-
-
-    /* slightly narrower phones */
-    @media (max-width: 360px) {
-      .top-store-card.mobile {
-        --card-w: 176px;
-        --card-h: 252px;
-        --img-h: 110px;
-
-        .mobile-overlay .name {
-          font-size: 12.5px;
-        }
-      }
-    }
-
-    /* allow a touch more width on mid devices */
-    @media (min-width: 480px) and (max-width: 767px) {
-      .top-store-card.mobile {
-        --card-w: 200px;
-        --card-h: 270px;
-        --img-h: 126px;
-      }
-    }
-
-
 
     .shipping.mobile {
       width: 100%;
