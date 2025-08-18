@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, useTransition } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { NextPage } from 'next';
 import withLayoutBasic from '../../libs/components/layout/LayoutBasic';
 import useDeviceDetect from '../../libs/hooks/useDeviceDetect';
@@ -26,7 +26,9 @@ const COUNTRIES: Country[] = [
 	{ code: 'UZ', name: 'Uzbekistan', dial: '998' },
 ];
 
-const MIN_LEN = 2;
+// === Limits you requested ===
+const MIN_NICK = 3;
+const MIN_PASS = 6;
 
 const Join: NextPage = () => {
 	const router = useRouter();
@@ -44,6 +46,7 @@ const Join: NextPage = () => {
 		remember: true,
 	});
 	const [loginTouched, setLoginTouched] = useState<{ nick?: boolean; password?: boolean }>({});
+	const [loginGlow, setLoginGlow] = useState(false);
 
 	/** ===== Signup state ===== */
 	const [signupInput, setSignupInput] = useState({
@@ -55,6 +58,7 @@ const Join: NextPage = () => {
 		phoneNational: '',
 	});
 	const [signupTouched, setSignupTouched] = useState<{ nick?: boolean; password?: boolean; phone?: boolean }>({});
+	const [signupGlow, setSignupGlow] = useState(false);
 
 	/** Derived phone (E.164) */
 	const dialCode = useMemo(
@@ -67,12 +71,12 @@ const Join: NextPage = () => {
 	}, [signupInput.phoneNational, dialCode]);
 
 	/** Validation */
-	const validLen = (v: string) => v.trim().length >= MIN_LEN;
+	const validNick = (v: string) => v.trim().length >= MIN_NICK;
+	const validPass = (v: string) => v.trim().length >= MIN_PASS;
 
-	const loginValid = validLen(loginInput.nick) && validLen(loginInput.password) && loginInput.agree;
-
+	const loginValid = validNick(loginInput.nick) && validPass(loginInput.password) && loginInput.agree;
 	const signupValid =
-		validLen(signupInput.nick) && validLen(signupInput.password) && signupInput.agree && phoneE164.length > 3;
+		validNick(signupInput.nick) && validPass(signupInput.password) && signupInput.agree && phoneE164.length > 3;
 
 	/** Handlers */
 	const onLoginChange = useCallback((name: keyof typeof loginInput, value: any) => {
@@ -82,8 +86,17 @@ const Join: NextPage = () => {
 		setSignupInput((s) => ({ ...s, [name]: value }));
 	}, []);
 
+	// helper: flash red glow if agreement missing
+	const nudgeGlow = (setter: React.Dispatch<React.SetStateAction<boolean>>) => {
+		setter(true);
+		setTimeout(() => setter(false), 1200);
+	};
+
 	const doLogin = useCallback(async () => {
-		if (!loginValid) return;
+		if (!loginValid) {
+			if (!loginInput.agree) nudgeGlow(setLoginGlow);
+			return;
+		}
 		try {
 			await logIn(loginInput.nick.trim(), loginInput.password);
 			await router.push(`${router.query.referrer ?? '/'}`);
@@ -93,7 +106,10 @@ const Join: NextPage = () => {
 	}, [loginInput, loginValid]);
 
 	const doSignUp = useCallback(async () => {
-		if (!signupValid) return;
+		if (!signupValid) {
+			if (!signupInput.agree) nudgeGlow(setSignupGlow);
+			return;
+		}
 		try {
 			await signUp(signupInput.nick.trim(), signupInput.password, phoneE164, signupInput.type);
 			await router.push(`${router.query.referrer ?? '/'}`);
@@ -110,8 +126,14 @@ const Join: NextPage = () => {
 						className="form-card tabs-card"
 						onKeyDown={(e: any) => {
 							if (e.key === 'Enter') {
-								if (activeTab === 'login' && loginValid) doLogin();
-								if (activeTab === 'signup' && signupValid) doSignUp();
+								if (activeTab === 'login') {
+									if (!loginValid && !loginInput.agree) nudgeGlow(setLoginGlow);
+									if (loginValid) doLogin();
+								}
+								if (activeTab === 'signup') {
+									if (!signupValid && !signupInput.agree) nudgeGlow(setSignupGlow);
+									if (signupValid) doSignUp();
+								}
 							}
 						}}
 					>
@@ -154,8 +176,8 @@ const Join: NextPage = () => {
 											onChange={(e) => onLoginChange('nick', e.target.value)}
 											onBlur={() => setLoginTouched((t) => ({ ...t, nick: true }))}
 										/>
-										{loginTouched.nick && !validLen(loginInput.nick) && (
-											<em className="field-error">{t('Please enter at least 2 characters')}</em>
+										{loginTouched.nick && !validNick(loginInput.nick) && (
+											<em className="field-error">{t('Please enter at least 3 characters')}</em>
 										)}
 									</div>
 
@@ -168,7 +190,7 @@ const Join: NextPage = () => {
 											onChange={(e) => onLoginChange('password', e.target.value)}
 											onBlur={() => setLoginTouched((t) => ({ ...t, password: true }))}
 										/>
-										{loginTouched.password && !validLen(loginInput.password) && (
+										{loginTouched.password && !validPass(loginInput.password) && (
 											<em className="field-error">{t('Please enter at least 6 characters')}</em>
 										)}
 									</div>
@@ -199,6 +221,11 @@ const Join: NextPage = () => {
 														size="small"
 														checked={loginInput.agree}
 														onChange={(e) => onLoginChange('agree', e.target.checked)}
+														sx={{
+															boxShadow: loginGlow ? '0 0 0 4px rgba(255,0,0,0.55)' : 'none',
+															borderRadius: '4px',
+															transition: 'box-shadow 0.25s ease',
+														}}
 													/>
 												}
 												label={
@@ -214,7 +241,8 @@ const Join: NextPage = () => {
 									<Button
 										variant="contained"
 										endIcon={<img src="/img/icons/rightup.svg" alt="" />}
-										disabled={!loginValid}
+										// keep enabled so click always works
+										disabled={!(validNick(loginInput.nick) && validPass(loginInput.password))}
 										onClick={doLogin}
 									>
 										{t('LOGIN')}
@@ -241,8 +269,8 @@ const Join: NextPage = () => {
 											onChange={(e) => onSignupChange('nick', e.target.value)}
 											onBlur={() => setSignupTouched((t) => ({ ...t, nick: true }))}
 										/>
-										{signupTouched.nick && !validLen(signupInput.nick) && (
-											<em className="field-error">{t('Please enter at least 6 characters')}</em>
+										{signupTouched.nick && !validNick(signupInput.nick) && (
+											<em className="field-error">{t('Please enter at least 3 characters')}</em>
 										)}
 									</div>
 
@@ -255,7 +283,7 @@ const Join: NextPage = () => {
 											onChange={(e) => onSignupChange('password', e.target.value)}
 											onBlur={() => setSignupTouched((t) => ({ ...t, password: true }))}
 										/>
-										{signupTouched.password && !validLen(signupInput.password) && (
+										{signupTouched.password && !validPass(signupInput.password) && (
 											<em className="field-error">{t('Password must be at least 6 characters')}</em>
 										)}
 									</div>
@@ -333,6 +361,11 @@ const Join: NextPage = () => {
 														size="small"
 														checked={signupInput.agree}
 														onChange={(e) => onSignupChange('agree', e.target.checked)}
+														sx={{
+															boxShadow: signupGlow ? '0 0 0 2px rgb(238, 30, 30)' : 'none',
+															borderRadius: '2px',
+															transition: 'box-shadow 0.25s ease',
+														}}
 													/>
 												}
 												label={
@@ -348,7 +381,7 @@ const Join: NextPage = () => {
 									<Button
 										variant="contained"
 										endIcon={<img src="/img/icons/rightup.svg" alt="" />}
-										disabled={!signupValid}
+										disabled={!(validNick(signupInput.nick) && validPass(signupInput.password) && phoneE164.length > 3)}
 										onClick={doSignUp}
 									>
 										{t('SIGNUP')}
