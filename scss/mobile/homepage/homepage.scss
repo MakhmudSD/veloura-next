@@ -743,50 +743,105 @@
           }
         }
 
-        /* === INFO AREA (fills remaining height) === */
-        .mobile-stats {
-          /* compute remaining space to keep total = var(--m-card-h) */
-          height: calc(var(--m-card-h) - var(--m-img-h));
-          width: 100%;
-          padding: var(--m-pad);
-          display: flex;
-          flex-direction: column;
-          gap: 10px;
-          background: #fff;
+       /* MOBILE INFO AREA — works with your current JSX:
+  <Box class="mobile-stats">
+    <Box class="view-box">...</Box>
+    <Box class="count-box">...</Box>
+    <div class="stat-item">...</div>
+    <div class="stat-item">...</div>
+  </Box>
+*/
 
-          /* mimic desktop info stack: name/address/phone condensed */
-          .view-box {
-            display: flex;
-            align-items: center;
-            gap: 6px;
+/* (Optional) make the whole card a bit smaller overall */
+.top-stores.mobile {
+  --m-card-w: 300px;   /* tweak as needed */
+  --m-card-h: 400px;   /* ↓ reduced from earlier for a tighter feel */
+  --m-img-h: 235px;    /* image stays elegant/tall */
+  --m-pad: 12px;
+}
 
-            svg { font-size: 16px; color: #666; }
+.top-stores.mobile .mobile-stats {
+  /* fill the remaining height, but a touch tighter */
+  height: calc(var(--m-card-h) - var(--m-img-h) - 6px);
+  width: 100%;
+  padding: 8px var(--m-pad);
+  background: #fff;
+  border-top: 1px solid #eee;
 
-            .MuiTypography-root {
-              font-family: 'Inter';
-              font-size: 12px;
-              color: #444;
-              line-height: 1;
-            }
-          }
+  /* arrange the 4 existing children in a single luxe row */
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  column-gap: 0;
 
-          .count-box {
-            display: flex;
-            justify-content: center;
-            align-items: center;
+  /* unify all four cells (view-box, count-box, two stat-item) */
+  > * {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
 
-            .MuiTypography-root {
-              font-family: 'Inter';
-              font-size: 12px;
-              color: #444;
-              line-height: 1.2;
-              white-space: nowrap;
-              text-overflow: ellipsis;
-              overflow: hidden;
-              max-width: 100%;
-            }
-          }
-        }
+    font-family: "Judson", serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.2px;
+    color: #2a211a;
+    min-width: 0; /* allow text ellipsis if needed */
+    position: relative;
+    padding: 4px 10px;
+  }
+
+  /* subtle dividers between cells for a premium feel */
+  > *:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 60%;
+    background: linear-gradient(to bottom, transparent, #d4af37, transparent);
+    opacity: 0.65;
+  }
+
+  /* icon + text refinements per cell type (no JSX changes) */
+  .view-box {
+    svg { font-size: 15px; color: #7a6a5f; }
+    .MuiTypography-root {
+      font-family: "Inter", sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      color: #3a332e;
+      line-height: 1.2;
+    }
+  }
+
+  .count-box {
+    .MuiTypography-root {
+      font-family: "Inter", sans-serif;
+      font-weight: 600;
+      font-size: 12px;
+      color: #3a332e;
+      line-height: 1.2;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      max-width: 100%;
+    }
+  }
+
+  .stat-item {
+    font-family: "Judson", serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: #2a211a;
+    line-height: 1.2;
+    white-space: nowrap;
+    .icon img { width: 16px; height: 16px; opacity: 0.9; }
+  }
+}
+
       }
 
       /* Ensure every slide matches the card size (no tall/short drift) */

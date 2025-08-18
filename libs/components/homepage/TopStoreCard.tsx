@@ -80,6 +80,18 @@ const TopStoreCard = (props: TopStoreProps) => {
 						<Box className="count-box">
 							<Typography component="span">{store?.memberProducts} Products</Typography>
 						</Box>
+						<div className="stat-item">
+							<span className="icon">
+								<img src="/img/icons/followers.png" alt="follower" />
+							</span>
+							{store.memberFollowers} {t('Followers')}
+						</div>
+						<div className="stat-item">
+							<span className="icon">
+								<img src="/img/icons/followers.png" alt="following" />
+							</span>
+							{store.memberFollowings} {t('Followings')}
+						</div>
 					</Box>
 				)}
 			</Stack>
