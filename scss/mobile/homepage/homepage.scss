@@ -591,125 +591,149 @@
         }
       }
     }
-    
-    .top-stores.mobile {
-      /* Tunables to match trend-products mobile */
-      --m-card-w: 210px;
-      --m-card-h: 300px;  /* image area */
-      --m-info-h: 82px;   /* info area */
-    
-      padding: 20px 10px;
-      background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
-    
-      .container {
-        .info-box {
-          display: flex;
-          flex-direction: column;
-          gap: 6px;
-          text-align: center;
-          margin-bottom: 10px;
-    
-          span {
-            color: #181a20;
-            font-family: 'Judson';
-            font-size: 20px;
-            font-weight: 600;
-            text-transform: capitalize;
-          }
-          p {
-            color: #717171;
-            font-family: 'Inter';
-            font-size: 13px;
-            line-height: 20px;
-            padding: 0 12px;
-          }
+
+.top-stores.mobile {
+  /* Tunables (adjust if you want it tighter/looser) */
+  --m-card-w: 300px;      /* card width (desktop is ~479px) */
+  --m-card-h: 420px;      /* total card height (desktop is 550px) */
+  --m-img-h: 235px;       /* image area height (desktop img ~320px) */
+  --m-pad: 12px;
+
+  padding: 20px 10px;
+  background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
+
+  .container {
+    .info-box {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: center;
+      margin-bottom: 10px;
+
+      span {
+        color: #181a20;
+        font-family: 'Judson';
+        font-size: 20px;
+        font-weight: 600;
+        text-transform: capitalize;
+      }
+      p {
+        color: #717171;
+        font-family: 'Inter';
+        font-size: 13px;
+        line-height: 20px;
+        padding: 0 12px;
+      }
+    }
+
+    .wrapper {
+      margin-top: 12px;
+
+      .switch-btn { display: none !important; }
+
+      .top-stores-swiper {
+        width: 100%;
+        height: auto;
+        overflow: visible;
+        padding: 2px 0 8px;
+
+        .swiper-wrapper { align-items: stretch; }
+      }
+
+      .top-stores-slide {
+        width: auto !important;
+        display: flex !important;
+        justify-content: center;
+        align-items: stretch;
+      }
+
+      /* =========================================
+         TopStoreCard (mobile) — match desktop look
+         ========================================= */
+      .top-store-card.mobile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: var(--m-card-w);
+        height: var(--m-card-h);
+        margin: 8px 0 0;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid #7b7676;
+        background: #fff;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+        &:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.10);
         }
-    
-        .wrapper {
-          margin-top: 12px;
-          .switch-btn { display: none !important; }
-    
-          .top-stores-swiper {
+
+        /* === IMAGE AREA (fixed height) === */
+        .mobile-image-box {
+          position: relative;
+          width: 100%;
+          height: var(--m-img-h);
+          overflow: hidden;
+          border-radius: 12px 12px 0 0;
+
+          img {
+            position: absolute;
+            inset: 0;
             width: 100%;
-            height: auto;
-            overflow: visible;
-            padding: 2px 0 8px;
-    
-            .swiper-wrapper { align-items: stretch; }
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+
+            &:hover { transform: scale(1.02); }
           }
-    
-          .top-stores-slide {
-            width: auto !important;
-            display: flex !important;
-            justify-content: center;
-            align-items: flex-start; /* don’t stretch-hide things */
-            /* no fixed height here to avoid clipping siblings */
-          }
-    
-          /* ===== Pattern A: info INSIDE the card ===== */
-          .store-card {
-            width: var(--m-card-w);
-            height: calc(var(--m-card-h) + var(--m-info-h));
-            border: 1px solid #dcdcdc;
-            border-radius: 12px;
-            overflow: hidden;
-            background: #fff;
-            display: flex;
-            flex-direction: column;
-            flex: 0 0 auto;
-          }
-    
-          .store-card .card-img {
-            width: 100%;
-            height: var(--m-card-h);
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px;
-    
-            img {
-              position: absolute;
-              inset: 0;
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-              display: block;
+
+          /* like button floats on top-right like desktop action cluster */
+          .mobile-like {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+
+            .MuiIconButton-root {
+              width: 30px;
+              height: 30px;
+              background: rgba(255,255,255,0.9);
+              border-radius: 50%;
             }
           }
-    
-          .store-card .card-info {
-            width: 100%;
-            height: var(--m-info-h);
-            min-height: var(--m-info-h);
-            max-height: var(--m-info-h);
-            padding: 10px 12px;
+
+          /* title/type overlay (kept subtle) */
+          .mobile-overlay {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 8px;
+            padding: 0 var(--m-pad);
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            align-items: center;
             text-align: center;
-            overflow: hidden;
-    
-            span {
-              color: #2e2e2e;
+
+            .name {
+              color: #fff;
+              text-shadow: 0 2px 6px rgba(0,0,0,0.35);
               font-family: 'Judson';
               font-size: 16px;
-              font-weight: 400;
-              text-transform: uppercase;
-              letter-spacing: 1.2px;
-              line-height: 1.3;
+              font-weight: 700;
+              line-height: 1.2;
+              max-width: 92%;
               display: -webkit-box;
-              -webkit-line-clamp: 2;
-              line-clamp: 2;
+              -webkit-line-clamp: 1;
+              line-clamp: 1;
               -webkit-box-orient: vertical;
               overflow: hidden;
-              min-height: calc(1.3em * 2);
             }
-    
-            p {
-              margin-top: 6px;
+            .type {
+              margin-top: 2px;
+              color: rgba(255,255,255,0.9);
               font-family: 'Inter';
-              font-size: 12px;
-              line-height: 18px;
-              color: #717171;
+              font-size: 11px;
+              line-height: 1.2;
               display: -webkit-box;
               -webkit-line-clamp: 1;
               line-clamp: 1;
@@ -717,86 +741,64 @@
               overflow: hidden;
             }
           }
-    
-          /* ===== Pattern B: info OUTSIDE the card (sibling) ===== */
-          .card-wrapper {
-            width: var(--m-card-w);
+        }
+
+        /* === INFO AREA (fills remaining height) === */
+        .mobile-stats {
+          /* compute remaining space to keep total = var(--m-card-h) */
+          height: calc(var(--m-card-h) - var(--m-img-h));
+          width: 100%;
+          padding: var(--m-pad);
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          background: #fff;
+
+          /* mimic desktop info stack: name/address/phone condensed */
+          .view-box {
             display: flex;
-            flex-direction: column;
             align-items: center;
-          }
-    
-          /* Image card keeps fixed block */
-          .card-wrapper .trend-card-box,
-          .card-wrapper .store-card-only,
-          .top-stores-slide > .trend-card-box {
-            width: var(--m-card-w);
-            height: var(--m-card-h);
-            border-radius: 12px;
-            overflow: hidden;
-            flex: 0 0 var(--m-card-h);
-    
-            .card-img {
-              width: 100%;
-              height: 100%;
-              border-radius: 12px;
-              img { width: 100%; height: 100%; object-fit: cover; display: block; }
+            gap: 6px;
+
+            svg { font-size: 16px; color: #666; }
+
+            .MuiTypography-root {
+              font-family: 'Inter';
+              font-size: 12px;
+              color: #444;
+              line-height: 1;
             }
           }
-    
-          /* Sibling info (ensure it shows and is fixed) */
-          .card-wrapper .info-bottom,
-          .card-wrapper .store-info,
-          .top-stores-slide > .info-bottom,
-          .top-stores-slide > .store-info {
-            margin-top: 10px;
-            width: var(--m-card-w);
-            height: var(--m-info-h);
-            min-height: var(--m-info-h);
-            max-height: var(--m-info-h);
-            display: block;
-            text-align: center;
-            overflow: hidden;
-    
-            .info {
-              .title {
-                color: #2e2e2e;
-                font-family: 'Judson';
-                font-size: 16px;
-                font-weight: 400;
-                text-transform: uppercase;
-                letter-spacing: 1.2px;
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                line-clamp: 2;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                line-height: 1.3;
-                min-height: calc(1.3em * 2);
-              }
-              .meta {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-top: 6px;
-                .price {
-                  color: #2e2e2e;
-                  font-family: 'Inter';
-                  font-size: 14px;
-                  line-height: 20px;
-                  white-space: nowrap;
-                  overflow: hidden;
-                  text-overflow: ellipsis;
-                  max-width: 100%;
-                }
-              }
+
+          .count-box {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .MuiTypography-root {
+              font-family: 'Inter';
+              font-size: 12px;
+              color: #444;
+              line-height: 1.2;
+              white-space: nowrap;
+              text-overflow: ellipsis;
+              overflow: hidden;
+              max-width: 100%;
             }
           }
         }
       }
+
+      /* Ensure every slide matches the card size (no tall/short drift) */
+      .top-stores-slide > .top-store-card.mobile {
+        width: var(--m-card-w) !important;
+        height: var(--m-card-h) !important;
+        flex: 0 0 auto !important;
+      }
     }
-    
-    
+  }
+}
+
 
     .icon-wall {
       display: flex;
