@@ -591,242 +591,258 @@
         }
       }
     }
-
-.top-stores.mobile {
-  /* Tunables (adjust if you want it tighter/looser) */
-  --m-card-w: 300px;      /* card width (desktop is ~479px) */
-  --m-card-h: 420px;      /* total card height (desktop is 550px) */
-  --m-img-h: 235px;       /* image area height (desktop img ~320px) */
-  --m-pad: 12px;
-
-  padding: 20px 10px;
-  background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
-
-  .container {
-    .info-box {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      text-align: center;
-      margin-bottom: 10px;
-
-      span {
-        color: #181a20;
-        font-family: 'Judson';
-        font-size: 20px;
-        font-weight: 600;
-        text-transform: capitalize;
-      }
-      p {
-        color: #717171;
-        font-family: 'Inter';
-        font-size: 13px;
-        line-height: 20px;
-        padding: 0 12px;
-      }
-    }
-
-    .wrapper {
-      margin-top: 12px;
-
-      .switch-btn { display: none !important; }
-
-      .top-stores-swiper {
-        width: 100%;
-        height: auto;
-        overflow: visible;
-        padding: 2px 0 8px;
-
-        .swiper-wrapper { align-items: stretch; }
-      }
-
-      .top-stores-slide {
-        width: auto !important;
-        display: flex !important;
-        justify-content: center;
-        align-items: stretch;
-      }
-
-      /* =========================================
-         TopStoreCard (mobile) — match desktop look
-         ========================================= */
-      .top-store-card.mobile {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: var(--m-card-w);
-        height: var(--m-card-h);
-        margin: 8px 0 0;
-        border-radius: 12px;
-        overflow: hidden;
-        border: 1px solid #7b7676;
-        background: #fff;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-
-        &:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 6px 15px rgba(0, 0, 0, 0.10);
+    .top-stores.mobile {
+      /* Tunables (adjust if you want it tighter/looser) */
+      --m-card-w: 300px;      /* card width (desktop is ~479px) */
+      --m-card-h: 420px;      /* total card height (desktop is 550px) */
+      --m-img-h: 235px;       /* image area height (desktop img ~320px) */
+      --m-pad: 12px;
+    
+      padding: 20px 10px;
+      background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
+    
+      .container {
+        .info-box {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          text-align: center;
+          margin-bottom: 10px;
+    
+          span {
+            color: #181a20;
+            font-family: 'Judson';
+            font-size: 20px;
+            font-weight: 600;
+            text-transform: capitalize;
+          }
+          p {
+            color: #717171;
+            font-family: 'Inter';
+            font-size: 13px;
+            line-height: 20px;
+            padding: 0 12px;
+          }
         }
-
-        /* === IMAGE AREA (fixed height) === */
-        .mobile-image-box {
-          position: relative;
-          width: 100%;
-          height: var(--m-img-h);
-          overflow: hidden;
-          border-radius: 12px 12px 0 0;
-
-          img {
-            position: absolute;
-            inset: 0;
+    
+        .wrapper {
+          margin-top: 12px;
+    
+          .switch-btn { display: none !important; }
+    
+          .top-stores-swiper {
             width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-            transition: transform 0.3s ease;
-
-            &:hover { transform: scale(1.02); }
+            height: auto;
+            overflow: visible;
+            padding: 2px 0 8px;
+    
+            .swiper-wrapper { align-items: stretch; }
           }
-
-          /* like button floats on top-right like desktop action cluster */
-          .mobile-like {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-
-            .MuiIconButton-root {
-              width: 30px;
-              height: 30px;
-              background: rgba(255,255,255,0.9);
-              border-radius: 50%;
-            }
+    
+          .top-stores-slide {
+            width: auto !important;
+            display: flex !important;
+            justify-content: center;
+            align-items: stretch;
           }
-
-          /* title/type overlay (kept subtle) */
-          .mobile-overlay {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 8px;
-            padding: 0 var(--m-pad);
+    
+          /* =========================================
+             TopStoreCard (mobile) — match desktop look
+             ========================================= */
+          .top-store-card.mobile {
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-
-            .name {
-              color: #fff;
-              text-shadow: 0 2px 6px rgba(0,0,0,0.35);
-              font-family: 'Judson';
-              font-size: 16px;
-              font-weight: 700;
-              line-height: 1.2;
-              max-width: 92%;
-              display: -webkit-box;
-              -webkit-line-clamp: 1;
-              line-clamp: 1;
-              -webkit-box-orient: vertical;
-              overflow: hidden;
+            width: var(--m-card-w);
+            height: var(--m-card-h);
+            margin: 8px 0 0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #7b7676;
+            background: #fff;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+    
+            &:hover {
+              transform: translateY(-2px);
+              box-shadow: 0 6px 15px rgba(0, 0, 0, 0.10);
             }
-            .type {
-              margin-top: 2px;
-              color: rgba(255,255,255,0.9);
-              font-family: 'Inter';
-              font-size: 11px;
-              line-height: 1.2;
-              display: -webkit-box;
-              -webkit-line-clamp: 1;
-              line-clamp: 1;
-              -webkit-box-orient: vertical;
+    
+            /* === IMAGE AREA (fixed height) === */
+            .mobile-image-box {
+              position: relative;
+              width: 100%;
+              height: var(--m-img-h);
               overflow: hidden;
+              border-radius: 12px 12px 0 0;
+    
+              img {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                display: block;
+                transition: transform 0.3s ease;
+    
+                &:hover { transform: scale(1.02); }
+              }
+    
+              /* like button floats on top-right like desktop action cluster */
+              .mobile-like {
+                position: absolute;
+                top: 8px;
+                right: 8px;
+    
+                .MuiIconButton-root {
+                  width: 30px;
+                  height: 30px;
+                  background: rgba(255,255,255,0.9);
+                  border-radius: 50%;
+                }
+              }
+    
+              /* title/type overlay (kept subtle) */
+              .mobile-overlay {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 8px;
+                padding: 0 var(--m-pad);
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+    
+                .name {
+                  color: #fff;
+                  text-shadow: 0 2px 6px rgba(0,0,0,0.35);
+                  font-family: 'Judson';
+                  font-size: 16px;
+                  font-weight: 700;
+                  line-height: 1.2;
+                  max-width: 92%;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 1;
+                  line-clamp: 1;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                }
+                .type {
+                  margin-top: 2px;
+                  color: rgba(255,255,255,0.9);
+                  font-family: 'Inter';
+                  font-size: 11px;
+                  line-height: 1.2;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 1;
+                  line-clamp: 1;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                }
+              }
+            }
+    
+            /* === INFO AREA (fills remaining height) === */
+            .mobile-stats {
+              /* compute remaining space to keep total = var(--m-card-h) */
+              height: calc(var(--m-card-h) - var(--m-img-h));
+              width: 100%;
+              padding: var(--m-pad);
+              background: #fff;
+    
+              /* arrange existing 4 children in a balanced luxe row */
+              display: grid;
+              grid-template-columns: repeat(4, minmax(0, 1fr));
+              align-items: center;
+              justify-items: center;
+              column-gap: 0;
+              row-gap: 0;
+    
+              /* unify each cell (view-box, count-box, stat-item, stat-item) */
+              > * {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                width: 100%;
+                height: 100%;
+                padding: 0 6px;
+                box-sizing: border-box;
+                text-align: center;
+              }
+    
+              /* subtle luxe divider between cells */
+              > *:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 1px;
+                height: 60%;
+                background: linear-gradient(to bottom, transparent, #d4af37, transparent);
+                opacity: 0.7;
+              }
+    
+              /* view count */
+              .view-box {
+                svg { font-size: 15px; color: #7a6a5f; }
+                .MuiTypography-root {
+                  font-family: 'Inter', sans-serif;
+                  font-weight: 600;
+                  font-size: 12px;
+                  color: #3a332e;
+                  line-height: 1.2;
+                  white-space: nowrap;
+                }
+              }
+    
+              /* products count */
+              .count-box {
+                .MuiTypography-root {
+                  font-family: 'Inter', sans-serif;
+                  font-weight: 600;
+                  font-size: 12px;
+                  color: #3a332e;
+                  line-height: 1.2;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  max-width: 100%;
+                }
+              }
+    
+              /* followers / followings */
+              .stat-item {
+                font-family: 'Judson', serif;
+                font-weight: 700;
+                font-size: 12px;
+                color: #2a211a;
+                line-height: 1.2;
+                white-space: nowrap;
+    
+                .icon img {
+                  width: 16px;
+                  height: 16px;
+                  opacity: 0.9;
+                  display: inline-block;
+                  vertical-align: middle;
+                }
+              }
             }
           }
-          /* === ONLY the mobile stats row (uses your current JSX) === */
-.top-stores.mobile .mobile-stats {
-  /* keep your existing height calc if present; we just refine layout */
-  width: 100%;
-  padding: 8px 12px;
-  background: #fff;
-  border-top: 1px solid #eee;
-
-  /* lay the 4 children in one even row */
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  align-items: center;
-  justify-items: center;
-  column-gap: 0;
-  row-gap: 0;
-  min-height: 60px; /* compact, tweak if needed */
-}
-
-.top-stores.mobile .mobile-stats > * {
-  /* make each cell identical size + alignment */
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-  height: 100%;
-  padding: 0 8px;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-/* subtle luxe divider between cells */
-.top-stores.mobile .mobile-stats > *:not(:last-child)::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1px;
-  height: 60%;
-  background: linear-gradient(to bottom, transparent, #d4af37, transparent);
-  opacity: 0.7;
-}
-
-/* icons + text */
-.top-stores.mobile .mobile-stats .view-box svg {
-  font-size: 15px;
-  color: #7a6a5f;
-}
-
-.top-stores.mobile .mobile-stats .view-box .MuiTypography-root,
-.top-stores.mobile .mobile-stats .count-box .MuiTypography-root {
-  font-family: "Inter", sans-serif;
-  font-weight: 600;
-  font-size: 12px;
-  color: #3a332e;
-  line-height: 1.2;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
-}
-
-/* followers / followings cells */
-.top-stores.mobile .mobile-stats .stat-item {
-  font-family: "Judson", serif;
-  font-weight: 700;
-  font-size: 12px;
-  color: #2a211a;
-  line-height: 1.2;
-  white-space: nowrap;
-}
-
-.top-stores.mobile .mobile-stats .stat-item .icon img {
-  width: 16px;
-  height: 16px;
-  opacity: 0.9;
-  display: inline-block;
-  vertical-align: middle;
-}
-
+    
+          /* Ensure every slide matches the card size (no tall/short drift) */
+          .top-stores-slide > .top-store-card.mobile {
+            width: var(--m-card-w) !important;
+            height: var(--m-card-h) !important;
+            flex: 0 0 auto !important;
+          }
         }
       }
     }
-  }
-}
+    
 
 
     .icon-wall {
