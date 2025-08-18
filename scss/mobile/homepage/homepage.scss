@@ -141,15 +141,15 @@
     .trend-products {
       margin-bottom: 0;
       background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
-
+    
       .container {
         margin-bottom: 12px;
-
+    
         .info-box {
           margin-top: 18px;
           gap: 6px;
           text-align: center;
-
+    
           span {
             font-family: 'Judson';
             font-size: 20px;
@@ -157,7 +157,7 @@
             color: #222;
             text-transform: capitalize;
           }
-
+    
           p {
             font-family: 'Inter';
             font-size: 14px;
@@ -165,53 +165,51 @@
             line-height: 22px;
           }
         }
-
+    
         .card-box {
           max-width: 100%;
           height: auto;
           align-items: stretch;
           overflow: visible;
           margin-top: 12px;
-
+    
           /* Make wrapper stretch children to equal height */
           .trend-product-swiper {
             width: 100%;
             height: auto;
             overflow: visible;
             padding: 4px 0 10px;
-
+    
             .swiper-wrapper {
-              align-items: stretch;
-              /* critical for equal card heights */
+              align-items: stretch; /* critical for equal card heights */
             }
           }
-
+    
           .swiper-button-prev,
           .swiper-button-next {
             display: none !important;
           }
-
+    
           .swiper-pagination {
             position: static;
             margin-top: 8px;
           }
-
+    
           .trend-product-slide {
             width: auto !important;
             height: auto !important;
             display: flex !important;
-            align-items: stretch;
-            /* equal heights across row */
+            align-items: stretch; /* equal heights across row */
             justify-content: center;
           }
-
+    
           /* ===== Card ===== */
           .trend-card-box {
             /* control sizes without markup changes */
             --card-img-ratio: 4 / 5;
             --card-body-height: 118px;
             --card-padding: 10px 12px;
-
+    
             width: 100%;
             max-width: 240px;
             height: 100%;
@@ -225,23 +223,22 @@
             will-change: transform;
             display: flex;
             flex-direction: column;
-            position: relative;
-            /* for bottom-centered btn-group */
-
+            position: relative; /* for bottom-centered btn-group */
+    
             @media (hover: hover) {
               &:hover {
                 transform: translateY(-3px);
                 box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
               }
             }
-
+    
             @media (hover: none) {
               &:active {
                 transform: translateY(-2px);
                 box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
               }
             }
-
+    
             /* Image (fixed ratio keeps overall height identical) */
             .card-img {
               width: 100%;
@@ -251,7 +248,7 @@
               position: relative;
               cursor: pointer;
               flex: 0 0 auto;
-
+    
               .main-img,
               .hover-img,
               img {
@@ -263,32 +260,20 @@
                 transition: opacity .35s ease, transform .25s ease;
                 display: block;
               }
-
-              .hover-img {
-                opacity: 0;
-              }
-
+    
+              .hover-img { opacity: 0; }
+    
               @media (hover: hover) {
-                &:hover .main-img {
-                  opacity: .15;
-                }
-
-                &:hover .hover-img {
-                  opacity: 1;
-                }
+                &:hover .main-img { opacity: .15; }
+                &:hover .hover-img { opacity: 1; }
               }
-
+    
               @media (hover: none) {
-                &:active .main-img {
-                  opacity: .15;
-                }
-
-                &:active .hover-img {
-                  opacity: 1;
-                }
+                &:active .main-img { opacity: .15; }
+                &:active .hover-img { opacity: 1; }
               }
             }
-
+    
             /* Badge: prevent overstretching */
             .badge {
               top: 10px;
@@ -299,13 +284,13 @@
               font-size: 11px;
               border-radius: 16px;
               backdrop-filter: blur(4px);
-
+    
               max-width: 65%;
               white-space: nowrap;
               overflow: hidden;
               text-overflow: ellipsis;
             }
-
+    
             /* Body area (fixed height -> consistent cards) */
             .card-body,
             .bottom,
@@ -319,7 +304,7 @@
               overflow: hidden;
               flex: 0 0 auto;
             }
-
+    
             /* Title: clamp with ellipsis (up to 2 lines) */
             .card-title,
             .title,
@@ -329,14 +314,14 @@
               font-weight: 700;
               line-height: 1.25;
               color: #221e1a;
-
+    
               display: -webkit-box;
               -webkit-line-clamp: 2;
               line-clamp: 2;
               -webkit-box-orient: vertical;
               overflow: hidden;
             }
-
+    
             /* Optional subtitle: clamp to 1 line */
             .card-subtitle,
             .subtitle,
@@ -344,14 +329,14 @@
               font-family: 'Inter';
               font-size: 12px;
               color: rgba(34, 30, 26, .7);
-
+    
               display: -webkit-box;
               -webkit-line-clamp: 1;
               line-clamp: 1;
               -webkit-box-orient: vertical;
               overflow: hidden;
             }
-
+    
             /* Price & footer row sits at bottom of body */
             .price-row,
             .row,
@@ -361,7 +346,7 @@
               align-items: center;
               justify-content: space-between;
               gap: 8px;
-
+    
               .price,
               .amount {
                 font-family: 'Judson';
@@ -374,7 +359,7 @@
                 text-overflow: ellipsis;
               }
             }
-
+    
             /* ===== Bottom-centered Actions (compact) ===== */
             .btn-group {
               position: absolute;
@@ -385,12 +370,12 @@
               align-items: center;
               justify-content: center;
               gap: 8px;
-
+    
               opacity: 0;
               visibility: hidden;
               transition: all 0.25s ease;
               z-index: 5;
-
+    
               /* compact sizes */
               .view-box,
               .like-btn,
@@ -407,41 +392,33 @@
                 white-space: nowrap;
                 padding: 0 10px;
               }
-
+    
               .view-box,
               .like-btn {
                 border: 1px solid #000;
                 background: #fff;
                 color: #000;
-
-                svg,
-                img {
-                  width: 14px;
-                  height: 14px;
-                }
+    
+                svg, img { width: 14px; height: 14px; }
               }
-
+    
               .add-to-basket-btn {
                 padding: 0 12px;
                 background: #000;
                 color: #fff;
                 border: none;
-
+    
                 span {
                   font-family: 'Judson';
                   font-size: 11px;
                   font-weight: 700;
                   letter-spacing: .8px;
                 }
-
-                svg,
-                img {
-                  width: 14px;
-                  height: 14px;
-                }
+    
+                svg, img { width: 14px; height: 14px; }
               }
             }
-
+    
             @media (hover: hover) {
               &:hover .btn-group {
                 opacity: 1;
@@ -449,7 +426,6 @@
                 transform: translateX(-50%) translateY(0);
               }
             }
-
             @media (hover: none) {
               &:active .btn-group {
                 opacity: 1;
@@ -458,9 +434,9 @@
               }
             }
           }
-
+    
           /* /.trend-card-box */
-
+    
           /* Empty state (compact) */
           .empty-list {
             width: 100%;
@@ -469,7 +445,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-
+    
             .empty-list-content {
               display: flex;
               flex-direction: column;
@@ -478,77 +454,144 @@
               gap: 14px;
               text-align: center;
               margin: 0 auto;
-
-              img {
-                width: 220px;
-                height: auto;
-              }
-
-              span {
-                font-size: 34px;
-                margin-right: 0;
-              }
-
-              strong {
-                font-size: 18px;
-                margin-top: 8px;
-              }
-
-              p {
-                width: auto;
-                padding: 0 16px;
-                line-height: 22px;
-              }
-
-              div {
-                width: 150px;
-                height: 36px;
-              }
+    
+              img { width: 220px; height: auto; }
+              span { font-size: 34px; margin-right: 0; }
+              strong { font-size: 18px; margin-top: 8px; }
+              p { width: auto; padding: 0 16px; line-height: 22px; }
+              div { width: 150px; height: 36px; }
             }
           }
         }
-
+    
         /* /.card-box */
       }
-
+    
       /* /.container */
-
-      /* ===== Mobile tweaks: tighter body + even smaller buttons ===== */
+    
+      /* ===== Mobile: compact, equal-height slides matching desktop proportions ===== */
       @media (max-width: 640px) {
-        .container .card-box .trend-card-box {
-          --card-body-height: 104px;
-          /* tighter for mobile */
-
-          .btn-group {
-            bottom: 8px;
-            gap: 6px;
-
-            .view-box,
-            .like-btn,
-            .add-to-basket-btn {
-              height: 30px;
-              min-width: 30px;
-              border-radius: 15px;
-              font-size: 10.5px;
-              padding: 0 8px;
-            }
-
-            .add-to-basket-btn span {
-              display: none;
-            }
-
-            /* icon-only on small screens */
+        /* Tunable card sizing for mobile (kept consistent across slides) */
+        .container .card-box {
+          --m-card-w: 210px;     /* mobile card width */
+          --m-card-h: 300px;     /* mobile card (image box) height */
+          --m-info-h: 82px;      /* bottom info area height */
+          --m-gap-y: 10px;
+    
+          .trend-product-swiper {
+            padding: 2px 0 8px;
           }
-
-          .card-title,
-          .title,
-          h3 {
-            -webkit-line-clamp: 2;
-            line-clamp: 2;
+    
+          /* Make each slide hold a fixed-height wrapper so all slides match */
+          .trend-product-slide {
+            align-items: stretch !important;
+    
+            /* card-wrapper exists in your JSX; enforce consistent total height */
+            .card-wrapper {
+              width: var(--m-card-w);
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              /* total height = image card + bottom info + small spacing */
+              height: calc(var(--m-card-h) + var(--m-info-h) + var(--m-gap-y));
+            }
+          }
+    
+          /* Image box sizing (upper part of the card) */
+          .trend-card-box {
+            width: var(--m-card-w);
+            height: var(--m-card-h);
+            max-width: none;
+            border-radius: 12px;
+    
+            /* Keep image fully filling its box */
+            .card-img {
+              width: 100%;
+              height: 100%;
+              aspect-ratio: auto; /* override ratio to honor fixed height */
+              border-radius: 12px;
+    
+              .main-img,
+              .hover-img,
+              img {
+                object-fit: cover;
+              }
+            }
+    
+            /* compact action buttons on mobile */
+            .btn-group {
+              bottom: 12px;
+              gap: 8px;
+    
+              .view-box,
+              .like-btn,
+              .add-to-basket-btn {
+                height: 30px;
+                min-width: 30px;
+                border-radius: 16px;
+                font-size: 11px;
+                padding: 0 10px;
+              }
+    
+              .add-to-basket-btn span { display: none; } /* icon-only on small screens */
+            }
+          }
+    
+          /* Bottom info area below the image card: fixed height + clamps */
+          .info-bottom {
+            margin-top: var(--m-gap-y);
+            width: var(--m-card-w);
+            height: var(--m-info-h);
+            min-height: var(--m-info-h);
+            max-height: var(--m-info-h);
+            display: block;
+            text-align: center;
+    
+            .info {
+              background: none;
+              border: none;
+    
+              .title {
+                color: #2e2e2e;
+                font-family: 'Judson';
+                font-size: 16px;
+                font-weight: 400;
+                text-transform: uppercase;
+                letter-spacing: 1.2px;
+                display: -webkit-box;
+                -webkit-line-clamp: 2;
+                line-clamp: 2;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                line-height: 1.3;
+                min-height: calc(1.3em * 2);
+              }
+    
+              .meta {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                margin-top: 8px;
+                min-height: 22px;
+    
+                .price {
+                  color: #2e2e2e;
+                  font-family: 'Inter';
+                  font-size: 14px;
+                  font-weight: 400;
+                  line-height: 22px;
+                  white-space: nowrap;
+                  text-overflow: ellipsis;
+                  overflow: hidden;
+                  max-width: 100%;
+                }
+              }
+            }
           }
         }
       }
     }
+    
 
 
     .icon-wall {
@@ -605,13 +648,11 @@
       }
     }
 
-    /* ===== Top Stores — Mobile ===== */
     .top-stores.mobile {
       padding: 20px 10px;
       background: url('/img/fiber/naqsh.png') no-repeat center/cover, #fff;
-
+    
       .container {
-
         /* header */
         .info-box {
           display: flex;
@@ -619,7 +660,7 @@
           gap: 6px;
           text-align: center;
           margin-bottom: 10px;
-
+    
           span {
             color: #181a20;
             font-family: 'Judson';
@@ -627,7 +668,6 @@
             font-weight: 600;
             text-transform: capitalize;
           }
-
           p {
             color: #717171;
             font-family: 'Inter';
@@ -636,52 +676,46 @@
             padding: 0 12px;
           }
         }
-
+    
         .wrapper {
           margin-top: 12px;
-
+    
           /* arrows hidden on mobile by design */
-          .switch-btn {
-            display: none !important;
-          }
-
+          .switch-btn { display: none !important; }
+    
           /* swiper sizing so all slides stretch same height */
           .top-stores-swiper {
             width: 100%;
             height: auto;
             overflow: visible;
             padding: 2px 0 8px;
-
-            .swiper-wrapper {
-              align-items: stretch;
-            }
+    
+            .swiper-wrapper { align-items: stretch; }
           }
-
+    
           .top-stores-slide {
             width: auto !important;
             display: flex !important;
             justify-content: center;
             align-items: stretch;
           }
-
-          /* === Store Card === */
+    
+          /* === Store Card (70/30 split) === */
           .store-card {
             display: flex;
             flex-direction: column;
             width: 100%;
             max-width: 220px;
-            border-radius: 12px;
             border: 1px solid #dcdcdc;
-            overflow: hidden;
+            border-radius: 12px;
             background: #fff;
-
+            overflow: hidden;
+    
             .card-img {
-              flex: 7;
-              /* 70% */
+              flex: 7; /* taller image section */
               position: relative;
               width: 100%;
-              overflow: hidden;
-
+    
               img {
                 width: 100%;
                 height: 100%;
@@ -689,16 +723,15 @@
                 display: block;
               }
             }
-
+    
             .card-info {
-              flex: 3;
-              /* 30% */
-              padding: 10px;
+              flex: 3; /* shorter info section */
+              padding: 8px 10px;
+              text-align: center;
               display: flex;
               flex-direction: column;
               justify-content: center;
-              text-align: center;
-
+    
               span {
                 font-family: 'Judson';
                 font-size: 15px;
@@ -709,7 +742,7 @@
                 text-overflow: ellipsis;
                 white-space: nowrap;
               }
-
+    
               p {
                 font-family: 'Inter';
                 font-size: 12px;
@@ -726,6 +759,7 @@
         }
       }
     }
+    
 
 
     /* slightly narrower phones */
