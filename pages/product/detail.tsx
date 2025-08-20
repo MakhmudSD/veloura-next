@@ -294,13 +294,11 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 
 		if (index > -1) {
 			updatedItems[index].itemQuantity = Math.max(1, (updatedItems[index].itemQuantity || 0) + (chosenQty || 1));
-			// keep latest options visible in checkout
 			if (typeof chosenRingSize !== 'undefined')
 				updatedItems[index].ringSize = chosenRingSize !== null ? String(chosenRingSize) : null;
 			if (typeof chosenWeight !== 'undefined')
 				updatedItems[index].weight = chosenWeight !== null ? String(chosenWeight) : null;
 
-			// ensure image is a full URL even if item already existed
 			if (updatedItems[index].productImages && !String(updatedItems[index].productImages).startsWith('http')) {
 				updatedItems[index].productImages = toFullImageUrl(updatedItems[index].productImages);
 			}
@@ -310,13 +308,13 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 				_id: id,
 				productId: id,
 				productTitle: title,
-				productImages: toFullImageUrl(image), // ✅ store FULL URL
+				productImages: toFullImageUrl(image),
 				productPrice: price,
 				itemQuantity: chosenQty || 1,
 				ringSize:
 					typeof chosenRingSize !== 'undefined' ? (chosenRingSize !== null ? String(chosenRingSize) : null) : null,
 				weight: typeof chosenWeight !== 'undefined' ? (chosenWeight !== null ? String(chosenWeight) : null) : null,
-				memberNick: product?.memberData?.memberNick || '', // Optional: store seller nickname
+				memberNick: product?.memberData?.memberNick || '', 
 				memberId: product?.memberData?._id || null,
 			});
 		}
@@ -343,8 +341,8 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 				slideImage,
 				product.productPrice,
 				isRingCategory ? selectedRingSize ?? null : null,
-				isRingCategory ? selectedWeight ?? null : null, // ✅ chosen Weight
-				quantity, // ✅ chosen Quantity
+				isRingCategory ? selectedWeight ?? null : null, 
+				quantity,
 			);
 		}
 	};
@@ -365,7 +363,6 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 				<div className={'container'}>
 					<Stack className="detail-top">
 						<Stack className={'detail-img'}>
-							{/* Sub-images on the left */}
 							<Stack className={'sub-images vertical'}>
 								{product?.productImages.map((subImg: string, idx: number) => {
 									const imagePath: string = `${REACT_APP_API_URL}/${subImg}`;
@@ -402,7 +399,7 @@ const ProductDetail: NextPage = ({ initialComment, initialInput, ...props }: any
 							</Box>
 
 							<Box className="detail-price">
-								<span>${formatterStr(product?.productPrice)}</span>
+								<span>KRW{formatterStr(product?.productPrice)}</span>
 							</Box>
 							<Box className="detail-location">
 								<span>{product?.productLocation}</span>
