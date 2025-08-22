@@ -32,20 +32,20 @@ const withLayoutMain = (Component: any) => {
 				description:
 					'Discover elegance with Veloura. Shop timeless necklaces, rings, bracelets, and earrings designed to shine every day.',
 				url: 'https://veloura-jewelry.uz/',
-				ogImage: 'https://veloura-jewelry.uz/images/veloura-preview.jpg',
+				ogImage: 'https://veloura-jewelry.uz/img/banner/home-banner13.png',
 			},
 			uz: {
 				title: 'Veloura – Nafislik va Zamonaviy Zargarlik',
 				description:
 					'Veloura bilan nafislikni kashf eting. Har kuni porlashingiz uchun mo‘ljallangan marjonlar, uzuklar, bilaguzuklar va sirg‘alarni toping.',
 				url: 'https://veloura-jewelry.uz/uz/',
-				ogImage: 'https://veloura-jewelry.uz/images/veloura-preview.jpg',
+				ogImage: 'https://veloura-jewelry.uz/img/banner/home-banner13.png',
 			},
 			kr: {
 				title: '벨로라 – 우아함과 현대적인 주얼리 경험',
 				description: '벨로라와 함께 우아함을 발견하세요. 매일을 빛내는 목걸이, 반지, 팔찌, 귀걸이를 만나보세요.',
-				url: 'https://veloura-jewelry.uz/ko/',
-				ogImage: 'https://veloura-jewelry.uz/images/veloura-preview.jpg',
+				url: 'https://veloura-jewelry.uz/kr/',
+				ogImage: 'https://veloura-jewelry.uz/img/banner/home-banner13.png',
 			},
 		};
 
@@ -74,7 +74,7 @@ const withLayoutMain = (Component: any) => {
 					<meta property="og:title" content={currentSeo.title} />
 					<meta property="og:description" content={currentSeo.description} />
 					<meta property="og:url" content={currentSeo.url} />
-					<meta property="og:site_name" content="Veloura" />
+					<meta property="og:site_name" content="Veloura-jewelry" />
 					<meta property="og:image" content={currentSeo.ogImage} />
 					<meta property="og:image:width" content="1200" />
 					<meta property="og:image:height" content="630" />
@@ -85,7 +85,7 @@ const withLayoutMain = (Component: any) => {
 					{/* Multilingual SEO */}
 					<link rel="alternate" hrefLang="en" href="https://veloura-jewelry.uz/en/" />
 					<link rel="alternate" hrefLang="uz" href="https://veloura-jewelry.uz/uz/" />
-					<link rel="alternate" hrefLang="ko" href="https://veloura-jewelry.uz/ko/" />
+					<link rel="alternate" hrefLang="kr" href="https://veloura-jewelry.uz/kr/" />
 				</Head>
 
 				{device === 'mobile' ? (
